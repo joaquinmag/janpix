@@ -33,5 +33,12 @@ class Person {
 	static mappedBy = [relationships:'person']
 	
     static constraints = {
+		address(nullable:true)
+		deaddate(nullable:true)
+		birthdate(nullable:true)
+		motherName(nullable:true)
+		fatherName(nullable:true)
+		citizenship(nullable:true)
+		birthplace(nullable:true)
     }
 }

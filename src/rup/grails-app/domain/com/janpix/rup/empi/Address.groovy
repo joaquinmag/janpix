@@ -10,6 +10,14 @@ class Address {
 	Long latitude
 	Long longitude
 	
+	static belognsTo = Person
+	
     static constraints = {
+		zipCode(nullable:true)
+		town(nullable:true)
+		latitude(nullable:true)
+		longitude(nullable:true)
     }
+	
+	
 }

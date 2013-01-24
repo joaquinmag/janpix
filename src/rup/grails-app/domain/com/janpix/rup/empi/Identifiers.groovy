@@ -14,8 +14,9 @@ class Identifiers {
 	String number
 	String type
 	
-	//HealthEntity assigningAuthority 
-	String assigningAuthority //TODO puede ser algo mas que la Entidad Sanitaria
+	AssigningAuthority assigningAuthority 
+	
+	static belongsTo = Patient
 	
     static constraints = {
     }
