@@ -6,19 +6,20 @@
 
 package com.janpix.rup.empi
 import groovy.util.GroovyTestCase;
+import com.janpix.rup.exceptions.*
  
 class EMPIServiceTests extends GroovyTestCase {
 	//static transactional = false
 	
 	def EMPIService
-	def patient
+	def person
 	def healthEntity1
 	def healthEntity2
 	
 	void setUp(){
 		super.setUp()
 		EMPIService = new EMPIService()
-		EMPIService.demographicPatientService = new DemographicPatientIService()
+		EMPIService.demographicPersonService = new DemographicPersonService()
 		
 		//Creo 2 entidades sanitarias
 		healthEntity1 = new HealthEntity(name:"Entidad Sanitaria 1")
@@ -32,8 +33,7 @@ class EMPIServiceTests extends GroovyTestCase {
 		def city = new City(country:"Argentina",province:"Buenos Aires",name:"Luján")
 		city.save(flush:true,failOnError:true)
 
-		patient = new Patient(
-					uniqueId:"UUID-00001",
+		person = new Person(
 					givenName: new Name(firstName:"Martín", lastName:"Barnech"),
 					birthdate: Date.parse( "yyyy-M-d", "1983-01-01" ),
 		//TODO Ver NO FUNCIONA			address: new Address(street:"Constitución",number:"2213",zipCode:"6700",town:"Luján"),
@@ -50,16 +50,45 @@ class EMPIServiceTests extends GroovyTestCase {
 	 * Testea que se agregue correctamente un paciente
 	 * que no existe en el eMPI
 	 */
-	void testAddNewPatient() {
-		def patientEntityId = "HC0012"
-		def returnedPatient = EMPIService.addNewPatient(patient,healthEntity1,patientEntityId)
-		
-		assertNotNull(returnedPatient)
+	void testCreatePatient() {
+		def returnedPatient = EMPIService.createPatient(person)
 		
 		//Solo debe existir un paciente guardado
 		assertEquals(1,Patient.count())
 		
-		//Debe tener un solo identificador y debe ser el de mi entidad sanitaria
+		//Debe tener un identificador unico asignado
+		assertNotNull(returnedPatient.uniqueId)
+		
+	}
+	
+	/**
+	 * Testea que falle la creacion de un nuevo paciente porque ya existe un paciente
+	 * que matchea con esos datos demograficos
+	 */
+	void testFailCreatePatientBecauseMuchMatched(){
+		fail "Implentar"
+	}
+	
+	/**
+	 * Testea que falle la creacion de un paciente debido a que se le brinda
+	 * poca informacion demografica
+	 */
+	void testFailCreatePatientBecauseShortInformation(){
+		fail "Implentar"
+	}
+	
+	
+	/**
+	 * Testea que se agregue el identificador de la nueva entidad al paciente que ya existe en el eMPI
+	 */
+	void testAddNewIdentifierToPatient(){
+		//Primero agrego el paciente
+		def returnedPatient = EMPIService.createPatient(person)
+		
+		//Despues agrego el identificador al paciente
+		def patientEntityId = "IDH1001"
+		EMPIService.addEntityIdentifierToPatient(returnedPatient,healthEntity1,patientEntityId)
+		
 		def identifiers = returnedPatient.identifiers
 		assertEquals(1,identifiers.size())
 		identifiers.each {
@@ -69,29 +98,60 @@ class EMPIServiceTests extends GroovyTestCase {
 		}
 	}
 	
+	/**
+	 * Testea que falle el agregado de un nuevo identificador debido a que el paciente no existe
+	 */
+	void testFailAddNewIdentifierBecauseNotExistsPatient(){
+		try{
+			//Creo un paciente que no existe en la base de datos
+			def patientMock = new Patient(person.properties)
+			patientMock.uniqueId = "UUID-1234"
+			
+			//Despues agrego el identificador al paciente
+			def patientEntityId = "IDH1001"
+			EMPIService.addEntityIdentifierToPatient(patientMock,healthEntity1,patientEntityId)
+			
+			fail "No puede llegar hasta aca"
+			
+		}catch(DontExistingPatientException e){
+			//Si lanza excepcion es correcto
+			assertTrue(true)
+		}
+	}
 	
 	/**
-	 * Testea que se agregue el identificador de la nueva entidad al paciente que ya existe en el eMPI
-	 * En este test se pasa exactamente el mismo paciente
+	 * Testea la correcta obtencion de un paciente a partir de su UUID
 	 */
-	void testAddNewIdentifierToPatient(){
+	void testFindPatientByUUid(){
 		fail "Implentar"
 	}
 	
 	/**
-	 * Testea que se agregue el identificador de la nueva entidad al paciente que ya existe en el eMPI
-	 * Los datos pasados del nuevo paciente no son iguales al existente
-	 * y el algoritmo de matcheo demografico debe darse cuenta
+	 * Testea la correcta obtencion de un paciente que se busca por el id que tiene 
+	 * la entidad sanitaria para representarlo
 	 */
-	void testAddNewIdentifierToPatientWithRegularData(){
+	void testFindPatientByHealthEntityId(){
 		fail "Implentar"
 	}
 	
 	/**
-	 * Testea que no vuelva a agregar un paciente que la entidad sanitaria
-	 * ya agrego
+	 * Testea el correcto matcheo de un paciente
 	 */
-	void testDontAddExistingIdentifierForEntity(){
+	void testMatchPatient(){
+		fail "Implentar"
+	}
+	
+	/**
+	 * Testea que un paciente no matchee con ninguno existente
+	 */
+	void testDontMatchPatient(){
+		fail "Implentar"
+	}
+	
+	/**
+	 * Testea la correcta actualizacion de la informacion demografica de un paciente
+	 */
+	void testUpdateDemographicDataPatient(){
 		fail "Implentar"
 	}
 	

@@ -1,5 +1,7 @@
 package com.janpix.rup.empi
 
+import com.janpix.rup.exceptions.*
+
 /**
  * Servicio encargado de administrar el eMPI (enterprise Master Patient Index)
  * Da de alta, actualiza, elimina y hace merges de pacientes
@@ -7,7 +9,7 @@ package com.janpix.rup.empi
  *
  */
 class EMPIService {
-	def demographicPatientService
+	def demographicPersonService
 	
 	
 	/**
@@ -15,20 +17,21 @@ class EMPIService {
 	 * Si el paciente ya existe o tiene un cierto nivel de matcheo no lo crea
 	 * Una vez creado el paciente agrega el identificador de la entidad sanitaria al mismo
 	 * @return Patient: el paciente agregado si lo agrego correctamente
-	 * @return null Si el paciente ya existia
+	 * @throw ExistingPatientException Si ya existe uno o mas paciente en el eMPI con esa informacion demografica 
+	 * @throw ShortDemographicDataException Si la informacion brindada no alcanza para crear un paciente
 	 */
-	def addNewPatient(Patient p,HealthEntity he,String peId){
-		if(existsPatient(p)){
-			return null
+	def createPatient(Person p){	
+		if(matchPerson(p)){
+			throw new ExistingPatientException(message:"Ya existen pacientes que concuerdan con los datos demograficos pasados",patient:patient)
 		}
-		//Agrego el paciente
-		if(!p.save(flush:true)){
-			return null
-		} 
-		//Agrego el identificador
-		addIdentifierEntityToPatient(p, he, peId)
-		
-		return p
+		try{
+			//Agrego el paciente
+			def patient = new Patient(p.properties) //TODO hacer que se autogenere el uniqueId
+			patient.save(flush:true,failOnError:true) 
+			return patient
+		}catch(Exception e){
+			throw new ShortDemographicDataException(message:"Debe proporcionar mayor información del paciente",person:p)
+		}
 	}
 	
 	
@@ -64,19 +67,18 @@ class EMPIService {
 	 * @return Patient p: el paciente al que se le agrego el identificador
 	 * @return null si el paciente no existia o no se pudo agregar el identificador
 	 */
-	def addIdentifierEntityToPatient(Patient p,HealthEntity he, String peId){
+	def addEntityIdentifierToPatient(Patient p,HealthEntity he, String peId){
 		if(!existsPatient(p)){
-			return null
+			throw new DontExistingPatientException(message:"No existe ningun paciente que contenga el UUID pasado")
 		}
-		
 		def identifier = new Identifier(type:Identifier.TYPE_PI,number:peId,assigningAuthority:he)
+		//TODO verificar que dicha entidad sanitaria no tenga ya cargado un identificador
+		if(p.identifiers.contains(identifier)){
+			throw new IdentifierException(type:IdentifierException.TYPE_ENTITY_DUPLICATE,message:"Ya se encuentra agregado un identificador para la entidad sanitaria "+he)
+		}
 		p.addToIdentifiers(identifier)
 		
-		if(!p.save(flush:true)){
-			return null
-		}
-		
-		return p
+		p.save(flush:true,failOnError:true)
 	}
 	
 	/**
@@ -94,30 +96,52 @@ class EMPIService {
 	 * Devuelve una lista de todos los pacientes que matchean con ciertos datos demograficos
 	 * @return
 	 */
-	def getMatchedPatients(){
+	def getAllMatchedPersons(Person p){
 		//TODO implement me!
-		//def matchedPatient = demographicPatientService.matchPatient(p)
+		return demographicPersonService.matchPerson(p)
+		
 	}
 	
 	/**
-	 * Devuelve el primer paciente que matchea con ciertos datos demograficos
-	 * @return
+	 * Verifica si los datos demograficos pasados matchean con algun paciente
+	 * @param Person p: persona de la cual se validaran sus datos demograficos
+	 * @return TRUE si existe uno o mas pacientes que matchean con esos datos, FALSE sino
 	 */
-	def getFirstMatchedPatient(){
-		//TODO implement me!
+	def matchPerson(Person p){
+		return  getAllMatchedPersons(p).size() > 0
 	}
 	
 	/**
-	 * Verifica la existencia de un paciente en base a los datos demograficos pasados
+	 * Busca y devuelve el paciente que contenga el UUID pasado
+	 * @param String uuid : el identificador unico del paciente
+	 * @return Patient si lo encontro, sino NULL
+	 */
+	def findPatientByUUID(String uuid){
+		return Patient.findByUniqueId(uuid)
+	}
+	
+	/**
+	 * Devuelve un paciente
+	 * @param String peId: Id que utiliza la Entidad Sanitaria para el paciente
+	 * @param HealthEntity he: Entidad Sanitaria que esta buscando al paciente
+	 * @return Patient p: El paciente si lo encontro, sino NULL
+	 */
+	def findPatientByHealthEntityId(String peId,HealthEntity he){
+		return null
+	}
+	
+	
+	/**
+	 * Verifica la existencia de un paciente en base al identificador que contiene el mismo
 	 * @param Patient p: el paciente a verificar si esta agregado
 	 * @return TRUE si el paciente existe, FALSE de lo contrario
 	 */
 	def existsPatient(Patient p){
-		//TODO implement me!
-		//TODO ver si hay que basarse en datos demograficos
-		if(!p.id){
-			return false;
+		if(p.uniqueId){
+			if(findPatientByUUID(p.uniqueId)!=null){
+				return true;
+			}
 		}
-		return true
+		return false
 	}
 }
