@@ -14,8 +14,18 @@ class Identifier {
 	
 	AssigningAuthority assigningAuthority 
 	
-	static belongsTo = Patient
+	static belongsTo = [patient:Patient]
 	
     static constraints = {
     }
+	
+	/**
+	 * Compara 2 identificadores
+	 */
+	boolean equals(other){
+		return (this.type == other.type && 
+				this.number == other.number && 
+				this.assigningAuthority == other.assigningAuthority
+				)
+	}
 }

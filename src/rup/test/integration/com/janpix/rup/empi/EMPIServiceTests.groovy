@@ -36,7 +36,7 @@ class EMPIServiceTests extends GroovyTestCase {
 		person = new Person(
 					givenName: new Name(firstName:"Martín", lastName:"Barnech"),
 					birthdate: Date.parse( "yyyy-M-d", "1983-01-01" ),
-		//TODO Ver NO FUNCIONA			address: new Address(street:"Constitución",number:"2213",zipCode:"6700",town:"Luján"),
+					address: new Address(street:"Constitución",number:"2213",zipCode:"6700",town:"Luján"),
 					administrativeSex:"M",
 					citizenship:citizenship,
 					livingplace:city,
@@ -123,7 +123,14 @@ class EMPIServiceTests extends GroovyTestCase {
 	 * Testea la correcta obtencion de un paciente a partir de su UUID
 	 */
 	void testFindPatientByUUid(){
-		fail "Implentar"
+		//Primero creo el paciente
+		def returnedPatient = EMPIService.createPatient(person)
+		def patientUUID = returnedPatient.uniqueId
+		
+		def findedPatient = EMPIService.findPatientByUUID(patientUUID)
+		
+		assertEquals(returnedPatient,findedPatient)
+		
 	}
 	
 	/**
@@ -131,7 +138,21 @@ class EMPIServiceTests extends GroovyTestCase {
 	 * la entidad sanitaria para representarlo
 	 */
 	void testFindPatientByHealthEntityId(){
-		fail "Implentar"
+		//Primero creo el paciente
+		def returnedPatient = EMPIService.createPatient(person)
+		
+		//Le agrego 2 identificadores de entidades sanitarias
+		def patientEntity1Id = "IDH1001"
+		EMPIService.addEntityIdentifierToPatient(returnedPatient,healthEntity1,patientEntity1Id)
+		def patientEntity2Id = "IDH2005"
+		EMPIService.addEntityIdentifierToPatient(returnedPatient,healthEntity2,patientEntity2Id)
+		
+		//Busco al paciente a traves de las 2 entidades
+		def findedPatient1 = EMPIService.findPatientByHealthEntityId(patientEntity1Id,healthEntity1)
+		assertEquals(returnedPatient,findedPatient1)
+		
+		def findedPatient2 = EMPIService.findPatientByHealthEntityId(patientEntity2Id,healthEntity2)
+		assertEquals(returnedPatient,findedPatient2)
 	}
 	
 	/**
@@ -174,14 +195,58 @@ class EMPIServiceTests extends GroovyTestCase {
 	 * Testea la correcta actualizacion de un identificador por parte de una entidad sanitaria
 	 */
 	void testUpdateIdentifierToPatient(){
-		fail "Implentar"
+		//Primero creo el paciente
+		def returnedPatient = EMPIService.createPatient(person)
+		
+		//Le agrego 2 identificadores de entidades sanitarias
+		def patientEntity1Id = "IDH1001"
+		EMPIService.addEntityIdentifierToPatient(returnedPatient,healthEntity1,patientEntity1Id)
+		def patientEntity2Id = "IDH2005"
+		EMPIService.addEntityIdentifierToPatient(returnedPatient,healthEntity2,patientEntity2Id)
+		
+		//Actualizo la identificacion de algun paciente
+		def newPatientEntity2Id = "IDH2005898"
+		EMPIService.updateEntityIdentifierToPatient(returnedPatient,healthEntity2,patientEntity2Id,newPatientEntity2Id)
+		
+		//Busco al paciente por el viejo identificador y debe devolver null
+		assertNull(EMPIService.findPatientByHealthEntityId(patientEntity2Id,healthEntity2))
+		
+		//Busco por el nuevo
+		assertEquals(returnedPatient,EMPIService.findPatientByHealthEntityId(newPatientEntity2Id,healthEntity2))
+		
+		
 	}
 	
 	/**
 	 * Testea la correcta obtencion de todos los identificadores que puede tener un paciente
 	 */
 	void testFindIdentifiersPatient(){
-		fail "Implentar"
+		//Primero creo el paciente
+		def returnedPatient = EMPIService.createPatient(person)
+		
+		//Le agrego 2 identificadores de entidades sanitarias
+		def patientEntity1Id = "IDH1001"
+		EMPIService.addEntityIdentifierToPatient(returnedPatient,healthEntity1,patientEntity1Id)
+		def patientEntity2Id = "IDH2005"
+		EMPIService.addEntityIdentifierToPatient(returnedPatient,healthEntity2,patientEntity2Id)
+		
+		//Busco el paciente
+		def findedPatient = EMPIService.findPatientByUUID(returnedPatient.uniqueId)
+		def identifiers = findedPatient.identifiers
+		
+		//Deben tener 2 identificadores
+		assertEquals(2,identifiers.size())
+		
+		//Comparo los identificadores
+		def identifier1 = new Identifier(type:Identifier.TYPE_PI,number:patientEntity1Id,assigningAuthority:healthEntity1)
+		def identifier2 = new Identifier(type:Identifier.TYPE_PI,number:patientEntity2Id,assigningAuthority:healthEntity2)
+		identifiers.each {
+			if(it == identifier1 || it==identifier2)
+				assertTrue(true)
+			else
+				fail "Los identificadores devueltos no son los esperados"
+		}
+		
 	}
 	
 	/**
@@ -189,7 +254,18 @@ class EMPIServiceTests extends GroovyTestCase {
 	 * del identificador de alguna entidad sanitaria
 	 */
 	void testGetUniqueIdFromEntityIdentifier(){
-		fail "Implentar"
+		//Primero creo el paciente
+		def returnedPatient = EMPIService.createPatient(person)
+		
+		//Le agrego algun identificador
+		def patientEntity1Id = "IDH1001"
+		EMPIService.addEntityIdentifierToPatient(returnedPatient,healthEntity1,patientEntity1Id)
+		
+		
+		//Busco al paciente a traves de la entidad
+		def findedPatient1 = EMPIService.findPatientByHealthEntityId(patientEntity1Id,healthEntity1)
+		assertEquals(returnedPatient.uniqueId,findedPatient1.uniqueId)
+		
 	}
 	
 	/**

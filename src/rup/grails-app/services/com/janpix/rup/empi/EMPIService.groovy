@@ -65,7 +65,7 @@ class EMPIService {
 	/**
 	 * Agrega un identificador de entidad saniatria a un paciente existente en el eMPI
 	 * @return Patient p: el paciente al que se le agrego el identificador
-	 * @return null si el paciente no existia o no se pudo agregar el identificador
+	 * @throw DontExistingPatientException Si el paciente pasado no existia
 	 */
 	def addEntityIdentifierToPatient(Patient p,HealthEntity he, String peId){
 		if(!existsPatient(p)){
@@ -79,6 +79,37 @@ class EMPIService {
 		p.addToIdentifiers(identifier)
 		
 		p.save(flush:true,failOnError:true)
+	}
+	
+	/**
+	 * Actualiza el identificador que una Entidad Sanitaria tiene asignado a un paciente
+	 * @param Patient p: el paciente que se le actualizara el identificador
+	 * @param HealthEntity he : la entidad sanitaria que actualizara el identificador
+	 * @param oldId : el identificador viejo
+	 * @param newId : el nuevo identificador
+	 * @throw DontExistingPatientException Si el paciente pasado no existia
+	 * TODO lanzar excepcion si la entidad ya tiene ese identificador asignado a otro paciente
+	 * TODO lanzar excepcion si no existe el identificador viejo para esa entidad
+	 * @return
+	 */
+	def updateEntityIdentifierToPatient(Patient p,HealthEntity he,oldId,newId){
+		if(!existsPatient(p)){
+			throw new DontExistingPatientException(message:"No existe ningun paciente que contenga el UUID pasado")
+		}
+		
+		if(newId == oldId) {return}
+		
+		//Busco el identificador en el paciente
+		def findedIdentifier = new Identifier(type:Identifier.TYPE_PI,number:oldId,assigningAuthority:he)
+		p.identifiers.collect {
+			if(it == findedIdentifier){
+				it.number = newId
+			}
+		}
+		
+		//Grabo el paciente con sus cambios
+		p.save(flush:true,failOnError:true)
+		
 	}
 	
 	/**
@@ -127,6 +158,14 @@ class EMPIService {
 	 * @return Patient p: El paciente si lo encontro, sino NULL
 	 */
 	def findPatientByHealthEntityId(String peId,HealthEntity he){
+		//TODO ver si verifico si hay mas de un paciente con esas identificaciones
+		def identifier = Identifier.findWhere(	type:Identifier.TYPE_PI,
+												assigningAuthority:he,
+												number:peId
+											)
+		if(identifier)
+			return identifier.patient
+			
 		return null
 	}
 	

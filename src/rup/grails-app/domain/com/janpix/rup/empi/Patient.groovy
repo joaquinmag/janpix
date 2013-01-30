@@ -25,4 +25,15 @@ class Patient extends Person {
 			uniqueId = "UUID-"+random
 		}
 	}
+	
+	/**
+	 * Compara 2 pacientes
+	 */
+	boolean equals(other){
+		//TODO ver si tengo que comparar algo mas
+		if(this.uniqueId == other.uniqueId){
+			return true
+		}
+		return false
+	}
 }
