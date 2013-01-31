@@ -15,6 +15,7 @@ class DemographicPersonService {
 	 */
 	def matchPerson(Person p){
 		//TODO Ver de pasarle un nivel de matcheo
+		//TODO ver de estandarizar ciertos datos antes de comprar (ej 32.850.137 == 32850137)
 		//TODO implement me!
 		List<Person> persons = []
 		return persons

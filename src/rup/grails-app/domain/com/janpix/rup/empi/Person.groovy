@@ -14,6 +14,7 @@ class Person {
 	Name givenName
 	Date birthdate
 	String administrativeSex
+	IdentityDocument document
 	
 	Address address
 	List<PhoneNumber> phoneNumbers
@@ -35,6 +36,7 @@ class Person {
     static constraints = {
 		address(nullable:true)
 		deaddate(nullable:true)
+		document(nullable:true)//TODO ver si es obligatorio o no
 		birthdate(nullable:true)
 		motherName(nullable:true)
 		fatherName(nullable:true)

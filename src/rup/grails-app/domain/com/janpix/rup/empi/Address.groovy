@@ -4,6 +4,9 @@ class Address {
 	String street
 	String number
 	
+	String floor
+	String depart
+	
 	String zipCode
 	String town
 	
@@ -15,6 +18,8 @@ class Address {
     static constraints = {
 		zipCode(nullable:true,blank:true)
 		town(nullable:true,blank:true)
+		floor(nullable:true,blank:true)
+		depart(nullable:true,blank:true)
 		latitude(nullable:true)
 		longitude(nullable:true)
     }
