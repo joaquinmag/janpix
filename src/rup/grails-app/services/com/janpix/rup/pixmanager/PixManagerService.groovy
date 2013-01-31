@@ -13,6 +13,8 @@ class PixManagerService {
 	//TODO ver como integrarlo al un webservice. Usar el plugin cxf
 	//TODO ver como se pasan los parametros a los metodos. Si le puedo pasar un Patient o tengo que pasar todos Strings y despues armarlo
 	
+	static expose=['cxf']
+	
 	def EMPIService
 	
 	/**
