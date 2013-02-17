@@ -1,8 +1,11 @@
 package com.janpix.rup.pixmanager
 
-import com.jampix.rup.dto.PatientDTO;
+import com.jampix.rup.dto.PatientDTO
+import com.janpix.rup.services.contracts.AddNewPatientResponse
 import com.janpix.rup.exceptions.ExistingPatientException
 import com.janpix.rup.exceptions.ShortDemographicDataException
+import org.hl7.v3.II
+import org.hl7.v3.MCCIIN000002UV01
 
 /**
  * Servicio encargado de procesar las peticiones de las diferentes Entidades Sanitarias
@@ -28,8 +31,13 @@ class PixManagerService {
 	 *@return El Id Unico del paciente (CUIS) si lo pudo agregar correctamente (TODO ver que dice el protocolo que se debe devolver)
 	 *TODO ver que retornar si la informacion brindada no es suficiente para matchear un solo paciente o para crear uno nuevo
 	 */
-	PatientDTO addNewPatient(PatientDTO patientDto){
-		return patientDto
+	AddNewPatientResponse addNewPatient(PatientDTO patientDto){
+		def ack = new MCCIIN000002UV01(itsVersion: "hola")
+		def typeID = new II()
+		typeID.root = "hola"
+		ack.id = typeID
+		
+		return new AddNewPatientResponse(MCCIIN000002UV01: ack)
 		//TODO borrador del metodo
 		def patient = PersonMapper.mapFromDto(patientDto)
 		try{
