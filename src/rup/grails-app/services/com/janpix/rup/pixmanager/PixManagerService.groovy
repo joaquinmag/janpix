@@ -48,27 +48,62 @@ class PixManagerService {
 		}
 	}
 	
+	
+	//###################
+	// Agrego los metodos que deberia de tener el WS del PIX-Manager
+	// Son todos para el protocolo HL7_V3
+	// Ver si son todos necesarios
+	//###################
+	
 	/**
-	 * Devuelve el identificador unico de un paciente (CUIS)
+	 * Este metodo es llamado cuando una Entidad Sanitaria agrega un nuevo paciente
+	 * Si el paciente ya existe agrega el identificador de la Entidad Sanitaria a los identificadores del paciente
+	 * Si el paciente no existia lo crea y asigna el identificador de la Entidad Sanitaria a los identificadores del paciente
+	 * 
+	 * @nameProtocol Patient Registry Record Added(IHE_ITI Vol 2b - Seccion: 3.44.4.1)
+	 * @requestCode PRPA_IN201301UV02(ej: ftp://ftp.ihe.net/TF_Implementation_Material/ITI/examples/PIXV3/01_PatientRegistryRecordAdded1.xml )
+	 * @responseCode ACK : MCCI_IN000002UV01 (ftp://ftp.ihe.net/TF_Implementation_Material/ITI/examples/PIXV3/02_PatientRegistryRecordAdded1Ack.xml)
 	 * @return
 	 */
-	def getUniqueIdPatient(){
+	def addPatient(){
 		
 	}
 	
 	/**
-	 * Actualiza el identificador que una entidad sanitaria tiene asignado a un paciente
+	 * Este metodo es invocado cuando se quiere actualizar alguna informacion del paciente.
+	 * Supongo que se incluye tanto información demografica como identificadores (por si una entidad quiere actualizar el id del paciente)
+	 * 
+	 * @nameProtocol Patient Registry Record Revised(IHE_ITI Vol 2b - Seccion: 3.44.4.1)
+	 * @requestCode PRPA_IN201302UV02(ej: ftp://ftp.ihe.net/TF_Implementation_Material/ITI/examples/PIXV3/04_PatientRegistryRecordRevised2.xml )
+	 *TODO ver! @responseCode ACK : MCCI_IN000002UV01 (ftp://ftp.ihe.net/TF_Implementation_Material/ITI/examples/PIXV3/02_PatientRegistryRecordAdded1Ack.xml)
 	 * @return
 	 */
-	def updateIdentifier(){
+	def updatePatient(){
 		
 	}
 	
 	/**
-	 * Actualiza informacion demografica del paciente
+	 * Une 2 pacientes que estan agregados como pacientes diferentes
+	 * 
+	 * @nameProtocol Patient Registry Duplicates Resolved (IHE_ITI Vol 2b - Seccion: 3.44.4)
+	 * @requestCode PRPA_IN201304UV02 (ej: ftp://ftp.ihe.net/TF_Implementation_Material/ITI/examples/PIXV3/05_PatientRegistryDuplicatesResolved.xml )
 	 * @return
 	 */
-	def updateDemographicData(){
+	def mergePatients(){
+		//TODO ver si es necesario
+	}
+	
+	/**
+	 * Devuelve todos los identificadores de un determinado paciente
+	 * Nosotros lo podemos hacer que el CUIS sea un Identifier y devuelva solo ese
+	 * 
+	 * @nameProtocol Patient Registry Get Identifiers Query (IHE_ITI Vol 2b - Seccion: 3.45.4)
+	 * @requestCode PRPA_IN201309UV02 (ej: ftp://ftp.ihe.net/TF_Implementation_Material/ITI/examples/PIXV3/06_PIXQuery1.xml)
+	 * @responseCode PRPA_IN201310UV02 (ej: ftp://ftp.ihe.net/TF_Implementation_Material/ITI/examples/PIXV3/07_PIXQuery1Response.xml)
+	 * @return
+	 */
+	def getIdentifiersPatient(){
 		
 	}
+	
 }
