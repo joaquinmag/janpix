@@ -7,8 +7,6 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.apache.cxf.jaxrs.model.wadl.XMLName;
-
 
 /**
  * <p>Java class for anonymous complex type.

@@ -6,6 +6,6 @@ import javax.xml.bind.annotation.XmlAccessorType
 import org.hl7.v3.MCCIIN000002UV01
 
 @XmlAccessorType(XmlAccessType.FIELD)
-class AddNewPatientResponse implements Serializable {
-	MCCIIN000002UV01 MCCIIN000002UV01
+class AddNewPatientResponseMessage implements Serializable {
+	MCCIIN000002UV01 ackMessage
 }
