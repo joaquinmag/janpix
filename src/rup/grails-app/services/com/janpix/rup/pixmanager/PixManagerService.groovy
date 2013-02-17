@@ -1,5 +1,6 @@
 package com.janpix.rup.pixmanager
 
+import com.jampix.rup.dto.PatientDTO;
 import com.janpix.rup.exceptions.ExistingPatientException
 import com.janpix.rup.exceptions.ShortDemographicDataException
 
@@ -27,9 +28,10 @@ class PixManagerService {
 	 *@return El Id Unico del paciente (CUIS) si lo pudo agregar correctamente (TODO ver que dice el protocolo que se debe devolver)
 	 *TODO ver que retornar si la informacion brindada no es suficiente para matchear un solo paciente o para crear uno nuevo
 	 */
-	def addNewPatient(){
+	PatientDTO addNewPatient(PatientDTO patientDto){
+		return patientDto
 		//TODO borrador del metodo
-		def person
+		def patient = PersonMapper.mapFromDto(patientDto)
 		try{
 			if(!EMPIService.matchPerson(person)){
 				EMPIService.createPatient(person)
