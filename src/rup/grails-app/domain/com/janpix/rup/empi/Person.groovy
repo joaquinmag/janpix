@@ -2,24 +2,25 @@ package com.janpix.rup.empi
 
 class Person {
 	//Basado en HL7 User definition table
-	static OPTIONS_ADMINISTRATIVESEX = [
-			"F":"Female",
-			"M":"Male",
-			"O":"Other",
-			"U":"Unknown",
-			"A":"Ambiguos",
-			"N":"Not Applicable",
-			]
+	static String TYPE_SEX_FEMALE 			= "Female"
+	static String TYPE_SEX_MALE 			= "Male"
+	static String TYPE_SEX_OTHER 			= "Other"
+	static String TYPE_SEX_UNKNOWN			= "Unknown"
+	static String TYPE_SEX_AMBIGUOS			= "Ambiguos"
+	static String TYPE_SEX_NOT_APPLICABLE	= "Not Applicable"
+	
 	
 	Name givenName
 	Date birthdate
 	String administrativeSex
 	IdentityDocument document
 	
+	//TODO agregar estado civil
+	
 	Address address
 	List<PhoneNumber> phoneNumbers
 	
-	Citizenship citizenship
+	Citizenship citizenship //TODO borrar
 	City livingplace
 	City birthplace
 	
@@ -43,4 +44,8 @@ class Person {
 		citizenship(nullable:true)
 		birthplace(nullable:true)
     }
+	
+	String toString(){
+		return givenName.toString()+"-"+document.toString()+"-"+birthdate
+	}
 }

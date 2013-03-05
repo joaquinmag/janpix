@@ -21,7 +21,7 @@ class IdentityDocument {
 	}
 	
 	String toString(){
-		return "${type}${number}"	
+		return "${type}:${number}"	
 	}
 	
 	

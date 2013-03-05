@@ -76,7 +76,13 @@ log4j = {
     //appenders {
     //    console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
     //}
-
+	appenders {
+		console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
+		file name: "empi",
+					maxFileSize: 1024,
+					file: "/tmp/logs/rup/empi/empiService.log"
+	}
+	
     error  'org.codehaus.groovy.grails.web.servlet',        // controllers
            'org.codehaus.groovy.grails.web.pages',          // GSP
            'org.codehaus.groovy.grails.web.sitemesh',       // layouts
@@ -88,4 +94,47 @@ log4j = {
            'org.springframework',
            'org.hibernate',
            'net.sf.ehcache.hibernate'
+		   
+	//Log para la informacion del empi //TODO ver de configurar mejor
+	info empi: "grails.app",additivity:false
 }
+
+
+/**
+ * Configuración CXF: plugin WS-SOAP 
+ */
+cxf.endpoint.soap12Binding = true
+
+/**
+ * Configuracion del servicio de matcheo de pacientes
+ * En este apartado se puede configurar:
+ * - Limites de matcheo (inferior y superior)
+ * - Metodo de matcheo de pacientes
+ **/
+demographic{
+	lowerBound = 0.6 //A partir de este limite se consideran posible matcheros
+	upperBound = 0.8 //A partir de este limite se considera matcheos
+	identity.measurementMethod = "avib"//Metodo de comparacion a utilizar (fellegi-sunter, avib, avia)
+}
+
+//Atributos de los diferentes metodos de comparacion de identidad
+identityMethods{
+	avib{
+		weights{
+			name 			= 0.25
+			birthdate		= 0.15
+			sex				= 0.1
+			secondLastName	= 0.05
+			livingplace		= 0.15
+			address			= 0.1
+			document		= 0.2
+		}
+	}
+	fellegi-sunter{
+		
+	}
+}
+
+
+
+

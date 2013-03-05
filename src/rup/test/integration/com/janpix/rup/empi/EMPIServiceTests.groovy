@@ -17,9 +17,13 @@ class EMPIServiceTests extends GroovyTestCase {
 	def healthEntity2
 	
 	void setUp(){
+		//Inicializo servicios
 		super.setUp()
 		EMPIService = new EMPIService()
 		EMPIService.demographicPersonService = new DemographicPersonService()
+		EMPIService.demographicPersonService.grailsApplication =  new org.codehaus.groovy.grails.commons.DefaultGrailsApplication()
+		EMPIService.demographicPersonService.identityComparatorService = new IdentityComparatorService()
+		EMPIService.demographicPersonService.identityComparatorService.grailsApplication =  new org.codehaus.groovy.grails.commons.DefaultGrailsApplication()
 		
 		//Creo 2 entidades sanitarias
 		healthEntity1 = new HealthEntity(name:"Entidad Sanitaria 1")

@@ -4,6 +4,8 @@ import com.janpix.rup.services.contracts.AddNewPatientRequestMessage
 import com.janpix.rup.services.contracts.AddNewPatientResponseMessage
 import com.janpix.rup.exceptions.ExistingPatientException
 import com.janpix.rup.exceptions.ShortDemographicDataException
+
+import org.grails.cxf.utils.GrailsCxfEndpoint;
 import org.hl7.v3.II
 import org.hl7.v3.MCCIIN000002UV01
 import org.hl7.v3.PRPAIN201301UV02
@@ -14,11 +16,13 @@ import org.hl7.v3.PRPAIN201301UV02
  * @author martin
  *
  */
+
 class PixManagerService {
 	//TODO ver como integrarlo al un webservice. Usar el plugin cxf
 	//TODO ver como se pasan los parametros a los metodos. Si le puedo pasar un Patient o tengo que pasar todos Strings y despues armarlo
 	
 	static expose=['cxf']
+	static soap12 = true
 	
 	def EMPIService
 	
@@ -74,8 +78,13 @@ class PixManagerService {
 	 * @responseCode ACK : MCCI_IN000002UV01 (ftp://ftp.ihe.net/TF_Implementation_Material/ITI/examples/PIXV3/02_PatientRegistryRecordAdded1Ack.xml)
 	 * @return
 	 */
-	def addPatient(){
+	AddNewPatientResponseMessage addPatient(String p){
+		def ack = new MCCIIN000002UV01(itsVersion: "hola")
+		def typeID = new II()
+		typeID.root = p
+		ack.id = typeID
 		
+		return new AddNewPatientResponseMessage(ackMessage: ack)
 	}
 	
 	/**

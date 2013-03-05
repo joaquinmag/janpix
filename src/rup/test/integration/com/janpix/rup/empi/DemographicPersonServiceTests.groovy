@@ -20,13 +20,12 @@ class DemographicPersonServiceTests extends GroovyTestCase {
 	
 	void setUp(){
 		super.setUp()
+		//Inicializo servicios
 		demographicPersonService = new DemographicPersonService()
+		demographicPersonService.grailsApplication =  new org.codehaus.groovy.grails.commons.DefaultGrailsApplication()
+		demographicPersonService.identityComparatorService = new IdentityComparatorService()
+		demographicPersonService.identityComparatorService.grailsApplication =  new org.codehaus.groovy.grails.commons.DefaultGrailsApplication()
 				
-		//Creo algunas nacionalidades
-		def citizenship = new Citizenship(name:"Argentino")
-		citizenship.save(flush:true,failOnError:true)
-		def citizenship1 = new Citizenship(name:"Paraguayo")
-		citizenship1.save(flush:true,failOnError:true)
 		//Creo algunas ciudades
 		def city = new City(country:"Argentina",province:"Buenos Aires",name:"Luján")
 		city.save(flush:true,failOnError:true)
@@ -44,34 +43,32 @@ class DemographicPersonServiceTests extends GroovyTestCase {
 					birthdate: Date.parse( "yyyy-M-d", "1987-01-16" ),
 					document: new IdentityDocument(type:IdentityDocument.TYPE_DNI,number:"32850137"),
 					address: new Address(street:"Constitución",number:"2213",zipCode:"6700",town:"Luján"),
-					administrativeSex:"M",
-					citizenship:citizenship,
+					administrativeSex:Person.TYPE_SEX_MALE,
 					livingplace:city,
 					birthplace:city,
 					motherName: new Name(firstName:"Maria Olga Lucia", lastName:"Mannino"),
 					fatherName: new Name(firstName:"Pablo Juan", lastName:"Barnech"),
 					)
 		p1.save(flush:true,failOnError:true)
-		//p1 con error en el nombre y en la direccion y el DNI
+		//p1 con error en el nombre, direccion y el DNI
 		p2 = new Person(givenName: new Name(firstName:"Martin Gonzalo", lastName:"Barneche"),
 					birthdate: Date.parse( "yyyy-M-d", "1987-01-16" ),
-					document: new IdentityDocument(type:IdentityDocument.TYPE_DNI,number:"32.850.137"),
+					document: new IdentityDocument(type:IdentityDocument.TYPE_DNI,number:"32850187"),
 					address: new Address(street:"Constitucion",number:"2203",zipCode:"6700",town:"Luján"),
-					administrativeSex:"M",
-					citizenship:citizenship,
+					administrativeSex:Person.TYPE_SEX_MALE,
 					livingplace:city,
 					birthplace:city,
 					motherName: new Name(firstName:"Maria Olga", lastName:"Mannino"),
 					fatherName: new Name(firstName:"Pablo Juan", lastName:"Barnech"),
 					)
 		p2.save(flush:true,failOnError:true)
-		//p3 con error en fecha nacimiento, doc y ciudades
+		
+		//p1 con error en fecha nacimiento, ciudades, direccion y apellido madre
 		p3	= new Person(givenName: new Name(firstName:"Martín", lastName:"Barnech"),
 					birthdate: Date.parse( "yyyy-M-d", "1987-02-15" ),
-					document: new IdentityDocument(type:IdentityDocument.TYPE_DNI,number:"32.850.135"),
-					address: new Address(street:"Constitución",number:"2213",zipCode:"6700",town:"Luján"),
-					administrativeSex:"M",
-					citizenship:citizenship,
+					document: new IdentityDocument(type:IdentityDocument.TYPE_DNI,number:"32850137"),
+					address: new Address(street:"Rosario",number:"130",zipCode:"7700",town:"Luján"),
+					administrativeSex:Person.TYPE_SEX_MALE,
 					livingplace:city3,
 					birthplace:city3,
 					motherName: new Name(firstName:"Maria Olga", lastName:"Manino"),
@@ -83,8 +80,7 @@ class DemographicPersonServiceTests extends GroovyTestCase {
 				birthdate: Date.parse( "yyyy-M-d", "1987-05-01" ),
 				document: new IdentityDocument(type:IdentityDocument.TYPE_DNI,number:"32900250"),
 				address: new Address(street:"Zapata",number:"346",floor:"5",depart:"A",town:"Belgrano"),
-				administrativeSex:"M",
-				citizenship:citizenship,
+				administrativeSex:Person.TYPE_SEX_MALE,
 				livingplace:city1,
 				birthplace:city1,
 				motherName: new Name(firstName:"Lucia", lastName:"Fontela"),
@@ -96,8 +92,7 @@ class DemographicPersonServiceTests extends GroovyTestCase {
 				birthdate: Date.parse( "yyyy-M-d", "1987-01-05" ),
 				document: new IdentityDocument(type:IdentityDocument.TYPE_DNI,number:"32.900.250"),
 				address: new Address(street:"Zabala",number:"336"),
-				administrativeSex:"M",
-				citizenship:citizenship,
+				administrativeSex:Person.TYPE_SEX_MALE,
 				livingplace:city2,
 				birthplace:city4,
 				motherName: new Name(firstName:"Lucia", lastName:"Fontela"),
@@ -106,21 +101,46 @@ class DemographicPersonServiceTests extends GroovyTestCase {
 		p5.save(flush:true,failOnError:true)
 	}
 	
+	
 	/**
-	 * Testea que el paciente1 matchee con los paciente 1 y 2
+	 * Testea la correcta construccion de una identidad a partir de una persona
 	 */
-	void testMatchP1WithP2P3(){
+	void testBuildIdentity(){
+		def identity = Identity.buildFromPerson(p4)
+		assertEquals("Magneres, Joaquin Ignacio",identity.name)
+		assertEquals(Date.parse("yyyy-M-d","1987-05-01"),identity.birthdate)
+		assertEquals(Person.TYPE_SEX_MALE,identity.sex)
+		assertEquals("Fontela",identity.secondLastName)
+		assertEquals("Argentina,C.A.B.A,C.A.B.A",identity.livingplace)
+		assertEquals("Zapata 346",identity.address)
+		assertEquals("DNI:32900250",identity.document)
+	}
+	
+	/**
+	 * Testea que el paciente1 matchee con los paciente 2
+	 */
+	void testMatchP1WithP2(){
 		def matchedPersons = demographicPersonService.matchPerson(p1)
 		
-		assertTrue(matchedPersons.contains(p1))
-		assertTrue(matchedPersons.contains(p2))
+		//Matcheo
+		assertTrue("Entre los matcheados NO se encuentra el paciente 2",matchedPersons.contains(p2))
+	}
+	
+	/**
+	 * Testea que el paciente1 sea un posible matcheo del paciente 3
+	 */
+	void testPossibleMatchP1WithP3(){
+		def matchedPersons = demographicPersonService.matchPerson(p1)
+		
+		//Posible matcheo
+		assertTrue("Entre los posibles matcheados NO se encuentra el paciente 3",demographicPersonService.lastPossibleMatchedPersons().contains(p3))
 	}
 	
 	
 	/**
 	 * Testea que matcheen los paciente 2 y 3
 	 */
-	void testMatcP2P3(){
+	void testMatchP2P3(){
 		fail "implement me!"
 	}
 	
