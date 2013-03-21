@@ -5,10 +5,12 @@ class Address {
 	String number
 	
 	String floor
-	String depart
+	String department
 	
 	String zipCode
-	String town
+	String neighborhood
+	
+	City city
 	
 	Long latitude
 	Long longitude
@@ -16,10 +18,11 @@ class Address {
 	static belongsTo = Person
 	
     static constraints = {
+		city(nullable:false)
 		zipCode(nullable:true,blank:true)
-		town(nullable:true,blank:true)
+		neighborhood(nullable:true,blank:true)
 		floor(nullable:true,blank:true)
-		depart(nullable:true,blank:true)
+		department(nullable:true,blank:true)
 		latitude(nullable:true)
 		longitude(nullable:true)
     }

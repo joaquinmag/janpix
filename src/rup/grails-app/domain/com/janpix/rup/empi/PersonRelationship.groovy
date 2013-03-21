@@ -1,12 +1,18 @@
 package com.janpix.rup.empi
 
 class PersonRelationship {
-	String type //Hermano, madre, marido, hijo, etc
-	String status //Divorciado, Terminada
-	Person relatedPerson
+	enum RelationType{
+		FATHER_SUN,MOTHER_SUN //TODO Ver todas las posibilidades
+	}
+	RelationType type
+	Person leftPerson
+	Person rightPerson
 	
-	static belongsTo = [person:Person]
+	
 	
 	static constraints = {
+		type(nullable:false)
+		leftPerson(nullable:false)
+		rightPerson(nullable:false)
 	}
 }

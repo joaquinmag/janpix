@@ -1,10 +1,10 @@
 package com.janpix.rup.empi
 
-class City {
+class Province {
 	String name
-	Province province
+	Country country
 	
-	static belongsTo = [province:Province]
+	static belongsTo = [country:Country]
 	
     static constraints = {
     }

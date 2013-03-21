@@ -23,9 +23,8 @@ class DemographicPersonService {
 		def lowerLimit = this.getLowerLimit()
 		
 		//Hago un primer filtro en base a datos excluyentes como ser rango de edades
-		//def candidates = findCandidates(p)
-		def candidates = Person.list()
-		candidates.remove(p)
+		def candidates = blockIndexing(p)
+		
 		
 		log.info("Verificando matcheods de "+p+" entre "+candidates.size()+" candidatos ...")
 		candidates.each{
@@ -77,5 +76,17 @@ class DemographicPersonService {
 		return lowerBound
 	}
 	
-	
+	/**
+	 * Realiza un filtro de personas devolviendo solo aquellas que tienen
+	 * posibilidades de matchear
+	 * Se basa en atributos excluyentes para armar el bloque
+	 * @param p
+	 * @return
+	 */
+	private List<Person> blockIndexing(Person p){
+		//TODO hacer
+		def candidates = Person.list()
+		candidates.remove(p)
+		return candidates
+	}
 }

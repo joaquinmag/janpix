@@ -2,8 +2,8 @@ package com.janpix.rup.empi
 
 class PhoneNumber {
 	String type
-	String ddi
 	String ddn
+	String number
 	
     static constraints = {
     }

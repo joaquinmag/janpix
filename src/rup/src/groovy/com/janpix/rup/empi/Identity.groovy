@@ -17,6 +17,9 @@ class Identity {
 	
 	String document //type:number
 	
+	Boolean hasTwin;
+	String maritalStatus;
+	
 	
 	
 	/**

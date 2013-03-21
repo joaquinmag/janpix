@@ -1,6 +1,6 @@
 package com.janpix.rup.empi
 
-class Citizenship {
+class Country {
 	String name
 	
     static constraints = {

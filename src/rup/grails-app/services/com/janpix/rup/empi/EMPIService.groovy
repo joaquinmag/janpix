@@ -22,7 +22,7 @@ class EMPIService {
 	 */
 	def createPatient(Person p){	
 		if(matchPerson(p)){
-			throw new ExistingPatientException(message:"Ya existen pacientes que concuerdan con los datos demograficos pasados",patient:patient)
+			throw new ExistingPatientException(message:"Ya existen pacientes que concuerdan con los datos demograficos pasados",patient:new Patient(p.properties))
 		}
 		try{
 			//Agrego el paciente
@@ -125,11 +125,24 @@ class EMPIService {
 	
 	/**
 	 * Devuelve una lista de todos los pacientes que matchean con ciertos datos demograficos
-	 * @return
+	 * @param Patient p: el paciente que se va a comparar
+	 * @param Boolean includePossible: Si debo incluir los posibles matcheos
+	 * @return List<Patient>: Lista de los pacientes matcheados
 	 */
-	def getAllMatchedPersons(Person p){
-		//TODO implement me!
-		return demographicPersonService.matchPerson(p)
+	List<Patient> getAllMatchedPatients(Patient p,Boolean includePossible=false){
+		def matchedPersons = demographicPersonService.matchPerson(p)
+		if(includePossible){
+			matchedPersons.addAll(demographicPersonService.getPossibleMatchedPersons())
+		}
+		
+		//Paso de Person to Patient
+		List<Patient> matchedPatients = []
+		matchedPersons.each {
+			//FIXME!! segun la estrategia de herencia esto podria llegar a variar
+			matchedPatients.add(Patient.get(it.id))
+		}
+		
+		return matchedPatients
 		
 	}
 	
@@ -138,8 +151,10 @@ class EMPIService {
 	 * @param Person p: persona de la cual se validaran sus datos demograficos
 	 * @return TRUE si existe uno o mas pacientes que matchean con esos datos, FALSE sino
 	 */
-	def matchPerson(Person p){
-		return  getAllMatchedPersons(p).size() > 0
+	Boolean matchPerson(Person p,Boolean includePossible=false){
+		//creo un paciente temporal a partir de la persona
+		def tempPatient = new Patient(p.properties)
+		return  getAllMatchedPatients(tempPatient,includePossible).size() > 0
 	}
 	
 	/**

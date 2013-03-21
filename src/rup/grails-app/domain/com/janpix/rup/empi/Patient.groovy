@@ -1,17 +1,10 @@
 package com.janpix.rup.empi
 
-import java.util.Date;
-
 class Patient extends Person {
-	String uniqueId //TODO definir si uso otro ademas del que otorga grails
-	Set<Identifier> identifiers = []
-	
-	Date dateCreated
-	Date lastUpdated
-	
-	static hasMany = [identifiers:Identifier]
+	PatientIdentifer uniqueId 
 	
     static constraints = {
+		uniqueId(nullable:false)
     }
 	
 	/**
@@ -19,10 +12,10 @@ class Patient extends Person {
 	 * @return
 	 */
 	def beforeValidate(){
-		//TODO ver como genero los UUID
+		//TODO ver como genero los UUID y quien los genera
 		if(!uniqueId){
 			def random = 5
-			uniqueId = "UUID-"+random
+			uniqueId = new PatientIdentifer(value:random)
 		}
 	}
 	
@@ -35,5 +28,14 @@ class Patient extends Person {
 			return true
 		}
 		return false
+	}
+	
+	/**
+	 * Agrega un identificador al paciente
+	 * @param id
+	 * @return
+	 */
+	Boolean addIdentifier(Identifier id){
+		
 	}
 }

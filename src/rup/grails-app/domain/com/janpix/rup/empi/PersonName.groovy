@@ -1,8 +1,10 @@
 package com.janpix.rup.empi
 
-class Name {
+class PersonName {
 	String firstName
 	String lastName
+	String motherLastName
+	String alias
 	
 	static belongsTo = [person:Person]
 	
