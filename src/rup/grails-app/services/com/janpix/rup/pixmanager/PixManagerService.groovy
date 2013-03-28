@@ -6,9 +6,6 @@ import com.janpix.rup.exceptions.ExistingPatientException
 import com.janpix.rup.exceptions.ShortDemographicDataException
 
 import org.grails.cxf.utils.GrailsCxfEndpoint;
-import org.hl7.v3.II
-import org.hl7.v3.MCCIIN000002UV01
-import org.hl7.v3.PRPAIN201301UV02
 
 /**
  * Servicio encargado de procesar las peticiones de las diferentes Entidades Sanitarias
@@ -37,11 +34,6 @@ class PixManagerService {
 	 *TODO ver que retornar si la informacion brindada no es suficiente para matchear un solo paciente o para crear uno nuevo
 	 */
 	AddNewPatientResponseMessage addNewPatient(AddNewPatientRequestMessage patientRequestMessage){
-		def ack = new MCCIIN000002UV01(itsVersion: "hola")
-		def typeID = new II()
-		typeID.root = "hola"
-		ack.id = typeID
-		
 		return new AddNewPatientResponseMessage(ackMessage: ack)
 		//TODO borrador del metodo
 		def patient = PersonMapper.mapFromDto(patientDto)
@@ -79,12 +71,7 @@ class PixManagerService {
 	 * @return
 	 */
 	AddNewPatientResponseMessage addPatient(String p){
-		def ack = new MCCIIN000002UV01(itsVersion: "hola")
-		def typeID = new II()
-		typeID.root = p
-		ack.id = typeID
-		
-		return new AddNewPatientResponseMessage(ackMessage: ack)
+		return new AddNewPatientResponseMessage()
 	}
 	
 	/**
