@@ -1,21 +1,22 @@
 package com.janpix.rup.empi
 
+class PatientIdentifier {
+	
+	String mainId
 
-class PatientIdentifer {
-	String value 
 	static belongsTo = [patient:Patient]
 	
-	static constraints = {
-		value(nullable:false,unique:true)
-	}
+    static constraints = {
+		mainId(nullable:false,unique:true)
+    }
 	
 	/**
-	 * Compara 2 identificadores
-	 */
-	boolean equals(other){
-		if(this.value == other.value){
-			return true
-		}
-		return false
-	}
+ 	 * Compara 2 identificadores
+ 	 */
+ 	boolean equals(PatientIdentifier other){
+ 		if(this.mainId == other.mainId){
+ 			return true
+ 		}
+ 		return false
+ 	}
 }

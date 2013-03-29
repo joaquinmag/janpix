@@ -16,7 +16,7 @@ class Patient extends Person {
 		//TODO ver como genero los UUID y quien los genera
 		if(!uniqueId){
 			def random = 5
-			uniqueId = new PatientIdentifer(value:random)
+			uniqueId = new PatientIdentifier(mainId:random)
 		}
 	}
 	
