@@ -10,6 +10,7 @@ import com.janpix.rup.exceptions.*
  */
 class EMPIService {
 	def demographicPersonService
+	def uuidGenerator
 	
 	
 	/**
@@ -26,7 +27,8 @@ class EMPIService {
 		}
 		try{
 			//Agrego el paciente
-			def patient = new Patient(p.properties) //TODO hacer que se autogenere el uniqueId
+			def patient = new Patient(p.properties)
+			patient.uuidGenerator = uuidGenerator
 			patient.save(flush:true,failOnError:true) 
 			return patient
 		}catch(Exception e){

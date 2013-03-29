@@ -3,6 +3,7 @@ package com.janpix.rup.empi
 class Patient extends Person {
 	
 	PatientIdentifier uniqueId 
+	def uuidGenerator
 
     static constraints = {
 		uniqueId(nullable:false)
@@ -12,11 +13,10 @@ class Patient extends Person {
 	 * Antes de grabar genero el UniqueId del paciente
 	 * @return
 	 */
-	def beforeValidate(){
-		//TODO ver como genero los UUID y quien los genera
+	def beforeValidate() {
 		if(!uniqueId){
-			def random = 5
-			uniqueId = new PatientIdentifier(mainId:random)
+			def uuid = uuidGenerator()
+			uniqueId = new PatientIdentifier(mainId:uuid)
 		}
 	}
 	

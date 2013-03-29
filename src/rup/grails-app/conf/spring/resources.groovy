@@ -1,3 +1,7 @@
-// Place your Spring DSL code here
+import com.janpix.rup.infrastructure.MockUUIDGenerator;
+
 beans = {
+	uuidGenerator(MockUUIDGenerator) { bean ->
+		bean.factoryMethod = "getUUID"
+	}
 }
