@@ -34,7 +34,6 @@ class PixManagerService {
 	 *TODO ver que retornar si la informacion brindada no es suficiente para matchear un solo paciente o para crear uno nuevo
 	 */
 	AddNewPatientResponseMessage addNewPatient(AddNewPatientRequestMessage patientRequestMessage){
-		return new AddNewPatientResponseMessage(ackMessage: ack)
 		//TODO borrador del metodo
 		def patient = PersonMapper.mapFromDto(patientDto)
 		try{

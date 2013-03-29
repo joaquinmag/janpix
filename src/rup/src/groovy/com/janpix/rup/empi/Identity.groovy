@@ -1,5 +1,7 @@
 package com.janpix.rup.empi
 
+import com.janpix.rup.empi.Identifier.TypeIdentifier;
+
 /**
  * Representa la identidad de una persona
  * Posee un constructor que construye Identity a partir de un Person 
@@ -8,17 +10,16 @@ package com.janpix.rup.empi
  */
 class Identity {
 	String name //lastName, firstName secondName
-	Date birthdate //aaaa-mm-dd
+	ExtendedDate birthdate //aaaa-mm-dd
 	String sex 
-	String secondLastName 
+	//String secondLastName 
 	
 	String livingplace //country,province,city
 	String address //street number
 	
-	String document //type:number
+	String document //TypeNumberCountryEmitter
 	
-	Boolean hasTwin;
-	String maritalStatus;
+	Boolean multipleBirthIndicator;
 	
 	
 	
@@ -29,13 +30,18 @@ class Identity {
 	 */
 	static Identity buildFromPerson(Person p){
 		def identity = new Identity()
-		identity.name 			= p.givenName?.lastName + ', ' + p.givenName?.firstName
-		identity.birthdate 		= p.birthdate
+		//TODO ver si uso findAll
+		def document = p.identifiers.find {it.type == Identifier.TYPE_IDENTIFIER_DNI || it.type == Identifier.TYPE_IDENTIFIER_LC || it.type == Identifier.TYPE_IDENTIFIER_LE}
+		def address = p.addresses.get(0)//TODO ver que criterio uso para obtener la address 
+		
+		
+		identity.name 			= "${p.givenName?.firstName} ${p.givenName?.lastName} ${p.givenName?.motherLastName}" 
 		identity.sex 			= p.administrativeSex
-		identity.secondLastName	= p.motherName?.lastName
-		identity.livingplace	= (!p.livingplace)?"":p.livingplace.country+","+p.livingplace.province+","+p.livingplace.name
-		identity.address		= p.address?.street+" "+p.address?.number
-		identity.document		= p.document.toString()
+		identity.birthdate 		= p.birthdate
+		identity.multipleBirthIndicator = p.multipleBirthIndicator
+		identity.livingplace	= (!address)?"":"${address.city?.province?.country?.name},${address.city?.province?.name},${address.city?.name}"
+		identity.address		= (!address)?"":"${address.street} ${address.number}"
+		identity.document		= (!document)?"":"${document.type}${document.number}${document.assigningAuthority}"
 		
 		return identity
 	}

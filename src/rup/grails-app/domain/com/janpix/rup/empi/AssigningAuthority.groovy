@@ -13,4 +13,8 @@ class AssigningAuthority {
 		//TODO ver que otros datos comparar
 		return (this.name == other.name)
 	}
+	
+	String toString(){
+		return name
+	}
 }

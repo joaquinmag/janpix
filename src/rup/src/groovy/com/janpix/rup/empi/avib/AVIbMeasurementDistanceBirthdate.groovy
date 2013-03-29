@@ -25,7 +25,7 @@ class AVIbMeasurementDistanceBirthdate extends MeasurementDistanceAttribute {
 			distance = 0.0
 		}else if((date1.year == date2.year) && (date1.month == date2.month)){
 			//Si el mes y el año son iguales hay una cierta similitud
-			distance =  0.3
+			distance =  0.2
 		}
 		return distance * this.weight
 	}

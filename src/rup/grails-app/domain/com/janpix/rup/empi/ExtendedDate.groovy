@@ -2,15 +2,17 @@ package com.janpix.rup.empi
 
 
 class ExtendedDate {
-	enum PrecissionLevel {
-		DAY,
-		MONTH,
-		YEAR,
-		UNKNOWN,
-	}
+	static final Integer TYPE_PRECISSION_UNKNOWN 	= 0
+	static final Integer TYPE_PRECISSION_DAY 		= 1
+	static final Integer TYPE_PRECISSION_MONTH 	= 2
+	static final Integer TYPE_PRECISSION_YEAR 		= 3
+	
+	
 	
 	Date date
-	PrecissionLevel precission
+	Integer precission
+	
+	static belongsTo = [Person]
 	 
 	
 	
@@ -18,7 +20,7 @@ class ExtendedDate {
 		date(
 			nullable:true,
 			validator:{val,obj->
-					if(obj.precission != PrecissionLevel.UNKNOWN){
+					if(obj.precission != ExtendedDate.TYPE_PRECISSION_UNKNOWN){
 						return val != null
 					}
 					return true

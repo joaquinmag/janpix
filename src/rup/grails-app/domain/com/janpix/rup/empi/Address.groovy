@@ -15,6 +15,8 @@ class Address {
 	Long latitude
 	Long longitude
 	
+	Date dateCreated
+	
 	static belongsTo = Person
 	
     static constraints = {

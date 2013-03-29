@@ -6,6 +6,8 @@
 
 package com.janpix.rup.empi
 import groovy.util.GroovyTestCase;
+
+
 import com.janpix.rup.exceptions.*
  
 class DemographicPersonServiceTests extends GroovyTestCase {
@@ -16,6 +18,11 @@ class DemographicPersonServiceTests extends GroovyTestCase {
 	def p3
 	def p4
 	def p5
+	def city1
+	def city2
+	def city3
+	def city4
+	def city5
 	
 	
 	void setUp(){
@@ -27,31 +34,26 @@ class DemographicPersonServiceTests extends GroovyTestCase {
 		demographicPersonService.identityComparatorService.grailsApplication =  new org.codehaus.groovy.grails.commons.DefaultGrailsApplication()
 				
 		//Creo algunas ciudades
-		def city = new City(country:"Argentina",province:"Buenos Aires",name:"Luján")
-		city.save(flush:true,failOnError:true)
-		def city1 = new City(country:"Argentina",province:"C.A.B.A",name:"C.A.B.A")
-		city1.save(flush:true,failOnError:true)
-		def city2 = new City(country:"Argentina",province:"Capital Federal",name:"Capital Federal")
-		city2.save(flush:true,failOnError:true)
-		def city3 = new City(country:"Argentina",province:"Bs. As.",name:"Lujan")
-		city3.save(flush:true,failOnError:true)
-		def city4 = new City(country:"Argentina",province:"Bs As",name:"Pergamino")
-		city4.save(flush:true,failOnError:true)
+		createCities()
+		
+		def assingingAuthorityArgentina = new AssigningAuthority(name:"Argentina")
+		assingingAuthorityArgentina.save(flush:true,failOnError:true)
 		
 		//Creo las personas
-		p1 = new Person(givenName: new Name(firstName:"Martín", lastName:"Barnech"),
-					birthdate: Date.parse( "yyyy-M-d", "1987-01-16" ),
-					document: new IdentityDocument(type:IdentityDocument.TYPE_DNI,number:"32850137"),
-					address: new Address(street:"Constitución",number:"2213",zipCode:"6700",town:"Luján"),
+		//def marital = Person.MaritalStatus.MARRIED
+		//def maleSex = Person.Sex.MALE.value() //FIXME Tira error. Ver de poner los enum en un .groovy
+		//def maleSex = "M"
+		p1 = new Person(givenName: new PersonName(firstName:"Martín", lastName:"Barnech",motherLastName:"Mannino"),
+					birthdate: new ExtendedDate(precission:ExtendedDate.TYPE_PRECISSION_DAY,date:Date.parse( "yyyy-M-d", "1987-01-16" )),
 					administrativeSex:Person.TYPE_SEX_MALE,
-					livingplace:city,
-					birthplace:city,
-					motherName: new Name(firstName:"Maria Olga Lucia", lastName:"Mannino"),
-					fatherName: new Name(firstName:"Pablo Juan", lastName:"Barnech"),
+					birthplace:city1,
 					)
+		p1.addToIdentifiers(new Identifier(type:'DNI',number:"32850137",assigningAuthority:assingingAuthorityArgentina))
+		p1.addToAddresses(new Address(street:"Constitución",number:"2213",zipCode:"6700",neighborhood:"Luján",city:city1))
 		p1.save(flush:true,failOnError:true)
+		
 		//p1 con error en el nombre, direccion y el DNI
-		p2 = new Person(givenName: new Name(firstName:"Martin Gonzalo", lastName:"Barneche"),
+	/*	p2 = new Person(givenName: new Name(firstName:"Martin Gonzalo", lastName:"Barneche"),
 					birthdate: Date.parse( "yyyy-M-d", "1987-01-16" ),
 					document: new IdentityDocument(type:IdentityDocument.TYPE_DNI,number:"32850187"),
 					address: new Address(street:"Constitucion",number:"2203",zipCode:"6700",town:"Luján"),
@@ -98,7 +100,7 @@ class DemographicPersonServiceTests extends GroovyTestCase {
 				motherName: new Name(firstName:"Lucia", lastName:"Fontela"),
 				fatherName: new Name(firstName:"Roque", lastName:"Magneres"),
 		)
-		p5.save(flush:true,failOnError:true)
+		p5.save(flush:true,failOnError:true)*/
 	}
 	
 	
@@ -106,14 +108,13 @@ class DemographicPersonServiceTests extends GroovyTestCase {
 	 * Testea la correcta construccion de una identidad a partir de una persona
 	 */
 	void testBuildIdentity(){
-		def identity = Identity.buildFromPerson(p4)
-		assertEquals("Magneres, Joaquin Ignacio",identity.name)
-		assertEquals(Date.parse("yyyy-M-d","1987-05-01"),identity.birthdate)
+		def identity = Identity.buildFromPerson(p1)
+		assertEquals("Martín Barnech Mannino",identity.name)
+		assertEquals(Date.parse("yyyy-M-d","1987-01-06"),identity.birthdate.date)
 		assertEquals(Person.TYPE_SEX_MALE,identity.sex)
-		assertEquals("Fontela",identity.secondLastName)
-		assertEquals("Argentina,C.A.B.A,C.A.B.A",identity.livingplace)
-		assertEquals("Zapata 346",identity.address)
-		assertEquals("DNI:32900250",identity.document)
+		assertEquals("Argentina,Buenos Aires,Luján",identity.livingplace)
+		assertEquals("Constitución 2213",identity.address)
+		assertEquals("DNI32900250Argentina",identity.document)
 	}
 	
 	/**
@@ -147,7 +148,7 @@ class DemographicPersonServiceTests extends GroovyTestCase {
 	/**
 	 * Testea que matcheen los paciente 4 y 5
 	 */
-	void testMatcP4P5(){
+	void testMatchP4P5(){
 		fail "implement me!"
 	}
 	
@@ -156,6 +157,33 @@ class DemographicPersonServiceTests extends GroovyTestCase {
 	 */
 	void testDontMatchP1WithP4P5(){
 		fail "implement me!"
+	}
+	
+	
+	/** Metodos Privados **/
+	def private createCities(){
+		//Paises y provincias
+		def country  = new Country(name:"Argentina").save(failOnError:true,flush:true)
+		def provBsAs1 = new Province(name:"Buenos Aires",country:country)
+		provBsAs1.save(failOnError:true,flush:true)
+		def provBsAs2 = new Province(name:"Bs. As.",country:country)
+		provBsAs2.save(failOnError:true,flush:true)
+		def provCABA1 = new Province(name:"Capital Federal",country:country)
+		provCABA1.save(failOnError:true,flush:true)
+		def provCABA2 = new Province(name:"C.A.B.A",country:country)
+		provCABA2.save(failOnError:true,flush:true)
+		
+		
+		city1 = new City(province:provBsAs1,name:"Luján")
+		city1.save(flush:true,failOnError:true)
+		city2 = new City(province:provCABA2,name:"C.A.B.A")
+		city2.save(flush:true,failOnError:true)
+		city3 = new City(province:provCABA1,name:"Capital Federal")
+		city3.save(flush:true,failOnError:true)
+		city4 = new City(province:provBsAs2,name:"Lujan")
+		city4.save(flush:true,failOnError:true)
+		city5 = new City(province:provBsAs2,name:"Pergamino")
+		city5.save(flush:true,failOnError:true)
 	}
 	
 	

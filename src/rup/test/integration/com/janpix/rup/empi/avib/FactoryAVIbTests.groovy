@@ -12,13 +12,13 @@ import com.janpix.rup.empi.Person
 class FactoryAVIbTests extends GroovyTestCase {
 	
 	def factory
+	def weightDocument 			= 0.3
 	def weightName 				= 0.25
 	def weightBirthdate 		= 0.15
-	def weightSex 				= 0.1
-	def weightSecondLastName 	= 0.05
+	def weightSex 				= 0.05
 	def weightLivingplace 		= 0.15
 	def weightAddress 			= 0.1
-	def weightDocument 			= 0.2
+	
 	
 	def i1
 	def i2
@@ -36,8 +36,7 @@ class FactoryAVIbTests extends GroovyTestCase {
 
 		//Creo la fabrica con los pesos
 		def weights = [
-				"name":weightName,"birthdate":weightBirthdate,"sex":weightSex,
-				"secondLastName":weightSecondLastName,"livingplace":weightLivingplace,
+				"name":weightName,"birthdate":weightBirthdate,"sex":weightSex,"livingplace":weightLivingplace,
 				"address":weightAddress,"document":weightDocument
 			]
 		factory = new FactoryAVIb(weights:weights)
