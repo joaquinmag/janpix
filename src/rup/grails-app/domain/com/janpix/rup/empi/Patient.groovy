@@ -1,8 +1,9 @@
 package com.janpix.rup.empi
 
 class Patient extends Person {
-	PatientIdentifer uniqueId 
 	
+	PatientIdentifier uniqueId 
+
     static constraints = {
 		uniqueId(nullable:false)
     }
