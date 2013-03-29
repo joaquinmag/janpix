@@ -23,7 +23,7 @@ class Patient extends Person {
 	/**
 	 * Compara 2 pacientes
 	 */
-	boolean equals(other){
+	boolean equals(Patient other){
 		//TODO ver si tengo que comparar algo mas
 		if(this.uniqueId == other.uniqueId){
 			return true
@@ -33,10 +33,10 @@ class Patient extends Person {
 	
 	/**
 	 * Agrega un identificador al paciente
-	 * @param id
+	 * @param identifier
 	 * @return
 	 */
-	Boolean addIdentifier(Identifier id){
+	Boolean addIdentifier(Identifier identifier){
 		
 	}
 }
