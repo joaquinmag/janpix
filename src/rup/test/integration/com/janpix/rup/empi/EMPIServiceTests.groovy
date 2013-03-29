@@ -12,6 +12,7 @@ class EMPIServiceTests extends GroovyTestCase {
 	//static transactional = false
 	
 	def EMPIService
+	def patient
 	def person
 	def healthEntity1
 	def healthEntity2
@@ -31,23 +32,35 @@ class EMPIServiceTests extends GroovyTestCase {
 		healthEntity2 = new HealthEntity(name:"Entidad Sanitaria 2")
 		healthEntity2.save(flush:true,failOnError:true)
 		
-		//Creo un nuevo paciente
-		def citizenship = new Citizenship(name:"Argentino")
-		citizenship.save(flush:true,failOnError:true)
-		def city = new City(country:"Argentina",province:"Buenos Aires",name:"Luján")
+		//Creo algunas ciudades
+		/*def city = new City(country:"Argentina",province:"Buenos Aires",name:"Luján")
 		city.save(flush:true,failOnError:true)
-
-		person = new Person(
-					givenName: new Name(firstName:"Martín", lastName:"Barnech"),
-					birthdate: Date.parse( "yyyy-M-d", "1983-01-01" ),
+		def city1 = new City(country:"Argentina",province:"C.A.B.A",name:"C.A.B.A")
+		city1.save(flush:true,failOnError:true)
+		//Creo un nuevo paciente
+		patient = new Patient(givenName: new Name(firstName:"Martín", lastName:"Barnech"),
+					birthdate: Date.parse( "yyyy-M-d", "1987-01-16" ),
+					document: new IdentityDocument(type:IdentityDocument.TYPE_DNI,number:"32850137"),
 					address: new Address(street:"Constitución",number:"2213",zipCode:"6700",town:"Luján"),
-					administrativeSex:"M",
-					citizenship:citizenship,
+					administrativeSex:Person.TYPE_SEX_MALE,
 					livingplace:city,
 					birthplace:city,
-					motherName: new Name(firstName:"Maria Olga", lastName:"Mannino"),
+					motherName: new Name(firstName:"Maria Olga Lucia", lastName:"Mannino"),
 					fatherName: new Name(firstName:"Pablo Juan", lastName:"Barnech"),
 					)
+		patient.save(flush:true,failOnError:true)
+		
+		//Creo una persona
+		person	= new Person(givenName: new Name(firstName:"Joaquin Ignacio", lastName:"Magneres"),
+			birthdate: Date.parse( "yyyy-M-d", "1987-05-01" ),
+			document: new IdentityDocument(type:IdentityDocument.TYPE_DNI,number:"32900250"),
+			address: new Address(street:"Zapata",number:"346",floor:"5",depart:"A",town:"Belgrano"),
+			administrativeSex:Person.TYPE_SEX_MALE,
+			livingplace:city1,
+			birthplace:city1,
+			motherName: new Name(firstName:"Lucia", lastName:"Fontela"),
+			fatherName: new Name(firstName:"Roque", lastName:"Margenes"),
+		)*/
 	}
 
 	/**
@@ -57,8 +70,8 @@ class EMPIServiceTests extends GroovyTestCase {
 	void testCreatePatient() {
 		def returnedPatient = EMPIService.createPatient(person)
 		
-		//Solo debe existir un paciente guardado
-		assertEquals(1,Patient.count())
+		//Solo debe existir el paciente viejo y el nuevo creado
+		assertEquals(2,Patient.count())
 		
 		//Debe tener un identificador unico asignado
 		assertNotNull(returnedPatient.uniqueId)
@@ -70,7 +83,23 @@ class EMPIServiceTests extends GroovyTestCase {
 	 * que matchea con esos datos demograficos
 	 */
 	void testFailCreatePatientBecauseMuchMatched(){
-		fail "Implentar"
+		/*def p = new Person(givenName: new Name(firstName:"Martin Gonzalo", lastName:"Barneche"),
+					birthdate: Date.parse( "yyyy-M-d", "1987-01-16" ),
+					document: new IdentityDocument(type:IdentityDocument.TYPE_DNI,number:"32850187"),
+					address: new Address(street:"Constitucion",number:"2203",zipCode:"6700",town:"Luján"),
+					administrativeSex:Person.TYPE_SEX_MALE,
+					livingplace:City.findByName("Luján"),
+					birthplace:City.findByName("Luján"),
+					motherName: new Name(firstName:"Maria Olga", lastName:"Mannino"),
+					fatherName: new Name(firstName:"Pablo Juan", lastName:"Barnech"),
+					)*/
+		try{
+			def returnedPatient = EMPIService.createPatient(p)
+			fail "No puede seguir"
+		}catch(ExistingPatientException e){
+			//Si lanza excepcion es correcto
+			assertTrue(true)
+		}
 	}
 	
 	/**
@@ -85,15 +114,12 @@ class EMPIServiceTests extends GroovyTestCase {
 	/**
 	 * Testea que se agregue el identificador de la nueva entidad al paciente que ya existe en el eMPI
 	 */
-	void testAddNewIdentifierToPatient(){
-		//Primero agrego el paciente
-		def returnedPatient = EMPIService.createPatient(person)
-		
+	void testAddNewIdentifierToPatient(){		
 		//Despues agrego el identificador al paciente
 		def patientEntityId = "IDH1001"
-		EMPIService.addEntityIdentifierToPatient(returnedPatient,healthEntity1,patientEntityId)
+		EMPIService.addEntityIdentifierToPatient(patient,healthEntity1,patientEntityId)
 		
-		def identifiers = returnedPatient.identifiers
+		def identifiers = patient.identifiers
 		assertEquals(1,identifiers.size())
 		identifiers.each {
 			assertEquals("PI",it.type)
@@ -162,14 +188,14 @@ class EMPIServiceTests extends GroovyTestCase {
 	/**
 	 * Testea el correcto matcheo de un paciente
 	 */
-	void testMatchPatient(){
+	void testGetAllMatchedPatients(){
 		fail "Implentar"
 	}
 	
 	/**
-	 * Testea que un paciente no matchee con ninguno existente
+	 * Testea el correcto matcheo de un paciente incluidos los que son posibles matcheos
 	 */
-	void testDontMatchPatient(){
+	void testGetAllMatchedPatientsIncludePossible(){
 		fail "Implentar"
 	}
 	
