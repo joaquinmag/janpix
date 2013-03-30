@@ -7,6 +7,7 @@ import com.janpix.rup.exceptions.ShortDemographicDataException
 
 import org.grails.cxf.utils.GrailsCxfEndpoint;
 
+
 /**
  * Servicio encargado de procesar las peticiones de las diferentes Entidades Sanitarias
  * y comunicarse con el EMPIService para llevar a cabo dichas peticiones
@@ -109,5 +110,12 @@ class PixManagerService {
 	def getIdentifiersPatient(){
 		
 	}
+	
+	
+	//###################
+	// Agrego los metodos que deberia de tener el WS del PIX-Manager
+	// Son todos para el protocolo HL7_V2
+	// Ver si son todos necesarios
+	//###################
 	
 }
