@@ -1,6 +1,6 @@
 package com.janpix.rup.empi
 
-import com.janpix.rup.empi.Identifier.TypeIdentifier;
+
 
 /**
  * Representa la identidad de una persona
@@ -12,7 +12,6 @@ class Identity {
 	String name //lastName, firstName secondName
 	ExtendedDate birthdate //aaaa-mm-dd
 	String sex 
-	//String secondLastName 
 	
 	String livingplace //country,province,city
 	String address //street number

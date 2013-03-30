@@ -18,7 +18,11 @@ class AVIbMeasurementDistanceDocument extends MeasurementDistanceAttribute {
 	 * @return Double indicando la distancia. Cuanto mas cerca de 1 mayor distancia
 	 */
 	Double calculateDistance(Identity identity1, Identity identity2){
-		return this.weight * this.calculateLevenshteinDistance(identity1.document, identity2.document)
+		//return this.weight * this.calculateLevenshteinDistance(identity1.document, identity2.document)
+		if(identity1.document == identity2.document)
+			return 0*this.weight
+		else
+			return 1*this.weight
 	}
 	
 	

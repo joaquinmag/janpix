@@ -25,13 +25,11 @@ class IdentityComparatorService {
 			def distanceName			= factory.buildMeasurementDistanceName().calculateDistance(identity1,identity2)
 			def distanceBirthdate 		= factory.buildMeasurementDistanceBirthdate().calculateDistance(identity1,identity2)
 			def distanceSex 			= factory.buildMeasurementDistanceSex().calculateDistance(identity1,identity2)
-			def distanceSecondLastName	= factory.buildMeasurementDistanceSecondLastName().calculateDistance(identity1,identity2)
 			def distanceLivingplace		= factory.buildMeasurementDistanceLivingplace().calculateDistance(identity1,identity2)
 			def distanceAddress			= factory.buildMeasurementDistanceAddress().calculateDistance(identity1,identity2)
 			def distanceDocument		= factory.buildMeasurementDistanceDocument().calculateDistance(identity1,identity2)
 		
-			return 1 - (distanceName + distanceBirthdate + distanceSex + 
-						distanceSecondLastName + distanceLivingplace +
+			return 1 - (distanceName + distanceBirthdate + distanceSex + distanceLivingplace +
 						distanceAddress + distanceDocument)
 		}else{
 			//TODO lanzar excepcion
@@ -53,7 +51,6 @@ class IdentityComparatorService {
 					"name":grailsApplication.config.identityMethods.avib.weights.name as Double,
 					"birthdate":grailsApplication.config.identityMethods.avib.weights.birthdate as Double,
 					"sex":grailsApplication.config.identityMethods.avib.weights.sex as Double,
-					"secondLastName":grailsApplication.config.identityMethods.avib.weights.secondLastName as Double,
 					"livingplace":grailsApplication.config.identityMethods.avib.weights.livingplace as Double,
 					"address":grailsApplication.config.identityMethods.avib.weights.address as Double,
 					"document":grailsApplication.config.identityMethods.avib.weights.document as Double

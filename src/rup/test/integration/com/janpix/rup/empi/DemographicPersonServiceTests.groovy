@@ -36,13 +36,10 @@ class DemographicPersonServiceTests extends GroovyTestCase {
 		//Creo algunas ciudades
 		createCities()
 		
-		def assingingAuthorityArgentina = new AssigningAuthority(name:"Argentina")
+		def assingingAuthorityArgentina = new EmitterCountry(name:"Argentina")
 		assingingAuthorityArgentina.save(flush:true,failOnError:true)
 		
 		//Creo las personas
-		//def marital = Person.MaritalStatus.MARRIED
-		//def maleSex = Person.Sex.MALE.value() //FIXME Tira error. Ver de poner los enum en un .groovy
-		//def maleSex = "M"
 		p1 = new Person(givenName: new PersonName(firstName:"Martín", lastName:"Barnech",motherLastName:"Mannino"),
 					birthdate: new ExtendedDate(precission:ExtendedDate.TYPE_PRECISSION_DAY,date:Date.parse( "yyyy-M-d", "1987-01-16" )),
 					administrativeSex:Person.TYPE_SEX_MALE,
@@ -52,32 +49,37 @@ class DemographicPersonServiceTests extends GroovyTestCase {
 		p1.addToAddresses(new Address(street:"Constitución",number:"2213",zipCode:"6700",neighborhood:"Luján",city:city1))
 		p1.save(flush:true,failOnError:true)
 		
-		//p1 con error en el nombre, direccion y el DNI
-	/*	p2 = new Person(givenName: new Name(firstName:"Martin Gonzalo", lastName:"Barneche"),
-					birthdate: Date.parse( "yyyy-M-d", "1987-01-16" ),
-					document: new IdentityDocument(type:IdentityDocument.TYPE_DNI,number:"32850187"),
-					address: new Address(street:"Constitucion",number:"2203",zipCode:"6700",town:"Luján"),
-					administrativeSex:Person.TYPE_SEX_MALE,
-					livingplace:city,
-					birthplace:city,
-					motherName: new Name(firstName:"Maria Olga", lastName:"Mannino"),
-					fatherName: new Name(firstName:"Pablo Juan", lastName:"Barnech"),
-					)
+		//p1 con error de tipeo en el nombre, la direccion y fecha de nacimiento (el dia difiere)
+		p2 = new Person(givenName: new PersonName(firstName:"Martin Gonzalo", lastName:"Barneche",motherLastName:"Mannino"),
+			birthdate: new ExtendedDate(precission:ExtendedDate.TYPE_PRECISSION_DAY,date:Date.parse( "yyyy-M-d", "1987-01-06" )),
+			administrativeSex:Person.TYPE_SEX_MALE,
+			birthplace:city1,
+			)
+		p2.addToIdentifiers(new Identifier(type:'DNI',number:"32850137",assigningAuthority:assingingAuthorityArgentina))
+		p2.addToAddresses(new Address(street:"Constitucion",number:"2203",zipCode:"6700",neighborhood:"Luján",city:city1))
 		p2.save(flush:true,failOnError:true)
 		
-		//p1 con error en fecha nacimiento, ciudades, direccion y apellido madre
-		p3	= new Person(givenName: new Name(firstName:"Martín", lastName:"Barnech"),
-					birthdate: Date.parse( "yyyy-M-d", "1987-02-15" ),
-					document: new IdentityDocument(type:IdentityDocument.TYPE_DNI,number:"32850137"),
-					address: new Address(street:"Rosario",number:"130",zipCode:"7700",town:"Luján"),
-					administrativeSex:Person.TYPE_SEX_MALE,
-					livingplace:city3,
-					birthplace:city3,
-					motherName: new Name(firstName:"Maria Olga", lastName:"Manino"),
-					fatherName: new Name(firstName:"Juan Pablo", lastName:"Barneche"),
+		
+		//p1 con error en fecha nacimiento (difiere el dia), diferente ciudad,  otra direccion y  error tipeo apellido madre
+		p3 = new Person(givenName: new PersonName(firstName:"Martín", lastName:"Barnech",motherLastName:"Manino"),
+			birthdate: new ExtendedDate(precission:ExtendedDate.TYPE_PRECISSION_DAY,date:Date.parse( "yyyy-M-d", "1987-01-06" )),
+			administrativeSex:Person.TYPE_SEX_MALE,
+			birthplace:city3,
 			)
+		p3.addToIdentifiers(new Identifier(type:'DNI',number:"32850137",assigningAuthority:assingingAuthorityArgentina))
+		p3.addToAddresses(new Address(street:"Rosario",number:"130",zipCode:"7700",neighborhood:"Caballito",city:city3))
 		p3.save(flush:true,failOnError:true)
 		
+		//p1 con diferente numero de documento
+		p4 = new Person(givenName: new PersonName(firstName:"Martín", lastName:"Barnech",motherLastName:"Mannino"),
+			birthdate: new ExtendedDate(precission:ExtendedDate.TYPE_PRECISSION_DAY,date:Date.parse( "yyyy-M-d", "1987-01-16" )),
+			administrativeSex:Person.TYPE_SEX_MALE,
+			birthplace:city1,
+			)
+		p4.addToIdentifiers(new Identifier(type:'DNI',number:"33850137",assigningAuthority:assingingAuthorityArgentina))
+		p4.addToAddresses(new Address(street:"Constitución",number:"2213",zipCode:"6700",neighborhood:"Luján",city:city1))
+		p4.save(flush:true,failOnError:true)
+		/*
 		p4	= new Person(givenName: new Name(firstName:"Joaquin Ignacio", lastName:"Magneres"),
 				birthdate: Date.parse( "yyyy-M-d", "1987-05-01" ),
 				document: new IdentityDocument(type:IdentityDocument.TYPE_DNI,number:"32900250"),
@@ -110,15 +112,16 @@ class DemographicPersonServiceTests extends GroovyTestCase {
 	void testBuildIdentity(){
 		def identity = Identity.buildFromPerson(p1)
 		assertEquals("Martín Barnech Mannino",identity.name)
-		assertEquals(Date.parse("yyyy-M-d","1987-01-06"),identity.birthdate.date)
+		assertEquals(Date.parse("yyyy-M-d","1987-01-16"),identity.birthdate.date)
 		assertEquals(Person.TYPE_SEX_MALE,identity.sex)
 		assertEquals("Argentina,Buenos Aires,Luján",identity.livingplace)
 		assertEquals("Constitución 2213",identity.address)
-		assertEquals("DNI32900250Argentina",identity.document)
+		assertEquals("DNI32850137Argentina",identity.document)
 	}
 	
 	/**
-	 * Testea que el paciente1 matchee con los paciente 2
+	 * Testea que el paciente1 matchee con los paciente 2 ya que difieren pocos datos
+	 * que podrian ser productos de errores de tipeo
 	 */
 	void testMatchP1WithP2(){
 		def matchedPersons = demographicPersonService.matchPerson(p1)
@@ -128,7 +131,8 @@ class DemographicPersonServiceTests extends GroovyTestCase {
 	}
 	
 	/**
-	 * Testea que el paciente1 sea un posible matcheo del paciente 3
+	 * Testea que el paciente1 sea un posible matcheo del paciente3 
+	 * ya que aunque conicidan numero de documento difieren muchos datos
 	 */
 	void testPossibleMatchP1WithP3(){
 		def matchedPersons = demographicPersonService.matchPerson(p1)
@@ -139,10 +143,14 @@ class DemographicPersonServiceTests extends GroovyTestCase {
 	
 	
 	/**
-	 * Testea que matcheen los paciente 2 y 3
+	 * Testea que el paciente1 sea un posible matcheo del paciente4 
+	 * ya que aunque conicidan todos los datos los numeros de documento son diferentes
 	 */
-	void testMatchP2P3(){
-		fail "implement me!"
+	void testPossibleMatchP1WithP4(){
+		def matchedPersons = demographicPersonService.matchPerson(p1)
+		
+		//Posible matcheo
+		assertTrue("Entre los posibles matcheados NO se encuentra el paciente 4",demographicPersonService.lastPossibleMatchedPersons().contains(p4))
 	}
 	
 	/**

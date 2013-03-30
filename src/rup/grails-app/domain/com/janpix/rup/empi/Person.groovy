@@ -71,7 +71,7 @@ class Person {
     }
 	
 	String toString(){
-		return "${givenName}-${document}-${birthdate}"
+		return "${givenName}-${birthdate}"
 	}
 	
 	/**

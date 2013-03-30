@@ -32,13 +32,6 @@ class FactoryAVIb extends FactoryMeasurementDistanceAttribute {
 		return measurementDistance	
 	}
 	
-	MeasurementDistanceAttribute buildMeasurementDistanceSecondLastName(){
-		def measurementDistance = new AVIbMeasurementDistanceSecondLastName()
-		measurementDistance.setWeight(weights["secondLastName"])
-		
-		return measurementDistance
-	}
-	
 	MeasurementDistanceAttribute buildMeasurementDistanceLivingplace(){
 		def measurementDistance = new AVIbMeasurementDistanceLivingplace()
 		measurementDistance.setWeight(weights["livingplace"])

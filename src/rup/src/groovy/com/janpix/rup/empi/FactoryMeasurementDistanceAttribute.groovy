@@ -10,7 +10,6 @@ abstract class FactoryMeasurementDistanceAttribute {
 	abstract MeasurementDistanceAttribute buildMeasurementDistanceName()
 	abstract MeasurementDistanceAttribute buildMeasurementDistanceBirthdate()
 	abstract MeasurementDistanceAttribute buildMeasurementDistanceSex()
-	abstract MeasurementDistanceAttribute buildMeasurementDistanceSecondLastName()
 	abstract MeasurementDistanceAttribute buildMeasurementDistanceLivingplace()
 	abstract MeasurementDistanceAttribute buildMeasurementDistanceAddress()
 	abstract MeasurementDistanceAttribute buildMeasurementDistanceDocument()

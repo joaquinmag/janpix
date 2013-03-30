@@ -26,7 +26,7 @@ class DemographicPersonService {
 		def candidates = blockIndexing(p)
 		
 		
-		log.info("Verificando matcheods de "+p+" entre "+candidates.size()+" candidatos ...")
+		log.info("Verificando matcheos de "+p+" entre "+candidates.size()+" candidatos ...")
 		candidates.each{
 			def percentage = identityComparatorService.calculatePercentageOfMatch(p,it)
 			log.info("${it}:${percentage}%")

@@ -121,13 +121,12 @@ demographic{
 identityMethods{
 	avib{
 		weights{
+			document		= 0.3
 			name 			= 0.25
 			birthdate		= 0.15
-			sex				= 0.1
-			secondLastName	= 0.05
+			sex				= 0.05
 			livingplace		= 0.15
 			address			= 0.1
-			document		= 0.2
 		}
 	}
 	fellegi-sunter{
