@@ -29,7 +29,7 @@ class EMPIService {
 			//Agrego el paciente
 			def patient = new Patient(p.properties)
 			patient.uuidGenerator = uuidGenerator
-			patient.save(flush:true,failOnError:true) 
+			patient.save(flush:true,failOnError:true)
 			return patient
 		}catch(Exception e){
 			throw new ShortDemographicDataException(message:"Debe proporcionar mayor información del paciente",person:p)
@@ -73,8 +73,8 @@ class EMPIService {
 		if(!existsPatient(p)){
 			throw new DontExistingPatientException(message:"No existe ningun paciente que contenga el UUID pasado")
 		}
-		def identifier = new Identifier(type:Identifier.TYPE_PI,number:peId,assigningAuthority:he)
-		//TODO verificar que dicha entidad sanitaria no tenga ya cargado un identificador
+		def identifier = new Identifier(type:Identifier.TYPE_IDENTIFIER_PI,number:peId,assigningAuthority:he)
+		//Verifico que no contenga el identificador ya
 		if(p.identifiers.contains(identifier)){
 			throw new IdentifierException(type:IdentifierException.TYPE_ENTITY_DUPLICATE,message:"Ya se encuentra agregado un identificador para la entidad sanitaria "+he)
 		}
@@ -161,10 +161,10 @@ class EMPIService {
 	
 	/**
 	 * Busca y devuelve el paciente que contenga el UUID pasado
-	 * @param String uuid : el identificador unico del paciente
+	 * @param PatientIdentifier uuid : el identificador unico del paciente
 	 * @return Patient si lo encontro, sino NULL
 	 */
-	def findPatientByUUID(String uuid){
+	def findPatientByUUID(PatientIdentifier uuid){
 		return Patient.findByUniqueId(uuid)
 	}
 	

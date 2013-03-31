@@ -4,7 +4,7 @@ class PatientIdentifier {
 	
 	String mainId
 
-	static belongsTo = [patient:Patient]
+	static belongsTo = [Patient]
 	
     static constraints = {
 		mainId(nullable:false,unique:true)
@@ -19,4 +19,8 @@ class PatientIdentifier {
  		}
  		return false
  	}
+	 
+	String toString(){
+		return "${mainId}"
+	}
 }

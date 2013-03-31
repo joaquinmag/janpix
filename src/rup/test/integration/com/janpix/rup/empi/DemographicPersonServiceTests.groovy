@@ -18,6 +18,7 @@ class DemographicPersonServiceTests extends GroovyTestCase {
 	def p3
 	def p4
 	def p5
+	def p6
 	def city1
 	def city2
 	def city3
@@ -79,30 +80,27 @@ class DemographicPersonServiceTests extends GroovyTestCase {
 		p4.addToIdentifiers(new Identifier(type:'DNI',number:"33850137",assigningAuthority:assingingAuthorityArgentina))
 		p4.addToAddresses(new Address(street:"Constitución",number:"2213",zipCode:"6700",neighborhood:"Luján",city:city1))
 		p4.save(flush:true,failOnError:true)
-		/*
-		p4	= new Person(givenName: new Name(firstName:"Joaquin Ignacio", lastName:"Magneres"),
-				birthdate: Date.parse( "yyyy-M-d", "1987-05-01" ),
-				document: new IdentityDocument(type:IdentityDocument.TYPE_DNI,number:"32900250"),
-				address: new Address(street:"Zapata",number:"346",floor:"5",depart:"A",town:"Belgrano"),
-				administrativeSex:Person.TYPE_SEX_MALE,
-				livingplace:city1,
-				birthplace:city1,
-				motherName: new Name(firstName:"Lucia", lastName:"Fontela"),
-				fatherName: new Name(firstName:"Roque", lastName:"Margenes"),
-			)
-		p4.save(flush:true,failOnError:true)
 		
-		p5	= new Person(givenName: new Name(firstName:"Joaquin", lastName:"Megnere"),
-				birthdate: Date.parse( "yyyy-M-d", "1987-01-05" ),
-				document: new IdentityDocument(type:IdentityDocument.TYPE_DNI,number:"32.900.250"),
-				address: new Address(street:"Zabala",number:"336"),
-				administrativeSex:Person.TYPE_SEX_MALE,
-				livingplace:city2,
-				birthplace:city4,
-				motherName: new Name(firstName:"Lucia", lastName:"Fontela"),
-				fatherName: new Name(firstName:"Roque", lastName:"Magneres"),
-		)
-		p5.save(flush:true,failOnError:true)*/
+		//p1 con diferente precision en la fecha y errores en el tipeo del nombre
+		p5 = new Person(givenName: new PersonName(firstName:"Martin G.", lastName:"Barneix",motherLastName:"Magnino"),
+			birthdate: new ExtendedDate(precission:ExtendedDate.TYPE_PRECISSION_YEAR,date:Date.parse( "yyyy-M-d", "1987-05-15" )),
+			administrativeSex:Person.TYPE_SEX_MALE,
+			birthplace:city1,
+			)
+		p5.addToIdentifiers(new Identifier(type:'DNI',number:"32850137",assigningAuthority:assingingAuthorityArgentina))
+		p5.addToAddresses(new Address(street:"Constitución",number:"2213",zipCode:"6700",neighborhood:"Luján",city:city1))
+		p5.save(flush:true,failOnError:true)
+		
+		//Diferente paciente
+		p6 = new Person(givenName: new PersonName(firstName:"Joaquin Ignacio.", lastName:"Magneres",motherLastName:"Fontela"),
+			birthdate: new ExtendedDate(precission:ExtendedDate.TYPE_PRECISSION_DAY,date:Date.parse( "yyyy-M-d", "1987-05-01" )),
+			administrativeSex:Person.TYPE_SEX_MALE,
+			birthplace:city2,
+			)
+		p6.addToIdentifiers(new Identifier(type:'DNI',number:"33900700",assigningAuthority:assingingAuthorityArgentina))
+		p6.addToAddresses(new Address(street:"Zapata",number:"346",floor:"5",department:"A",neighborhood:"Belgrano",city:city2))
+		p6.save(flush:true,failOnError:true)
+		
 	}
 	
 	
@@ -154,17 +152,26 @@ class DemographicPersonServiceTests extends GroovyTestCase {
 	}
 	
 	/**
-	 * Testea que matcheen los paciente 4 y 5
+	 * Testea que matcheen los paciente1 sea un posible matcheo del paciente5
+	 * Ya que aunque tienen mismo numero de documento tienen diferente precision en la fecha de nacimiento
+	 * y errores de tipeo en el nombre
 	 */
-	void testMatchP4P5(){
-		fail "implement me!"
+	void testPossibleMatchP1WithP5(){
+		def matchedPersons = demographicPersonService.matchPerson(p1)
+		
+		//Posible matcheo
+		assertTrue("Entre los posibles matcheados NO se encuentra el paciente 5",demographicPersonService.lastPossibleMatchedPersons().contains(p5))
 	}
 	
 	/**
-	 * Testea que el paciente1 NO matchee con los paciente 4 y 5
+	 * Testea que el paciente1 NO matchee con los paciente 6
 	 */
-	void testDontMatchP1WithP4P5(){
-		fail "implement me!"
+	void testDontMatchP1WithP6(){
+		demographicPersonService.matchPerson(p1)
+		
+		assertFalse("Entre los posibles matcheados se encuentra el paciente 6",demographicPersonService.lastPossibleMatchedPersons().contains(p6))
+		assertFalse("Entre los matcheados se encuentra el paciente 6",demographicPersonService.lastMatchedPersons().contains(p6))
+		
 	}
 	
 	

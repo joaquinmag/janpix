@@ -7,21 +7,26 @@
 package com.janpix.rup.empi
 import groovy.util.GroovyTestCase;
 import com.janpix.rup.exceptions.*
+import com.janpix.rup.infrastructure.MockUUIDGenerator
  
 class EMPIServiceTests extends GroovyTestCase {
-	//static transactional = false
 	
 	def EMPIService
 	def patient
 	def person
-	def healthEntity1
-	def healthEntity2
+	def healthEntity1,healthEntity2
+	def city1,city2,city3,city4,city5
+	def assingingAuthorityArgentina
+	
+	def uuidGenerator
+	
 	
 	void setUp(){
 		//Inicializo servicios
 		super.setUp()
 		EMPIService = new EMPIService()
 		EMPIService.demographicPersonService = new DemographicPersonService()
+		EMPIService.uuidGenerator = uuidGenerator
 		EMPIService.demographicPersonService.grailsApplication =  new org.codehaus.groovy.grails.commons.DefaultGrailsApplication()
 		EMPIService.demographicPersonService.identityComparatorService = new IdentityComparatorService()
 		EMPIService.demographicPersonService.identityComparatorService.grailsApplication =  new org.codehaus.groovy.grails.commons.DefaultGrailsApplication()
@@ -33,12 +38,14 @@ class EMPIServiceTests extends GroovyTestCase {
 		healthEntity2.save(flush:true,failOnError:true)
 		
 		//Creo algunas ciudades
-		/*def city = new City(country:"Argentina",province:"Buenos Aires",name:"Luján")
-		city.save(flush:true,failOnError:true)
-		def city1 = new City(country:"Argentina",province:"C.A.B.A",name:"C.A.B.A")
-		city1.save(flush:true,failOnError:true)
+		createCities()
+		
+		//Autoridad de asignacion de documentos
+		assingingAuthorityArgentina = new EmitterCountry(name:"Argentina")
+		assingingAuthorityArgentina.save(flush:true,failOnError:true)
+		
 		//Creo un nuevo paciente
-		patient = new Patient(givenName: new Name(firstName:"Martín", lastName:"Barnech"),
+		/*patient = new Patient(givenName: new Name(firstName:"Martín", lastName:"Barnech"),
 					birthdate: Date.parse( "yyyy-M-d", "1987-01-16" ),
 					document: new IdentityDocument(type:IdentityDocument.TYPE_DNI,number:"32850137"),
 					address: new Address(street:"Constitución",number:"2213",zipCode:"6700",town:"Luján"),
@@ -48,10 +55,27 @@ class EMPIServiceTests extends GroovyTestCase {
 					motherName: new Name(firstName:"Maria Olga Lucia", lastName:"Mannino"),
 					fatherName: new Name(firstName:"Pablo Juan", lastName:"Barnech"),
 					)
+		patient.save(flush:true,failOnError:true)*/
+		patient = new Patient(givenName: new PersonName(firstName:"Martín", lastName:"Barnech",motherLastName:"Mannino"),
+			birthdate: new ExtendedDate(precission:ExtendedDate.TYPE_PRECISSION_DAY,date:Date.parse( "yyyy-M-d", "1987-01-16" )),
+			administrativeSex:Person.TYPE_SEX_MALE,
+			birthplace:city1,
+			)
+		patient.addToIdentifiers(new Identifier(type:'DNI',number:"32850137",assigningAuthority:assingingAuthorityArgentina))
+		patient.addToAddresses(new Address(street:"Constitución",number:"2213",zipCode:"6700",neighborhood:"Luján",city:city1))
 		patient.save(flush:true,failOnError:true)
 		
 		//Creo una persona
-		person	= new Person(givenName: new Name(firstName:"Joaquin Ignacio", lastName:"Magneres"),
+		person = new Person(givenName: new PersonName(firstName:"Joaquin Ignacio", lastName:"Magneres",motherLastName:"Fontela"),
+			birthdate: new ExtendedDate(precission:ExtendedDate.TYPE_PRECISSION_DAY,date:Date.parse( "yyyy-M-d", "1987-05-01" )),
+			administrativeSex:Person.TYPE_SEX_MALE,
+			birthplace:city2,
+			)
+		person.addToIdentifiers(new Identifier(type:'DNI',number:"32900250",assigningAuthority:assingingAuthorityArgentina))
+		person.addToAddresses(new Address(street:"Zapata",number:"346",floor:"5",department:"A",neighborhood:"Belgrano",city:city2))
+		//person.save(flush:true,failOnError:true)
+		
+		/*person	= new Person(givenName: new Name(firstName:"Joaquin Ignacio", lastName:"Magneres"),
 			birthdate: Date.parse( "yyyy-M-d", "1987-05-01" ),
 			document: new IdentityDocument(type:IdentityDocument.TYPE_DNI,number:"32900250"),
 			address: new Address(street:"Zapata",number:"346",floor:"5",depart:"A",town:"Belgrano"),
@@ -83,16 +107,15 @@ class EMPIServiceTests extends GroovyTestCase {
 	 * que matchea con esos datos demograficos
 	 */
 	void testFailCreatePatientBecauseMuchMatched(){
-		/*def p = new Person(givenName: new Name(firstName:"Martin Gonzalo", lastName:"Barneche"),
-					birthdate: Date.parse( "yyyy-M-d", "1987-01-16" ),
-					document: new IdentityDocument(type:IdentityDocument.TYPE_DNI,number:"32850187"),
-					address: new Address(street:"Constitucion",number:"2203",zipCode:"6700",town:"Luján"),
-					administrativeSex:Person.TYPE_SEX_MALE,
-					livingplace:City.findByName("Luján"),
-					birthplace:City.findByName("Luján"),
-					motherName: new Name(firstName:"Maria Olga", lastName:"Mannino"),
-					fatherName: new Name(firstName:"Pablo Juan", lastName:"Barnech"),
-					)*/
+		def p = new Person(givenName: new PersonName(firstName:"Martin Gonzalo", lastName:"Barneche",motherLastName:"Mannino"),
+			birthdate: new ExtendedDate(precission:ExtendedDate.TYPE_PRECISSION_DAY,date:Date.parse( "yyyy-M-d", "1987-01-06" )),
+			administrativeSex:Person.TYPE_SEX_MALE,
+			birthplace:city1,
+			)
+		p.addToIdentifiers(new Identifier(type:'DNI',number:"32850137",assigningAuthority:assingingAuthorityArgentina))
+		p.addToAddresses(new Address(street:"Constitucion",number:"2203",zipCode:"6700",neighborhood:"Luján",city:city1))
+		p.save(flush:true,failOnError:true)
+		
 		try{
 			def returnedPatient = EMPIService.createPatient(p)
 			fail "No puede seguir"
@@ -120,12 +143,12 @@ class EMPIServiceTests extends GroovyTestCase {
 		EMPIService.addEntityIdentifierToPatient(patient,healthEntity1,patientEntityId)
 		
 		def identifiers = patient.identifiers
-		assertEquals(1,identifiers.size())
-		identifiers.each {
-			assertEquals("PI",it.type)
-			assertEquals(patientEntityId,it.number)
-			assertEquals(healthEntity1,it.assigningAuthority)
-		}
+		assertEquals(2,identifiers.size()) //El documento y el que agrega la entidad sanitaria
+		
+		def identifierHealthEntity = identifiers.find{it.type == Identifier.TYPE_IDENTIFIER_PI}
+		assertEquals(Identifier.TYPE_IDENTIFIER_PI,identifierHealthEntity.type)
+		assertEquals(patientEntityId,identifierHealthEntity.number)
+		assertEquals(healthEntity1,identifierHealthEntity.assigningAuthority)
 	}
 	
 	/**
@@ -135,7 +158,7 @@ class EMPIServiceTests extends GroovyTestCase {
 		try{
 			//Creo un paciente que no existe en la base de datos
 			def patientMock = new Patient(person.properties)
-			patientMock.uniqueId = "UUID-1234"
+			patientMock.uniqueId = new PatientIdentifier("UUID-1234")
 			
 			//Despues agrego el identificador al paciente
 			def patientEntityId = "IDH1001"
@@ -287,6 +310,7 @@ class EMPIServiceTests extends GroovyTestCase {
 		//Primero creo el paciente
 		def returnedPatient = EMPIService.createPatient(person)
 		
+		
 		//Le agrego algun identificador
 		def patientEntity1Id = "IDH1001"
 		EMPIService.addEntityIdentifierToPatient(returnedPatient,healthEntity1,patientEntity1Id)
@@ -335,5 +359,32 @@ class EMPIServiceTests extends GroovyTestCase {
 	 */
 	void testUpdateRelationshipPerson(){
 		fail "Implentar"
+	}
+	
+	
+	/** Metodos Privados **/
+	def private createCities(){
+		//Paises y provincias
+		def country  = new Country(name:"Argentina").save(failOnError:true,flush:true)
+		def provBsAs1 = new Province(name:"Buenos Aires",country:country)
+		provBsAs1.save(failOnError:true,flush:true)
+		def provBsAs2 = new Province(name:"Bs. As.",country:country)
+		provBsAs2.save(failOnError:true,flush:true)
+		def provCABA1 = new Province(name:"Capital Federal",country:country)
+		provCABA1.save(failOnError:true,flush:true)
+		def provCABA2 = new Province(name:"C.A.B.A",country:country)
+		provCABA2.save(failOnError:true,flush:true)
+		
+		
+		city1 = new City(province:provBsAs1,name:"Luján")
+		city1.save(flush:true,failOnError:true)
+		city2 = new City(province:provCABA2,name:"C.A.B.A")
+		city2.save(flush:true,failOnError:true)
+		city3 = new City(province:provCABA1,name:"Capital Federal")
+		city3.save(flush:true,failOnError:true)
+		city4 = new City(province:provBsAs2,name:"Lujan")
+		city4.save(flush:true,failOnError:true)
+		city5 = new City(province:provBsAs2,name:"Pergamino")
+		city5.save(flush:true,failOnError:true)
 	}
 }
