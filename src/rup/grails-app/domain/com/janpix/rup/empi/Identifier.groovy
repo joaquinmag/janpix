@@ -17,7 +17,7 @@ class Identifier {
 	String number
 	AssigningAuthority assigningAuthority 
 	
-	static belongsTo = [person:Person]
+	static belongsTo = [Person]
 	
     static constraints = {
 		type(nullable:false)
@@ -33,5 +33,9 @@ class Identifier {
 				this.number == other.number && 
 				this.assigningAuthority == other.assigningAuthority
 				)
+	}
+	
+	String toString(){
+		return "${type}${number}${assigningAuthority}"
 	}
 }

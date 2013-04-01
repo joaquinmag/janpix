@@ -45,17 +45,6 @@ class EMPIServiceTests extends GroovyTestCase {
 		assingingAuthorityArgentina.save(flush:true,failOnError:true)
 		
 		//Creo un nuevo paciente
-		/*patient = new Patient(givenName: new Name(firstName:"Martín", lastName:"Barnech"),
-					birthdate: Date.parse( "yyyy-M-d", "1987-01-16" ),
-					document: new IdentityDocument(type:IdentityDocument.TYPE_DNI,number:"32850137"),
-					address: new Address(street:"Constitución",number:"2213",zipCode:"6700",town:"Luján"),
-					administrativeSex:Person.TYPE_SEX_MALE,
-					livingplace:city,
-					birthplace:city,
-					motherName: new Name(firstName:"Maria Olga Lucia", lastName:"Mannino"),
-					fatherName: new Name(firstName:"Pablo Juan", lastName:"Barnech"),
-					)
-		patient.save(flush:true,failOnError:true)*/
 		patient = new Patient(givenName: new PersonName(firstName:"Martín", lastName:"Barnech",motherLastName:"Mannino"),
 			birthdate: new ExtendedDate(precission:ExtendedDate.TYPE_PRECISSION_DAY,date:Date.parse( "yyyy-M-d", "1987-01-16" )),
 			administrativeSex:Person.TYPE_SEX_MALE,
@@ -73,20 +62,12 @@ class EMPIServiceTests extends GroovyTestCase {
 			)
 		person.addToIdentifiers(new Identifier(type:'DNI',number:"32900250",assigningAuthority:assingingAuthorityArgentina))
 		person.addToAddresses(new Address(street:"Zapata",number:"346",floor:"5",department:"A",neighborhood:"Belgrano",city:city2))
-		//person.save(flush:true,failOnError:true)
-		
-		/*person	= new Person(givenName: new Name(firstName:"Joaquin Ignacio", lastName:"Magneres"),
-			birthdate: Date.parse( "yyyy-M-d", "1987-05-01" ),
-			document: new IdentityDocument(type:IdentityDocument.TYPE_DNI,number:"32900250"),
-			address: new Address(street:"Zapata",number:"346",floor:"5",depart:"A",town:"Belgrano"),
-			administrativeSex:Person.TYPE_SEX_MALE,
-			livingplace:city1,
-			birthplace:city1,
-			motherName: new Name(firstName:"Lucia", lastName:"Fontela"),
-			fatherName: new Name(firstName:"Roque", lastName:"Margenes"),
-		)*/
+
 	}
 
+	//########################################
+	// ### ABM Paciente ###
+	//########################################
 	/**
 	 * Testea que se agregue correctamente un paciente
 	 * que no existe en el eMPI
@@ -130,10 +111,59 @@ class EMPIServiceTests extends GroovyTestCase {
 	 * poca informacion demografica
 	 */
 	void testFailCreatePatientBecauseShortInformation(){
+		//Creo una persona sin administrativeSex, el cual es requerido
+		def p = new Person(givenName: new PersonName(firstName:"Martin Gonzalo", lastName:"Barneche",motherLastName:"Mannino"),
+			birthdate: new ExtendedDate(precission:ExtendedDate.TYPE_PRECISSION_DAY,date:Date.parse( "yyyy-M-d", "1987-01-06" )),
+			birthplace:city1,
+			)
+		try{
+			def returnedPatient = EMPIService.createPatient(p)
+			fail "No puede seguir"
+		}catch(ShortDemographicDataException e){
+			//Si lanza excepcion es correcto
+			assertTrue(true)
+		}
+	}
+	
+	/**
+	 * Testea la correcta obtencion de un paciente a partir de su UUID
+	 */
+	void testFindPatientByUUid(){
+		//Primero creo el paciente
+		def returnedPatient = EMPIService.createPatient(person)
+		def patientUUID = returnedPatient.uniqueId
+		
+		def findedPatient = EMPIService.findPatientByUUID(patientUUID)
+		
+		assertEquals(returnedPatient,findedPatient)	
+	}
+	
+	/**
+	 * Testea la correcta actualizacion de la informacion demografica de un paciente
+	 */
+	void testUpdateDemographicDataPatient(){
 		fail "Implentar"
 	}
 	
+	/**
+	 * Testea la correcta eliminacion de un paciente del eMPI
+	 * El paciente debe ser eliminado por una entidad sanitaria para que quede registro y verificar permisos
+	 */
+	void testRemovePatient(){
+		fail "Implentar"
+	}
 	
+	/**
+	 * Testea la correcta union de dos pacientes diferentes que existen en el eMPI
+	 * y que alguna entidad sanitaria dice que son el mismo
+	 */
+	void testMergePatients(){
+		fail "Implentar"
+	}
+	
+	//########################################
+	// ### ABM Identificadores paciente ###
+	//########################################
 	/**
 	 * Testea que se agregue el identificador de la nueva entidad al paciente que ya existe en el eMPI
 	 */
@@ -157,8 +187,8 @@ class EMPIServiceTests extends GroovyTestCase {
 	void testFailAddNewIdentifierBecauseNotExistsPatient(){
 		try{
 			//Creo un paciente que no existe en la base de datos
-			def patientMock = new Patient(person.properties)
-			patientMock.uniqueId = new PatientIdentifier("UUID-1234")
+			def patientMock = new Patient(person)
+			patientMock.uniqueId = new PatientIdentifier(mainId:"UUID-1234")
 			
 			//Despues agrego el identificador al paciente
 			def patientEntityId = "IDH1001"
@@ -170,20 +200,6 @@ class EMPIServiceTests extends GroovyTestCase {
 			//Si lanza excepcion es correcto
 			assertTrue(true)
 		}
-	}
-	
-	/**
-	 * Testea la correcta obtencion de un paciente a partir de su UUID
-	 */
-	void testFindPatientByUUid(){
-		//Primero creo el paciente
-		def returnedPatient = EMPIService.createPatient(person)
-		def patientUUID = returnedPatient.uniqueId
-		
-		def findedPatient = EMPIService.findPatientByUUID(patientUUID)
-		
-		assertEquals(returnedPatient,findedPatient)
-		
 	}
 	
 	/**
@@ -206,35 +222,6 @@ class EMPIServiceTests extends GroovyTestCase {
 		
 		def findedPatient2 = EMPIService.findPatientByHealthEntityId(patientEntity2Id,healthEntity2)
 		assertEquals(returnedPatient,findedPatient2)
-	}
-	
-	/**
-	 * Testea el correcto matcheo de un paciente
-	 */
-	void testGetAllMatchedPatients(){
-		fail "Implentar"
-	}
-	
-	/**
-	 * Testea el correcto matcheo de un paciente incluidos los que son posibles matcheos
-	 */
-	void testGetAllMatchedPatientsIncludePossible(){
-		fail "Implentar"
-	}
-	
-	/**
-	 * Testea la correcta actualizacion de la informacion demografica de un paciente
-	 */
-	void testUpdateDemographicDataPatient(){
-		fail "Implentar"
-	}
-	
-	/**
-	 * Testea la correcta eliminacion de un paciente del eMPI
-	 * El paciente debe ser eliminado por una entidad sanitaria para que quede registro y verificar permisos
-	 */
-	void testRemovePatient(){
-		fail "Implentar"
 	}
 	
 	/**
@@ -266,8 +253,56 @@ class EMPIServiceTests extends GroovyTestCase {
 		
 		//Busco por el nuevo
 		assertEquals(returnedPatient,EMPIService.findPatientByHealthEntityId(newPatientEntity2Id,healthEntity2))
+	}
+	
+	/**
+	 * Testea que falle la actualizacion de un identificador ya que
+	 * el mismo se encuentra asignado en otro paciente
+	 */
+	void testFailUpdateIdentifierPatientBecauseAlreadyExists(){
+		//Primero creo 2 pacientes, cada uno con su identificador
+		def returnedPatient = EMPIService.createPatient(person)
+		def patientEntity1Id = "IDH1001"
+		EMPIService.addEntityIdentifierToPatient(returnedPatient,healthEntity1,patientEntity1Id)
 		
+		def otherPatient = EMPIService.createPatient(
+						new Person(givenName: new PersonName(firstName:"Maria", lastName:"Juarez",motherLastName:"Rodriguez"),
+									birthdate: new ExtendedDate(precission:ExtendedDate.TYPE_PRECISSION_DAY,date:Date.parse( "yyyy-M-d", "1977-01-26" )),
+									administrativeSex:Person.TYPE_SEX_FEMALE,
+									birthplace:city1,
+						)
+						)
+		def patientEntity2Id = "IDH1002"
+		EMPIService.addEntityIdentifierToPatient(otherPatient,healthEntity1,patientEntity2Id)
 		
+		//Intento modificar el ID de un paciente por el del otro
+		try{
+			EMPIService.updateEntityIdentifierToPatient(returnedPatient,healthEntity1,patientEntity1Id,patientEntity2Id)
+			fail "No puede continuar"
+		}catch(IdentifierException e){
+			//Si lanza excepcion es correcto
+			assertEquals(IdentifierException.TYPE_ENTITY_DUPLICATE,e.type)
+		}
+	}
+	
+	/**
+	 * Testea que falle la actualizacion de un identificador ya que
+	 * el identificador pasado para actualizar no existe
+	 */
+	void testFailUpdateIdentifierPatientBecauseDontExistsIdentifier(){
+		//Creo un paciente con su identificador
+		def returnedPatient = EMPIService.createPatient(person)
+		def patientEntity1Id = "IDH1001"
+		EMPIService.addEntityIdentifierToPatient(returnedPatient,healthEntity1,patientEntity1Id)
+		
+		//Mando a actualizar un identificador que NO existe
+		try{
+			EMPIService.updateEntityIdentifierToPatient(returnedPatient,healthEntity1,"IDH1999","IDH1555")
+			fail "No puede continuar"
+		}catch(IdentifierException e){
+			//Si lanza excepcion es correcto
+			assertEquals(IdentifierException.TYPE_NOTFOUND,e.type)
+		}
 	}
 	
 	/**
@@ -287,17 +322,19 @@ class EMPIServiceTests extends GroovyTestCase {
 		def findedPatient = EMPIService.findPatientByUUID(returnedPatient.uniqueId)
 		def identifiers = findedPatient.identifiers
 		
-		//Deben tener 2 identificadores
-		assertEquals(2,identifiers.size())
+		//Deben tener 3 identificadores (el documento y el de ambas entidades sanitarias)
+		assertEquals(3,identifiers.size())
 		
 		//Comparo los identificadores
-		def identifier1 = new Identifier(type:Identifier.TYPE_PI,number:patientEntity1Id,assigningAuthority:healthEntity1)
-		def identifier2 = new Identifier(type:Identifier.TYPE_PI,number:patientEntity2Id,assigningAuthority:healthEntity2)
+		def identifier1 = new Identifier(type:Identifier.TYPE_IDENTIFIER_PI,number:patientEntity1Id,assigningAuthority:healthEntity1)
+		def identifier2 = new Identifier(type:Identifier.TYPE_IDENTIFIER_PI,number:patientEntity2Id,assigningAuthority:healthEntity2)
 		identifiers.each {
-			if(it == identifier1 || it==identifier2)
-				assertTrue(true)
-			else
-				fail "Los identificadores devueltos no son los esperados"
+			if(it.type == Identifier.TYPE_IDENTIFIER_PI){
+				if(it == identifier1 || it==identifier2)
+					assertTrue(true)
+				else
+					fail "Los identificadores devueltos no son los esperados"
+			}
 		}
 		
 	}
@@ -322,14 +359,26 @@ class EMPIServiceTests extends GroovyTestCase {
 		
 	}
 	
+	//########################################
+	//### Matcheo de pacientes ### 
+	//########################################
 	/**
-	 * Testea la correcta union de dos pacientes diferentes que existen en el eMPI
-	 * y que alguna entidad sanitaria dice que son el mismo
+	 * Testea el correcto matcheo de un paciente
 	 */
-	void testMergePatients(){
+	void testGetAllMatchedPatients(){
 		fail "Implentar"
 	}
 	
+	/**
+	 * Testea el correcto matcheo de un paciente incluidos los que son posibles matcheos
+	 */
+	void testGetAllMatchedPatientsIncludePossible(){
+		fail "Implentar"
+	}
+		
+	//########################################
+	//### Relaciones de pacientes ### 
+	//########################################
 	/**
 	 * Testea la correcta obtencion de todas las relaciones que tiene un paciente
 	 * ya agregado al eMPI con otros pacientes existentes en el eMPI

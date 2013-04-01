@@ -29,9 +29,8 @@ class Identity {
 	 */
 	static Identity buildFromPerson(Person p){
 		def identity = new Identity()
-		//TODO ver si uso findAll
-		def document = p.identifiers.find {it.type == Identifier.TYPE_IDENTIFIER_DNI || it.type == Identifier.TYPE_IDENTIFIER_LC || it.type == Identifier.TYPE_IDENTIFIER_LE}
-		def address = p.addresses.get(0)//TODO ver que criterio uso para obtener la address 
+		def document = p.identityDocument()
+		def address  = p.principalAddress() 
 		
 		
 		identity.name 			= "${p.givenName?.firstName} ${p.givenName?.lastName} ${p.givenName?.motherLastName}" 
@@ -40,7 +39,7 @@ class Identity {
 		identity.multipleBirthIndicator = p.multipleBirthIndicator
 		identity.livingplace	= (!address)?"":"${address.city?.province?.country?.name},${address.city?.province?.name},${address.city?.name}"
 		identity.address		= (!address)?"":"${address.street} ${address.number}"
-		identity.document		= (!document)?"":"${document.type}${document.number}${document.assigningAuthority}"
+		identity.document		= "${document}"
 		
 		return identity
 	}

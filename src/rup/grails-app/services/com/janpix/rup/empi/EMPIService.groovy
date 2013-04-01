@@ -1,6 +1,7 @@
 package com.janpix.rup.empi
 
 import com.janpix.rup.exceptions.*
+import java.util.UUID
 
 /**
  * Servicio encargado de administrar el eMPI (enterprise Master Patient Index)
@@ -27,9 +28,13 @@ class EMPIService {
 		}
 		try{
 			//Agrego el paciente
-			def patient = new Patient(p.properties)
-			patient.uuidGenerator = uuidGenerator
-			patient.save(flush:true,failOnError:true)
+			def patient = new Patient(p)
+			
+			//FIXME!. Provisorio hasta que funcion uuidGenerator
+			//patient.uuidGenerator = uuidGenerator
+			patient.uniqueId =  new PatientIdentifier(mainId:UUID.randomUUID().toString()) 
+			patient.save(failOnError:true)
+			
 			return patient
 		}catch(Exception e){
 			throw new ShortDemographicDataException(message:"Debe proporcionar mayor información del paciente",person:p)
@@ -68,30 +73,33 @@ class EMPIService {
 	 * Agrega un identificador de entidad saniatria a un paciente existente en el eMPI
 	 * @return Patient p: el paciente al que se le agrego el identificador
 	 * @throw DontExistingPatientException Si el paciente pasado no existia
+	 * @throw IdentifierException Si el paciente ya tenia agregado ese identificador o cualquier identificador para dicha entidad sanitaria
+	 * @throw IdentifierException Si los datos pasados son invalidos para crear un nuevo identificador
 	 */
 	def addEntityIdentifierToPatient(Patient p,HealthEntity he, String peId){
 		if(!existsPatient(p)){
 			throw new DontExistingPatientException(message:"No existe ningun paciente que contenga el UUID pasado")
 		}
 		def identifier = new Identifier(type:Identifier.TYPE_IDENTIFIER_PI,number:peId,assigningAuthority:he)
+		if(!identifier.validate()){
+			throw new IdentifierException(type:IdentifierException.TYPE_VALIDATE_ERROR,message:"El identificador pasado contiene errores de validación")
+		}
 		//Verifico que no contenga el identificador ya
-		if(p.identifiers.contains(identifier)){
+		if(p.identifiers.contains(identifier) || (p.identifiers.find{it.assigningAuthority == he} != null)){
 			throw new IdentifierException(type:IdentifierException.TYPE_ENTITY_DUPLICATE,message:"Ya se encuentra agregado un identificador para la entidad sanitaria "+he)
 		}
 		p.addToIdentifiers(identifier)
-		
-		p.save(flush:true,failOnError:true)
 	}
 	
 	/**
 	 * Actualiza el identificador que una Entidad Sanitaria tiene asignado a un paciente
 	 * @param Patient p: el paciente que se le actualizara el identificador
 	 * @param HealthEntity he : la entidad sanitaria que actualizara el identificador
-	 * @param oldId : el identificador viejo
-	 * @param newId : el nuevo identificador
+	 * @param String oldId : el viejo identificador
+	 * @param String newId : el nuevo identificador
 	 * @throw DontExistingPatientException Si el paciente pasado no existia
-	 * TODO lanzar excepcion si la entidad ya tiene ese identificador asignado a otro paciente
-	 * TODO lanzar excepcion si no existe el identificador viejo para esa entidad
+	 * @throw IdentifierException si la entidad ya tiene ese identificador asignado a otro paciente
+	 * @throw IdentifierException si no existe el identificador viejo para esa entidad
 	 * @return
 	 */
 	def updateEntityIdentifierToPatient(Patient p,HealthEntity he,oldId,newId){
@@ -100,22 +108,33 @@ class EMPIService {
 		}
 		
 		if(newId == oldId) {return}
-		
+				
+		//Verifico que el nuevo identificador NO exista ya asignado
+		//TODO ver de ponerlo en la clase Identifier como un "validator unique"
+		if(Identifier.findWhere(type:Identifier.TYPE_IDENTIFIER_PI,number:newId,assigningAuthority:he) != null){
+			throw new IdentifierException(type:IdentifierException.TYPE_ENTITY_DUPLICATE,message:"El identificador ya se encuentra asignado")
+		}
 		//Busco el identificador en el paciente
-		def findedIdentifier = new Identifier(type:Identifier.TYPE_PI,number:oldId,assigningAuthority:he)
+		def findedIdentifier
+		def searchedIdentifier = new Identifier(type:Identifier.TYPE_IDENTIFIER_PI,number:oldId,assigningAuthority:he)
 		p.identifiers.collect {
-			if(it == findedIdentifier){
-				it.number = newId
+			if(it == searchedIdentifier){
+				//it.number = newId
+				findedIdentifier = it
 			}
 		}
-		
+		if(findedIdentifier)
+			findedIdentifier.number = newId
+		else
+			throw new IdentifierException(type:IdentifierException.TYPE_NOTFOUND,message:"No existe el identificador pasado en la entidad sanitaria "+he)
+			
 		//Grabo el paciente con sus cambios
-		p.save(flush:true,failOnError:true)
+		//p.save(failOnError:true)
 		
 	}
 	
 	/**
-	 * Elimina un identifacor de una entidad sanitaria determinada a un paciente
+	 * Elimina un identifacor de una entidad sanitaria asignada a un paciente
 	 * @param Patient p: el paciente que contiene el identificador de la entidad saniataria
 	 * @param HealthEntity he: La entidad sanitaria de la cual se quiere eliminar el identificador
 	 * @return
@@ -165,25 +184,34 @@ class EMPIService {
 	 * @return Patient si lo encontro, sino NULL
 	 */
 	def findPatientByUUID(PatientIdentifier uuid){
+		/** FIXME!. Cuando busco por un PatientIdentifier mock falla 
+		 * el findBy intenta hacer un flush de las instancias antes
+		 * Ver Patient.withNewSession{}
+		 * **/
 		return Patient.findByUniqueId(uuid)
+
 	}
 	
 	/**
-	 * Devuelve un paciente
+	 * Devuelve un paciente a partir del identificador que usa una entidad sanitaria para referenciarlo
 	 * @param String peId: Id que utiliza la Entidad Sanitaria para el paciente
 	 * @param HealthEntity he: Entidad Sanitaria que esta buscando al paciente
 	 * @return Patient p: El paciente si lo encontro, sino NULL
 	 */
 	def findPatientByHealthEntityId(String peId,HealthEntity he){
-		//TODO ver si verifico si hay mas de un paciente con esas identificaciones
-		def identifier = Identifier.findWhere(	type:Identifier.TYPE_PI,
-												assigningAuthority:he,
-												number:peId
-											)
-		if(identifier)
-			return identifier.patient
-			
-		return null
+		def c = Person.createCriteria()
+		def result = c.get {
+		   identifiers {
+			   and{
+				   and{
+					   	eq("type",Identifier.TYPE_IDENTIFIER_PI)
+				   		eq("assigningAuthority",he)
+				   }
+				   eq("number",peId)
+			   }
+		   }
+		}
+		return result
 	}
 	
 	

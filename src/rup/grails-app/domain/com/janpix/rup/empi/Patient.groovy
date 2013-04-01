@@ -10,6 +10,14 @@ class Patient extends Person {
     }
 	
 	/**
+	 * Construye un paciente a partir de una persona
+	 * @param Person p
+	 */
+	Patient(Person p){
+		this.properties = p.properties
+	}
+	
+	/**
 	 * Antes de grabar genero el UniqueId del paciente
 	 * @return
 	 */
@@ -39,4 +47,5 @@ class Patient extends Person {
 	Boolean addIdentifier(Identifier identifier){
 		
 	}
+	
 }

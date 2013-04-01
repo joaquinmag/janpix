@@ -80,6 +80,37 @@ class Person {
 	 * @return
 	 */
 	Boolean addIdentifier(Identifier id){
+		//TODO revisar que el identificador con ese tipo NO exista antes de agregar
+	}
+	
+	/**
+	 * Devuelve la dirección principal de la persona
+	 * TODO Ver como decidir cual es la direccion principal
+	 * @return Address si tiene direcciones cargadas, NULL de lo contrario
+	 */
+	Address principalAddress(){
+		def address
+		if(!this.addresses.empty)
+			address = this.addresses.get(0)
 		
+		return address
+		
+	}
+	
+	/**
+	 * Devuelve el documento que representa la identidad de una persona
+	 * Si tiene DNI, LE o LC devuelve ese documento
+	 * Sino revisa si contiene pasaporte
+	 * Sino tiene ninguno de estos devuelve NULL
+	 * @return
+	 */
+	Identifier identityDocument(){
+		def dni = this.identifiers.find {it.type == Identifier.TYPE_IDENTIFIER_DNI || it.type == Identifier.TYPE_IDENTIFIER_LC || it.type == Identifier.TYPE_IDENTIFIER_LE}
+		if(dni){
+			return dni
+		}else{
+			def passport = this.identifiers.find{it.type == Identifier.TYPE_IDENTIFIER_PPN}
+			return passport
+		}
 	}
 }
