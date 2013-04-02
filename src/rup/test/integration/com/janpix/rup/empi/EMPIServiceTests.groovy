@@ -185,7 +185,7 @@ class EMPIServiceTests extends GroovyTestCase {
 	 * Testea que falle el agregado de un nuevo identificador debido a que el paciente no existe
 	 */
 	void testFailAddNewIdentifierBecauseNotExistsPatient(){
-		try{
+		shouldFail(DontExistingPatientException) {
 			//Creo un paciente que no existe en la base de datos
 			def patientMock = new Patient(person)
 			patientMock.uniqueId = new PatientIdentifier(mainId:"UUID-1234")
@@ -194,11 +194,6 @@ class EMPIServiceTests extends GroovyTestCase {
 			def patientEntityId = "IDH1001"
 			EMPIService.addEntityIdentifierToPatient(patientMock,healthEntity1,patientEntityId)
 			
-			fail "No puede llegar hasta aca"
-			
-		}catch(DontExistingPatientException e){
-			//Si lanza excepcion es correcto
-			assertTrue(true)
 		}
 	}
 	
