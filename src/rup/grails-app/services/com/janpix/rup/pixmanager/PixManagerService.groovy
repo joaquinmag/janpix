@@ -5,9 +5,6 @@ import com.janpix.rup.services.contracts.AddNewPatientResponseMessage
 import com.janpix.rup.exceptions.ExistingPatientException
 import com.janpix.rup.exceptions.ShortDemographicDataException
 
-import org.grails.cxf.utils.GrailsCxfEndpoint;
-
-
 /**
  * Servicio encargado de procesar las peticiones de las diferentes Entidades Sanitarias
  * y comunicarse con el EMPIService para llevar a cabo dichas peticiones
@@ -18,9 +15,6 @@ import org.grails.cxf.utils.GrailsCxfEndpoint;
 class PixManagerService {
 	//TODO ver como integrarlo al un webservice. Usar el plugin cxf
 	//TODO ver como se pasan los parametros a los metodos. Si le puedo pasar un Patient o tengo que pasar todos Strings y despues armarlo
-	
-	static expose=['cxf']
-	static soap12 = true
 	
 	def EMPIService
 	
