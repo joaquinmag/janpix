@@ -97,12 +97,8 @@ class EMPIServiceTests extends GroovyTestCase {
 		p.addToAddresses(new Address(street:"Constitucion",number:"2203",zipCode:"6700",neighborhood:"Luján",city:city1))
 		p.save(flush:true,failOnError:true)
 		
-		try{
-			def returnedPatient = EMPIService.createPatient(p)
-			fail "No puede seguir"
-		}catch(ExistingPatientException e){
-			//Si lanza excepcion es correcto
-			assertTrue(true)
+		shouldFail (ExistingPatientException) {
+			EMPIService.createPatient(p)
 		}
 	}
 	
@@ -116,12 +112,8 @@ class EMPIServiceTests extends GroovyTestCase {
 			birthdate: new ExtendedDate(precission:ExtendedDate.TYPE_PRECISSION_DAY,date:Date.parse( "yyyy-M-d", "1987-01-06" )),
 			birthplace:city1,
 			)
-		try{
+		shouldFail(ShortDemographicDataException) {
 			def returnedPatient = EMPIService.createPatient(p)
-			fail "No puede seguir"
-		}catch(ShortDemographicDataException e){
-			//Si lanza excepcion es correcto
-			assertTrue(true)
 		}
 	}
 	
@@ -271,13 +263,11 @@ class EMPIServiceTests extends GroovyTestCase {
 		EMPIService.addEntityIdentifierToPatient(otherPatient,healthEntity1,patientEntity2Id)
 		
 		//Intento modificar el ID de un paciente por el del otro
-		try{
+		def e = shouldFail(IdentifierException) {
 			EMPIService.updateEntityIdentifierToPatient(returnedPatient,healthEntity1,patientEntity1Id,patientEntity2Id)
-			fail "No puede continuar"
-		}catch(IdentifierException e){
-			//Si lanza excepcion es correcto
-			assertEquals(IdentifierException.TYPE_ENTITY_DUPLICATE,e.type)
 		}
+		
+		//assertEquals(IdentifierException.TYPE_ENTITY_DUPLICATE,e.type)
 	}
 	
 	/**
@@ -291,12 +281,9 @@ class EMPIServiceTests extends GroovyTestCase {
 		EMPIService.addEntityIdentifierToPatient(returnedPatient,healthEntity1,patientEntity1Id)
 		
 		//Mando a actualizar un identificador que NO existe
-		try{
+		shouldFail(IdentifierException){
 			EMPIService.updateEntityIdentifierToPatient(returnedPatient,healthEntity1,"IDH1999","IDH1555")
-			fail "No puede continuar"
-		}catch(IdentifierException e){
-			//Si lanza excepcion es correcto
-			assertEquals(IdentifierException.TYPE_NOTFOUND,e.type)
+			//assertEquals(IdentifierException.TYPE_NOTFOUND,e.type)
 		}
 	}
 	
