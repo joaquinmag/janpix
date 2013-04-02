@@ -1,7 +1,9 @@
 package com.janpix.rup.infrastructure
 
+import static java.util.UUID.randomUUID
+
 class MockUUIDGenerator {
 	static def getUUID() {
-		return { UUID.randomUUID().toString() }
+		return { randomUUID() as String }
 	}
 }
