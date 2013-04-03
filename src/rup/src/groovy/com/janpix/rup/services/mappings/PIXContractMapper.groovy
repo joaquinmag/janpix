@@ -1,18 +1,35 @@
 package com.janpix.rup.services.mappings
 
-import com.janpix.rup.empi.Patient;
-import com.janpix.rup.services.contracts.AddNewPatientRequestMessage;
+import org.hl7.v3.*
+
+import com.janpix.rup.empi.Person
+import com.janpix.rup.exceptions.MessageMappingException
 
 /**
- * Convierto los objetos de un contrato a objetos de dominio y vicecersa. 
- * Los objetos del contrato que convierte son los correspondientes a los utilizados en el PIXManagerService. 
+ * Maps domain objects to PIX Web service
  */
 class PIXContractMapper {
 
-	static Patient mapFromRequestMessage(AddNewPatientRequestMessage requestMessage) {
-		def patient = new Patient()
-		patient.givenName = requestMessage.patientRegisterMessage.controlActProcess[0].subject[0].registrationEvent.subject1.patient.patientPerson.name.given
-		patient
+	/**
+	 * maps PRPAIN201301UV02 message to Person
+	 * @param inPatientMessage {@link org.hl7.v3.PRPAIN201301UV02 PRPAIN201301UV02} object
+	 * @return {@link com.janpix.rup.empi.Person Person} mapped from PRPAIN201301UV02.
+	 */
+	static Person mapPersonFromhl7v3AddNewPatientMessage(PRPAIN201301UV02 inPatientMessage) {
+		validateHl7V3AddNewPatientMessage(inPatientMessage)
+		def person = new Person()
+		PRPAIN201301UV02MFMIMT700701UV01RegistrationEvent regEvent = inPatientMessage.controlActProcess.subject[0].registrationEvent
+		PRPAMT201301UV02Person patientPerson = regEvent.subject1.patient.patientPerson.getValue() 
+		/*person.givenName = patientPerson.name.each { 
+			PN name = it as PN
+		} */
+	}
+	
+	private static void validateHl7V3AddNewPatientMessage(PRPAIN201301UV02 inPatientMessage) {
+		if (inPatientMessage.getControlActProcess().getSubject().isEmpty())
+			throw new MessageMappingException("PRPAIN201301UV02 message must contain one subject")
+		if (inPatientMessage.getControlActProcess().getSubject().size() > 1)
+			throw new MessageMappingException("PRPAIN201301UV02 message can't contain more than one subject at this implementation")
 	}
 	
 }
