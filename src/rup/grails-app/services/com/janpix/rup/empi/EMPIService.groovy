@@ -82,7 +82,7 @@ class EMPIService {
 		}
 		def identifier = new Identifier(type:Identifier.TYPE_IDENTIFIER_PI,number:peId,assigningAuthority:he)
 		if(!identifier.validate()){
-			throw new IdentifierException(type:IdentifierException.TYPE_VALIDATE_ERROR,message:"El identificador pasado contiene errores de validación")
+			throw new IdentifierNotValidException("El identificador pasado contiene errores de validación")
 		}
 		//Verifico que no contenga el identificador ya
 		if(p.identifiers.contains(identifier) || (p.identifiers.find{it.assigningAuthority == he} != null)){
