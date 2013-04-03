@@ -86,7 +86,7 @@ class EMPIService {
 		}
 		//Verifico que no contenga el identificador ya
 		if(p.identifiers.contains(identifier) || (p.identifiers.find{it.assigningAuthority == he} != null)){
-			throw new IdentifierException(type:IdentifierException.TYPE_ENTITY_DUPLICATE,message:"Ya se encuentra agregado un identificador para la entidad sanitaria "+he)
+			throw new DuplicateIdentifierException("Ya se encuentra agregado un identificador para la entidad sanitaria ${he}")
 		}
 		p.addToIdentifiers(identifier)
 	}
@@ -112,7 +112,7 @@ class EMPIService {
 		//Verifico que el nuevo identificador NO exista ya asignado
 		//TODO ver de ponerlo en la clase Identifier como un "validator unique"
 		if(Identifier.findWhere(type:Identifier.TYPE_IDENTIFIER_PI,number:newId,assigningAuthority:he) != null){
-			throw new IdentifierException(type:IdentifierException.TYPE_ENTITY_DUPLICATE,message:"El identificador ya se encuentra asignado")
+			throw new DuplicateIdentifierException()
 		}
 		//Busco el identificador en el paciente
 		def findedIdentifier
@@ -126,7 +126,7 @@ class EMPIService {
 		if(findedIdentifier)
 			findedIdentifier.number = newId
 		else
-			throw new IdentifierException(type:IdentifierException.TYPE_NOTFOUND,message:"No existe el identificador pasado en la entidad sanitaria "+he)
+			throw new IdentifierException(IdentifierException.TYPE_NOTFOUND, "No existe el identificador pasado en la entidad sanitaria "+he)
 			
 		//Grabo el paciente con sus cambios
 		//p.save(failOnError:true)

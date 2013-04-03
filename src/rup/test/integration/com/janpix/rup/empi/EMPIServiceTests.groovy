@@ -263,11 +263,9 @@ class EMPIServiceTests extends GroovyTestCase {
 		EMPIService.addEntityIdentifierToPatient(otherPatient,healthEntity1,patientEntity2Id)
 		
 		//Intento modificar el ID de un paciente por el del otro
-		def e = shouldFail(IdentifierException) {
+		shouldFail(DuplicateIdentifierException) {
 			EMPIService.updateEntityIdentifierToPatient(returnedPatient,healthEntity1,patientEntity1Id,patientEntity2Id)
 		}
-		
-		//assertEquals(IdentifierException.TYPE_ENTITY_DUPLICATE,e.type)
 	}
 	
 	/**
