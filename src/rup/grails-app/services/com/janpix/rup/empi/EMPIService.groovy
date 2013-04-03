@@ -126,7 +126,7 @@ class EMPIService {
 		if(findedIdentifier)
 			findedIdentifier.number = newId
 		else
-			throw new IdentifierException(IdentifierException.TYPE_NOTFOUND, "No existe el identificador pasado en la entidad sanitaria "+he)
+			throw new IdentifierNotFoundException("No existe el identificador pasado en la entidad sanitaria ${he}")
 			
 		//Grabo el paciente con sus cambios
 		//p.save(failOnError:true)

@@ -279,9 +279,8 @@ class EMPIServiceTests extends GroovyTestCase {
 		EMPIService.addEntityIdentifierToPatient(returnedPatient,healthEntity1,patientEntity1Id)
 		
 		//Mando a actualizar un identificador que NO existe
-		shouldFail(IdentifierException){
+		shouldFail(IdentifierNotFoundException) {
 			EMPIService.updateEntityIdentifierToPatient(returnedPatient,healthEntity1,"IDH1999","IDH1555")
-			//assertEquals(IdentifierException.TYPE_NOTFOUND,e.type)
 		}
 	}
 	

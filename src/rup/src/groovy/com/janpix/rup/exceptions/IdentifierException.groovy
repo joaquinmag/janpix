@@ -5,7 +5,6 @@ import com.janpix.rup.empi.Patient
 
 class IdentifierException extends Exception {
 	static Integer TYPE_VALIDATE_ERROR = 2
-	static Integer TYPE_NOTFOUND = 3	
 	Integer type
 	String message
 	
