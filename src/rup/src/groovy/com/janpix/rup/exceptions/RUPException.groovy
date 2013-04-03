@@ -2,6 +2,10 @@ package com.janpix.rup.exceptions
 
 class RUPException extends Exception {
 	
+	public RUPException() {
+		super("General RUP exception throwed.")
+	}
+	
 	public RUPException(String message) {
 		super(message)
 	}
