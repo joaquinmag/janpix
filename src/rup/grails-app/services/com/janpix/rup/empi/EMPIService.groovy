@@ -33,10 +33,7 @@ class EMPIService {
 		try{
 			//Agrego el paciente
 			def patient = new Patient(p)
-			
-			//FIXME!. Provisorio hasta que funcion uuidGenerator
 			patient.uuidGenerator = uuidGenerator
-			//patient.uniqueId =  new PatientIdentifier(mainId:UUID.randomUUID().toString()) 
 			patient.save(failOnError:true)
 			
 			return patient
