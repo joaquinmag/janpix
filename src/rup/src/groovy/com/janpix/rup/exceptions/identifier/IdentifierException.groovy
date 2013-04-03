@@ -1,4 +1,4 @@
-package com.janpix.rup.exceptions
+package com.janpix.rup.exceptions.identifier
 
 import com.janpix.rup.empi.Patient
 

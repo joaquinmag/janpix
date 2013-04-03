@@ -1,7 +1,11 @@
 package com.janpix.rup.empi
 
-import com.janpix.rup.exceptions.*
-import java.util.UUID
+import com.janpix.rup.exceptions.DontExistingPatientException
+import com.janpix.rup.exceptions.ExistingPatientException
+import com.janpix.rup.exceptions.ShortDemographicDataException
+import com.janpix.rup.exceptions.identifier.DuplicateIdentifierException
+import com.janpix.rup.exceptions.identifier.IdentifierNotFoundException
+import com.janpix.rup.exceptions.identifier.IdentifierNotValidException
 
 /**
  * Servicio encargado de administrar el eMPI (enterprise Master Patient Index)

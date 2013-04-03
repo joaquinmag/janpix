@@ -1,4 +1,4 @@
-package com.janpix.rup.exceptions
+package com.janpix.rup.exceptions.identifier
 
 class DuplicateIdentifierException extends IdentifierException {
 	public DuplicateIdentifierException() {
