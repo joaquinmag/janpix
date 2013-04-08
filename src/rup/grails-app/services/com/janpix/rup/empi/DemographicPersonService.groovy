@@ -2,15 +2,14 @@ package com.janpix.rup.empi
 
 /**
  * Servicio que matchea personas segun sus datos demograficos
- * @author martin
  *
  */
 class DemographicPersonService {
 	def grailsApplication
 	def identityComparatorService
 	
-	List<Person> matchedPersons = []
-	List<Person> possibleMatchedPersons = []
+	List<MatchRecord> matchedPersons = []
+	List<MatchRecord> possibleMatchedPersons = []
 	
 	/**
 	 * Busca una persona entre la lista de personas que 
@@ -29,11 +28,12 @@ class DemographicPersonService {
 		log.info("Verificando matcheos de "+p+" entre "+candidates.size()+" candidatos ...")
 		candidates.each{
 			def percentage = identityComparatorService.calculatePercentageOfMatch(p,it)
-			log.info("${it}:${percentage}%")
+			def matchRecord = new MatchRecord(it,percentage)
+			log.info("${matchRecord}")
 			if( percentage > upperLimit){
-				matchedPersons.add(it)
+				matchedPersons.add(matchRecord)
 			}else if(percentage > lowerLimit){
-				possibleMatchedPersons.add(it)
+				possibleMatchedPersons.add(matchRecord)
 			}
 		}
 		log.info("Verificación de matcheos finalizada.")
@@ -45,7 +45,7 @@ class DemographicPersonService {
 	 * Devuelve las ultimas personas que matchearon cuando se ejecuto matchPerson()
 	 * @return List<Person> persons : ultimas personas matcheadas
 	 */
-	def lastMatchedPersons(){
+	List<MatchRecord> lastMatchedPersons(){
 		return matchedPersons
 	}
 	
@@ -53,7 +53,7 @@ class DemographicPersonService {
 	 * Devuelve las ultimas personas que son un POSIBLE matcheo luego de ejecutar matchPerson()
 	 * @return List<Person> persons : ultimas personas que son un POSIBLE match
 	 */
-	def lastPossibleMatchedPersons(){
+	List<MatchRecord> lastPossibleMatchedPersons(){
 		return possibleMatchedPersons
 	}
 	

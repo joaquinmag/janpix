@@ -22,12 +22,13 @@ class EMPIService {
 	 * Agrega un nuevo paciente en el eMPI
 	 * Si el paciente ya existe o tiene un cierto nivel de matcheo no lo crea
 	 * Una vez creado el paciente agrega el identificador de la entidad sanitaria al mismo
+	 * @param Person: la persona que se quiere agregar al eMPI
 	 * @return Patient: el paciente agregado si lo agrego correctamente
 	 * @throw ExistingPatientException Si ya existe uno o mas paciente en el eMPI con esa informacion demografica 
 	 * @throw ShortDemographicDataException Si la informacion brindada no alcanza para crear un paciente
 	 */
 	def createPatient(Person p){	
-		if(matchPerson(p)){
+		if(matchPatient(p)){
 			throw new ExistingPatientException(message:"Ya existen pacientes que concuerdan con los datos demograficos pasados",patient:new Patient(p.properties))
 		}
 		try{
@@ -149,19 +150,19 @@ class EMPIService {
 	 * Devuelve una lista de todos los pacientes que matchean con ciertos datos demograficos
 	 * @param Patient p: el paciente que se va a comparar
 	 * @param Boolean includePossible: Si debo incluir los posibles matcheos
-	 * @return List<Patient>: Lista de los pacientes matcheados
+	 * @return List<MatchRecord>: Lista de los pacientes matcheados y su nivel de matcheo
 	 */
-	List<Patient> getAllMatchedPatients(Patient p,Boolean includePossible=false){
+	List<MatchRecord> getAllMatchedPatients(Person p,Boolean includePossible=false){
 		def matchedPersons = demographicPersonService.matchPerson(p)
 		if(includePossible){
 			matchedPersons.addAll(demographicPersonService.getPossibleMatchedPersons())
 		}
 		
 		//Paso de Person to Patient
-		List<Patient> matchedPatients = []
+		List<MatchRecord> matchedPatients = []
 		matchedPersons.each {
-			//FIXME!! segun la estrategia de herencia esto podria llegar a variar
-			matchedPatients.add(Patient.get(it.id))
+			def patient = getPatientFromPerson(it.person)
+			matchedPatients.add(new MatchRecord(patient,it.matchPercentage))
 		}
 		
 		return matchedPatients
@@ -173,10 +174,8 @@ class EMPIService {
 	 * @param Person p: persona de la cual se validaran sus datos demograficos
 	 * @return TRUE si existe uno o mas pacientes que matchean con esos datos, FALSE sino
 	 */
-	Boolean matchPerson(Person p,Boolean includePossible=false){
-		//creo un paciente temporal a partir de la persona
-		def tempPatient = new Patient(p.properties)
-		return  getAllMatchedPatients(tempPatient,includePossible).size() > 0
+	Boolean matchPatient(Person p,Boolean includePossible=false){
+		return  getAllMatchedPatients(p,includePossible).size() > 0
 	}
 	
 	/**
@@ -217,16 +216,26 @@ class EMPIService {
 	
 	
 	/**
-	 * Verifica la existencia de un paciente en base al identificador que contiene el mismo
+	 * Verifica la existencia de un paciente en el EMPI en base al identificador que contiene el mismo
 	 * @param Patient p: el paciente a verificar si esta agregado
 	 * @return TRUE si el paciente existe, FALSE de lo contrario
 	 */
-	def existsPatient(Patient p){
+	Boolean existsPatient(Patient p){
 		if(p.uniqueId){
 			if(findPatientByUUID(p.uniqueId)!=null){
 				return true;
 			}
 		}
 		return false
+	}
+	
+	/**
+	 * FIXME!! segun la estrategia de herencia esto podria llegar a variar
+	 * Obtiene un paciente a partir de una persona
+	 * @param Person p
+	 * @return Patient patient
+	 */
+	private Patient getPatientFromPerson(Person p){
+		return Patient.get(p.id)
 	}
 }

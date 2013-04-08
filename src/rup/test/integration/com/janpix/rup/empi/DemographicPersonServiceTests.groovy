@@ -125,7 +125,7 @@ class DemographicPersonServiceTests extends GroovyTestCase {
 		def matchedPersons = demographicPersonService.matchPerson(p1)
 		
 		//Matcheo
-		assertTrue("Entre los matcheados NO se encuentra el paciente 2",matchedPersons.contains(p2))
+		assertTrue("Entre los matcheados NO se encuentra el paciente 2",matchedPersons.contains(new MatchRecord(p2,0d)))
 	}
 	
 	/**
@@ -136,7 +136,7 @@ class DemographicPersonServiceTests extends GroovyTestCase {
 		def matchedPersons = demographicPersonService.matchPerson(p1)
 		
 		//Posible matcheo
-		assertTrue("Entre los posibles matcheados NO se encuentra el paciente 3",demographicPersonService.lastPossibleMatchedPersons().contains(p3))
+		assertTrue("Entre los posibles matcheados NO se encuentra el paciente 3",demographicPersonService.lastPossibleMatchedPersons().contains(new MatchRecord(p3,0d)))
 	}
 	
 	
@@ -148,7 +148,7 @@ class DemographicPersonServiceTests extends GroovyTestCase {
 		def matchedPersons = demographicPersonService.matchPerson(p1)
 		
 		//Posible matcheo
-		assertTrue("Entre los posibles matcheados NO se encuentra el paciente 4",demographicPersonService.lastPossibleMatchedPersons().contains(p4))
+		assertTrue("Entre los posibles matcheados NO se encuentra el paciente 4",demographicPersonService.lastPossibleMatchedPersons().contains(new MatchRecord(p4,0d)))
 	}
 	
 	/**
@@ -160,7 +160,7 @@ class DemographicPersonServiceTests extends GroovyTestCase {
 		def matchedPersons = demographicPersonService.matchPerson(p1)
 		
 		//Posible matcheo
-		assertTrue("Entre los posibles matcheados NO se encuentra el paciente 5",demographicPersonService.lastPossibleMatchedPersons().contains(p5))
+		assertTrue("Entre los posibles matcheados NO se encuentra el paciente 5",demographicPersonService.lastPossibleMatchedPersons().contains(new MatchRecord(p5,0d)))
 	}
 	
 	/**
@@ -169,8 +169,8 @@ class DemographicPersonServiceTests extends GroovyTestCase {
 	void testDontMatchP1WithP6(){
 		demographicPersonService.matchPerson(p1)
 		
-		assertFalse("Entre los posibles matcheados se encuentra el paciente 6",demographicPersonService.lastPossibleMatchedPersons().contains(p6))
-		assertFalse("Entre los matcheados se encuentra el paciente 6",demographicPersonService.lastMatchedPersons().contains(p6))
+		assertFalse("Entre los posibles matcheados se encuentra el paciente 6",demographicPersonService.lastPossibleMatchedPersons().contains(new MatchRecord(p6,0d)))
+		assertFalse("Entre los matcheados se encuentra el paciente 6",demographicPersonService.lastMatchedPersons().contains(new MatchRecord(p6,0d)))
 		
 	}
 	
