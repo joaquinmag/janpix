@@ -1,8 +1,11 @@
 package com.janpix.rup.services.mappings
 
+import javax.xml.bind.JAXBElement;
+
 import org.hl7.v3.*
 
 import com.janpix.rup.empi.Person
+import com.janpix.rup.empi.PersonName
 import com.janpix.rup.exceptions.MessageMappingException
 
 /**
@@ -19,10 +22,15 @@ class PIXContractMapper {
 		validateHl7V3AddNewPatientMessage(inPatientMessage)
 		def person = new Person()
 		PRPAIN201301UV02MFMIMT700701UV01RegistrationEvent regEvent = inPatientMessage.controlActProcess.subject[0].registrationEvent
-		PRPAMT201301UV02Person patientPerson = regEvent.subject1.patient.patientPerson.getValue() 
-		/*person.givenName = patientPerson.name.each { 
-			PN name = it as PN
-		} */
+		PRPAMT201301UV02Person patientPerson = regEvent.subject1.patient.patientPerson.getValue()
+		patientPerson.name.each { PN it ->
+			def givenNameJaxb = it.content.find() { 
+				def jaxbElement = it as JAXBElement<Serializable>
+				return jaxbElement.name.localPart == "given" 
+			} as JAXBElement<Serializable>
+			person.givenName = new PersonName(firstName: "${givenNameJaxb.value}") 
+		}
+		return person
 	}
 	
 	private static void validateHl7V3AddNewPatientMessage(PRPAIN201301UV02 inPatientMessage) {
