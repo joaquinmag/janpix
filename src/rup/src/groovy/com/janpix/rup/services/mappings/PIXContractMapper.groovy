@@ -23,11 +23,19 @@ class PIXContractMapper {
 		def person = new Person()
 		PRPAIN201301UV02MFMIMT700701UV01RegistrationEvent regEvent = inPatientMessage.controlActProcess.subject[0].registrationEvent
 		PRPAMT201301UV02Person patientPerson = regEvent.subject1.patient.patientPerson.getValue()
-		person.givenName = new PersonName(firstName: getValueFromJAXBElementFromPNWithName(patientPerson, "given"))
+		person.givenName = new PersonName()
+		person.givenName.firstName = getNameFromPatient(patientPerson, "given")?.toString()
+		person.givenName.lastName = getNameFromPatient(patientPerson, "family")?.toString()
 		return person
 	}
 	
-	private static String getValueFromJAXBElementFromPNWithName(PRPAMT201301UV02Person patientPerson, String xmlName) {
+	/**
+	 * Gets first value from PN parameter
+	 * @param patientPerson PRPAMT201301UV02Person
+	 * @param xmlName
+	 * @return
+	 */
+	private static String getNameFromPatient(PRPAMT201301UV02Person patientPerson, String xmlName) {
 		def givenNameJaxb = null
 		patientPerson.name.find { PN it ->
 			givenNameJaxb = it.content.find() {
@@ -39,7 +47,7 @@ class PIXContractMapper {
 			else
 				false
 		}
-		return givenNameJaxb.value.toString()
+		return givenNameJaxb.value
 	}
 	
 	private static void validateHl7V3AddNewPatientMessage(PRPAIN201301UV02 inPatientMessage) {

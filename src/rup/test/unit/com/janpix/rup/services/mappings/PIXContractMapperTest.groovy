@@ -20,9 +20,10 @@ class PIXContractMapperTest {
 	@Test
 	public void whenHl7AddPatientObjectHasNameThenCheckItReturnsAPatientDomainObjectWithTheSameName() {
 		
-		//BUILD ADD PATIENT MESSAGE WITH JUAN NAME
+		//BUILD ADD PATIENT MESSAGE WITH JUAN FIRST NAME AND PEREZ GARCIA LAST NAME
 		def patientName = new PN()
 		patientName.content.add(new JAXBElement<EnGiven>(new QName("given"), JAXBElement.class, "Juan"))
+		patientName.content.add(new JAXBElement<EnGiven>(new QName("family"), JAXBElement.class, "Perez García"))
 		def patientPerson = new PRPAMT201301UV02Person()
 		patientPerson.name.add(patientName)
 		def subjectControlActProcess = new PRPAIN201301UV02MFMIMT700701UV01Subject1()
