@@ -18,7 +18,7 @@ import org.hl7.v3.PRPAMT201301UV02Person
 class PIXContractMapperTest {
 
 	@Test
-	public void whenHl7AddPatientObjectHasNameThenCheckItReturnsAPatientDomainObjectWithTheSameName() {
+	public void whenHl7AddPatientObjectHasNameThenCheckThatTheMapMethodReturnsAPatientDomainObjectWithTheSameName() {
 		
 		//BUILD ADD PATIENT MESSAGE WITH JUAN FIRST NAME AND PEREZ GARCIA LAST NAME
 		def patientName = new PN()
