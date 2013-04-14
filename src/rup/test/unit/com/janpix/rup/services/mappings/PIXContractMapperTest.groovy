@@ -38,6 +38,30 @@ class PIXContractMapperTest {
 		def patient = PIXContractMapper.mapPersonFromhl7v3AddNewPatientMessage(inPatientMessage)
 
 		assert patient.givenName.firstName == "Juan"
+		assert patient.givenName.lastName == "Perez García"
+	}
+	
+	@Test
+	public void whenHl7AddPatientObjectHasNoFirstNameThenCheckThatTheMapMethodReturnsAPatientDomainObjectWithFirstNameAsNull() {
+		
+		//BUILD ADD PATIENT MESSAGE WITH JUAN FIRST NAME AND PEREZ GARCIA LAST NAME
+		def patientName = new PN()
+		patientName.content.add(new JAXBElement<EnGiven>(new QName("family"), JAXBElement.class, "Perez García"))
+		def patientPerson = new PRPAMT201301UV02Person()
+		patientPerson.name.add(patientName)
+		def subjectControlActProcess = new PRPAIN201301UV02MFMIMT700701UV01Subject1()
+		subjectControlActProcess.registrationEvent = new PRPAIN201301UV02MFMIMT700701UV01RegistrationEvent()
+		subjectControlActProcess.registrationEvent.subject1 = new PRPAIN201301UV02MFMIMT700701UV01Subject2()
+		subjectControlActProcess.registrationEvent.subject1.patient = new PRPAMT201301UV02Patient()
+		subjectControlActProcess.registrationEvent.subject1.patient.patientPerson = new JAXBElement<PRPAMT201301UV02Person>(new QName("patientPerson"), JAXBElement.class, patientPerson)
+		def inPatientMessage = new PRPAIN201301UV02()
+		inPatientMessage.controlActProcess = new PRPAIN201301UV02MFMIMT700701UV01ControlActProcess()
+		inPatientMessage.controlActProcess.subject.add(subjectControlActProcess)
+		
+		def patient = PIXContractMapper.mapPersonFromhl7v3AddNewPatientMessage(inPatientMessage)
+
+		assert patient.givenName.firstName == null
+		assert patient.givenName.lastName == "Perez García"
 	}
 
 }
