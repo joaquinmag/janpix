@@ -47,7 +47,7 @@ class PIXContractMapper {
 			else
 				false
 		}
-		return givenNameJaxb.value
+		return givenNameJaxb?.value
 	}
 	
 	private static void validateHl7V3AddNewPatientMessage(PRPAIN201301UV02 inPatientMessage) {
