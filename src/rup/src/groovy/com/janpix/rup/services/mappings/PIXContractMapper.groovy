@@ -23,14 +23,23 @@ class PIXContractMapper {
 		def person = new Person()
 		PRPAIN201301UV02MFMIMT700701UV01RegistrationEvent regEvent = inPatientMessage.controlActProcess.subject[0].registrationEvent
 		PRPAMT201301UV02Person patientPerson = regEvent.subject1.patient.patientPerson.getValue()
-		patientPerson.name.each { PN it ->
-			def givenNameJaxb = it.content.find() { 
-				def jaxbElement = it as JAXBElement<Serializable>
-				return jaxbElement.name.localPart == "given" 
-			} as JAXBElement<Serializable>
-			person.givenName = new PersonName(firstName: "${givenNameJaxb.value}") 
-		}
+		person.givenName = new PersonName(firstName: getValueFromJAXBElementFromPNWithName(patientPerson, "given"))
 		return person
+	}
+	
+	private static String getValueFromJAXBElementFromPNWithName(PRPAMT201301UV02Person patientPerson, String xmlName) {
+		def givenNameJaxb = null
+		patientPerson.name.find { PN it ->
+			givenNameJaxb = it.content.find() {
+				def jaxbElement = it as JAXBElement<Serializable>
+				return jaxbElement.name.localPart == xmlName
+			} as JAXBElement<Serializable>
+			if (givenNameJaxb != null)
+				true
+			else
+				false
+		}
+		return givenNameJaxb.value.toString()
 	}
 	
 	private static void validateHl7V3AddNewPatientMessage(PRPAIN201301UV02 inPatientMessage) {
