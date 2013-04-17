@@ -38,7 +38,6 @@ class Person {
 	City birthplace
 	Boolean multipleBirthIndicator 
 	ExtendedDate deathDate
-	String tribalCitizenship //Tribu
 	
 	Date lastUpdated
 	Date dateCreated
@@ -62,7 +61,6 @@ class Person {
 		deathDate(nullable:true)
 		birthplace(nullable:true)
 		multipleBirthIndicator(nullable:true)
-		tribalCitizenship(nullable:true)
 		
 		identifiers(nullable:true)
 		phoneNumbers(nullable:true)
