@@ -34,7 +34,7 @@ class PIXContractMapper {
 		person.givenName.lastName = getNameFromPatient(patientPerson, "family")?.toString()
 		person.administrativeSex =  patientPerson.administrativeGenderCode.code
 		person.maritalStatus = patientPerson.maritalStatusCode?.code
-		person.birthplace = getValueFromSerializableList((patientPerson.birthPlace?.value as PRPAMT201301UV02BirthPlace)?.addr?.content, "city")?.toString()
+		person.birthplace = getValueFromSerializableList((patientPerson.birthPlace?.value as PRPAMT201301UV02BirthPlace)?.addr?.content, "city")?.value
 		person.birthdate = convertToExtendedDateFromTS(patientPerson.birthTime)
 		person.multipleBirthIndicator = patientPerson.multipleBirthInd ? patientPerson.multipleBirthInd.value : false
 		if (patientPerson.deceasedInd?.value?.value) {
@@ -49,7 +49,7 @@ class PIXContractMapper {
 	private static Address convertToAddress(AD hl7Address) {
 		def address = new Address()
 		//address. getValueFromSerializableList(hl7Address.content, "streetAddressLine")
-		address.zipCode = getValueFromSerializableList(hl7Address.content, "postalCode")?.toString()
+		address.zipCode = getValueFromSerializableList(hl7Address.content, "postalCode")?.value
 		return address
 	}
 	
@@ -97,10 +97,9 @@ class PIXContractMapper {
 		return givenNameJaxb?.value
 	}
 	
-	private static String getValueFromSerializableList(List<Serializable> content, String xmlName) {
-		return content.find() {
-			def jaxbElement = it as JAXBElement<Serializable>
-			return jaxbElement.name.localPart == xmlName
+	private static JAXBElement<Serializable> getValueFromSerializableList(List<Serializable> content, String xmlName) {
+		return content.find() { JAXBElement<Serializable> it ->
+			return it.name.localPart == xmlName
 		} as JAXBElement<Serializable>
 	}
 	
