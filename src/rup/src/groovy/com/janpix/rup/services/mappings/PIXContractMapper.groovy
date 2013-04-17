@@ -4,6 +4,8 @@ import javax.xml.bind.JAXBElement;
 
 import org.hl7.v3.*
 
+import com.janpix.rup.empi.Address
+import com.janpix.rup.empi.City
 import com.janpix.rup.empi.ExtendedDate
 import com.janpix.rup.empi.Person
 import com.janpix.rup.empi.PersonName
@@ -31,9 +33,24 @@ class PIXContractMapper {
 		person.givenName.firstName = getNameFromPatient(patientPerson, "given")?.toString()
 		person.givenName.lastName = getNameFromPatient(patientPerson, "family")?.toString()
 		person.administrativeSex =  patientPerson.administrativeGenderCode.code
+		person.maritalStatus = patientPerson.maritalStatusCode?.code
+		person.birthplace = getValueFromSerializableList((patientPerson.birthPlace?.value as PRPAMT201301UV02BirthPlace)?.addr?.content, "city")?.toString()
 		person.birthdate = convertToExtendedDateFromTS(patientPerson.birthTime)
-		
+		person.multipleBirthIndicator = patientPerson.multipleBirthInd ? patientPerson.multipleBirthInd.value : false
+		if (patientPerson.deceasedInd?.value?.value) {
+			person.deathDate = convertToExtendedDateFromTS(patientPerson.deceasedTime)
+		}
+		patientPerson.addr.each { AD it ->
+			person.addresses.add(convertToAddress(it))
+		}
 		return person
+	}
+	
+	private static Address convertToAddress(AD hl7Address) {
+		def address = new Address()
+		//address. getValueFromSerializableList(hl7Address.content, "streetAddressLine")
+		address.zipCode = getValueFromSerializableList(hl7Address.content, "postalCode")?.toString()
+		return address
 	}
 	
 	private static ExtendedDate convertToExtendedDateFromTS(TS hl7Date) {
@@ -71,16 +88,20 @@ class PIXContractMapper {
 	private static String getNameFromPatient(PRPAMT201301UV02Person patientPerson, String xmlName) {
 		def givenNameJaxb = null
 		patientPerson.name.find { PN it ->
-			givenNameJaxb = it.content.find() {
-				def jaxbElement = it as JAXBElement<Serializable>
-				return jaxbElement.name.localPart == xmlName
-			} as JAXBElement<Serializable>
+			givenNameJaxb = getValueFromSerializableList(it.content, xmlName)
 			if (givenNameJaxb != null)
 				true
 			else
 				false
 		}
 		return givenNameJaxb?.value
+	}
+	
+	private static String getValueFromSerializableList(List<Serializable> content, String xmlName) {
+		return content.find() {
+			def jaxbElement = it as JAXBElement<Serializable>
+			return jaxbElement.name.localPart == xmlName
+		} as JAXBElement<Serializable>
 	}
 	
 	private static void validateHl7V3AddNewPatientMessage(PRPAIN201301UV02 inPatientMessage) {
