@@ -9,6 +9,7 @@ import com.janpix.rup.empi.City
 import com.janpix.rup.empi.ExtendedDate
 import com.janpix.rup.empi.Person
 import com.janpix.rup.empi.PersonName
+import com.janpix.rup.empi.PhoneNumber
 import com.janpix.rup.exceptions.MessageMappingException
 
 /**
@@ -43,9 +44,16 @@ class PIXContractMapper {
 			person.deathdate = convertToExtendedDateFromTS(patientPerson.deceasedTime)
 		}
 		patientPerson.addr.each { AD it ->
-			person.addresses.add(convertToAddress(it))
+			person.addToAddresses(convertToAddress(it))
+		}
+		patientPerson.telecom.each { TEL it ->
+			person.addToPhoneNumbers(convertToPhoneNumber(it))
 		}
 		return person
+	}
+	
+	private PhoneNumber convertToPhoneNumber(TEL hl7Telephone) {
+		return new PhoneNumber(number: hl7Telephone.value)
 	}
 	
 	private Address convertToAddress(AD hl7Address) {
