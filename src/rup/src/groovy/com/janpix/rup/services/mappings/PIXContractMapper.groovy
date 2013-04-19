@@ -40,7 +40,7 @@ class PIXContractMapper {
 		person.birthdate = convertToExtendedDateFromTS(patientPerson.birthTime)
 		person.multipleBirthIndicator = patientPerson.multipleBirthInd ? patientPerson.multipleBirthInd.value : false
 		if (patientPerson.deceasedInd?.value?.value) {
-			person.deathDate = convertToExtendedDateFromTS(patientPerson.deceasedTime)
+			person.deathdate = convertToExtendedDateFromTS(patientPerson.deceasedTime)
 		}
 		patientPerson.addr.each { AD it ->
 			person.addresses.add(convertToAddress(it))
