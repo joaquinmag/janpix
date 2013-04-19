@@ -5,6 +5,7 @@
 package com.janpix.rup.empi.avib
 import groovy.util.GroovyTestCase;
 
+import com.janpix.rup.empi.ExtendedDate;
 import com.janpix.rup.empi.Identity;
 import com.janpix.rup.exceptions.*
 import com.janpix.rup.empi.Person
@@ -44,41 +45,39 @@ class FactoryAVIbTests extends GroovyTestCase {
 		//Creo algunas identidades
 		i1 = new Identity(
 				name:"Barnech, Martín Gonzalo",
-				birthdate:Date.parse( "yyyy-M-d", "1987-01-16" ),
+				birthdate:new ExtendedDate(date:Date.parse( "yyyy-M-d", "1987-01-16" ),precission:ExtendedDate.TYPE_PRECISSION_DAY),
 				sex:Person.TYPE_SEX_MALE,
-				secondLastName:"Mannino",
 				livingplace:"Argentina, Buenos Aires, Luján",
 				address:"Constitucion 2213",
 				document:"DNI:32850137"
 				)
 		i2 = new Identity(
 				name:"Barnech, Martín",
-				birthdate:Date.parse( "yyyy-M-d", "1987-01-17" ),
+				birthdate:new ExtendedDate(date:Date.parse( "yyyy-M-d", "1987-01-17" ),precission:ExtendedDate.TYPE_PRECISSION_DAY),
 				sex:Person.TYPE_SEX_MALE,
-				secondLastName:"Manino",
 				livingplace:"Argentina, Bs As, Lujan",
 				address:"Constitución 2213",
 				document:"DNI:32850137"
 			)
 		i3 = new Identity(
 				name:"Barneche, Martin",
-				birthdate:Date.parse( "yyyy-M-d", "1988-01-16" ),
+				birthdate:new ExtendedDate(date:Date.parse( "yyyy-M-d", "1988-01-16" ),precission:ExtendedDate.TYPE_PRECISSION_DAY),
 				sex:Person.TYPE_SEX_MALE,
-				secondLastName:"Mannino",
 				livingplace:"Argentina, Buenos Airess, Lujan",
 				address:"Constitución 2213",
 				document:"DNI:32850187"
 			)
 		i4 = new Identity(
 				name:"Magneres, Joaquin Ignacio",
-				birthdate:Date.parse( "yyyy-M-d", "1987-05-01" ),
+				birthdate:new ExtendedDate(date:Date.parse( "yyyy-M-d", "1987-05-01" ),precission:ExtendedDate.TYPE_PRECISSION_DAY),
 				sex:Person.TYPE_SEX_MALE,
-				secondLastName:"Fontela",
 				livingplace:"Argentina, C.A.B.A, C.A.B.A",
 				address:"Zapata 346",
 				document:"DNI:32900800"
 			)
-		i5 = new Identity(name:"Rodriguez, Maria",birthdate:Date.parse( "yyyy-M-d", "1987-01-16" ),sex:"Femenino")
+		i5 = new Identity(name:"Rodriguez, Maria",
+			birthdate:new ExtendedDate(date:Date.parse( "yyyy-M-d", "1987-01-16" ),,precission:ExtendedDate.TYPE_PRECISSION_DAY),
+			sex:"Femenino")
 	
 	}
 	
@@ -106,7 +105,7 @@ class FactoryAVIbTests extends GroovyTestCase {
 	void testDistanceBirthdate(){
 		//La distancia es de 0.3 (asi esta configurado en la clase) por el peso ya que difieren en el dia
 		def distanceBirth1	= factory.buildMeasurementDistanceBirthdate().calculateDistance(i1,i2)
-		assertEquals(0.3*this.weightBirthdate,distanceBirth1)
+		assertEquals(0.2*this.weightBirthdate,distanceBirth1)
 		
 		//La distancia es de 1.0*peso ya que son fechas de diferentes años
 		def distanceBirth2	= factory.buildMeasurementDistanceBirthdate().calculateDistance(i1,i3)
@@ -136,34 +135,29 @@ class FactoryAVIbTests extends GroovyTestCase {
 		def distanceName1			= factory.buildMeasurementDistanceName().calculateDistance(i1,i2)
 		def distanceBirth1			= factory.buildMeasurementDistanceBirthdate().calculateDistance(i1,i2)
 		def distanceSex1			= factory.buildMeasurementDistanceSex().calculateDistance(i1,i2)
-		def distanceSecondLastName1	= factory.buildMeasurementDistanceSecondLastName().calculateDistance(i1,i2)
 		def distanceLivingplace1	= factory.buildMeasurementDistanceLivingplace().calculateDistance(i1,i2)
 		def distanceAddress1		= factory.buildMeasurementDistanceAddress().calculateDistance(i1,i2)
 		def distanceDocument1		= factory.buildMeasurementDistanceDocument().calculateDistance(i1,i2)
 		
-		def totalDistance = distanceName1 + distanceBirth1 + distanceSex1 +distanceSecondLastName1 + distanceLivingplace1 +distanceAddress1 + distanceDocument1
-		println totalDistance
+		def totalDistance = distanceName1 + distanceBirth1 + distanceSex1  + distanceLivingplace1 +distanceAddress1 + distanceDocument1
 		assertTrue(((1-totalDistance)> upperUmbral))
 		
 
 	}
 	
 	/**
-	 * Identidad1 e Identidad3 deberian de ser posibles matcheos ya que difiere nombre, fecha nacimiento, dni
+	 * Identidad1 e Identidad3  NO deberian de ser posibles matcheos ya que difiere nombre, fecha nacimiento, dni
 	 */
 	void testMatchIdentity1Identity3(){
-		//id1 - id3 deben matchear
 		def distanceName2			= factory.buildMeasurementDistanceName().calculateDistance(i1,i3)
 		def distanceBirth2			= factory.buildMeasurementDistanceBirthdate().calculateDistance(i1,i3)
 		def distanceSex2			= factory.buildMeasurementDistanceSex().calculateDistance(i1,i3)
-		def distanceSecondLastName2	= factory.buildMeasurementDistanceSecondLastName().calculateDistance(i1,i3)
 		def distanceLivingplace2	= factory.buildMeasurementDistanceLivingplace().calculateDistance(i1,i3)
 		def distanceAddress2		= factory.buildMeasurementDistanceAddress().calculateDistance(i1,i3)
 		def distanceDocument2		= factory.buildMeasurementDistanceDocument().calculateDistance(i1,i3)
 		
-		def totalDistance2 = distanceName2 + distanceBirth2 + distanceSex2 +distanceSecondLastName2 + distanceLivingplace2 +distanceAddress2 + distanceDocument2
-		println totalDistance2
-		assertTrue(((1-totalDistance2)> lowerUmbral))
+		def totalDistance2 = distanceName2 + distanceBirth2 + distanceSex2 + distanceLivingplace2 +distanceAddress2 + distanceDocument2
+		assertTrue(((1-totalDistance2) < lowerUmbral))
 	}
 	
 	

@@ -5,4 +5,8 @@ class Country {
 	
     static constraints = {
     }
+	
+	boolean equals(other){
+		return (this.name == other.name)
+	}
 }

@@ -16,20 +16,7 @@ class Person {
 	static final String TYPE_MARITALSTATUS_MARRIED	= 'M'
 	static final String TYPE_MARITALSTATUS_SINGLE	= 'S'
 	static final String TYPE_MARITALSTATUS_WIDOWED	= 'W'
-	
-	/*enum Sex{
-		FEMALE('F'),MALE('M'),OTHER('O'),
-		UNKNOWN('U'),AMBIGUOS('A'),NOT_APPLICABLE('N')
-		private final String value;
-		public Sex(String p){this.value = p}
-		public String value(){return value;}
-	}
-	enum MaritalStatus{
-		MARRIED('M'),SINGLE('S'),WIDOWED('W'),
-		private final String value;
-		public String value(){return value;}
-		public MaritalStatus(String p){this.value = p}
-	}*/
+
 	
 	PersonName givenName
 	ExtendedDate birthdate
@@ -38,6 +25,7 @@ class Person {
 	City birthplace
 	Boolean multipleBirthIndicator 
 	ExtendedDate deathDate
+
 	
 	Date lastUpdated
 	Date dateCreated
@@ -58,7 +46,7 @@ class Person {
 		birthdate(nullable:false)
 		
 		maritalStatus(nullable:true)
-		deathDate(nullable:true)
+		deathdate(nullable:true)
 		birthplace(nullable:true)
 		multipleBirthIndicator(nullable:true)
 		
@@ -88,8 +76,13 @@ class Person {
 	 */
 	Address principalAddress(){
 		def address
-		if(!this.addresses.empty)
+		if(!this.addresses.empty){
 			address = this.addresses.get(0)
+			this.addresses.each {
+				if(it.dateCreated > address.dateCreated)
+					address = it
+			}
+		}
 		
 		return address
 		
@@ -97,18 +90,89 @@ class Person {
 	
 	/**
 	 * Devuelve el documento que representa la identidad de una persona
-	 * Si tiene DNI, LE o LC devuelve ese documento
+	 * Si tiene DNI devuelve ese documento
+	 * Sino revisa si tiene LE o LC para devolverlo
 	 * Sino revisa si contiene pasaporte
 	 * Sino tiene ninguno de estos devuelve NULL
 	 * @return
 	 */
 	Identifier identityDocument(){
-		def dni = this.identifiers.find {it.type == Identifier.TYPE_IDENTIFIER_DNI || it.type == Identifier.TYPE_IDENTIFIER_LC || it.type == Identifier.TYPE_IDENTIFIER_LE}
+		def dni = this.identifiers.find {it.type == Identifier.TYPE_IDENTIFIER_DNI}
 		if(dni){
 			return dni
 		}else{
-			def passport = this.identifiers.find{it.type == Identifier.TYPE_IDENTIFIER_PPN}
-			return passport
+			def otherId = this.identifiers.find {it.type == Identifier.TYPE_IDENTIFIER_LC || it.type == Identifier.TYPE_IDENTIFIER_LE}
+			if(otherId){
+				return otherId
+			}else{
+				def passport = this.identifiers.find{it.type == Identifier.TYPE_IDENTIFIER_PPN}
+				return passport
+			}
 		}
 	}
+	
+
+	/**
+	 * Actualiza la dirección basandose en si tiene que agregar una nueva
+	 * o actualizar la existente
+	 * @param newAddress
+	 */
+	void updateAddresses(ArrayList<Address> newAddresses){
+		newAddresses.each{Address address->
+			if(address.validate()){
+				if(address.unitId){
+					def actualAddress = this.addresses.find{it.unitId ==address.unitId }
+					actualAddress.update(address) //TODO implementar
+				}else{
+					this.addToAddresses(address)
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Actualiza algun identificador que no sea el de la Entidad Sanitaria
+	 * Verifica que actualmente no tenga un identificador del mismo tipo para la misma autoridad de asignacion.
+	 * Si lo tiene lo actualiza
+	 * @param newIdentifier
+	 */
+	void updateIdentifiers(newIdentifiers){
+		def uniqueIdentifiers = [
+				Identifier.TYPE_IDENTIFIER_DNI,Identifier.TYPE_IDENTIFIER_LC,Identifier.TYPE_IDENTIFIER_LE,
+				Identifier.TYPE_IDENTIFIER_PPN,Identifier.TYPE_IDENTIFIER_DL
+			]
+		newIdentifiers.each{ Identifier id->
+			if(id.type != Identifier.TYPE_IDENTIFIER_PI && id.validate() && !this.identifiers.contains(id)){
+				if(uniqueIdentifiers.contains(id.type)){
+					def actualIdentifier = this.identifiers.find{it.type == id.type && it.assigningAuthority == id.assigningAuthority} 
+					if(!actualIdentifier){
+						this.addToIdentifiers(id)
+					}else{
+						actualIdentifier.type = id.type
+						actualIdentifier.number = id.number
+						actualIdentifier.assigningAuthority	= id.assigningAuthority
+					}
+				}else{
+					this.addToIdentifiers(id) //Puede ser una tarjeta de credito u otra cosa que pueden ser varias
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Actualiza el nombre sin modificar el objeto
+	 * @param PersonName newName
+	 */
+	void updateGivenName(PersonName newName){
+		newName.properties.each{prop,val->
+			if(val)
+				this.givenName[prop] = val
+		}
+	}
+	
+	void updatePhoneNumbers(PhoneNumber newPhone){
+		
+	}
+	
+
 }

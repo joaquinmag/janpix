@@ -3,9 +3,9 @@ package com.janpix.rup.empi
 
 class ExtendedDate {
 	static final Integer TYPE_PRECISSION_UNKNOWN 	= 0
-	static final Integer TYPE_PRECISSION_DAY 		= 1
+	static final Integer TYPE_PRECISSION_YEAR 		= 1
 	static final Integer TYPE_PRECISSION_MONTH 	= 2
-	static final Integer TYPE_PRECISSION_YEAR 		= 3
+	static final Integer TYPE_PRECISSION_DAY 		= 3
 	
 	
 	

@@ -15,11 +15,13 @@ class DemographicPersonService {
 	 * Busca una persona entre la lista de personas que 
 	 * tenga un cierto nivel de matcheo en sus datos demograficos
 	 * @param Person p: la persona a buscar
-	 * @return List<Person> perons : lista de personas matcheadas
+	 * @return List<MatchRecord> perons : lista de personas matcheadas
 	 */
 	def matchPerson(Person p){
 		def upperLimit = this.getUpperLimit()
 		def lowerLimit = this.getLowerLimit()
+		matchedPersons.clear()
+		possibleMatchedPersons.clear()
 		
 		//Hago un primer filtro en base a datos excluyentes como ser rango de edades
 		def candidates = blockIndexing(p)

@@ -3,10 +3,10 @@ package com.janpix.rup.empi
 class PersonName {
 	String firstName
 	String lastName
-	String motherLastName
-	String alias
+	String motherLastName //FIXME eliminar
+	String alias //FIXME eliminar
 	
-	static belongsTo = [person:Person]
+	static belongsTo = [Person]
 	
     static constraints = {
 		motherLastName(nullable:true)

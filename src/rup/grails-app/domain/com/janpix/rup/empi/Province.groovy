@@ -8,4 +8,8 @@ class Province {
 	
     static constraints = {
     }
+	
+	boolean equals(other){
+		return (this.country == other.country && this.name == other.name)
+	}
 }

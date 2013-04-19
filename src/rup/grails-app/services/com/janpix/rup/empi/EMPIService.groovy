@@ -2,10 +2,13 @@ package com.janpix.rup.empi
 
 import com.janpix.rup.exceptions.DontExistingPatientException
 import com.janpix.rup.exceptions.ExistingPatientException
+import com.janpix.rup.exceptions.RUPException
 import com.janpix.rup.exceptions.ShortDemographicDataException
 import com.janpix.rup.exceptions.identifier.DuplicateIdentifierException
 import com.janpix.rup.exceptions.identifier.IdentifierNotFoundException
 import com.janpix.rup.exceptions.identifier.IdentifierNotValidException
+
+
 
 /**
  * Servicio encargado de administrar el eMPI (enterprise Master Patient Index)
@@ -22,15 +25,11 @@ class EMPIService {
 	 * Agrega un nuevo paciente en el eMPI
 	 * Si el paciente ya existe o tiene un cierto nivel de matcheo no lo crea
 	 * Una vez creado el paciente agrega el identificador de la entidad sanitaria al mismo
-	 * @param Person: la persona que se quiere agregar al eMPI
-	 * @return Patient: el paciente agregado si lo agrego correctamente
-	 * @throw ExistingPatientException Si ya existe uno o mas paciente en el eMPI con esa informacion demografica 
-	 * @throw ShortDemographicDataException Si la informacion brindada no alcanza para crear un paciente
+	 * @param Person p: la persona que se quiere agregar al eMPI
+	 * @return Patient: el paciente agregado si lo agrego correctamente 
+	 * @throws ShortDemographicDataException Si la informacion brindada no alcanza para crear un paciente
 	 */
-	def createPatient(Person p){	
-		if(matchPatient(p)){
-			throw new ExistingPatientException(message:"Ya existen pacientes que concuerdan con los datos demograficos pasados",patient:new Patient(p.properties))
-		}
+	def createPatient(Person p) {	
 		try{
 			//Agrego el paciente
 			def patient = new Patient(p)
@@ -46,19 +45,49 @@ class EMPIService {
 	
 	/**
 	 * Actualiza la informacion demografico de cierto paciente
+	 * @param Person: Los datos demograficos a actualizar
+	 * @param Patient: El paciente que se actualizara
 	 * @return Patient: el paciente actualizado
+	 * @throws ExistingPatientException: Si la informacion modificada del paciente genera un matcheo con otro paciente ya existente
+	 * @throw DontExistingPatientException Si el paciente pasado no existia
 	 */
-	def updateDemographicDataPatient(){
-		//TODO ver si es necesario y como implementar
-		//TODO implement me!	
+	def updateDemographicDataPatient(Patient p, Person person){
+		def patient = findPatientByUUID(p.uniqueId)
+		if(!patient){
+			throw new DontExistingPatientException(message:"No existe ningun paciente que contenga el UUID pasado")
+		}
+		
+		person.properties.each{prop,val->
+			if(val){
+				//Las propiedades readonly son las que terminan con la palabra "Id"
+				if(!isPropertyReadOnly(prop)){
+					//Si tiene el metodo update<Propiedad>() llamo ese metodo sino llamo al setter
+					def method = "update"+prop.capitalize()
+					if (patient.metaClass.respondsTo(patient, method, val)){
+						patient."$method"(val) //Llama a updateBirthdate por ejemplo
+					}else{
+						patient[prop] = val
+					}
+				}
+			}
+		}
+
+		//Si el paciente matchea con algun otro vuelvo los cambios para atras
+		if( matchPatient(patient)){
+			throw new RUPException("Existen pacientes que concuerdan con el paciente actualizado")		
+		}
+
+		return patient
 	}
+	
+	
 	
 	/**
 	 * Une la información de dos pacientes supuestamente diferentes que en realidad son el mismo
 	 * @return
 	 */
 	def mergePatients(){
-		//TODO implement me!
+		//FIXME implement me in other version!.
 	}
 	
 	/**
@@ -91,6 +120,7 @@ class EMPIService {
 			throw new DuplicateIdentifierException("Ya se encuentra agregado un identificador para la entidad sanitaria ${he}")
 		}
 		p.addToIdentifiers(identifier)
+		return p
 	}
 	
 	/**
@@ -141,7 +171,7 @@ class EMPIService {
 	 * @param HealthEntity he: La entidad sanitaria de la cual se quiere eliminar el identificador
 	 * @return
 	 */
-	def removeIdentifierEntityToPatient(Patient p, HealthEntity he){
+	def removeEntityIdentifierToPatient(Patient p, HealthEntity he){
 		//TODO implement me!
 	}
 	
@@ -188,7 +218,9 @@ class EMPIService {
 		 * el findBy intenta hacer un flush de las instancias antes
 		 * Ver Patient.withNewSession{}
 		 * **/
-		return Patient.findByUniqueId(uuid)
+		//return Patient.findByUniqueId(uuid)
+		def query =Patient.where {uniqueId.mainId == uuid.mainId} 
+		return query.find()
 
 	}
 	
@@ -237,5 +269,14 @@ class EMPIService {
 	 */
 	private Patient getPatientFromPerson(Person p){
 		return Patient.get(p.id)
+	}
+	
+	/**
+	 * Verifica si una propiedad no es readonly
+	 * Si el nombre termina en Id es una propiedad readonly
+	 * @return
+	 */
+	private Boolean isPropertyReadOnly(String propName){
+		return (propName ==~ /[a-zA-Z]+Id$/)
 	}
 }
