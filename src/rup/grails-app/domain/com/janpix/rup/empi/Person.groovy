@@ -24,7 +24,7 @@ class Person {
 	String maritalStatus
 	City birthplace
 	Boolean multipleBirthIndicator 
-	ExtendedDate deathDate
+	ExtendedDate deathdate
 
 	
 	Date lastUpdated
