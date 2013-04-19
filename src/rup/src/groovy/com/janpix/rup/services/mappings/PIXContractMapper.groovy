@@ -50,19 +50,21 @@ class PIXContractMapper {
 	
 	private Address convertToAddress(AD hl7Address) {
 		def address = new Address()
-		def street = getValueFromSerializableList(hl7Address.content, "streetAddressLine")?.value.split(" ", 2)
-		if (!street || !(street[0]?.isNumber()))
-			throw new MessageMappingException('PRPAIN201301UV02 address list field "streetAddressLine" must contain format "<number> <street name>", notice a space character between fields.')
-		address.number = street[0]
-		address.street = street[1]
-		def additionalLocator = getValueFromSerializableList(hl7Address.content, "additionalLocator")?.value.split(",", 2)
+		def street = getValueFromSerializableList(hl7Address.content, "streetAddressLine")?.value?.split(" ", 2)
+		if (street) {
+			if (!(street[0]?.isNumber()))
+				throw new MessageMappingException('PRPAIN201301UV02 address list field "streetAddressLine" must contain format "<number> <street name>", notice a space character between fields.')
+			address.number = street[0]
+			address.street = street[1]
+		}
+		def additionalLocator = getValueFromSerializableList(hl7Address.content, "additionalLocator")?.value?.split(",", 2)
 		if (additionalLocator) { 
 			address.floor = additionalLocator[0]
 			address.department = additionalLocator[1].trim()
 		}
-		def cityName = hl7Address.getValueFromSerializableList(hl7Address.content, "city")?.value
-		def provinceName = hl7Address.getValueFromSerializableList(hl7Address.content, "state")?.value
-		def countryName = hl7Address.getValueFromSerializableList(hl7Address.content, "country")?.value
+		def cityName = getValueFromSerializableList(hl7Address.content, "city")?.value
+		def provinceName = getValueFromSerializableList(hl7Address.content, "state")?.value
+		def countryName = getValueFromSerializableList(hl7Address.content, "country")?.value
 		def city = placeService.findByPlace(cityName, provinceName, countryName)
 		if (!city)
 			throw new MessageMappingException('PRPAIN201301UV02 must contain a valid city, state and country names.')
