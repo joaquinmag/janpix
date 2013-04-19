@@ -1,8 +1,11 @@
 package com.janpix.rup.pixmanager
 
+import com.janpix.rup.empi.HealthEntity;
+import com.janpix.rup.empi.MatchRecord
 import com.janpix.rup.empi.Person
 import com.janpix.rup.exceptions.ExistingPatientException
 import com.janpix.rup.exceptions.ShortDemographicDataException
+import com.janpix.rup.exceptions.identifier.IdentifierException
 import com.janpix.rup.services.contracts.ResponseMessage
 
 
@@ -18,21 +21,33 @@ class PixManagerService {
 	 * If the patient already exists adds the identifier of the healthentity to the patient's ids collection.
 	 * If the patient doesn't exists creates a new one and assigns the identifier from the healthentity to the patient's ids collection.
 	 */
-	ResponseMessage patientRegistryRecordAdded(Person patientRequestMessage){
-		try{
-			if(!EMPIService.matchPerson(person)){
+	ResponseMessage patientRegistryRecordAdded(Person patientRequestMessage, HealthEntity healthEntity, String organizationId){
+		def matchedPatients = EMPIService.getAllMatchedPatients(person, true)
+		if (matchedPatients.empty) {
+			try {
 				EMPIService.createPatient(person)
-			}else{
-				//TODO agregar identificador
+				//TODO falta agregar id del health entity
+				return new ResponseMessage()
+			}
+			catch(ShortDemographicDataException e) {
+				log.debug("Excepcion ShortDemografic")
+				return new ResponseMessage()
 			}
 		}
-		catch(ExistingPatientException e){
-			//TODO en vez de preguntar puedo capturar la exception
-			//TODO agregar el identificador al paciente ya existente
+		def record = matchedPatients.find { it.matchLevel == MatchRecord.TYPE_LEVEL_HIGH }
+		if (record) {
+			try {
+				EMPIService.addEntityIdentifierToPatient(record.person, healthEntity, organizationId)
+				return new ResponseMessage()
+			}
+			catch (IdentifierException e) {
+				log.debug(e.message)
+				return new ResponseMessage()
+			}
 		}
-		catch(ShortDemographicDataException e){
-			//TODO avisar
-		}
+		// Si llega hasta acá quedan pacientes con matcheo medio. Se debe retornar un response message con error.
+		//TODO armar response message con error
+		return new ResponseMessage()
 	}
 
 	/**
