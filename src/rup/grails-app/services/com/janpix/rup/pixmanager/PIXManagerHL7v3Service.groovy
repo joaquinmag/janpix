@@ -16,7 +16,8 @@ import org.grails.cxf.utils.GrailsCxfEndpoint;
 @GrailsCxfEndpoint(expose = EndpointType.SIMPLE)
 class PIXManagerHL7v3Service {
 	
-	def PixManagerService
+	def pixManagerService
+	def pixContractMapper
 											
 	/**
 	 * Add new patients to the PIX. 
@@ -31,6 +32,8 @@ class PIXManagerHL7v3Service {
 	public org.hl7.v3.MCCIIN000002UV01 pixManagerPRPAIN201309UV02(
 		@WebParam(partName = "Body", name = "PRPA_IN201301UV02", targetNamespace = "urn:hl7-org:v3")
 		org.hl7.v3.PRPAIN201301UV02 body) {
+		def person = pixContractMapper.mapPersonFromhl7v3AddNewPatientMessage(body)
+		pixManagerService.patientRegistryRecordAdded(person)
 	}
 
 		

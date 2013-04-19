@@ -1,10 +1,9 @@
 package com.janpix.rup.pixmanager
 
-import com.janpix.rup.services.contracts.AddNewPatientRequestMessage
-
-import com.janpix.rup.services.contracts.AddNewPatientResponseMessage
+import com.janpix.rup.empi.Person
 import com.janpix.rup.exceptions.ExistingPatientException
 import com.janpix.rup.exceptions.ShortDemographicDataException
+import com.janpix.rup.services.contracts.ResponseMessage
 
 
 /**
@@ -19,9 +18,7 @@ class PixManagerService {
 	 * If the patient already exists adds the identifier of the healthentity to the patient's ids collection.
 	 * If the patient doesn't exists creates a new one and assigns the identifier from the healthentity to the patient's ids collection.
 	 */
-	AddNewPatientResponseMessage addNewPatient(AddNewPatientRequestMessage patientRequestMessage){
-		//TODO borrador del metodo
-		def patient = PersonMapper.mapFromDto(patientDto)
+	ResponseMessage patientRegistryRecordAdded(Person patientRequestMessage){
 		try{
 			if(!EMPIService.matchPerson(person)){
 				EMPIService.createPatient(person)
