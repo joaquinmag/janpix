@@ -23,7 +23,7 @@ class PIXContractMapper {
 	 * @param inPatientMessage {@link org.hl7.v3.PRPAIN201301UV02 PRPAIN201301UV02} object
 	 * @return {@link com.janpix.rup.empi.Person Person} mapped from PRPAIN201301UV02.
 	 */
-	static Person mapPersonFromhl7v3AddNewPatientMessage(PRPAIN201301UV02 inPatientMessage) {
+	Person mapPersonFromhl7v3AddNewPatientMessage(PRPAIN201301UV02 inPatientMessage) {
 		validateHl7V3AddNewPatientMessage(inPatientMessage)
 		
 		PRPAIN201301UV02MFMIMT700701UV01RegistrationEvent regEvent = inPatientMessage.controlActProcess.subject[0].registrationEvent
@@ -48,7 +48,7 @@ class PIXContractMapper {
 		return person
 	}
 	
-	private static Address convertToAddress(AD hl7Address) {
+	private Address convertToAddress(AD hl7Address) {
 		def address = new Address()
 		def street = getValueFromSerializableList(hl7Address.content, "streetAddressLine")?.value.split(" ", 2)
 		if (!street || !(street[0]?.isNumber()))
@@ -70,7 +70,7 @@ class PIXContractMapper {
 		return address
 	}
 	
-	private static ExtendedDate convertToExtendedDateFromTS(TS hl7Date) {
+	private ExtendedDate convertToExtendedDateFromTS(TS hl7Date) {
 		def precission = ExtendedDate.TYPE_PRECISSION_UNKNOWN
 		def year = 1900
 		def month = 1
@@ -102,7 +102,7 @@ class PIXContractMapper {
 	 * @param xmlName
 	 * @return
 	 */
-	private static String getNameFromPatient(PRPAMT201301UV02Person patientPerson, String xmlName) {
+	private String getNameFromPatient(PRPAMT201301UV02Person patientPerson, String xmlName) {
 		def givenNameJaxb = null
 		patientPerson.name.find { PN it ->
 			givenNameJaxb = getValueFromSerializableList(it.content, xmlName)
@@ -114,13 +114,13 @@ class PIXContractMapper {
 		return givenNameJaxb?.value
 	}
 	
-	private static JAXBElement<Serializable> getValueFromSerializableList(List<Serializable> content, String xmlName) {
+	private JAXBElement<Serializable> getValueFromSerializableList(List<Serializable> content, String xmlName) {
 		return content.find() { JAXBElement<Serializable> it ->
 			return it.name.localPart == xmlName
 		} as JAXBElement<Serializable>
 	}
 	
-	private static void validateHl7V3AddNewPatientMessage(PRPAIN201301UV02 inPatientMessage) {
+	private void validateHl7V3AddNewPatientMessage(PRPAIN201301UV02 inPatientMessage) {
 		if (inPatientMessage.getControlActProcess().getSubject().isEmpty())
 			throw new MessageMappingException("PRPAIN201301UV02 message must contain one subject")
 		if (inPatientMessage.getControlActProcess().getSubject().size() > 1)
