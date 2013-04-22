@@ -211,18 +211,44 @@ class EMPIServiceTests extends GroovyTestCase {
 	 * no sea el de la entidad sanitaria
 	 */
 	void testUpdateOtherIdentifiers(){
-		fail "Implentar"
-	}
-	
-	/**
-	 * Testea que falle la actualizacion de algun identificador
-	 * porque ya tiene un identificador cargado para esa autoridad de asignacion
-	 */
-	void testFailUpdateDocument(){
+		//Primero creo el paciente
+		def returnedPatient = EMPIService.createPatient(person)
+		def patientUUID = returnedPatient.uniqueId
+		
+		//creo una persona con un documento nuevo
+		def p = new Person()
+		p.addToIdentifiers(new Identifier(type:Identifier.TYPE_IDENTIFIER_DNI,number:"12345678",assigningAuthority:assingingAuthorityArgentina))
+		
+		//Mando a actualizar
+		def changedPatient = EMPIService.updateDemographicDataPatient(returnedPatient,p)
+		Identifier document = changedPatient.identityDocument()
+		assertEquals(Identifier.TYPE_IDENTIFIER_DNI,document.type)
+		assertEquals("12345678",document.number)
+		assertEquals(assingingAuthorityArgentina,document.assigningAuthority)
 		
 	}
 	
-	
+	/**
+	 * Testea la actualizacion de una direccion ya existente en el paciente
+	 */
+	void testUpdateExistingAddress(){
+		//Primero creo el paciente agregandole un unitId a la direccion
+		def returnedPatient = EMPIService.createPatient(person)
+		def patientUUID = returnedPatient.uniqueId
+		returnedPatient.principalAddress().unitId = "1234"
+		
+		def p = new Person()
+		p.addToAddresses(new Address(unitId:"1234",street:"Zabala",number:"1300",city:city1))
+		EMPIService.updateDemographicDataPatient(returnedPatient,p)
+		
+		//Address
+		Address address = returnedPatient.principalAddress()
+		assertEquals("Zabala",address.street)
+		assertEquals("1300",address.number)
+		assertEquals("5",address.floor)
+		assertEquals("A",address.department)
+		assertEquals(city1,address.city)
+	}
 	
 	/**
 	 * Testea la correcta eliminacion de un paciente del eMPI

@@ -32,6 +32,17 @@ class Address {
 		return false
 	}
 	
+	void update(Address other){
+		if(other.city){
+			if(other.street)this.street = other.street
+			if(other.number)this.number = other.number
+			if(other.floor)this.floor = other.floor
+			if(other.department)this.department = other.department
+			if(other.zipCode)this.zipCode = other.zipCode
+			this.city = other.city
+		}
+	}
+	
 	String toString(){
 		return "${street} ${number} ${floor}${department}, ${city}"
 	}

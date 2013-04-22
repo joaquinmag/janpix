@@ -122,7 +122,7 @@ class Person {
 			if(address.validate()){
 				if(address.unitId){
 					def actualAddress = this.addresses.find{it.unitId ==address.unitId }
-					actualAddress.update(address) //TODO implementar
+					actualAddress?.update(address) 
 				}else{
 					this.addToAddresses(address)
 				}
@@ -144,17 +144,11 @@ class Person {
 		newIdentifiers.each{ Identifier id->
 			if(id.type != Identifier.TYPE_IDENTIFIER_PI && id.validate() && !this.identifiers.contains(id)){
 				if(uniqueIdentifiers.contains(id.type)){
-					def actualIdentifier = this.identifiers.find{it.type == id.type && it.assigningAuthority == id.assigningAuthority} 
-					if(!actualIdentifier){
-						this.addToIdentifiers(id)
-					}else{
-						actualIdentifier.type = id.type
-						actualIdentifier.number = id.number
-						actualIdentifier.assigningAuthority	= id.assigningAuthority
-					}
-				}else{
-					this.addToIdentifiers(id) //Puede ser una tarjeta de credito u otra cosa que pueden ser varias
+					def actualIdentifier = this.identifiers.find{it.type == id.type && it.assigningAuthority == id.assigningAuthority}
+					if(actualIdentifier)
+						this.removeFromIdentifiers(actualIdentifier) 
 				}
+				this.addToIdentifiers(id) //Puede ser una tarjeta de credito u otra cosa que pueden ser varias
 			}
 		}
 	}

@@ -104,8 +104,8 @@ class EMPIService {
 	 * Agrega un identificador de entidad saniatria a un paciente existente en el eMPI
 	 * @return Patient p: el paciente al que se le agrego el identificador
 	 * @throw DontExistingPatientException Si el paciente pasado no existia
-	 * @throw IdentifierException Si el paciente ya tenia agregado ese identificador o cualquier identificador para dicha entidad sanitaria
-	 * @throw IdentifierException Si los datos pasados son invalidos para crear un nuevo identificador
+	 * @throw DuplicateIdentifierException Si el paciente ya tenia agregado ese identificador o cualquier identificador para dicha entidad sanitaria
+	 * @throw IdentifierNotValidException Si los datos pasados son invalidos para crear un nuevo identificador
 	 */
 	def addEntityIdentifierToPatient(Patient p,HealthEntity he, String peId){
 		if(!existsPatient(p)){
