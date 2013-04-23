@@ -11,10 +11,14 @@ class AssigningAuthority {
 	 */
 	boolean equals(other){
 		//TODO ver que otros datos comparar
-		return (this.name == other.name)
+		return (this.name == other?.name)
 	}
 	
 	String toString(){
 		return name
+	}
+	
+	static AssigningAuthority rupAuthority(){
+		return AuthorityRUP.read(0)
 	}
 }

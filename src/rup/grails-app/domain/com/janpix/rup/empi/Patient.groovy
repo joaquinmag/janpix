@@ -40,6 +40,14 @@ class Patient extends Person {
 	}
 	
 	/**
+	 * Devuelve el identificador de la entidad sanitaria pasada
+	 * @return
+	 */
+	Identifier healthEntityIdentifier(HealthEntity healthEntity){
+		return this.identifiers.find{it.assigningAuthority == healthEntity}
+	}
+	
+	/**
 	 * Agrega un identificador al paciente
 	 * @param identifier
 	 * @return
