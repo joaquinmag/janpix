@@ -1,11 +1,11 @@
 import java.beans.beancontext.BeanContext;
 
-import com.janpix.rup.infrastructure.MockUUIDGenerator;
+import com.janpix.rup.infrastructure.UUIDGenerator;
 import com.janpix.rup.pixmanager.PlaceService;
 import com.janpix.rup.services.mappings.PIXContractMapper;
 
 beans = {
-	uuidGenerator(MockUUIDGenerator) { bean ->
+	uuidGenerator(UUIDGenerator) { bean ->
 		bean.factoryMethod = "getUUID"
 	}
 	
