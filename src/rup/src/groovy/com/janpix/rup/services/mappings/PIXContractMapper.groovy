@@ -1,6 +1,7 @@
 package com.janpix.rup.services.mappings
 
 import javax.xml.bind.JAXBElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import org.hl7.v3.*
 
@@ -24,8 +25,12 @@ class PIXContractMapper {
 	
 	MCCIIN000002UV01 mapACKMessageToHL7AcceptAcknowledgmentMessage(ACKMessage ackMessage, II messageIdentifier) {
 		def ackHl7 = new MCCIIN000002UV01()
+
 		ackHl7.id = messageIdentifier
 		ackHl7.creationTime = hl7Helper.buildHl7DateTime(actualDate())
+		
+		def messageName = (MCCIIN000002UV01.class.getAnnotation(XmlRootElement) as XmlRootElement).name()
+		ackHl7.interactionId = hl7Helper.buildInteractionId(ackHl7.messageName)
 	}
 
 	/**
