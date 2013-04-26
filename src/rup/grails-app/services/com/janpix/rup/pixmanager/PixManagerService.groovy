@@ -49,7 +49,6 @@ class PixManagerService {
 			}
 			
 			// Si llega hasta acá quedan pacientes con matcheo medio. Se debe retornar un response message con error.
-			//TODO armar response message con error
 			return new ACKMessage(typeCode:TypeCode.PossibleMatchingPatientsError,text:"")
 		
 		}
