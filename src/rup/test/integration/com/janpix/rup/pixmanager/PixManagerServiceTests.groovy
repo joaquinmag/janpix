@@ -1,5 +1,5 @@
 /**
- * Test de integracion que testea el servicio de EMPI
+ * Test de integracion que testea el servicio del PixManager
  * @author martin
  *
  */
@@ -13,6 +13,10 @@ import com.janpix.rup.exceptions.RUPException;
 import com.janpix.rup.exceptions.ShortDemographicDataException
 import com.janpix.rup.exceptions.identifier.DuplicateIdentifierException
 import com.janpix.rup.exceptions.identifier.IdentifierNotFoundException
+import com.janpix.rup.services.contracts.ACKMessage;
+import com.janpix.rup.services.contracts.ACKMessage.TypeCode;
+import org.springframework.context.support.DefaultMessageSourceResolvable
+
  
 class PixManagerServiceTests extends GroovyTestCase {
 	
@@ -23,8 +27,10 @@ class PixManagerServiceTests extends GroovyTestCase {
 	def identityComparatorService
 	def uuidGenerator
 	def pixManagerService
+	def messageSource
 	
 	Patient patient
+	Person person
 	def healthEntity1,healthEntity2,healthEntity3,rup
 	def city1,city2,city3,city4,city5
 	def assingingAuthorityArgentina
@@ -71,7 +77,13 @@ class PixManagerServiceTests extends GroovyTestCase {
 		patient.addToIdentifiers(new Identifier(type:Identifier.TYPE_IDENTIFIER_PI,number:"C123",assigningAuthority:healthEntity3))
 		patient.save(flush:true,failOnError:true)
 		
-
+		person = new Person(givenName: new PersonName(firstName:"Joaquin Ignacio", lastName:"Magneres",motherLastName:"Fontela"),
+			birthdate: new ExtendedDate(precission:ExtendedDate.TYPE_PRECISSION_DAY,date:Date.parse( "yyyy-M-d", "1987-05-01" )),
+			administrativeSex:Person.TYPE_SEX_MALE,
+			birthplace:city2,
+			)
+		person.addToIdentifiers(new Identifier(type:Identifier.TYPE_IDENTIFIER_DNI,number:"32900250",assigningAuthority:assingingAuthorityArgentina))
+		person.addToAddresses(new Address(street:"Zapata",number:"346",floor:"5",department:"A",city:city2))
 	}
 	
 	
@@ -137,7 +149,44 @@ class PixManagerServiceTests extends GroovyTestCase {
 		assertEquals(Identifier.TYPE_IDENTIFIER_PI,idh2.type)
 	}
 
+	/**
+	 * Llama al servicio para crear un paciente que NO existe
+	 */
+	void testCreateNotExistsPatient(){
+		ACKMessage ack = pixManagerService.patientRegistryRecordAdded(person,healthEntity1,"A123456")
+		
+		//Verifico ACK
+		assertEquals(TypeCode.SuccededCreation,ack.typeCode)
+		assertEquals(messageSource.getMessage(new DefaultMessageSourceResolvable("pixmanager.ackmessage.succededcreation"),null),ack.text)
+		
+		
+		def patients = Patient.list()
+		//2 pacientes. El creado en setup y el nuevo que creo
+		assertEquals(2,patients.size())
+		//Verifico que se haya creado y agregado el identificador
+		def createdPatient = patients.find{it.identityDocument().number == "32900250"}
+		assertEquals("Magneres",createdPatient.givenName.lastName)
+		
+		def identifier = createdPatient.identifiers.find{it.type == Identifier.TYPE_IDENTIFIER_PI}
+		assertEquals(Identifier.TYPE_IDENTIFIER_PI,identifier.type)
+		assertEquals("A123456",identifier.number)
+		assertEquals(healthEntity1,identifier.assigningAuthority)
+	}
 	
+	/**
+	 * LLama al servicio para crear un paciente con alto nivel de matcheo
+	 * Lo que va a hacer es agregar el identificador al paciente
+	 */
+	void testCreateHighMatchingPatient(){
+		
+	}
+	
+	/**
+	 * Testea que falle la creacion del paciente porque tiene varios matcheos
+	 */
+	void testFailCreatePatientBecauseMuchMatched(){
+		
+	}
 	
 	/** Metodos Privados **/
 	def private createCities(){

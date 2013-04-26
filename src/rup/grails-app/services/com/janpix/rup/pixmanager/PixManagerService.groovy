@@ -12,6 +12,8 @@ import com.janpix.rup.exceptions.identifier.IdentifierException
 import com.janpix.rup.services.contracts.ACKMessage
 import com.janpix.rup.services.contracts.ACKMessage.TypeCode;
 
+import org.springframework.context.support.DefaultMessageSourceResolvable
+
 
 /**
  * Service in charge of processing different Health Entities requests using the EMPIService to solve them.
@@ -19,6 +21,7 @@ import com.janpix.rup.services.contracts.ACKMessage.TypeCode;
 class PixManagerService {
 	
 	def EMPIService
+	def messageSource
 	
 	/**
 	 * Adds the patient from the healthentity to the eMPI
@@ -32,8 +35,10 @@ class PixManagerService {
 			if (matchedPatients.empty) {	
 				def patient = EMPIService.createPatient(patientRequestMessage)
 				EMPIService.addEntityIdentifierToPatient(patient, healthEntity, organizationId)
-				//TODO armar response message con ok
-				return new ACKMessage(typeCode: TypeCode.SuccededCreation, text:"")
+				return new ACKMessage(
+					typeCode: TypeCode.SuccededCreation, 
+					text:messageSource.getMessage(new DefaultMessageSourceResolvable("pixmanager.ackmessage.succededcreation"),null)
+						)
 			}
 			
 			//El paciente tiene un alto matcheo
