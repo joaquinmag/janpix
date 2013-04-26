@@ -10,6 +10,7 @@ import com.janpix.rup.exceptions.ExistingPatientException
 import com.janpix.rup.exceptions.ShortDemographicDataException
 import com.janpix.rup.exceptions.identifier.IdentifierException
 import com.janpix.rup.services.contracts.ACKMessage
+import com.janpix.rup.services.contracts.ACKMessage.TypeCode;
 
 
 /**
@@ -45,18 +46,21 @@ class PixManagerService {
 			
 			// Si llega hasta acá quedan pacientes con matcheo medio. Se debe retornar un response message con error.
 			//TODO armar response message con error
-			return new ACKMessage()
+			return new ACKMessage(typeCode:TypeCode.PossibleMatchingPatientsError,text:"")
 		
 		}
 		catch(ShortDemographicDataException e) {
-			log.debug("Excepcion ShortDemografic")
-			return new ACKMessage()
+			log.debug("Exception ShortDemografic : ${e.message}", e)
+			return new ACKMessage(typeCode:TypeCode.ShortDemographicError,text:e.message)
 		}
 		catch (IdentifierException e) {
-			log.debug(e.message)
-			return new ACKMessage()
+			log.debug("Exception IdentifierException : ${e.message}", e)
+			return new ACKMessage(typeCode:TypeCode.IdentifierError,text:e.message)
 		}
-
+		catch (Exception e) {
+			log.error("Exception : ${e.message}", e)
+			return new ACKMessage(typeCode:TypeCode.InternalError, text: e.message)
+		}
 	}
 
 	/**
