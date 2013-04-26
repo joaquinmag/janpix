@@ -15,4 +15,8 @@ beans = {
 		placeService = ref(placeService)
 	}
 	
+	hl7Helper(Hl7v3MessageHelper) {
+		uuidGenerator = ref(uuidGenerator)
+	}
+	
 }
