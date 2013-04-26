@@ -9,7 +9,7 @@ import com.janpix.rup.empi.Person
 import com.janpix.rup.exceptions.ExistingPatientException
 import com.janpix.rup.exceptions.ShortDemographicDataException
 import com.janpix.rup.exceptions.identifier.IdentifierException
-import com.janpix.rup.services.contracts.ResponseMessage
+import com.janpix.rup.services.contracts.ACKMessage
 
 
 /**
@@ -24,7 +24,7 @@ class PixManagerService {
 	 * If the patient already exists adds the identifier of the healthentity to the patient's ids collection.
 	 * If the patient doesn't exists creates a new one and assigns the identifier from the healthentity to the patient's ids collection.
 	 */
-	ResponseMessage patientRegistryRecordAdded(Person patientRequestMessage, HealthEntity healthEntity, String organizationId){
+	ACKMessage patientRegistryRecordAdded(Person patientRequestMessage, HealthEntity healthEntity, String organizationId){
 		try {
 			def matchedPatients = EMPIService.getAllMatchedPatients(patientRequestMessage, true)
 			//Es un paciente nuevo
@@ -32,7 +32,7 @@ class PixManagerService {
 				def patient = EMPIService.createPatient(patientRequestMessage)
 				EMPIService.addEntityIdentifierToPatient(patient, healthEntity, organizationId)
 				//TODO armar response message con ok
-				return new ResponseMessage()
+				return new ACKMessage()
 			}
 			
 			//El paciente tiene un alto matcheo
@@ -40,21 +40,21 @@ class PixManagerService {
 			if (record) {
 				EMPIService.addEntityIdentifierToPatient(record.person, healthEntity, organizationId)
 				//TODO armar response message con message ok
-				return new ResponseMessage()
+				return new ACKMessage()
 			}
 			
 			// Si llega hasta acá quedan pacientes con matcheo medio. Se debe retornar un response message con error.
 			//TODO armar response message con error
-			return new ResponseMessage()
+			return new ACKMessage()
 		
 		}
 		catch(ShortDemographicDataException e) {
 			log.debug("Excepcion ShortDemografic")
-			return new ResponseMessage()
+			return new ACKMessage()
 		}
 		catch (IdentifierException e) {
 			log.debug(e.message)
-			return new ResponseMessage()
+			return new ACKMessage()
 		}
 
 	}
@@ -62,7 +62,7 @@ class PixManagerService {
 	/**
 	 * Updates patient's information such as ids and demographic information.
 	 */
-	ResponseMessage patientRegistryRecordRevised(Patient patientRequestMessage,Person personRequestMessage, HealthEntity healthEntity){
+	ACKMessage patientRegistryRecordRevised(Patient patientRequestMessage,Person personRequestMessage, HealthEntity healthEntity){
 		
 	}
 	
