@@ -7,6 +7,7 @@ package com.janpix.rup.empi
 class MatchRecord extends Object {
 	def grailsApplication
 	
+	
 	static final String TYPE_LEVEL_HIGH 		= 'H'
 	static final String TYPE_LEVEL_MEDIUM 		= 'M'
 	static final String TYPE_LEVEL_LOW 		= 'L'
@@ -15,11 +16,11 @@ class MatchRecord extends Object {
 	Person person
 	Double matchPercentage
 	
+	protected MatchRecord(){}
 	MatchRecord(Person p, Double percentage){
 		this.person = p
 		this.matchPercentage = percentage
 	}
-	 
 	
 	/**
 	 * Devuelve el nivel de matcheo del registro

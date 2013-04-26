@@ -6,6 +6,7 @@ import com.janpix.rup.services.helpers.Hl7v3MessageHelper
 import com.janpix.rup.services.mappings.PIXContractMapper
 import org.springframework.web.servlet.i18n.SessionLocaleResolver
 import com.janpix.rup.infrastructure.I18nHelper
+import com.janpix.rup.empi.MatchRecord
 
 
 
@@ -40,4 +41,5 @@ beans = {
 		actualDate = ref(actualDate)
 	}
 	
+
 }

@@ -15,7 +15,6 @@ import com.janpix.rup.exceptions.identifier.DuplicateIdentifierException
 import com.janpix.rup.exceptions.identifier.IdentifierNotFoundException
 import com.janpix.rup.services.contracts.ACKMessage;
 import com.janpix.rup.services.contracts.ACKMessage.TypeCode;
-import org.springframework.context.support.DefaultMessageSourceResolvable
 
  
 class PixManagerServiceTests extends GroovyTestCase {
@@ -28,10 +27,11 @@ class PixManagerServiceTests extends GroovyTestCase {
 	def uuidGenerator
 	def pixManagerService
 	def messageSource
+	def i18nMessage
 	
 	Patient patient
 	Person person
-	def healthEntity1,healthEntity2,healthEntity3,rup
+	def healthEntity1,healthEntity2,healthEntity3,healthEntity4,rup
 	def city1,city2,city3,city4,city5
 	def assingingAuthorityArgentina
 	
@@ -54,6 +54,8 @@ class PixManagerServiceTests extends GroovyTestCase {
 		healthEntity2.save(flush:true,failOnError:true)
 		healthEntity3 = new HealthEntity(name:"Entidad Sanitaria 3")
 		healthEntity3.save(flush:true,failOnError:true)
+		healthEntity4 = new HealthEntity(name:"Entidad Sanitaria 4")
+		healthEntity4.save(flush:true,failOnError:true)
 		rup			 = new AuthorityRUP(name:"Registro Único de Pacientes ")
 		rup.save(flush:true,failOnError:true)
 		
@@ -157,7 +159,7 @@ class PixManagerServiceTests extends GroovyTestCase {
 		
 		//Verifico ACK
 		assertEquals(TypeCode.SuccededCreation,ack.typeCode)
-		assertEquals(messageSource.getMessage(new DefaultMessageSourceResolvable("pixmanager.ackmessage.succededcreation"),null),ack.text)
+		assertEquals(i18nMessage("pixmanager.ackmessage.creation.succeded"),ack.text)
 		
 		
 		def patients = Patient.list()
@@ -178,7 +180,34 @@ class PixManagerServiceTests extends GroovyTestCase {
 	 * Lo que va a hacer es agregar el identificador al paciente
 	 */
 	void testCreateHighMatchingPatient(){
+		//Creo una persona con los mismos datos que patient
+		def p = new Person(givenName: new PersonName(firstName:"Martín", lastName:"Barnech",motherLastName:"Mannino"),
+			birthdate: new ExtendedDate(precission:ExtendedDate.TYPE_PRECISSION_DAY,date:Date.parse( "yyyy-M-d", "1987-01-16" )),
+			administrativeSex:Person.TYPE_SEX_MALE,
+			birthplace:city1,
+			)
+		p.addToAddresses(new Address(street:"Constitución",number:"2213",zipCode:"6700",city:city1))
+		p.addToIdentifiers(new Identifier(type:Identifier.TYPE_IDENTIFIER_DNI,number:"32850137",assigningAuthority:assingingAuthorityArgentina))
+
 		
+		ACKMessage ack = pixManagerService.patientRegistryRecordAdded(p,healthEntity4,"F123456")
+		//Verifico ACK
+		assertEquals(TypeCode.SuccededInsertion,ack.typeCode)
+		assertEquals(i18nMessage("pixmanager.ackmessage.succededinsertion"),ack.text)
+		
+		
+		def patients = Patient.list()
+		//1 paciente. El creado en setup que se le agrego el identificador
+		assertEquals(1,patients.size())
+		def createdPatient = patients.find{it.identityDocument().number == "32900250"}
+		assertEquals("Magneres",createdPatient.givenName.lastName)
+		
+		//Verifico que tenga 4 identificadores (los 3 anteriores mas el nuevo)
+		assert createdPatient.identifiers.size() == 4
+		def identifier = createdPatient.identifiers.find{it.type == Identifier.TYPE_IDENTIFIER_PI && it.assigningAuthority == healthEntity4}
+		assertEquals(Identifier.TYPE_IDENTIFIER_PI,identifier.type)
+		assertEquals("F123456",identifier.number)
+		assertEquals(healthEntity4,identifier.assigningAuthority)
 	}
 	
 	/**

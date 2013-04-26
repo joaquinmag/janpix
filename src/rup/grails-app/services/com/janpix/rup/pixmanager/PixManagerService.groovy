@@ -35,18 +35,18 @@ class PixManagerService {
 			if (matchedPatients.empty) {	
 				def patient = EMPIService.createPatient(patientRequestMessage)
 				EMPIService.addEntityIdentifierToPatient(patient, healthEntity, organizationId)
-				return new ACKMessage(typeCode: TypeCode.SuccededCreation, text:i18nMessage("pixmanager.ackmessage.succededcreation"))	
+				return new ACKMessage(typeCode: TypeCode.SuccededCreation, text:i18nMessage("pixmanager.ackmessage.creation.succeded"))	
 			}
 			
 			//El paciente tiene un alto matcheo
 			MatchRecord record = matchedPatients.find { it.matchLevel == MatchRecord.TYPE_LEVEL_HIGH }
 			if (record) {
 				EMPIService.addEntityIdentifierToPatient(record.person, healthEntity, organizationId)
-				return new ACKMessage(typeCode: TypeCode.SuccededInsertion, text: "")
+				return new ACKMessage(typeCode: TypeCode.SuccededInsertion, text: i18nMessage("pixmanager.ackmessage.insertion.succeded"))
 			}
 			
 			// Si llega hasta acá quedan pacientes con matcheo medio. Se debe retornar un response message con error.
-			return new ACKMessage(typeCode:TypeCode.PossibleMatchingPatientsError,text:"")
+			return new ACKMessage(typeCode:TypeCode.PossibleMatchingPatientsError,text:i18nMessage("pixmanager.ackmessage.poosiblematching.error"))
 		
 		}
 		catch(ShortDemographicDataException e) {
