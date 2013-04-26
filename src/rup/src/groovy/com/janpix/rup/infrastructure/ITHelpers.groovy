@@ -7,3 +7,9 @@ class UUIDGenerator {
 		return { randomUUID() as String }
 	}
 }
+
+class DateHelper { 
+	static def getActualDate() {
+		return { new Date() }
+	}
+}

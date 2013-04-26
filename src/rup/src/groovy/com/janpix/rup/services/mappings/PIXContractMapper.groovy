@@ -11,6 +11,7 @@ import com.janpix.rup.empi.Person
 import com.janpix.rup.empi.PersonName
 import com.janpix.rup.empi.PhoneNumber
 import com.janpix.rup.exceptions.MessageMappingException
+import com.janpix.rup.services.contracts.ACKMessage;
 
 /**
  * Maps domain objects to PIX Web service
@@ -18,6 +19,14 @@ import com.janpix.rup.exceptions.MessageMappingException
 class PIXContractMapper {
 	
 	def placeService
+	def hl7Helper
+	def actualDate
+	
+	MCCIIN000002UV01 mapACKMessageToHL7AcceptAcknowledgmentMessage(ACKMessage ackMessage, II messageIdentifier) {
+		def ackHl7 = new MCCIIN000002UV01()
+		ackHl7.id = messageIdentifier
+		ackHl7.creationTime = buildHl7DateTime(actualDate())
+	}
 
 	/**
 	 * maps PRPAIN201301UV02 message to Person
