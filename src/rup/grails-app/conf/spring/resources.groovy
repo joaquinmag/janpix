@@ -14,16 +14,16 @@ beans = {
 		bean.factoryMethod = "getActualDate"
 	}
 	
+	hl7Helper(Hl7v3MessageHelper) {
+		uuidGenerator = ref(uuidGenerator)
+	}
+	
 	placeService(PlaceService)
 	
 	pixContractMapper(PIXContractMapper) {
 		placeService = ref(placeService)
 		hl7Helper = ref(hl7Helper)
 		actualDate = ref(actualDate)
-	}
-	
-	hl7Helper(Hl7v3MessageHelper) {
-		uuidGenerator = ref(uuidGenerator)
 	}
 	
 }
