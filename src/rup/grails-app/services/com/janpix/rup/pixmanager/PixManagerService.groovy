@@ -33,15 +33,14 @@ class PixManagerService {
 				def patient = EMPIService.createPatient(patientRequestMessage)
 				EMPIService.addEntityIdentifierToPatient(patient, healthEntity, organizationId)
 				//TODO armar response message con ok
-				return new ACKMessage()
+				return new ACKMessage(typeCode: TypeCode.SuccededCreation, text:"")
 			}
 			
 			//El paciente tiene un alto matcheo
 			MatchRecord record = matchedPatients.find { it.matchLevel == MatchRecord.TYPE_LEVEL_HIGH }
 			if (record) {
 				EMPIService.addEntityIdentifierToPatient(record.person, healthEntity, organizationId)
-				//TODO armar response message con message ok
-				return new ACKMessage()
+				return new ACKMessage(typeCode: TypeCode.SuccededInsertion, text: "")
 			}
 			
 			// Si llega hasta acá quedan pacientes con matcheo medio. Se debe retornar un response message con error.
