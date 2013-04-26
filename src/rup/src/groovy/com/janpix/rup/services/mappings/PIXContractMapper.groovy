@@ -25,7 +25,7 @@ class PIXContractMapper {
 	MCCIIN000002UV01 mapACKMessageToHL7AcceptAcknowledgmentMessage(ACKMessage ackMessage, II messageIdentifier) {
 		def ackHl7 = new MCCIIN000002UV01()
 		ackHl7.id = messageIdentifier
-		ackHl7.creationTime = buildHl7DateTime(actualDate())
+		ackHl7.creationTime = hl7Helper.buildHl7DateTime(actualDate())
 	}
 
 	/**
