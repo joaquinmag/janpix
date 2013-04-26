@@ -111,6 +111,10 @@ class EMPIService {
 		if(!existsPatient(p)){
 			throw new DontExistingPatientException(message:"No existe ningun paciente que contenga el UUID pasado")
 		}
+		//Verifico que ese identificador no exista ya
+		if(Identifier.findWhere(type:Identifier.TYPE_IDENTIFIER_PI,number:peId,assigningAuthority:he) != null)
+			throw new DuplicateIdentifierException("Ya se encuentra agregado el identificador ${peId} para la entidad sanitaria ${he}")
+			
 		def identifier = new Identifier(type:Identifier.TYPE_IDENTIFIER_PI,number:peId,assigningAuthority:he)
 		if(!identifier.validate()){
 			throw new IdentifierNotValidException("El identificador pasado contiene errores de validación")
@@ -119,6 +123,7 @@ class EMPIService {
 		if(p.identifiers.contains(identifier) || (p.identifiers.find{it.assigningAuthority == he} != null)){
 			throw new DuplicateIdentifierException("Ya se encuentra agregado un identificador para la entidad sanitaria ${he}")
 		}
+		
 		p.addToIdentifiers(identifier)
 		return p
 	}
@@ -141,8 +146,6 @@ class EMPIService {
 		
 		if(newId == oldId) {return}
 				
-		//Verifico que el nuevo identificador NO exista ya asignado
-		//TODO ver de ponerlo en la clase Identifier como un "validator unique"
 		if(Identifier.findWhere(type:Identifier.TYPE_IDENTIFIER_PI,number:newId,assigningAuthority:he) != null){
 			throw new DuplicateIdentifierException()
 		}

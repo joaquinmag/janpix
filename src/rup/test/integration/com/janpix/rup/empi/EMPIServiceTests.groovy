@@ -294,6 +294,28 @@ class EMPIServiceTests extends GroovyTestCase {
 			
 		}
 	}
+	/**
+	 * Testea que falle el agregado de un nuevo identificador debido a que 
+	 * ya existe ese mismo identificador para otro paciente creado por la misma entidad sanitaria
+	 */
+	void testFailAddNewIdentifierBecauseAlreadyExistsInOtherPatient(){
+		//Primero creo 2 pacientes, cada uno con su identificador
+		def returnedPatient = EMPIService.createPatient(person)
+		def patientEntity1Id = "IDH1001"
+		EMPIService.addEntityIdentifierToPatient(returnedPatient,healthEntity1,patientEntity1Id)
+		
+		def otherPatient = EMPIService.createPatient(
+						new Person(givenName: new PersonName(firstName:"Maria", lastName:"Juarez",motherLastName:"Rodriguez"),
+									birthdate: new ExtendedDate(precission:ExtendedDate.TYPE_PRECISSION_DAY,date:Date.parse( "yyyy-M-d", "1977-01-26" )),
+									administrativeSex:Person.TYPE_SEX_FEMALE,
+									birthplace:city1,
+						)
+						)
+		def patientEntity2Id = "IDH1001"
+		shouldFail(DuplicateIdentifierException) {
+			EMPIService.addEntityIdentifierToPatient(otherPatient,healthEntity1,patientEntity2Id)
+		}
+	}
 	
 	/**
 	 * Testea la correcta obtencion de un paciente que se busca por el id que tiene 
