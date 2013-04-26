@@ -31,6 +31,9 @@ class PIXContractMapper {
 		
 		def messageName = (MCCIIN000002UV01.class.getAnnotation(XmlRootElement) as XmlRootElement).name()
 		ackHl7.interactionId = hl7Helper.buildInteractionId(ackHl7.messageName)
+		ackHl7.processingCode = hl7Helper.buildProcessingCode()
+		ackHl7.processingModeCode = hl7Helper.buildProcessingModeCode()
+		ackHl7.acceptAckCode = hl7Helper.buildAcceptAckCode()
 	}
 
 	/**
