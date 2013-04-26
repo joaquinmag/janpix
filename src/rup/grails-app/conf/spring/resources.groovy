@@ -5,6 +5,9 @@ import com.janpix.rup.pixmanager.PlaceService
 import com.janpix.rup.services.helpers.Hl7v3MessageHelper
 import com.janpix.rup.services.mappings.PIXContractMapper
 import org.springframework.web.servlet.i18n.SessionLocaleResolver
+import com.janpix.rup.infrastructure.I18nHelper
+
+
 
 beans = {
 	localeResolver(SessionLocaleResolver) {
@@ -19,6 +22,10 @@ beans = {
 	
 	actualDate(DateHelper) { bean ->
 		bean.factoryMethod = "getActualDate"
+	}
+	
+	i18nMessage(I18nHelper) { bean ->
+		bean.factoryMethod = "getDefaultMessageResolver"
 	}
 	
 	hl7Helper(Hl7v3MessageHelper) {
