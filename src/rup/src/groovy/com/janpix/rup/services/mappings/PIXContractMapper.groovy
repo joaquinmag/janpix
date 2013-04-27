@@ -23,10 +23,10 @@ class PIXContractMapper {
 	def hl7Helper
 	def actualDate
 	
-	MCCIIN000002UV01 mapACKMessageToHL7AcceptAcknowledgmentMessage(ACKMessage ackMessage, II messageIdentifier) {
+	MCCIIN000002UV01 mapACKMessageToHL7AcceptAcknowledgmentMessage(ACKMessage ackMessage, II messageIdentifier, MCCIMT000200UV01Receiver receiver, MCCIMT000200UV01Sender sender) {
 		def ackHl7 = new MCCIIN000002UV01()
 
-		ackHl7.id = messageIdentifier
+		ackHl7.id = messageIdentifier //FIXME esto tiene que ser un valor único
 		ackHl7.creationTime = hl7Helper.buildHl7DateTime(actualDate())
 		
 		def messageName = (MCCIIN000002UV01.class.getAnnotation(XmlRootElement) as XmlRootElement).name()
@@ -34,6 +34,41 @@ class PIXContractMapper {
 		ackHl7.processingCode = hl7Helper.buildProcessingCode()
 		ackHl7.processingModeCode = hl7Helper.buildProcessingModeCode()
 		ackHl7.acceptAckCode = hl7Helper.buildAcceptAckCode()
+		ackHl7.receiver.add(receiver)
+		ackHl7.sender = sender
+		def ackHl7spec = buildAcknowledgement(ackMessage)
+		ackHl7spec.targetMessage = buildTargetMessage(messageIdentifier)
+		ackHl7.acknowledgement.add(ackHl7spec)
+	}
+	
+	private MCCIMT000200UV01Acknowledgement buildAcknowledgement(ACKMessage ackMessage) {
+		def ackHl7spec = new MCCIMT000200UV01Acknowledgement()
+		switch (ackMessage.typeCode) {
+			case ACKMessage.TypeCode.SuccededCreation:
+			case ACKMessage.TypeCode.SuccededInsertion:
+				ackHl7spec.typeCode = new CS(code:"CA")
+				break
+			case ACKMessage.TypeCode.PossibleMatchingPatientsError:
+			case ACKMessage.TypeCode.ShortDemographicError:
+			case ACKMessage.TypeCode.IdentifierError:
+				ackHl7spec.typeCode = new CS(code:"CR")
+				break
+			default:
+				ackHl7spec.typeCode = new CS(code:"CE")
+		}
+		ackHl7spec.acknowledgementDetail.add(buildAcknowledgementDetail(ackMessage))
+	}
+	
+	private MCCIMT000200UV01TargetMessage buildTargetMessage(II identifier) {
+		def targetMessage = new MCCIMT000200UV01TargetMessage()
+		targetMessage.id = identifier
+		return targetMessage
+	}
+	
+	private MCCIMT000200UV01AcknowledgementDetail buildAcknowledgementDetail(ACKMessage ackMessage) {
+		def ackDetail = new MCCIMT000200UV01AcknowledgementDetail()
+		ackDetail.code = new CE(code: ackMessage.typeCode)
+		ackDetail.text = new ST()
 	}
 
 	/**
