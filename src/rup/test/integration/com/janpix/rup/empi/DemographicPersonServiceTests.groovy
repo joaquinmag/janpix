@@ -13,6 +13,7 @@ import com.janpix.rup.exceptions.*
 class DemographicPersonServiceTests extends GroovyTestCase {
 	
 	def demographicPersonService
+	def factoryMatchRecord
 	def p1
 	def p2
 	def p3
@@ -33,6 +34,7 @@ class DemographicPersonServiceTests extends GroovyTestCase {
 		demographicPersonService.grailsApplication =  new org.codehaus.groovy.grails.commons.DefaultGrailsApplication()
 		demographicPersonService.identityComparatorService = new IdentityComparatorService()
 		demographicPersonService.identityComparatorService.grailsApplication =  new org.codehaus.groovy.grails.commons.DefaultGrailsApplication()
+		demographicPersonService.factoryMatchRecord = factoryMatchRecord
 				
 		//Creo algunas ciudades
 		createCities()

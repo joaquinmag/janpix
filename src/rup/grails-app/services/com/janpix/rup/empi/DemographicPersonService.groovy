@@ -7,6 +7,7 @@ package com.janpix.rup.empi
 class DemographicPersonService {
 	def grailsApplication
 	def identityComparatorService
+	def factoryMatchRecord
 	
 	List<MatchRecord> matchedPersons = []
 	List<MatchRecord> possibleMatchedPersons = []
@@ -30,7 +31,8 @@ class DemographicPersonService {
 		log.info("Verificando matcheos de "+p+" entre "+candidates.size()+" candidatos ...")
 		candidates.each{
 			def percentage = identityComparatorService.calculatePercentageOfMatch(p,it)
-			def matchRecord = new MatchRecord(it,percentage)
+			//def matchRecord = new MatchRecord(it,percentage)
+			def matchRecord = factoryMatchRecord.buildWithPersonAndPercentage(it,percentage)
 			log.info("${matchRecord}")
 			if( percentage > upperLimit){
 				matchedPersons.add(matchRecord)

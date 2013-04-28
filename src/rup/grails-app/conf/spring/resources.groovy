@@ -6,7 +6,7 @@ import com.janpix.rup.services.helpers.Hl7v3MessageHelper
 import com.janpix.rup.services.mappings.PIXContractMapper
 import org.springframework.web.servlet.i18n.SessionLocaleResolver
 import com.janpix.rup.infrastructure.I18nHelper
-import com.janpix.rup.empi.MatchRecord
+import com.janpix.rup.empi.FactoryMatchRecord
 
 
 
@@ -39,6 +39,10 @@ beans = {
 		placeService = ref(placeService)
 		hl7Helper = ref(hl7Helper)
 		actualDate = ref(actualDate)
+	}
+	
+	factoryMatchRecord(FactoryMatchRecord){
+		grailsApplication = ref('grailsApplication')
 	}
 	
 

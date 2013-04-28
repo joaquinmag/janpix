@@ -13,3 +13,4 @@ class DateHelper {
 		return { new Date() }
 	}
 }
+

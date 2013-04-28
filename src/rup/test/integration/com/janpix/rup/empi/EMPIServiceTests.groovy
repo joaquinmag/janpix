@@ -21,6 +21,7 @@ class EMPIServiceTests extends GroovyTestCase {
 	def grailsApplication
 	def identityComparatorService
 	def uuidGenerator
+	def factoryMatchRecord
 	
 	def patient
 	def person
@@ -39,6 +40,7 @@ class EMPIServiceTests extends GroovyTestCase {
 		EMPIService.demographicPersonService.grailsApplication =  grailsApplication
 		EMPIService.demographicPersonService.identityComparatorService = identityComparatorService
 		EMPIService.demographicPersonService.identityComparatorService.grailsApplication =  grailsApplication
+		EMPIService.demographicPersonService.factoryMatchRecord = factoryMatchRecord
 		
 		//Creo 2 entidades sanitarias
 		healthEntity1 = new HealthEntity(name:"Entidad Sanitaria 1")

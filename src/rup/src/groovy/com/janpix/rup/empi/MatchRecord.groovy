@@ -5,8 +5,8 @@ package com.janpix.rup.empi
  *
  */
 class MatchRecord extends Object {
-	def grailsApplication
-	
+	def upperBound
+	def lowerBound
 	
 	static final String TYPE_LEVEL_HIGH 		= 'H'
 	static final String TYPE_LEVEL_MEDIUM 		= 'M'
@@ -16,7 +16,8 @@ class MatchRecord extends Object {
 	Person person
 	Double matchPercentage
 	
-	protected MatchRecord(){}
+
+	
 	MatchRecord(Person p, Double percentage){
 		this.person = p
 		this.matchPercentage = percentage
@@ -31,10 +32,7 @@ class MatchRecord extends Object {
 	 * LEVEL_UNKNOWN: No se contaba con información suficiente para calcular el nivel
 	 * 
 	 */
-	String getMatchLevel(){
-		def upperBound = grailsApplication.config.demographic.upperBound as Double
-		def lowerBound = grailsApplication.config.demographic.lowerBound as Double
-		
+	String getMatchLevel(){		
 		if(!this.matchPercentage || !upperBound || !lowerBound){
 			return MatchRecord.TYPE_LEVEL_UNKNOWKN
 		}
