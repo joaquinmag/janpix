@@ -39,6 +39,8 @@ class PIXContractMapper {
 		def ackHl7spec = buildAcknowledgement(ackMessage)
 		ackHl7spec.targetMessage = buildTargetMessage(messageIdentifier)
 		ackHl7.acknowledgement.add(ackHl7spec)
+		
+		return ackHl7
 	}
 	
 	private MCCIMT000200UV01Acknowledgement buildAcknowledgement(ACKMessage ackMessage) {
