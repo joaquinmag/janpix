@@ -28,6 +28,7 @@ class PixManagerServiceTests extends GroovyTestCase {
 	def pixManagerService
 	def messageSource
 	def i18nMessage
+	def factoryMatchRecord
 	
 	Patient patient
 	Person person
@@ -46,6 +47,8 @@ class PixManagerServiceTests extends GroovyTestCase {
 		EMPIService.demographicPersonService.grailsApplication =  grailsApplication
 		EMPIService.demographicPersonService.identityComparatorService = identityComparatorService
 		EMPIService.demographicPersonService.identityComparatorService.grailsApplication =  grailsApplication
+		EMPIService.demographicPersonService.factoryMatchRecord = factoryMatchRecord
+		EMPIService.factoryMatchRecord = factoryMatchRecord
 		
 		//Creo 2 entidades sanitarias y el RUP
 		healthEntity1 = new HealthEntity(name:"Entidad Sanitaria 1")
@@ -193,17 +196,17 @@ class PixManagerServiceTests extends GroovyTestCase {
 		ACKMessage ack = pixManagerService.patientRegistryRecordAdded(p,healthEntity4,"F123456")
 		//Verifico ACK
 		assertEquals(TypeCode.SuccededInsertion,ack.typeCode)
-		assertEquals(i18nMessage("pixmanager.ackmessage.succededinsertion"),ack.text)
+		assertEquals(i18nMessage("pixmanager.ackmessage.insertion.succeded"),ack.text)
 		
 		
 		def patients = Patient.list()
 		//1 paciente. El creado en setup que se le agrego el identificador
 		assertEquals(1,patients.size())
-		def createdPatient = patients.find{it.identityDocument().number == "32900250"}
-		assertEquals("Magneres",createdPatient.givenName.lastName)
+		def createdPatient = patients.find{it.identityDocument().number == "32850137"}
+		assertEquals("Barnech",createdPatient.givenName.lastName)
 		
-		//Verifico que tenga 4 identificadores (los 3 anteriores mas el nuevo)
-		assert createdPatient.identifiers.size() == 4
+		//Verifico que tenga 4 identificadores (los 4 anteriores mas el nuevo)
+		assert createdPatient.identifiers.size() == 5
 		def identifier = createdPatient.identifiers.find{it.type == Identifier.TYPE_IDENTIFIER_PI && it.assigningAuthority == healthEntity4}
 		assertEquals(Identifier.TYPE_IDENTIFIER_PI,identifier.type)
 		assertEquals("F123456",identifier.number)

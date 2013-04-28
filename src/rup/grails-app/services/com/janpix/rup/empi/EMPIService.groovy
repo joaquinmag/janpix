@@ -19,6 +19,7 @@ import com.janpix.rup.exceptions.identifier.IdentifierNotValidException
 class EMPIService {
 	def demographicPersonService
 	def uuidGenerator
+	def factoryMatchRecord
 	
 	
 	/**
@@ -193,9 +194,9 @@ class EMPIService {
 		
 		//Paso de Person to Patient
 		List<MatchRecord> matchedPatients = []
-		matchedPersons.each {
+		matchedPersons.each { MatchRecord it->
 			def patient = getPatientFromPerson(it.person)
-			matchedPatients.add(new MatchRecord(patient,it.matchPercentage))
+			matchedPatients.add(factoryMatchRecord.buildWithPersonAndPercentage(patient,it.matchPercentage))
 		}
 		
 		return matchedPatients

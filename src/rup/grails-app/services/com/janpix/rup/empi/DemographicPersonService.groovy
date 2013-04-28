@@ -31,7 +31,6 @@ class DemographicPersonService {
 		log.info("Verificando matcheos de "+p+" entre "+candidates.size()+" candidatos ...")
 		candidates.each{
 			def percentage = identityComparatorService.calculatePercentageOfMatch(p,it)
-			//def matchRecord = new MatchRecord(it,percentage)
 			def matchRecord = factoryMatchRecord.buildWithPersonAndPercentage(it,percentage)
 			log.info("${matchRecord}")
 			if( percentage > upperLimit){
