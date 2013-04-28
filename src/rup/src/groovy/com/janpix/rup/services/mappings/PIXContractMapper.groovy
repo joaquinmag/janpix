@@ -14,7 +14,7 @@ import com.janpix.rup.empi.PhoneNumber
 import com.janpix.rup.exceptions.MessageMappingException
 import com.janpix.rup.services.contracts.ACKMessage;
 
-/**
+/**	
  * Maps domain objects to PIX Web service
  */
 class PIXContractMapper {
@@ -64,8 +64,7 @@ class PIXContractMapper {
 	
 	private MCCIMT000200UV01AcknowledgementDetail buildAcknowledgementDetail(ACKMessage ackMessage) {
 		def ackDetail = new MCCIMT000200UV01AcknowledgementDetail()
-		ackDetail.code = new CE(code: ackMessage.typeCode)
-		ackDetail.text = new ST()
+		ackDetail.code = new CE(code: ackMessage.typeCode.exceptionCode())
 	}
 
 	/**
