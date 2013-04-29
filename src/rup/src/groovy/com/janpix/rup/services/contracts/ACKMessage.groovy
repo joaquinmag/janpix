@@ -6,10 +6,13 @@ class ACKMessage {
 	public enum TypeCode {
 		SuccededCreation(1),
 		SuccededInsertion(2),
-		PossibleMatchingPatientsError(3),
-		ShortDemographicError(4),
-		IdentifierError(5),
-		InternalError(6)
+		SuccededUpdated(3),
+		PossibleMatchingPatientsError(4),
+		ShortDemographicError(5),
+		IdentifierError(6),
+		InternalError(7),
+		DuplicatePatientError(8),
+		DontExistingPatientError(9)
 		
 		TypeCode(int exceptionCode) { this.exceptionCode = exceptionCode }
 		private final int exceptionCode

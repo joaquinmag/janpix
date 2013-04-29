@@ -4,6 +4,7 @@ import com.janpix.rup.exceptions.DontExistingPatientException
 import com.janpix.rup.exceptions.ExistingPatientException
 import com.janpix.rup.exceptions.RUPException
 import com.janpix.rup.exceptions.ShortDemographicDataException
+import com.janpix.rup.exceptions.identifier.DuplicateAuthorityIdentifierException
 import com.janpix.rup.exceptions.identifier.DuplicateIdentifierException
 import com.janpix.rup.exceptions.identifier.IdentifierNotFoundException
 import com.janpix.rup.exceptions.identifier.IdentifierNotValidException
@@ -53,11 +54,11 @@ class EMPIService {
 	 * @throw DontExistingPatientException Si el paciente pasado no existia
 	 */
 	def updateDemographicDataPatient(Patient p, Person person){
-		def patient = findPatientByUUID(p.uniqueId)
-		if(!patient){
+		if(!existsPatient(p)){
 			throw new DontExistingPatientException(message:"No existe ningun paciente que contenga el UUID pasado")
 		}
 		
+		def patient = findPatientByUUID(p.uniqueId)
 		person.properties.each{prop,val->
 			if(val){
 				//Las propiedades readonly son las que terminan con la palabra "Id"
@@ -75,7 +76,7 @@ class EMPIService {
 
 		//Si el paciente matchea con algun otro vuelvo los cambios para atras
 		if( matchPatient(patient)){
-			throw new RUPException("Existen pacientes que concuerdan con el paciente actualizado")		
+			throw new ExistingPatientException("Existen pacientes que concuerdan con el paciente actualizado")		
 		}
 
 		return patient
@@ -105,7 +106,8 @@ class EMPIService {
 	 * Agrega un identificador de entidad saniatria a un paciente existente en el eMPI
 	 * @return Patient p: el paciente al que se le agrego el identificador
 	 * @throw DontExistingPatientException Si el paciente pasado no existia
-	 * @throw DuplicateIdentifierException Si el paciente ya tenia agregado ese identificador o cualquier identificador para dicha entidad sanitaria
+	 * @throw DuplicateIdentifierException Si el identificador a agregar ya existe en otro paciente
+	 * @throw DuplicateAuthorityIdentifierException Si el paciente ya tiene un identificador asignado para esa Autoridad de Asignación
 	 * @throw IdentifierNotValidException Si los datos pasados son invalidos para crear un nuevo identificador
 	 */
 	def addEntityIdentifierToPatient(Patient p,HealthEntity he, String peId){
@@ -114,7 +116,7 @@ class EMPIService {
 		}
 		//Verifico que ese identificador no exista ya
 		if(Identifier.findWhere(type:Identifier.TYPE_IDENTIFIER_PI,number:peId,assigningAuthority:he) != null)
-			throw new DuplicateIdentifierException("Ya se encuentra agregado el identificador ${peId} para la entidad sanitaria ${he}")
+			throw new DuplicateIdentifierException("Ya se encuentra agregado el identificador ${peId} para la entidad sanitaria ${he} en otro paciente")
 			
 		def identifier = new Identifier(type:Identifier.TYPE_IDENTIFIER_PI,number:peId,assigningAuthority:he)
 		if(!identifier.validate()){
@@ -122,7 +124,7 @@ class EMPIService {
 		}
 		//Verifico que no contenga el identificador ya
 		if(p.identifiers.contains(identifier) || (p.identifiers.find{it.assigningAuthority == he} != null)){
-			throw new DuplicateIdentifierException("Ya se encuentra agregado un identificador para la entidad sanitaria ${he}")
+			throw new DuplicateAuthorityIdentifierException("Ya se encuentra agregado un identificador para la entidad sanitaria ${he}")
 		}
 		
 		p.addToIdentifiers(identifier)
@@ -140,7 +142,7 @@ class EMPIService {
 	 * @throw IdentifierException si no existe el identificador viejo para esa entidad
 	 * @return
 	 */
-	def updateEntityIdentifierToPatient(Patient p,HealthEntity he,oldId,newId){
+	def updateEntityIdentifierToPatient(Patient p,HealthEntity he,newId,oldId=null){
 		if(!existsPatient(p)){
 			throw new DontExistingPatientException(message:"No existe ningun paciente que contenga el UUID pasado")
 		}
@@ -151,21 +153,11 @@ class EMPIService {
 			throw new DuplicateIdentifierException()
 		}
 		//Busco el identificador en el paciente
-		def findedIdentifier
-		def searchedIdentifier = new Identifier(type:Identifier.TYPE_IDENTIFIER_PI,number:oldId,assigningAuthority:he)
-		p.identifiers.collect {
-			if(it == searchedIdentifier){
-				//it.number = newId
-				findedIdentifier = it
-			}
-		}
+		Identifier findedIdentifier = p.identifiers.find {it.type == Identifier.TYPE_IDENTIFIER_PI && it.assigningAuthority == he}
 		if(findedIdentifier)
 			findedIdentifier.number = newId
 		else
 			throw new IdentifierNotFoundException("No existe el identificador pasado en la entidad sanitaria ${he}")
-			
-		//Grabo el paciente con sus cambios
-		//p.save(failOnError:true)
 		
 	}
 	

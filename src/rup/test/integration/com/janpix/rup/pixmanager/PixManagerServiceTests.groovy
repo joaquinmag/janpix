@@ -216,7 +216,117 @@ class PixManagerServiceTests extends GroovyTestCase {
 	/**
 	 * Testea que falle la creacion del paciente porque tiene varios matcheos
 	 */
-	void testFailCreatePatientBecauseMuchMatched(){
+	void testFailCreatePatientBecauseMuchMatched(){		
+		//Creo una persona parecida al paciente que ya existe
+		def p = new Person(givenName: new PersonName(firstName:"Martín Gonzalo", lastName:"Varnech",motherLastName:"Mannino"),
+			birthdate: new ExtendedDate(precission:ExtendedDate.TYPE_PRECISSION_DAY,date:Date.parse( "yyyy-M-d", "1987-01-16" )),
+			administrativeSex:Person.TYPE_SEX_MALE,
+			birthplace:city1,
+			)
+		p.addToAddresses(new Address(street:"Constitución",number:"2213",zipCode:"6700",city:city1))
+		p.addToIdentifiers(new Identifier(type:Identifier.TYPE_IDENTIFIER_DNI,number:"32850139",assigningAuthority:assingingAuthorityArgentina))
+
+		
+		ACKMessage ack = pixManagerService.patientRegistryRecordAdded(p,healthEntity4,"F123456")
+		//Verifico ACK
+		assertEquals(TypeCode.PossibleMatchingPatientsError,ack.typeCode)
+		assertEquals(i18nMessage("pixmanager.ackmessage.possiblematching.error"),ack.text)
+		
+		def patients = Patient.list()
+		//1 paciente. El que ya existia
+		assertEquals(1,patients.size())
+
+	}
+	
+	/**
+	 * Testea que se actualice correctamente la informacion demografica y se agreguen los identificadores nuevos
+	 */
+	void testUpdateDemographicDataAndIdentifiers(){
+		Person p = new Person(givenName: new PersonName(firstName:"Joaquin Ignacio", lastName:"Magneres"),
+			birthdate: new ExtendedDate(precission:ExtendedDate.TYPE_PRECISSION_DAY,date:Date.parse( "yyyy-M-d", "1987-05-01" )),
+			administrativeSex:Person.TYPE_SEX_AMBIGUOS,
+			birthplace:city2
+			)
+		//p.addToAddresses(new Address(street:"Zapata",number:"346",floor:"5",zipCode:"6700",city:city2))
+		p.addToIdentifiers(new Identifier(type:Identifier.TYPE_IDENTIFIER_DNI,number:"33850139",assigningAuthority:assingingAuthorityArgentina))
+		p.addToIdentifiers(new Identifier(type:Identifier.TYPE_IDENTIFIER_PI,number:"YMCA123",assigningAuthority:healthEntity4))
+		
+		ACKMessage ack = pixManagerService.patientRegistryRecordRevised(patient,p,healthEntity4)
+		
+		//ACK
+		assert TypeCode.SuccededUpdated == ack.typeCode
+		assert i18nMessage("pixmanager.ackmessage.updated.succeded") == ack.text
+		
+		//Patient
+		assert "${patient.givenName}" 				== "Magneres, Joaquin Ignacio"
+		assert patient.givenName.motherLastName		== "Mannino"
+		assert patient.birthdate					== new ExtendedDate(precission:ExtendedDate.TYPE_PRECISSION_DAY,date:Date.parse( "yyyy-M-d", "1987-05-01" ))
+		assert patient.administrativeSex			== Person.TYPE_SEX_AMBIGUOS
+		assert patient.birthplace					== city2
+		assert patient.identifiers.size()			== 5 //Los 4 de entidades sanitarias mas el documento
+		assert patient.identityDocument().number 	== "33850139"
+		
+		Identifier addedIdentifier = patient.identifiers.find {
+			it.type == Identifier.TYPE_IDENTIFIER_PI &&
+			it.assigningAuthority == healthEntity4 &&
+			it.number == "YMCA123"
+			 }
+		assertNotNull(addedIdentifier)
+		
+	}
+	
+	/**
+	 * Testea que se actualicen correctamente los identificadores que ya existian
+	 */
+	void testUpdateIdentifer(){
+		//Mando a actualizar el identificador
+		Person p = new Person()
+		p.addToIdentifiers(new Identifier(type:Identifier.TYPE_IDENTIFIER_PI,number:"Z321",assigningAuthority:healthEntity1))
+		ACKMessage ack = pixManagerService.patientRegistryRecordRevised(patient,p,healthEntity1)
+		
+		assert TypeCode.SuccededUpdated == ack.typeCode
+		assert i18nMessage("pixmanager.ackmessage.updated.succeded") == ack.text
+		
+		
+		assert patient.identifiers.size() == 4 //Los 4 que siempre tuvo (DNI + 3 entidades sanitarias)
+		Identifier updatedIdentifier = patient.identifiers.find {
+				it.type == Identifier.TYPE_IDENTIFIER_PI && 
+				it.assigningAuthority == healthEntity1 &&
+				it.number == "Z321"
+				 }
+		assertNotNull(updatedIdentifier)
+	}
+	
+	/**
+	 * Testea que falle la actualizacion de un paciente porque el mismo no existe
+	 */
+	void testFailUpdateBecauseNotExistingPatient(){
+		Patient p = new Patient(givenName: new PersonName(firstName:"Joaquin Ignacio", lastName:"Magneres"),
+			birthdate: new ExtendedDate(precission:ExtendedDate.TYPE_PRECISSION_DAY,date:Date.parse( "yyyy-M-d", "1987-05-01" )),
+			administrativeSex:Person.TYPE_SEX_AMBIGUOS,
+			birthplace:city2
+			)
+		p.addToAddresses(new Address(street:"Zapata",number:"346",floor:"5",zipCode:"6700",city:city2))
+		p.addToIdentifiers(new Identifier(type:Identifier.TYPE_IDENTIFIER_DNI,number:"33850139",assigningAuthority:assingingAuthorityArgentina))
+		p.addToIdentifiers(new Identifier(type:Identifier.TYPE_IDENTIFIER_PI,number:"YMCA123",assigningAuthority:healthEntity4))
+		
+		ACKMessage ack = pixManagerService.patientRegistryRecordRevised(p,p,healthEntity4)
+		
+		//ACK
+		assert TypeCode.DontExistingPatientError == ack.typeCode
+		
+	}
+	
+	/**
+	 * Testea que falle la actualizacion de un paciente porque el identificador agregado no es valido
+	 */
+	void testFailUpdateBecauseNotValidIdentifier(){
+		//Mando a actualizar el identificador
+		Person p = new Person()
+		p.addToIdentifiers(new Identifier(type:Identifier.TYPE_IDENTIFIER_PI,assigningAuthority:healthEntity1))
+		ACKMessage ack = pixManagerService.patientRegistryRecordRevised(patient,p,healthEntity1)
+		
+		assert TypeCode.IdentifierError == ack.typeCode
 		
 	}
 	

@@ -7,8 +7,10 @@ import com.janpix.rup.empi.MatchRecord
 import com.janpix.rup.empi.Patient
 import com.janpix.rup.empi.Person
 import com.janpix.rup.empi.MatchRecord.LevelMatchRecord;
+import com.janpix.rup.exceptions.DontExistingPatientException
 import com.janpix.rup.exceptions.ExistingPatientException
 import com.janpix.rup.exceptions.ShortDemographicDataException
+import com.janpix.rup.exceptions.identifier.DuplicateAuthorityIdentifierException
 import com.janpix.rup.exceptions.identifier.IdentifierException
 import com.janpix.rup.services.contracts.ACKMessage
 import com.janpix.rup.services.contracts.ACKMessage.TypeCode;
@@ -47,7 +49,7 @@ class PixManagerService {
 			}
 			
 			// Si llega hasta acá quedan pacientes con matcheo medio. Se debe retornar un response message con error.
-			return new ACKMessage(typeCode:TypeCode.PossibleMatchingPatientsError,text:i18nMessage("pixmanager.ackmessage.poosiblematching.error"))
+			return new ACKMessage(typeCode:TypeCode.PossibleMatchingPatientsError,text:i18nMessage("pixmanager.ackmessage.possiblematching.error"))
 		
 		}
 		catch(ShortDemographicDataException e) {
@@ -68,7 +70,38 @@ class PixManagerService {
 	 * Updates patient's information such as ids and demographic information.
 	 */
 	ACKMessage patientRegistryRecordRevised(Patient patientRequestMessage,Person personRequestMessage, HealthEntity healthEntity){
+		try{
+			//Actualizo informacion demografica
+			Patient updatedPatient = EMPIService.updateDemographicDataPatient(patientRequestMessage,personRequestMessage)
 		
+			//Actualizo ids de autoridad
+			Identifier heIdentifier = personRequestMessage.identifiers.find {it.type == Identifier.TYPE_IDENTIFIER_PI && it.assigningAuthority == healthEntity}
+			if(heIdentifier)
+				try{
+					EMPIService.addEntityIdentifierToPatient(patientRequestMessage,healthEntity,heIdentifier.number)
+				}
+				catch(DuplicateAuthorityIdentifierException e){
+					EMPIService.updateEntityIdentifierToPatient(patientRequestMessage,healthEntity,heIdentifier.number)
+				}
+				
+			return new ACKMessage(typeCode:TypeCode.SuccededUpdated,text:i18nMessage("pixmanager.ackmessage.updated.succeded"))
+		}
+		catch (DontExistingPatientException e) {
+			log.error("Exception : ${e.message}", e)
+			return new ACKMessage(typeCode:TypeCode.DontExistingPatientError, text: e.message)
+		}
+		catch (ExistingPatientException e) {
+			log.error("Exception : ${e.message}", e)
+			return new ACKMessage(typeCode:TypeCode.DuplicatePatientError, text: e.message)
+		}
+		catch(IdentifierException e){
+			log.debug("Exception IdentifierException : ${e.message}", e)
+			return new ACKMessage(typeCode:TypeCode.IdentifierError,text:e.message)
+		}
+		catch (Exception e) {
+			log.error("Exception : ${e.message}", e)
+			return new ACKMessage(typeCode:TypeCode.InternalError, text: e.message)
+		}
 	}
 	
 	/**
