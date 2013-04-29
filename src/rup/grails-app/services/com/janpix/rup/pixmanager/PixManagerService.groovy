@@ -6,6 +6,7 @@ import com.janpix.rup.empi.Identifier
 import com.janpix.rup.empi.MatchRecord
 import com.janpix.rup.empi.Patient
 import com.janpix.rup.empi.Person
+import com.janpix.rup.empi.MatchRecord.LevelMatchRecord;
 import com.janpix.rup.exceptions.ExistingPatientException
 import com.janpix.rup.exceptions.ShortDemographicDataException
 import com.janpix.rup.exceptions.identifier.IdentifierException
@@ -39,7 +40,7 @@ class PixManagerService {
 			}
 			
 			//El paciente tiene un alto matcheo
-			MatchRecord record = matchedPatients.find { it.matchLevel == MatchRecord.TYPE_LEVEL_HIGH }
+			MatchRecord record = matchedPatients.find { it.matchLevel == MatchRecord.LevelMatchRecord.High }
 			if (record) {
 				EMPIService.addEntityIdentifierToPatient(record.person, healthEntity, organizationId)
 				return new ACKMessage(typeCode: TypeCode.SuccededInsertion, text: i18nMessage("pixmanager.ackmessage.insertion.succeded"))

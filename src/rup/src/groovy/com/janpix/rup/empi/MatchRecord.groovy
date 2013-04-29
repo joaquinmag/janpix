@@ -5,18 +5,18 @@ package com.janpix.rup.empi
  *
  */
 class MatchRecord extends Object {
-	def upperBound
-	def lowerBound
 	
-	static final String TYPE_LEVEL_HIGH 		= 'H'
-	static final String TYPE_LEVEL_MEDIUM 		= 'M'
-	static final String TYPE_LEVEL_LOW 		= 'L'
-	static final String TYPE_LEVEL_UNKNOWKN 	= 'U'
+	public enum LevelMatchRecord{
+		High,
+		Medium,
+		Low,
+		Unknown
+	} 
 	
 	Person person
 	Double matchPercentage
-	
-
+	Double upperBound
+	Double lowerBound
 	
 	MatchRecord(Person p, Double percentage){
 		this.person = p
@@ -32,17 +32,17 @@ class MatchRecord extends Object {
 	 * LEVEL_UNKNOWN: No se contaba con información suficiente para calcular el nivel
 	 * 
 	 */
-	String getMatchLevel(){		
+	LevelMatchRecord getMatchLevel(){		
 		if(!this.matchPercentage || !upperBound || !lowerBound){
-			return MatchRecord.TYPE_LEVEL_UNKNOWKN
+			return LevelMatchRecord.Unknown
 		}
 		
 		if(this.matchPercentage > upperBound)
-			return MatchRecord.TYPE_LEVEL_HIGH
+			return LevelMatchRecord.High
 		else if(this.matchPercentage > lowerBound)
-			return MatchRecord.TYPE_LEVEL_MEDIUM
+			return LevelMatchRecord.Medium
 		else
-			return MatchRecord.TYPE_LEVEL_LOW	
+			return LevelMatchRecord.Low	
 	}
 	
 	
