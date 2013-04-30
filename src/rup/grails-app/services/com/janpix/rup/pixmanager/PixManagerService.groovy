@@ -142,7 +142,49 @@ class PixManagerService {
 		return identifiers
 	}
 
+	/* # Metodos Extendidos */
+	
+	/**
+	 * Crea un nuevo paciente sin validar matcheos
+	 * @param patientRequestMessage
+	 * @param healthEntity
+	 * @param organizationId
+	 * @return
+	 */
+	ACKMessage patientRegistryRecordAddedWithoutMatching(Person patientRequestMessage, HealthEntity healthEntity, String organizationId){
+		try {
+			def patient = EMPIService.createPatient(patientRequestMessage)
+			EMPIService.addEntityIdentifierToPatient(patient, healthEntity, organizationId)
+			return new ACKMessage(typeCode: TypeCode.SuccededCreation, text:i18nMessage("pixmanager.ackmessage.creation.succeded"))
+		}
+		catch(ShortDemographicDataException e) {
+			log.debug("Exception ShortDemografic : ${e.message}", e)
+			return new ACKMessage(typeCode:TypeCode.ShortDemographicError,text:e.message)
+		}
+		catch (DontExistingPatientException e) {
+			log.error("Exception : ${e.message}", e)
+			return new ACKMessage(typeCode:TypeCode.DontExistingPatientError, text: e.message)
+		}
+		catch (IdentifierException e) {
+			log.debug("Exception IdentifierException : ${e.message}", e)
+			return new ACKMessage(typeCode:TypeCode.IdentifierError,text:e.message)
+		}
+		catch (Exception e) {
+			log.error("Exception : ${e.message}", e)
+			return new ACKMessage(typeCode:TypeCode.InternalError, text: e.message)
+		}
+	}
 	
 	
+	List<Patient> getAllPossibleMatchedPatients(Person patientRequestMessage){
+		List<Patient> matchedPatients = []
+		List<MatchRecord> records = EMPIService.getAllMatchedPatients(patientRequestMessage, true)
+		
+		records.each { MatchRecord it->
+			matchedPatients.add( (Patient)it.person ) //Puedo castear porque ya se que tiene una persona
+		}
+		
+		return matchedPatients
+	}
 
 }

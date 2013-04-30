@@ -330,6 +330,54 @@ class PixManagerServiceTests extends GroovyTestCase {
 		
 	}
 	
+	/**
+	 * Testea la creacion forzada de un paciente aunque este matchee con otros
+	 */
+	void testCreatePatientEvenMatchWithOthers(){		
+		//Creo una persona parecida al paciente que ya existe
+		def p = new Person(givenName: new PersonName(firstName:"Martín Gonzalo", lastName:"Varnech",motherLastName:"Mannino"),
+			birthdate: new ExtendedDate(precission:ExtendedDate.TYPE_PRECISSION_DAY,date:Date.parse( "yyyy-M-d", "1987-01-16" )),
+			administrativeSex:Person.TYPE_SEX_MALE,
+			birthplace:city1,
+			)
+		p.addToAddresses(new Address(street:"Constitución",number:"2213",zipCode:"6700",city:city1))
+		p.addToIdentifiers(new Identifier(type:Identifier.TYPE_IDENTIFIER_DNI,number:"32850137",assigningAuthority:assingingAuthorityArgentina))
+
+		
+		ACKMessage ack = pixManagerService.patientRegistryRecordAddedWithoutMatching(p,healthEntity4,"F123456")
+		//Verifico ACK
+		assertEquals(TypeCode.SuccededCreation,ack.typeCode)
+		assertEquals(i18nMessage("pixmanager.ackmessage.creation.succeded"),ack.text)
+		
+		def patients = Patient.list()
+		//2 pacientes. El que ya existia mas el nuevo
+		assertEquals(2,patients.size())
+
+	} 
+	
+	/**
+	 * Teste el corrcto matcheo de una persona con el paciente que existe
+	 */
+	void testMatchedPatients(){
+		//Creo una persona parecida al paciente que ya existe
+		def p = new Person(givenName: new PersonName(firstName:"Martín Gonzalo", lastName:"Varnech",motherLastName:"Mannino"),
+			birthdate: new ExtendedDate(precission:ExtendedDate.TYPE_PRECISSION_DAY,date:Date.parse( "yyyy-M-d", "1987-01-16" )),
+			administrativeSex:Person.TYPE_SEX_MALE,
+			birthplace:city1,
+			)
+		p.addToAddresses(new Address(street:"Constitución",number:"2213",zipCode:"6700",city:city1))
+		p.addToIdentifiers(new Identifier(type:Identifier.TYPE_IDENTIFIER_DNI,number:"32850139",assigningAuthority:assingingAuthorityArgentina))
+		
+		List<Patient> patients = pixManagerService.getAllPossibleMatchedPatients(p)
+		
+		assert patients.size() == 1
+		
+		Patient matchedPatient = patients.get(0)
+		
+		assert patient.uniqueId == matchedPatient.uniqueId
+		assert matchedPatient.identityDocument().number == "32850137" 
+	}
+	
 	/** Metodos Privados **/
 	def private createCities(){
 		//Paises y provincias

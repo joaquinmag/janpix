@@ -25,8 +25,6 @@ class EMPIService {
 	
 	/**
 	 * Agrega un nuevo paciente en el eMPI
-	 * Si el paciente ya existe o tiene un cierto nivel de matcheo no lo crea
-	 * Una vez creado el paciente agrega el identificador de la entidad sanitaria al mismo
 	 * @param Person p: la persona que se quiere agregar al eMPI
 	 * @return Patient: el paciente agregado si lo agrego correctamente 
 	 * @throws ShortDemographicDataException Si la informacion brindada no alcanza para crear un paciente
