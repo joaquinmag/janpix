@@ -35,6 +35,28 @@ class PIXContractMapper {
 		return new HealthEntity(name: name, oid: oid)
 	}
 	
+	MCCIMT000200UV01Receiver mapHealthEntityToACKReceiver(AssigningAuthority authority) {
+		def receiver = new MCCIMT000200UV01Receiver()
+		receiver.typeCode = CommunicationFunctionType.RCV
+		receiver.device = buildACKDevice(authority)
+		return receiver
+	}
+	
+	MCCIMT000200UV01Sender mapAssigningAuthorityToACKSender(AssigningAuthority authority) {
+		def sender = new MCCIMT000200UV01Sender()
+		sender.typeCode = CommunicationFunctionType.SND
+		sender.device = buildACKDevice(authority)
+		return sender
+	}
+	
+	MCCIMT000200UV01Device buildACKDevice(AssigningAuthority authority) {
+		def device = new MCCIMT000200UV01Device()
+		device.classCode = EntityClassDevice.DEV
+		device.determinerCode = "INSTANCE"
+		device.id.add(new II(root: authority.oid, assigningAuthorityName: authority.name))
+		return device
+	}
+	
 	MCCIIN000002UV01 mapACKMessageToHL7AcceptAcknowledgmentMessage(ACKMessage ackMessage, II messageIdentifier, AssigningAuthority receiver, AssigningAuthority sender) {
 		def ackHl7 = new MCCIIN000002UV01()
 
@@ -46,8 +68,8 @@ class PIXContractMapper {
 		ackHl7.processingCode = hl7Helper.buildProcessingCode()
 		ackHl7.processingModeCode = hl7Helper.buildProcessingModeCode()
 		ackHl7.acceptAckCode = hl7Helper.buildAcceptAckCode()
-		ackHl7.receiver.add(receiver)
-		ackHl7.sender = sender
+		ackHl7.receiver.add(mapHealthEntityToACKReceiver(receiver))
+		ackHl7.sender = mapAssigningAuthorityToACKSender(sender)
 		def ackHl7spec = buildAcknowledgement(ackMessage)
 		ackHl7spec.targetMessage = buildTargetMessage(messageIdentifier)
 		ackHl7.acknowledgement.add(ackHl7spec)
