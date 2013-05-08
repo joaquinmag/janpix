@@ -2,8 +2,10 @@ package com.janpix.rup.empi
 
 class AssigningAuthority {
 	String name
+	String oid
 	
     static constraints = {
+		oid(unique: true, nullable: false)
     }
 	
 	/**
