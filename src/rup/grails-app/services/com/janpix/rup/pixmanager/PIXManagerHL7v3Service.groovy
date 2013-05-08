@@ -10,6 +10,11 @@ import javax.xml.ws.Action;
 import org.apache.cxf.annotations.WSDLDocumentation;
 import org.grails.cxf.utils.EndpointType;
 import org.grails.cxf.utils.GrailsCxfEndpoint;
+import org.hl7.v3.II;
+import org.hl7.v3.MCCIMT000200UV01Receiver;
+import org.hl7.v3.MCCIMT000200UV01Sender;
+
+import com.janpix.rup.services.contracts.ACKMessage;
 
 @WebService(targetNamespace = "urn:ihe:iti:pixv3:2007", name = "PIXManagerServiceHL7v3")
 @XmlSeeAlso([org.hl7.v3.ObjectFactory.class])
@@ -32,8 +37,14 @@ class PIXManagerHL7v3Service {
 	public org.hl7.v3.MCCIIN000002UV01 pixManagerPRPAIN201309UV02(
 		@WebParam(partName = "Body", name = "PRPA_IN201301UV02", targetNamespace = "urn:hl7-org:v3")
 		org.hl7.v3.PRPAIN201301UV02 body) {
+		pixContractMapper.validateHl7V3AddNewPatientMessage(body)
 		def person = pixContractMapper.mapPersonFromhl7v3AddNewPatientMessage(body)
-		pixManagerService.patientRegistryRecordAdded(person)
+		def ack = pixManagerService.patientRegistryRecordAdded(person)
+		def sender = pixManagerService.buildCurrentSender()
+		def receivedSender = pixContractMapper.mapSenderToHealthEntity(body)
+		def receiver = pixManagerService.buildMessageSender(receivedSender)
+		def identifier = pixContractMapper.getMessageIdentifier(body)
+		return pixContractMapper.mapACKMessageToHL7AcceptAcknowledgmentMessage(ack, identifier,  receiver,  sender)
 	}
 
 		

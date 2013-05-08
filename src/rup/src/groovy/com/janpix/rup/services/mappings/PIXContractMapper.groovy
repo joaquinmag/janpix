@@ -8,6 +8,7 @@ import org.hl7.v3.*
 import com.janpix.rup.empi.Address
 import com.janpix.rup.empi.City
 import com.janpix.rup.empi.ExtendedDate
+import com.janpix.rup.empi.HealthEntity;
 import com.janpix.rup.empi.Person
 import com.janpix.rup.empi.PersonName
 import com.janpix.rup.empi.PhoneNumber
@@ -22,6 +23,16 @@ class PIXContractMapper {
 	def placeService
 	def hl7Helper
 	def actualDate
+	
+	II getMessageIdentifier(PRPAIN201301UV02 message) {
+		return message.id
+	}
+	
+	HealthEntity mapSenderToHealthEntity(PRPAIN201301UV02 message) {
+		def oid = message.sender.device.id[0].root
+		def name = message.sender.device.id[0].assigningAuthorityName
+		return new HealthEntity(name: name, oid: oid)
+	}
 	
 	MCCIIN000002UV01 mapACKMessageToHL7AcceptAcknowledgmentMessage(ACKMessage ackMessage, II messageIdentifier, MCCIMT000200UV01Receiver receiver, MCCIMT000200UV01Sender sender) {
 		def ackHl7 = new MCCIIN000002UV01()
@@ -75,8 +86,6 @@ class PIXContractMapper {
 	 * @return {@link com.janpix.rup.empi.Person Person} mapped from PRPAIN201301UV02.
 	 */
 	Person mapPersonFromhl7v3AddNewPatientMessage(PRPAIN201301UV02 inPatientMessage) {
-		validateHl7V3AddNewPatientMessage(inPatientMessage)
-		
 		PRPAIN201301UV02MFMIMT700701UV01RegistrationEvent regEvent = inPatientMessage.controlActProcess.subject[0].registrationEvent
 		PRPAMT201301UV02Person patientPerson = regEvent.subject1.patient.patientPerson.getValue()
 		
@@ -180,13 +189,17 @@ class PIXContractMapper {
 		} as JAXBElement<Serializable>
 	}
 	
-	private void validateHl7V3AddNewPatientMessage(PRPAIN201301UV02 inPatientMessage) {
+	public void validateHl7V3AddNewPatientMessage(PRPAIN201301UV02 inPatientMessage) {
 		if (inPatientMessage.getControlActProcess().getSubject().isEmpty())
 			throw new MessageMappingException("PRPAIN201301UV02 message must contain one subject")
 		if (inPatientMessage.getControlActProcess().getSubject().size() > 1)
 			throw new MessageMappingException("PRPAIN201301UV02 message can't contain more than one subject at this implementation")
 		if (inPatientMessage.controlActProcess.subject[0].registrationEvent.subject1.patient.patientPerson.value.administrativeGenderCode == null)
 			throw new MessageMappingException("PRPAIN201301UV02 message must contain an administrativeGenderCode")
+		
+		if (inPatientMessage.sender != null && inPatientMessage.sender.device.id.size() == 1) {
+			throw new MessageMappingException("PRPAIN201301UV02 sender must exists and have only one unique identifier")
+		} 
 	}
 	
 }
