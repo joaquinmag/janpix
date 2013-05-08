@@ -134,6 +134,13 @@ identityMethods{
 	}
 }
 
+rup {
+	authority {
+		rupoid = "2.16.32.1.256.0"
+		name = "RUP"
+	}
+}
+
 
 
 
