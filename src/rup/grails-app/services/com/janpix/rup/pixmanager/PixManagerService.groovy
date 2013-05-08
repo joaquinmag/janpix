@@ -24,6 +24,7 @@ import com.janpix.rup.services.contracts.ACKMessage.TypeCode;
 class PixManagerService {
 	
 	def EMPIService
+	def assigningAuthorityService
 	def i18nMessage
 	
 	/**
@@ -128,12 +129,12 @@ class PixManagerService {
 			identifiers.addAll(rupPatient.identifiers.findAll{it.type == Identifier.TYPE_IDENTIFIER_PI && it.assigningAuthority != patientIdentifierDomain})
 		}
 		//Si me pidieron el dominio RUP agrego el CUIS como un identificador mas
-		if( !othersDomain || othersDomain.contains(AssigningAuthority.rupAuthority())){
+		if( !othersDomain || othersDomain.contains(assigningAuthorityService.rupAuthority())){
 			Identifier identifier = new Identifier()
 			if(rupPatient){
 				identifier.type 				= Identifier.TYPE_IDENTIFIER_PI
 				identifier.number				= "${rupPatient.uniqueId}"
-				identifier.assigningAuthority	= AssigningAuthority.rupAuthority()
+				identifier.assigningAuthority	= assigningAuthorityService.rupAuthority()
 			}
 									
 			identifiers.add(identifier)

@@ -24,6 +24,7 @@ import com.janpix.rup.services.contracts.ACKMessage;
 class PIXManagerHL7v3Service {
 	
 	def pixManagerService
+	def assigningAuthorityService
 	def pixContractMapper
 											
 	/**
@@ -42,7 +43,7 @@ class PIXManagerHL7v3Service {
 		pixContractMapper.validateHl7V3AddNewPatientMessage(body)
 		def person = pixContractMapper.mapPersonFromhl7v3AddNewPatientMessage(body)
 		def ack = pixManagerService.patientRegistryRecordAdded(person)
-		def sender = AssigningAuthority.rupAuthority()
+		def sender = assigningAuthorityService.rupAuthority()
 		def receiver = pixContractMapper.mapSenderToHealthEntity(body)
 		def identifier = pixContractMapper.getMessageIdentifier(body)
 		return pixContractMapper.mapACKMessageToHL7AcceptAcknowledgmentMessage(ack, identifier,  receiver,  sender)

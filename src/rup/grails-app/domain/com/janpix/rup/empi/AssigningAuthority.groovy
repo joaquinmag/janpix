@@ -19,9 +19,4 @@ class AssigningAuthority {
 	String toString(){
 		return name
 	}
-	
-	static AssigningAuthority rupAuthority(){
-		//FIXME cargar el RUP en el Bootstrap y buscar por nombre/id/loquesea
-		return AuthorityRUP.read(0)
-	}
 }
