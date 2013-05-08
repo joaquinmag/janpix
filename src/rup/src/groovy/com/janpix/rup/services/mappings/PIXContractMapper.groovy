@@ -6,6 +6,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.hl7.v3.*
 
 import com.janpix.rup.empi.Address
+import com.janpix.rup.empi.AssigningAuthority;
 import com.janpix.rup.empi.City
 import com.janpix.rup.empi.ExtendedDate
 import com.janpix.rup.empi.HealthEntity;
@@ -34,7 +35,7 @@ class PIXContractMapper {
 		return new HealthEntity(name: name, oid: oid)
 	}
 	
-	MCCIIN000002UV01 mapACKMessageToHL7AcceptAcknowledgmentMessage(ACKMessage ackMessage, II messageIdentifier, MCCIMT000200UV01Receiver receiver, MCCIMT000200UV01Sender sender) {
+	MCCIIN000002UV01 mapACKMessageToHL7AcceptAcknowledgmentMessage(ACKMessage ackMessage, II messageIdentifier, AssigningAuthority receiver, AssigningAuthority sender) {
 		def ackHl7 = new MCCIIN000002UV01()
 
 		ackHl7.id = messageIdentifier //FIXME esto tiene que ser un valor único

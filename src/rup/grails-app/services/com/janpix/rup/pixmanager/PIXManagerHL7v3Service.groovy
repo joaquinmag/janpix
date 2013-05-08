@@ -14,6 +14,8 @@ import org.hl7.v3.II;
 import org.hl7.v3.MCCIMT000200UV01Receiver;
 import org.hl7.v3.MCCIMT000200UV01Sender;
 
+import com.janpix.rup.empi.AssigningAuthority;
+import com.janpix.rup.empi.HealthEntity;
 import com.janpix.rup.services.contracts.ACKMessage;
 
 @WebService(targetNamespace = "urn:ihe:iti:pixv3:2007", name = "PIXManagerServiceHL7v3")
@@ -40,9 +42,8 @@ class PIXManagerHL7v3Service {
 		pixContractMapper.validateHl7V3AddNewPatientMessage(body)
 		def person = pixContractMapper.mapPersonFromhl7v3AddNewPatientMessage(body)
 		def ack = pixManagerService.patientRegistryRecordAdded(person)
-		def sender = pixManagerService.buildCurrentSender()
-		def receivedSender = pixContractMapper.mapSenderToHealthEntity(body)
-		def receiver = pixManagerService.buildMessageSender(receivedSender)
+		def sender = AssigningAuthority.rupAuthority()
+		def receiver = pixContractMapper.mapSenderToHealthEntity(body)
 		def identifier = pixContractMapper.getMessageIdentifier(body)
 		return pixContractMapper.mapACKMessageToHL7AcceptAcknowledgmentMessage(ack, identifier,  receiver,  sender)
 	}
