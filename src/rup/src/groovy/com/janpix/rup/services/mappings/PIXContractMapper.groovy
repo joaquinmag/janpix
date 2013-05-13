@@ -220,7 +220,7 @@ class PIXContractMapper {
 		if (inPatientMessage.controlActProcess.subject[0].registrationEvent.subject1.patient.patientPerson.value.administrativeGenderCode == null)
 			throw new MessageMappingException("PRPAIN201301UV02 message must contain an administrativeGenderCode")
 		
-		if (inPatientMessage.sender != null && inPatientMessage.sender.device.id.size() == 1) {
+		if (inPatientMessage.sender == null || inPatientMessage.sender.device.id.size() != 1) {
 			throw new MessageMappingException("PRPAIN201301UV02 sender must exists and have only one unique identifier")
 		} 
 	}

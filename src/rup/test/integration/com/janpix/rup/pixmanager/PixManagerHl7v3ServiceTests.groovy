@@ -41,7 +41,8 @@ import org.junit.Test;
 
 class PixManagerHl7v3ServiceTests {
 
-	@Test
+	def PIXManagerHL7v3Service
+	
 	public void testPixManagerPRPAIN201309UV02PRPAIN201301UV02() {
 		ObjectFactory objectFactory = new ObjectFactory()
 		
@@ -61,7 +62,7 @@ class PixManagerHl7v3ServiceTests {
 		recver.device = new MCCIMT000100UV01Device()
 		recver.device.classCode = EntityClassDevice.DEV
 		recver.device.determinerCode = "INSTANCE"
-		recver.device.id = new II(root: "1.2.840.114350.1.13.99999.4567")
+		recver.device.id.add(new II(root: "1.2.840.114350.1.13.99999.4567"))
 		recver.device.telecom.add(new TEL(value: "https://example.org/PatientFeed"))
 		body.receiver.add(recver)
 		body.sender = new MCCIMT000100UV01Sender()
@@ -69,20 +70,20 @@ class PixManagerHl7v3ServiceTests {
 		body.sender.device = new MCCIMT000100UV01Device()
 		body.sender.device.classCode = EntityClassDevice.DEV
 		body.sender.device.determinerCode = "INSTANCE"
-		body.sender.device.id = new II(root: "1.2.840.114350.1.13.99998.8734")
+		body.sender.device.id.add(new II(root: "1.2.840.114350.1.13.99998.8734"))
 		body.controlActProcess = new PRPAIN201301UV02MFMIMT700701UV01ControlActProcess(classCode: ActClassControlAct.CACT, moodCode: XActMoodIntentEvent.EVN)
 		PRPAIN201301UV02MFMIMT700701UV01Subject1 subject = new PRPAIN201301UV02MFMIMT700701UV01Subject1()
 		subject.typeCode.add("SUBJ")
 		subject.registrationEvent = new PRPAIN201301UV02MFMIMT700701UV01RegistrationEvent()
 		subject.registrationEvent.classCode.add("REG")
 		subject.registrationEvent.moodCode.add("EVN")
-		subject.registrationEvent.id = new II(nullFlavor: [ "NA" ])
+		subject.registrationEvent.id.add(new II(nullFlavor: [ "NA" ]))
 		subject.registrationEvent.statusCode = new CS(code: "active")
 		subject.registrationEvent.subject1 = new PRPAIN201301UV02MFMIMT700701UV01Subject2()
 		subject.registrationEvent.subject1.typeCode = ParticipationTargetSubject.SBJ
 		subject.registrationEvent.subject1.patient = new PRPAMT201301UV02Patient()
 		subject.registrationEvent.subject1.patient.classCode.add("PAT")
-		subject.registrationEvent.subject1.patient.id = new II(root:"1.2.840.114350.1.13.99998.8734", extension:"34827G234")
+		subject.registrationEvent.subject1.patient.id.add(new II(root:"1.2.840.114350.1.13.99998.8734", extension:"34827G234"))
 		subject.registrationEvent.subject1.patient.statusCode = new CS(code:"active")
 		PRPAMT201303UV02Person person = new PRPAMT201303UV02Person()
 		PN patientName = new PN()
@@ -98,19 +99,20 @@ class PixManagerHl7v3ServiceTests {
 		person.addr.add(ad)
 		PRPAMT201303UV02OtherIDs otherId = new PRPAMT201303UV02OtherIDs()
 		otherId.classCode.add("PAT")
-		otherId.id = new II(root: "1.2.840.114350.1.13.99997.2.3412", extension: "38273N237")
+		otherId.id.add(new II(root: "1.2.840.114350.1.13.99997.2.3412", extension: "38273N237"))
 		otherId.scopingOrganization = new COCTMT150002UV01Organization()
 		otherId.scopingOrganization.classCode = "ORG"
 		otherId.scopingOrganization.determinerCode = "INSTANCE"
-		otherId.scopingOrganization.id = new II(root: "1.2.840.114350.1.13.99997.2.3412")
+		otherId.scopingOrganization.id.add( new II(root: "1.2.840.114350.1.13.99997.2.3412"))
 		person.asOtherIDs.add(otherId)
 		subject.registrationEvent.subject1.patient.patientPerson = objectFactory.createPRPAMT201303UV02PatientPatientPerson(person)
 		subject.registrationEvent.subject1.patient.providerOrganization = new COCTMT150003UV03Organization()
 		subject.registrationEvent.subject1.patient.providerOrganization.classCode = "ORG"
 		subject.registrationEvent.subject1.patient.providerOrganization.determinerCode = "INSTANCE"
-		subject.registrationEvent.subject1.patient.providerOrganization.id = new II(root: "1.2.840.114350.1.13.99998.8734")
+		subject.registrationEvent.subject1.patient.providerOrganization.id.add( new II(root: "1.2.840.114350.1.13.99998.8734"))
 		subject.registrationEvent.subject1.patient.providerOrganization.name.add(new ON().content.add("Good Health Clinic"))
 		body.controlActProcess.subject.add(subject)
+		def ack = PIXManagerHL7v3Service.pixManagerPRPAIN201309UV02(body)
 	}
 
 	@Test
