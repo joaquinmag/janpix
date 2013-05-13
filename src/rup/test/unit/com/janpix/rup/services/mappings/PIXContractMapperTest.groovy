@@ -27,8 +27,7 @@ import com.janpix.rup.pixmanager.PlaceService;
 @Mock([PlaceService])
 class PIXContractMapperTest {
 	
-	@Test
-	public void whenHl7AddPatientObjectHasNameThenCheckThatTheMapMethodReturnsAPatientDomainObjectWithTheSameName() {
+	public void testWhenHl7AddPatientObjectHasNameThenCheckThatTheMapMethodReturnsAPatientDomainObjectWithTheSameName() {
 		def placeServiceMocker = mockFor(PlaceService)
 		placeServiceMocker.demand.findByPlace { String cityName, String provinceName, String countryName -> return new City(name:"Luján")  }
 		def pixContractMapper = new PIXContractMapper()
@@ -56,8 +55,7 @@ class PIXContractMapperTest {
 		assert patient.givenName.lastName == "Perez García"
 	}
 	
-	@Test
-	public void whenHl7AddPatientObjectHasNoFirstNameThenCheckThatTheMapMethodReturnsAPatientDomainObjectWithFirstNameAsNull() {
+	public void testWhenHl7AddPatientObjectHasNoFirstNameThenCheckThatTheMapMethodReturnsAPatientDomainObjectWithFirstNameAsNull() {
 		def placeServiceMocker = mockFor(PlaceService)
 		placeServiceMocker.demand.findByPlace { String cityName, String provinceName, String countryName -> return new City(name:"Luján")  }
 		def pixContractMapper = new PIXContractMapper()
@@ -84,8 +82,7 @@ class PIXContractMapperTest {
 		assert patient.givenName.lastName == "Perez García"
 	}
 	
-	@Test
-	public void whenHl7AddPatientObjectHasBirthTimeCompleteCheckThePersonHasDayPrecissionAndCorrectDate() {
+	public void testWhenHl7AddPatientObjectHasBirthTimeCompleteCheckThePersonHasDayPrecissionAndCorrectDate() {
 		def placeServiceMocker = mockFor(PlaceService)
 		placeServiceMocker.demand.findByPlace { String cityName, String provinceName, String countryName -> return new City(name:"Luján")  }
 		def pixContractMapper = new PIXContractMapper()
@@ -112,8 +109,7 @@ class PIXContractMapperTest {
 	}
 	
 	
-	@Test
-	public void whenHl7AddPatientObjectHasABadCityNameThenShouldReturnAMessageMappingException() {
+	public void testWhenHl7AddPatientObjectHasABadCityNameThenShouldReturnAMessageMappingException() {
 		def placeServiceMocker = mockFor(PlaceService)
 		placeServiceMocker.demand.findByPlace { String cityName, String provinceName, String countryName -> return null  }
 		def pixContractMapper = new PIXContractMapper()
