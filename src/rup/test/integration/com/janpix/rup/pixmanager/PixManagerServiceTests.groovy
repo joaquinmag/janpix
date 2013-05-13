@@ -13,6 +13,7 @@ import com.janpix.rup.exceptions.RUPException;
 import com.janpix.rup.exceptions.ShortDemographicDataException
 import com.janpix.rup.exceptions.identifier.DuplicateIdentifierException
 import com.janpix.rup.exceptions.identifier.IdentifierNotFoundException
+import com.janpix.rup.repository.AssigningAuthorityService;
 import com.janpix.rup.services.contracts.ACKMessage;
 import com.janpix.rup.services.contracts.ACKMessage.TypeCode;
 
@@ -29,6 +30,7 @@ class PixManagerServiceTests extends GroovyTestCase {
 	def messageSource
 	def i18nMessage
 	def factoryMatchRecord
+	def assigningAuthorityService
 	
 	Patient patient
 	Person person
@@ -51,22 +53,21 @@ class PixManagerServiceTests extends GroovyTestCase {
 		EMPIService.factoryMatchRecord = factoryMatchRecord
 		
 		//Creo 2 entidades sanitarias y el RUP
-		healthEntity1 = new HealthEntity(name:"Entidad Sanitaria 1")
+		healthEntity1 = new HealthEntity("2.16.32.1.255.1", "Entidad Sanitaria 1")
 		healthEntity1.save(flush:true,failOnError:true)
-		healthEntity2 = new HealthEntity(name:"Entidad Sanitaria 2")
+		healthEntity2 = new HealthEntity("2.16.32.1.255.2", "Entidad Sanitaria 2")
 		healthEntity2.save(flush:true,failOnError:true)
-		healthEntity3 = new HealthEntity(name:"Entidad Sanitaria 3")
+		healthEntity3 = new HealthEntity("2.16.32.1.255.3", "Entidad Sanitaria 3")
 		healthEntity3.save(flush:true,failOnError:true)
-		healthEntity4 = new HealthEntity(name:"Entidad Sanitaria 4")
+		healthEntity4 = new HealthEntity("2.16.32.1.255.4", "Entidad Sanitaria 4")
 		healthEntity4.save(flush:true,failOnError:true)
-		rup			 = new AuthorityRUP(name:"Registro Único de Pacientes ")
-		rup.save(flush:true,failOnError:true)
+		rup = assigningAuthorityService.rupAuthority()
 		
 		//Creo algunas ciudades
 		createCities()
 		
 		//Autoridad de asignacion de documentos
-		assingingAuthorityArgentina = new EmitterCountry(name:"Argentina")
+		assingingAuthorityArgentina = EmitterCountry.buildArgentinaEmitterCountry()
 		assingingAuthorityArgentina.save(flush:true,failOnError:true)
 		
 		//Creo un nuevo paciente
@@ -120,9 +121,9 @@ class PixManagerServiceTests extends GroovyTestCase {
 		def identifiers = pixManagerService.patientRegistryGetIdentifiersQuery("C123",healthEntity3)
 		assertEquals(3,identifiers.size())
 		
-		Identifier cuis = identifiers.find{it.assigningAuthority == AssigningAuthority.rupAuthority()}
+		Identifier cuis = identifiers.find{it.assigningAuthority == assigningAuthorityService.rupAuthority()}
 		assertEquals(patient.uniqueId.toString(),cuis.number)
-		assertEquals(AssigningAuthority.rupAuthority(),cuis.assigningAuthority)
+		assertEquals(assigningAuthorityService.rupAuthority(),cuis.assigningAuthority)
 		assertEquals(Identifier.TYPE_IDENTIFIER_PI,cuis.type)
 		
 		Identifier idh1 = identifiers.find{it.assigningAuthority == healthEntity1}

@@ -39,7 +39,7 @@ class DemographicPersonServiceTests extends GroovyTestCase {
 		//Creo algunas ciudades
 		createCities()
 		
-		def assingingAuthorityArgentina = new EmitterCountry(name:"Argentina")
+		def assingingAuthorityArgentina = EmitterCountry.buildArgentinaEmitterCountry()
 		assingingAuthorityArgentina.save(flush:true,failOnError:true)
 		
 		//Creo las personas

@@ -44,16 +44,16 @@ class EMPIServiceTests extends GroovyTestCase {
 		EMPIService.factoryMatchRecord = factoryMatchRecord
 		
 		//Creo 2 entidades sanitarias
-		healthEntity1 = new HealthEntity(name:"Entidad Sanitaria 1")
+		healthEntity1 = new HealthEntity("2.16.32.1.256.1", "Entidad Sanitaria 1")
 		healthEntity1.save(flush:true,failOnError:true)
-		healthEntity2 = new HealthEntity(name:"Entidad Sanitaria 2")
+		healthEntity2 = new HealthEntity("2.16.32.1.256.2", "Entidad Sanitaria 2")
 		healthEntity2.save(flush:true,failOnError:true)
 		
 		//Creo algunas ciudades
 		createCities()
 		
 		//Autoridad de asignacion de documentos
-		assingingAuthorityArgentina = new EmitterCountry(name:"Argentina")
+		assingingAuthorityArgentina = EmitterCountry.buildArgentinaEmitterCountry()
 		assingingAuthorityArgentina.save(flush:true,failOnError:true)
 		
 		//Creo un nuevo paciente
