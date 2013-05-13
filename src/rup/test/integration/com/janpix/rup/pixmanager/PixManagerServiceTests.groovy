@@ -96,12 +96,12 @@ class PixManagerServiceTests extends GroovyTestCase {
 	 * Testea la correcta obtencion del CUIS de un paciente
 	 */
 	void testGetCUIS(){
-		def identifiers = pixManagerService.patientRegistryGetIdentifiersQuery("C123",healthEntity3,[AssigningAuthority.rupAuthority()])
+		def identifiers = pixManagerService.patientRegistryGetIdentifiersQuery("C123",healthEntity3,[assigningAuthorityService.rupAuthority()])
 		assertEquals(1,identifiers.size())
 		
 		Identifier cuis = identifiers.get(0)
 		assertEquals(patient.uniqueId.toString(),cuis.number)
-		assertEquals(AssigningAuthority.rupAuthority(),cuis.assigningAuthority)
+		assertEquals(assigningAuthorityService.rupAuthority(),cuis.assigningAuthority)
 		assertEquals(Identifier.TYPE_IDENTIFIER_PI,cuis.type)
 	}
 	
@@ -109,7 +109,7 @@ class PixManagerServiceTests extends GroovyTestCase {
 	 * Testea que no devuelva ningun identificador porque no existe paciente en los dominios pasados
 	 */
 	void testGetIdentifiersReturnEmpty(){
-		def identifiers = pixManagerService.patientRegistryGetIdentifiersQuery("C123",healthEntity3,[new HealthEntity(name:"No existe")])
+		def identifiers = pixManagerService.patientRegistryGetIdentifiersQuery("C123",healthEntity3,[new HealthEntity("2.16.32.1.255.255", "No existe")])
 		assertEquals(0,identifiers.size())
 	}
 	

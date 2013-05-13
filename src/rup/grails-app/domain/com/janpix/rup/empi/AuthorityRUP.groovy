@@ -4,6 +4,7 @@ package com.janpix.rup.empi
  *
  */
 class AuthorityRUP extends AssigningAuthority {
-	
-   
+	AuthorityRUP(String oid, String name) {
+		super(oid, name)
+	}
 }

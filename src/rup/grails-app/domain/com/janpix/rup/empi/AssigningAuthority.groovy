@@ -8,6 +8,11 @@ class AssigningAuthority {
 		oid(unique: true, nullable: false)
     }
 	
+	AssigningAuthority(String oid, String name) {
+		this.oid = oid
+		this.name = name
+	}
+	
 	/**
 	 * Compara 2 autoridades de asignacion
 	 */
