@@ -71,18 +71,76 @@ environments {
 
 // log4j configuration
 log4j = {
-    // Example of changing the log pattern for the default console appender:
-    //
-    //appenders {
-    //    console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
-    //}
 	appenders {
 		console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
-		file name: "empi",
+		
+		file name: "demographicLog",
 					maxFileSize: 1024,
-					file: "/tmp/logs/rup/empi/empiService.log"
+					file: "/tmp/logs/janpix/rup/demographicPersonsService.log"
+					
+		file name: 'applicationLog',
+					maxFileSize: 1024,
+					file: "/tmp/logs/janpix/rup/application.log"
+	}
+
+	environments {
+		production {
+			root {
+				error 'applicationLog'
+			}
+		}
+		test{
+			root {
+				error 'applicationLog','stdout'
+			}
+			//Usa los appenders 'stdout' y 'applicationLog' para el nivel debug
+			debug stdout: [
+				'grails.app.controllers.com.janpix.rup',
+				'grails.app.domain.com.janpix.rup',
+				'grails.app.services.com.janpix.rup',
+				'grails.app.taglib.com.janpix.rup',
+				'grails.app.conf.com.janpix.rup',
+				'grails.app.filters.com.janpix.rup'
+			],additivity:false
+		
+			debug applicationLog: [
+				'grails.app.controllers.com.janpix.rup',
+				'grails.app.domain.com.janpix.rup',
+				'grails.app.services.com.janpix.rup',
+				'grails.app.taglib.com.janpix.rup',
+				'grails.app.conf.com.janpix.rup',
+				'grails.app.filters.com.janpix.rup'
+		   ],additivity:false
+
+		}
+		development{
+			root {
+				error 'applicationLog','stdout'
+			}
+			//Usa los appenders 'stdout' y 'applicationLog' para el nivel debug
+			debug stdout: [
+				'grails.app.controllers.com.janpix.rup',
+				'grails.app.domain.com.janpix.rup',
+				'grails.app.services.com.janpix.rup',
+				'grails.app.taglib.com.janpix.rup',
+				'grails.app.conf.com.janpix.rup',
+				'grails.app.filters.com.janpix.rup'
+			],additivity:false
+		
+			debug applicationLog: [
+				'grails.app.controllers.com.janpix.rup',
+				'grails.app.domain.com.janpix.rup',
+				'grails.app.services.com.janpix.rup',
+				'grails.app.taglib.com.janpix.rup',
+				'grails.app.conf.com.janpix.rup',
+				'grails.app.filters.com.janpix.rup'
+		   ],additivity:false
+
+		}
 	}
 	
+	//###Configuraciones ajenas a los entornos
+	//#Grails
     error  'org.codehaus.groovy.grails.web.servlet',        // controllers
            'org.codehaus.groovy.grails.web.pages',          // GSP
            'org.codehaus.groovy.grails.web.sitemesh',       // layouts
@@ -94,9 +152,13 @@ log4j = {
            'org.springframework',
            'org.hibernate',
            'net.sf.ehcache.hibernate'
-		   
-	//Log para la informacion del empi //TODO ver de configurar mejor
-	info empi: "grails.app",additivity:false
+	
+		      
+	//#Janpix
+	//Log para la informacion del empi que muestra porcentajes de matcheo
+	//En cualquier enviroment solo lo graba en el archivo que marca 'empi:'
+	info demographicLog:'grails.app.services.com.janpix.rup.empi.DemographicPersonService',additivity:false
+			
 }
 
 
