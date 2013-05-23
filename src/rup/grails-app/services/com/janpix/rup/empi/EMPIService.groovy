@@ -21,6 +21,7 @@ class EMPIService {
 	def demographicPersonService
 	def uuidGenerator
 	def factoryMatchRecord
+	def i18nMessage
 	
 	
 	/**
@@ -38,7 +39,7 @@ class EMPIService {
 			
 			return patient
 		}catch(Exception e){
-			throw new ShortDemographicDataException(message:"Debe proporcionar mayor información del paciente",person:p)
+			throw new ShortDemographicDataException(message:i18nMessage("empiservice.shortdemographicdata.exception"),person:p)
 		}
 	}
 	
@@ -53,7 +54,7 @@ class EMPIService {
 	 */
 	def updateDemographicDataPatient(Patient p, Person person){
 		if(!existsPatient(p)){
-			throw new DontExistingPatientException(message:"No existe ningun paciente que contenga el UUID pasado")
+			throw new DontExistingPatientException(message:i18nMessage("empiservice.dontexistingpatient.exception"))
 		}
 		
 		def patient = findPatientByUUID(p.uniqueId)
@@ -74,7 +75,7 @@ class EMPIService {
 
 		//Si el paciente matchea con algun otro vuelvo los cambios para atras
 		if( matchPatient(patient)){
-			throw new ExistingPatientException("Existen pacientes que concuerdan con el paciente actualizado")		
+			throw new ExistingPatientException(i18nMessage("empiservice.existingpatient.exception"))		
 		}
 
 		return patient
@@ -110,19 +111,19 @@ class EMPIService {
 	 */
 	def addEntityIdentifierToPatient(Patient p,HealthEntity he, String peId){
 		if(!existsPatient(p)){
-			throw new DontExistingPatientException(message:"No existe ningun paciente que contenga el UUID pasado")
+			throw new DontExistingPatientException(message:i18nMessage("empiservice.dontexistingpatient.exception"))
 		}
 		//Verifico que ese identificador no exista ya
 		if(Identifier.findWhere(type:Identifier.TYPE_IDENTIFIER_PI,number:peId,assigningAuthority:he) != null)
-			throw new DuplicateIdentifierException("Ya se encuentra agregado el identificador ${peId} para la entidad sanitaria ${he} en otro paciente")
+			throw new DuplicateIdentifierException(i18nMessage("empiservice.duplicateidentifier.exception","${peId}","${he}"))
 			
 		def identifier = new Identifier(type:Identifier.TYPE_IDENTIFIER_PI,number:peId,assigningAuthority:he)
 		if(!identifier.validate()){
-			throw new IdentifierNotValidException("El identificador pasado contiene errores de validación")
+			throw new IdentifierNotValidException(i18nMessage("empiservice.identifiernotvalid.exception"))
 		}
 		//Verifico que no contenga el identificador ya
 		if(p.identifiers.contains(identifier) || (p.identifiers.find{it.assigningAuthority == he} != null)){
-			throw new DuplicateAuthorityIdentifierException("Ya se encuentra agregado un identificador para la entidad sanitaria ${he}")
+			throw new DuplicateAuthorityIdentifierException(i18nMessage("empiservice.duplicateauthorityidentifier.exception","${he}"))
 		}
 		
 		p.addToIdentifiers(identifier)
@@ -142,7 +143,7 @@ class EMPIService {
 	 */
 	def updateEntityIdentifierToPatient(Patient p,HealthEntity he,newId,oldId=null){
 		if(!existsPatient(p)){
-			throw new DontExistingPatientException(message:"No existe ningun paciente que contenga el UUID pasado")
+			throw new DontExistingPatientException(message:i18nMessage("empiservice.dontexistingpatient.exception"))
 		}
 		
 		if(newId == oldId) {return}
@@ -155,7 +156,7 @@ class EMPIService {
 		if(findedIdentifier)
 			findedIdentifier.number = newId
 		else
-			throw new IdentifierNotFoundException("No existe el identificador pasado en la entidad sanitaria ${he}")
+			throw new IdentifierNotFoundException(i18nMessage("empiservice.identifiernotfound.exception","${he}"))
 		
 	}
 	

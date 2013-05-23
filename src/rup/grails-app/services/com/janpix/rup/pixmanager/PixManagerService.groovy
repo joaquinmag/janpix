@@ -176,7 +176,11 @@ class PixManagerService {
 		}
 	}
 	
-	
+	/**
+	 * Devuelve los posibles matcheos de la persona enviada
+	 * @param patientRequestMessage
+	 * @return
+	 */
 	List<Patient> getAllPossibleMatchedPatients(Person patientRequestMessage){
 		List<Patient> matchedPatients = []
 		List<MatchRecord> records = EMPIService.getAllMatchedPatients(patientRequestMessage, true)
