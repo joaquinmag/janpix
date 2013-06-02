@@ -1,22 +1,16 @@
 package com.janpix.rup.pixmanager
 
-import javax.jws.WebMethod;
-import javax.jws.WebParam;
-import javax.jws.WebResult;
-import javax.jws.WebService;
-import javax.xml.bind.annotation.XmlSeeAlso;
-import javax.xml.ws.Action;
+import javax.jws.WebMethod
+import javax.jws.WebParam
+import javax.jws.WebResult
+import javax.jws.WebService
+import javax.xml.bind.annotation.XmlSeeAlso
+import javax.xml.ws.Action
 
-import org.apache.cxf.annotations.WSDLDocumentation;
-import org.grails.cxf.utils.EndpointType;
-import org.grails.cxf.utils.GrailsCxfEndpoint;
-import org.hl7.v3.II;
-import org.hl7.v3.MCCIMT000200UV01Receiver;
-import org.hl7.v3.MCCIMT000200UV01Sender;
-
-import com.janpix.rup.empi.AssigningAuthority;
-import com.janpix.rup.empi.HealthEntity;
-import com.janpix.rup.services.contracts.ACKMessage;
+import org.apache.cxf.annotations.WSDLDocumentation
+import org.grails.cxf.utils.EndpointType
+import org.grails.cxf.utils.GrailsCxfEndpoint
+import org.hl7.v3.PRPAIN201301UV02
 
 @WebService(targetNamespace = "urn:ihe:iti:pixv3:2007", name = "PIXManagerServiceHL7v3")
 @XmlSeeAlso([org.hl7.v3.ObjectFactory.class])
@@ -42,9 +36,11 @@ class PIXManagerHL7v3Service {
 		org.hl7.v3.PRPAIN201301UV02 body) {
 		pixContractMapper.validateHl7V3AddNewPatientMessage(body)
 		def person = pixContractMapper.mapPersonFromhl7v3AddNewPatientMessage(body)
-		def ack = pixManagerService.patientRegistryRecordAdded(person)
+		def patientId = pixContractMapper.getPatientId(body)
+		def healthEntity = pixContractMapper.mapSenderToHealthEntity(body)
+		def ack = pixManagerService.patientRegistryRecordAdded(person, healthEntity, patientId)
 		def sender = assigningAuthorityService.rupAuthority()
-		def receiver = pixContractMapper.mapSenderToHealthEntity(body)
+		def receiver = healthEntity
 		def identifier = pixContractMapper.getMessageIdentifier(body)
 		return pixContractMapper.mapACKMessageToHL7AcceptAcknowledgmentMessage(ack, identifier,  receiver,  sender)
 	}

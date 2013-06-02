@@ -29,6 +29,10 @@ class PIXContractMapper {
 		return message.id
 	}
 	
+	String getPatientId(PRPAIN201301UV02 message) {
+		return message.controlActProcess.subject[0].registrationEvent.subject1.patient.id[0].extension
+	}
+	
 	HealthEntity mapSenderToHealthEntity(PRPAIN201301UV02 message) {
 		def oid = message.sender.device.id[0].root
 		def name = message.sender.device.id[0].assigningAuthorityName
@@ -64,7 +68,7 @@ class PIXContractMapper {
 		ackHl7.creationTime = hl7Helper.buildHl7DateTime(actualDate())
 		
 		def messageName = (MCCIIN000002UV01.class.getAnnotation(XmlRootElement) as XmlRootElement).name()
-		ackHl7.interactionId = hl7Helper.buildInteractionId(ackHl7.messageName)
+		ackHl7.interactionId = hl7Helper.buildInteractionId(messageName)
 		ackHl7.processingCode = hl7Helper.buildProcessingCode()
 		ackHl7.processingModeCode = hl7Helper.buildProcessingModeCode()
 		ackHl7.acceptAckCode = hl7Helper.buildAcceptAckCode()
