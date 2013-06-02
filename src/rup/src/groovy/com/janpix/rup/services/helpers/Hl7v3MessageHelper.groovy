@@ -12,7 +12,7 @@ class Hl7v3MessageHelper {
 	}
 	
 	TS buildHl7DateTime(Date date) {
-		return new TS(value: "${date.gcal.get(Calendar.YEAR)}${date.gcal.get(Calendar.MONTH)}${date.gcal.get(Calendar.DAY_OF_MONTH)}${date.gcal.get(Calendar.HOUR_OF_DAY)}${date.gcal.get(Calendar.MINUTE)}${date.gcal.get(Calendar.SECOND)}")
+		return new TS(value: "${date.getAt(Calendar.YEAR)}${date.getAt(Calendar.MONTH)}${date.getAt(Calendar.DAY_OF_MONTH)}${date.getAt(Calendar.HOUR_OF_DAY)}${date.getAt(Calendar.MINUTE)}${date.getAt(Calendar.SECOND)}")
 	}
 	
 	II buildInteractionId(String messageRootName) {
