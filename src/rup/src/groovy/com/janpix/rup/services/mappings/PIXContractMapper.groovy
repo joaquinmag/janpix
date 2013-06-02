@@ -94,6 +94,7 @@ class PIXContractMapper {
 				ackHl7spec.typeCode = new CS(code:"CE")
 		}
 		ackHl7spec.acknowledgementDetail.add(buildAcknowledgementDetail(ackMessage))
+		return ackHl7spec
 	}
 	
 	private MCCIMT000200UV01TargetMessage buildTargetMessage(II identifier) {
@@ -105,6 +106,7 @@ class PIXContractMapper {
 	private MCCIMT000200UV01AcknowledgementDetail buildAcknowledgementDetail(ACKMessage ackMessage) {
 		def ackDetail = new MCCIMT000200UV01AcknowledgementDetail()
 		ackDetail.code = new CE(code: ackMessage.typeCode.exceptionCode())
+		return ackDetail
 	}
 
 	/**
