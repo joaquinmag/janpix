@@ -44,7 +44,7 @@ class PIXContractMapperTest {
 		subjectControlActProcess.registrationEvent = new PRPAIN201301UV02MFMIMT700701UV01RegistrationEvent()
 		subjectControlActProcess.registrationEvent.subject1 = new PRPAIN201301UV02MFMIMT700701UV01Subject2()
 		subjectControlActProcess.registrationEvent.subject1.patient = new PRPAMT201301UV02Patient()
-		subjectControlActProcess.registrationEvent.subject1.patient.patientPerson = new JAXBElement<PRPAMT201301UV02Person>(new QName("patientPerson"), JAXBElement.class, patientPerson)
+		subjectControlActProcess.registrationEvent.subject1.patient.patientPerson = patientPerson
 		def inPatientMessage = new PRPAIN201301UV02()
 		inPatientMessage.controlActProcess = new PRPAIN201301UV02MFMIMT700701UV01ControlActProcess()
 		inPatientMessage.controlActProcess.subject.add(subjectControlActProcess)
@@ -71,7 +71,7 @@ class PIXContractMapperTest {
 		subjectControlActProcess.registrationEvent = new PRPAIN201301UV02MFMIMT700701UV01RegistrationEvent()
 		subjectControlActProcess.registrationEvent.subject1 = new PRPAIN201301UV02MFMIMT700701UV01Subject2()
 		subjectControlActProcess.registrationEvent.subject1.patient = new PRPAMT201301UV02Patient()
-		subjectControlActProcess.registrationEvent.subject1.patient.patientPerson = new JAXBElement<PRPAMT201301UV02Person>(new QName("patientPerson"), JAXBElement.class, patientPerson)
+		subjectControlActProcess.registrationEvent.subject1.patient.patientPerson = patientPerson
 		def inPatientMessage = new PRPAIN201301UV02()
 		inPatientMessage.controlActProcess = new PRPAIN201301UV02MFMIMT700701UV01ControlActProcess()
 		inPatientMessage.controlActProcess.subject.add(subjectControlActProcess)
@@ -98,7 +98,7 @@ class PIXContractMapperTest {
 		subjectControlActProcess.registrationEvent = new PRPAIN201301UV02MFMIMT700701UV01RegistrationEvent()
 		subjectControlActProcess.registrationEvent.subject1 = new PRPAIN201301UV02MFMIMT700701UV01Subject2()
 		subjectControlActProcess.registrationEvent.subject1.patient = new PRPAMT201301UV02Patient()
-		subjectControlActProcess.registrationEvent.subject1.patient.patientPerson = new JAXBElement<PRPAMT201301UV02Person>(new QName("patientPerson"), JAXBElement.class, patientPerson)
+		subjectControlActProcess.registrationEvent.subject1.patient.patientPerson = patientPerson
 		def inPatientMessage = new PRPAIN201301UV02()
 		inPatientMessage.controlActProcess = new PRPAIN201301UV02MFMIMT700701UV01ControlActProcess()
 		inPatientMessage.controlActProcess.subject.add(subjectControlActProcess)
@@ -129,7 +129,7 @@ class PIXContractMapperTest {
 		subjectControlActProcess.registrationEvent = new PRPAIN201301UV02MFMIMT700701UV01RegistrationEvent()
 		subjectControlActProcess.registrationEvent.subject1 = new PRPAIN201301UV02MFMIMT700701UV01Subject2()
 		subjectControlActProcess.registrationEvent.subject1.patient = new PRPAMT201301UV02Patient()
-		subjectControlActProcess.registrationEvent.subject1.patient.patientPerson = new JAXBElement<PRPAMT201301UV02Person>(new QName("patientPerson"), JAXBElement.class, patientPerson)
+		subjectControlActProcess.registrationEvent.subject1.patient.patientPerson = patientPerson
 		def inPatientMessage = new PRPAIN201301UV02()
 		inPatientMessage.controlActProcess = new PRPAIN201301UV02MFMIMT700701UV01ControlActProcess()
 		inPatientMessage.controlActProcess.subject.add(subjectControlActProcess)

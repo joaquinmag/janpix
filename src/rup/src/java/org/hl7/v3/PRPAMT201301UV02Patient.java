@@ -80,8 +80,8 @@ public class PRPAMT201301UV02Patient {
     protected IVLTS effectiveTime;
     protected List<CE> confidentialityCode;
     protected CE veryImportantPersonCode;
-    @XmlElementRef(name = "patientPerson", namespace = "urn:hl7-org:v3", type = JAXBElement.class, required = false)
-    protected JAXBElement<PRPAMT201301UV02Person> patientPerson;
+    @XmlElementRef(name = "patientPerson", namespace = "urn:hl7-org:v3", required = false)
+    protected PRPAMT201301UV02Person patientPerson;
     @XmlElementRef(name = "patientNonPersonLivingSubject", namespace = "urn:hl7-org:v3", type = JAXBElement.class, required = false)
     protected JAXBElement<PRPAMT201301UV02NonPersonLivingSubject> patientNonPersonLivingSubject;
     @XmlElement(required = true, nillable = true)
@@ -373,7 +373,7 @@ public class PRPAMT201301UV02Patient {
      *     {@link JAXBElement }{@code <}{@link PRPAMT201301UV02Person }{@code >}
      *     
      */
-    public JAXBElement<PRPAMT201301UV02Person> getPatientPerson() {
+    public PRPAMT201301UV02Person getPatientPerson() {
         return patientPerson;
     }
 
@@ -385,7 +385,7 @@ public class PRPAMT201301UV02Patient {
      *     {@link JAXBElement }{@code <}{@link PRPAMT201301UV02Person }{@code >}
      *     
      */
-    public void setPatientPerson(JAXBElement<PRPAMT201301UV02Person> value) {
+    public void setPatientPerson(PRPAMT201301UV02Person value) {
         this.patientPerson = value;
     }
 

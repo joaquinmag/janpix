@@ -110,7 +110,8 @@ class PIXContractMapper {
 	 */
 	Person mapPersonFromhl7v3AddNewPatientMessage(PRPAIN201301UV02 inPatientMessage) {
 		PRPAIN201301UV02MFMIMT700701UV01RegistrationEvent regEvent = inPatientMessage.controlActProcess.subject[0].registrationEvent
-		PRPAMT201301UV02Person patientPerson = regEvent.subject1.patient.patientPerson.getValue()
+		def patient = regEvent.subject1.patient
+		PRPAMT201301UV02Person patientPerson = patient.patientPerson
 		
 		//set name
 		def person = new Person()
@@ -217,7 +218,7 @@ class PIXContractMapper {
 			throw new MessageMappingException("PRPAIN201301UV02 message must contain one subject")
 		if (inPatientMessage.getControlActProcess().getSubject().size() > 1)
 			throw new MessageMappingException("PRPAIN201301UV02 message can't contain more than one subject at this implementation")
-		if (inPatientMessage.controlActProcess.subject[0].registrationEvent.subject1.patient.patientPerson.value.administrativeGenderCode == null)
+		if (inPatientMessage.controlActProcess.subject[0].registrationEvent.subject1.patient.patientPerson.administrativeGenderCode == null)
 			throw new MessageMappingException("PRPAIN201301UV02 message must contain an administrativeGenderCode")
 		
 		if (inPatientMessage.sender == null || inPatientMessage.sender.device.id.size() != 1) {

@@ -31,8 +31,8 @@ import org.hl7.v3.PRPAIN201301UV02MFMIMT700701UV01RegistrationEvent;
 import org.hl7.v3.PRPAIN201301UV02MFMIMT700701UV01Subject1;
 import org.hl7.v3.PRPAIN201301UV02MFMIMT700701UV01Subject2;
 import org.hl7.v3.PRPAMT201301UV02Patient
-import org.hl7.v3.PRPAMT201303UV02OtherIDs
-import org.hl7.v3.PRPAMT201303UV02Person
+import org.hl7.v3.PRPAMT201301UV02OtherIDs
+import org.hl7.v3.PRPAMT201301UV02Person
 import org.hl7.v3.ParticipationTargetSubject;
 import org.hl7.v3.TEL
 import org.hl7.v3.TS
@@ -85,7 +85,7 @@ class PixManagerHl7v3ServiceTests {
 		subject.registrationEvent.subject1.patient.classCode.add("PAT")
 		subject.registrationEvent.subject1.patient.id.add(new II(root:"1.2.840.114350.1.13.99998.8734", extension:"34827G234"))
 		subject.registrationEvent.subject1.patient.statusCode = new CS(code:"active")
-		PRPAMT201303UV02Person person = new PRPAMT201303UV02Person()
+		PRPAMT201301UV02Person person = new PRPAMT201301UV02Person()
 		PN patientName = new PN()
 		patientName.content.add(new JAXBElement<EnGiven>(new QName("given"), JAXBElement.class, "Juan"))
 		patientName.content.add(new JAXBElement<EnGiven>(new QName("family"), JAXBElement.class, "Perez García"))
@@ -97,7 +97,7 @@ class PixManagerHl7v3ServiceTests {
 		ad.content.add(new JAXBElement<AdxpCity>(new QName("urn:hl7-org:v3", "city"), AdxpCity.class, AD.class, "Some city"))
 		ad.content.add(new JAXBElement<AdxpState>(new QName("urn:hl7-org:v3", "state"), AdxpState.class, AD.class, "IL"))
 		person.addr.add(ad)
-		PRPAMT201303UV02OtherIDs otherId = new PRPAMT201303UV02OtherIDs()
+		PRPAMT201301UV02OtherIDs otherId = new PRPAMT201301UV02OtherIDs()
 		otherId.classCode.add("PAT")
 		otherId.id.add(new II(root: "1.2.840.114350.1.13.99997.2.3412", extension: "38273N237"))
 		otherId.scopingOrganization = new COCTMT150002UV01Organization()
@@ -105,7 +105,7 @@ class PixManagerHl7v3ServiceTests {
 		otherId.scopingOrganization.determinerCode = "INSTANCE"
 		otherId.scopingOrganization.id.add( new II(root: "1.2.840.114350.1.13.99997.2.3412"))
 		person.asOtherIDs.add(otherId)
-		subject.registrationEvent.subject1.patient.patientPerson = objectFactory.createPRPAMT201303UV02PatientPatientPerson(person)
+		subject.registrationEvent.subject1.patient.patientPerson = person
 		subject.registrationEvent.subject1.patient.providerOrganization = new COCTMT150003UV03Organization()
 		subject.registrationEvent.subject1.patient.providerOrganization.classCode = "ORG"
 		subject.registrationEvent.subject1.patient.providerOrganization.determinerCode = "INSTANCE"
