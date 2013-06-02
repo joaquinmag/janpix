@@ -9,6 +9,7 @@ import javax.xml.namespace.QName
 import org.hl7.v3.AD
 import org.hl7.v3.ActClassControlAct;
 import org.hl7.v3.AdxpCity
+import org.hl7.v3.AdxpCountry;
 import org.hl7.v3.AdxpState
 import org.hl7.v3.AdxpStreetAddressLine
 import org.hl7.v3.CE
@@ -44,6 +45,8 @@ class PixManagerHl7v3ServiceTests {
 	def PIXManagerHL7v3Service
 	
 	public void testPixManagerPRPAIN201309UV02PRPAIN201301UV02() {
+		
+		
 		ObjectFactory objectFactory = new ObjectFactory()
 		
 		PRPAIN201301UV02 body = new PRPAIN201301UV02()
@@ -94,8 +97,9 @@ class PixManagerHl7v3ServiceTests {
 		person.birthTime = new TS(value: "19570323")
 		AD ad = new AD()
 		ad.content.add(new JAXBElement<AdxpStreetAddressLine>(new QName("urn:hl7-org:v3", "streetAddressLine"), AdxpStreetAddressLine.class, AD.class, "3443 S Beach Ave"))
-		ad.content.add(new JAXBElement<AdxpCity>(new QName("urn:hl7-org:v3", "city"), AdxpCity.class, AD.class, "Some city"))
-		ad.content.add(new JAXBElement<AdxpState>(new QName("urn:hl7-org:v3", "state"), AdxpState.class, AD.class, "IL"))
+		ad.content.add(new JAXBElement<AdxpCity>(new QName("urn:hl7-org:v3", "city"), AdxpCity.class, AD.class, "Venado Tuerto"))
+		ad.content.add(new JAXBElement<AdxpState>(new QName("urn:hl7-org:v3", "state"), AdxpState.class, AD.class, "AR-S"))
+		ad.content.add(new JAXBElement<AdxpCountry>(ObjectFactory._ADCountry_QNAME, AdxpCountry.class, AD.class, "AR"))
 		person.addr.add(ad)
 		PRPAMT201301UV02OtherIDs otherId = new PRPAMT201301UV02OtherIDs()
 		otherId.classCode.add("PAT")
