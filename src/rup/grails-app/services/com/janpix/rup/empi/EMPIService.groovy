@@ -258,6 +258,19 @@ class EMPIService {
 	}
 	
 	/**
+	 * Verifica que el HealthEntity ingresado sea válido y devuelve el objeto HealthEntity conectado a la bd.
+	 * @param HealthEntity healthEntity: la entidad a verificar. 
+	 * @return el HealthEntity conectado a la bd y validado. En caso de no existir, lanzará una excepción.
+	 * @throws IdentifierNotFoundException si no se encontró el identificador para la entidad sanitaria a validar.
+	 */
+	HealthEntity validateHealthEntity(HealthEntity healthEntity) {
+		def actualHE = HealthEntity.findByOid(healthEntity.oid)
+		if (!actualHE)
+			throw new IdentifierNotFoundException("El id de la entidad sanitaria es inválido") // FIXME utilizar i18n
+		return actualHE
+	}
+	
+	/**
 	 * FIXME!! segun la estrategia de herencia esto podria llegar a variar
 	 * Obtiene un paciente a partir de una persona
 	 * @param Person p
