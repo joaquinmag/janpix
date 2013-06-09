@@ -165,6 +165,7 @@ class PIXContractMapper {
 		def city = placeService.findByPlace(cityName, provinceName, countryName)
 		if (!city)
 			throw new MessageMappingException('PRPAIN201301UV02 must contain a valid city, state and country names.')
+		address.city = city
 		address.zipCode = getValueFromSerializableList(hl7Address.content, "postalCode")?.value
 		return address
 	}
