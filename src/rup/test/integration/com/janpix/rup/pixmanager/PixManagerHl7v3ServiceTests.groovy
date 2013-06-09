@@ -116,6 +116,8 @@ class PixManagerHl7v3ServiceTests {
 		subject.registrationEvent.subject1.patient.providerOrganization.name.add(new ON().content.add("Good Health Clinic"))
 		body.controlActProcess.subject.add(subject)
 		def ack = PIXManagerHL7v3Service.pixManagerPRPAIN201309UV02(body)
+		
+		assert ack.acknowledgement[0].typeCode.code == "CS"
 	}
 
 	@Test
