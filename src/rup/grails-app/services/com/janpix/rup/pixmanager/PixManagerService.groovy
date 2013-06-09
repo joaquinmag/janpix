@@ -38,7 +38,8 @@ class PixManagerService {
 			//Es un paciente nuevo
 			if (matchedPatients.empty) {	
 				def patient = EMPIService.createPatient(patientRequestMessage)
-				EMPIService.addEntityIdentifierToPatient(patient, healthEntity, organizationId)
+				def validatedHealthEntity = EMPIService.validateHealthEntity(healthEntity)
+				EMPIService.addEntityIdentifierToPatient(patient, validatedHealthEntity, organizationId)
 				return new ACKMessage(typeCode: TypeCode.SuccededCreation, text:i18nMessage("pixmanager.ackmessage.creation.succeded"))	
 			}
 			

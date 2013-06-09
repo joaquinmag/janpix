@@ -2,6 +2,7 @@ package com.janpix.rup.pixmanager;
 
 import static org.junit.Assert.*;
 
+import com.janpix.rup.empi.HealthEntity
 import javax.xml.bind.JAXBElement
 import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import javax.xml.namespace.QName
@@ -45,7 +46,9 @@ class PixManagerHl7v3ServiceTests {
 	def PIXManagerHL7v3Service
 	
 	public void testWhenPixManagerPRPAIN201309UV02IsCalledShouldReturnACKCorrectly() {
-		
+		def testAuthorityOID = "1.2.840.114350.1.13.99998.8734"
+		def testAuthorityName = "Good Health Clinic"
+		new HealthEntity(testAuthorityOID, testAuthorityName).save(flush: true, failOnError: true)
 		
 		ObjectFactory objectFactory = new ObjectFactory()
 		
@@ -72,7 +75,7 @@ class PixManagerHl7v3ServiceTests {
 		body.sender.device = new MCCIMT000100UV01Device()
 		body.sender.device.classCode = EntityClassDevice.DEV
 		body.sender.device.determinerCode = "INSTANCE"
-		body.sender.device.id.add(new II(root: "1.2.840.114350.1.13.99998.8734"))
+		body.sender.device.id.add(new II(root: testAuthorityOID))
 		body.controlActProcess = new PRPAIN201301UV02MFMIMT700701UV01ControlActProcess(classCode: ActClassControlAct.CACT, moodCode: XActMoodIntentEvent.EVN)
 		PRPAIN201301UV02MFMIMT700701UV01Subject1 subject = new PRPAIN201301UV02MFMIMT700701UV01Subject1()
 		subject.typeCode.add("SUBJ")
@@ -85,7 +88,7 @@ class PixManagerHl7v3ServiceTests {
 		subject.registrationEvent.subject1.typeCode = ParticipationTargetSubject.SBJ
 		subject.registrationEvent.subject1.patient = new PRPAMT201301UV02Patient()
 		subject.registrationEvent.subject1.patient.classCode.add("PAT")
-		subject.registrationEvent.subject1.patient.id.add(new II(root:"1.2.840.114350.1.13.99998.8734", extension:"34827G234"))
+		subject.registrationEvent.subject1.patient.id.add(new II(root:testAuthorityOID, extension:"34827G234"))
 		subject.registrationEvent.subject1.patient.statusCode = new CS(code:"active")
 		PRPAMT201301UV02Person person = new PRPAMT201301UV02Person()
 		PN patientName = new PN()
@@ -112,12 +115,12 @@ class PixManagerHl7v3ServiceTests {
 		subject.registrationEvent.subject1.patient.providerOrganization = new COCTMT150003UV03Organization()
 		subject.registrationEvent.subject1.patient.providerOrganization.classCode = "ORG"
 		subject.registrationEvent.subject1.patient.providerOrganization.determinerCode = "INSTANCE"
-		subject.registrationEvent.subject1.patient.providerOrganization.id.add( new II(root: "1.2.840.114350.1.13.99998.8734"))
-		subject.registrationEvent.subject1.patient.providerOrganization.name.add(new ON().content.add("Good Health Clinic"))
+		subject.registrationEvent.subject1.patient.providerOrganization.id.add( new II(root: testAuthorityOID))
+		subject.registrationEvent.subject1.patient.providerOrganization.name.add(new ON().content.add(testAuthorityName))
 		body.controlActProcess.subject.add(subject)
 		def ack = PIXManagerHL7v3Service.pixManagerPRPAIN201309UV02(body)
 		
-		assert ack.acknowledgement[0].typeCode.code == "CS"
+		assert ack.acknowledgement[0].typeCode.code == "CA"
 	}
 
 	@Test
