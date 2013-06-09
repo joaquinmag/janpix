@@ -55,7 +55,6 @@ class PixManagerHl7v3ServiceTests {
 		messageId.root = "22a0f9e0-4454-11dc-a6be-3603d6866807"
 		body.id = messageId
 		body.creationTime = new TS(value: "20070803130624")
-		// <interactionId root="2.16.840.1.113883.1.6" extension="PRPA_IN201301UV02"/>
 		body.interactionId = new II(root: "2.16.840.1.113883.1.6", extension: "PRPA_IN201301UV02")
 		body.processingCode = new CS(code: "P")
 		body.processingModeCode = new CS(code: "R")
