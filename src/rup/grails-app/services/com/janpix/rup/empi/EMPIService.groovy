@@ -39,6 +39,7 @@ class EMPIService {
 			
 			return patient
 		}catch(Exception e){
+			log.debug("Error creating patient", e)
 			throw new ShortDemographicDataException(message:i18nMessage("empiservice.shortdemographicdata.exception"),person:p)
 		}
 	}
