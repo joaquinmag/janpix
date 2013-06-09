@@ -9,7 +9,7 @@ class BootStrap {
 	
     def init = { servletContext ->
 		if (AuthorityRUP.count() == 0) {
-			new AuthorityRUP(grailsApplication.config.rup.authority.rupoid, grailsApplication.config.rup.authority.name ).save(failOnError: true)
+			new AuthorityRUP(grailsApplication.config.rup.authority.rupoid, grailsApplication.config.rup.authority.name ).save(flush: true, failOnError: true)
 		}
 		def country = Country.findOrCreateWhere(name: "AR").save(failOnError: true, flush: true)
 		def province = Province.findOrCreateWhere(country: country, name: "AR-S").save(failOnError: true, flush: true)
