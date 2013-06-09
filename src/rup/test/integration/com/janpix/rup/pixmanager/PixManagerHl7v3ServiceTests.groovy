@@ -44,7 +44,7 @@ class PixManagerHl7v3ServiceTests {
 
 	def PIXManagerHL7v3Service
 	
-	public void testPixManagerPRPAIN201309UV02PRPAIN201301UV02() {
+	public void testWhenPixManagerPRPAIN201309UV02IsCalledShouldReturnACKCorrectly() {
 		
 		
 		ObjectFactory objectFactory = new ObjectFactory()
