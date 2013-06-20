@@ -1,0 +1,3 @@
+[submodule "src/rup/src/java/com/janpix/hl7dto"]
+	path = src/rup/src/java/com/janpix/hl7dto
+	url = https://github.com/joaquinmag/hl7-v3-ws-dto.git
