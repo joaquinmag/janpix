@@ -1,8 +1,9 @@
 package com.janpix.rup.services.helpers
 
-import org.hl7.v3.CS
-import org.hl7.v3.II
-import org.hl7.v3.TS
+import com.janpix.hl7dto.hl7.v3.datatypes.CS
+import com.janpix.hl7dto.hl7.v3.datatypes.II
+import com.janpix.hl7dto.hl7.v3.datatypes.TS
+
 
 class Hl7v3MessageHelper {
 	def uuidGenerator
