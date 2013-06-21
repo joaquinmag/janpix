@@ -24,6 +24,7 @@ class Person {
 	String maritalStatus
 	City birthplace
 	Boolean multipleBirthIndicator 
+	Boolean organDonorIndicator
 	ExtendedDate deathdate
 
 	
@@ -49,6 +50,7 @@ class Person {
 		deathdate(nullable:true)
 		birthplace(nullable:true)
 		multipleBirthIndicator(nullable:true)
+		organDonorIndicator(nullable: true)
 		
 		identifiers(nullable:true)
 		phoneNumbers(nullable:true)
