@@ -66,7 +66,6 @@ class PixManagerHl7v3ServiceTests {
 		subject.registrationEvent = new RegistrationEvent()
 		subject.registrationEvent.classCode.add("REG")
 		subject.registrationEvent.moodCode.add("EVN")
-		subject.registrationEvent.id.add(new II(nullFlavor: [ "NA" ]))
 		subject.registrationEvent.statusCode = new CS(code: "active")
 		subject.registrationEvent.subject1 = new Subject2()
 		subject.registrationEvent.subject1.typeCode = ParticipationTargetSubject.SBJ
