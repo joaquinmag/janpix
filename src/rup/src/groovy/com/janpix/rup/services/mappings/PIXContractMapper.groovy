@@ -5,6 +5,7 @@ import javax.xml.bind.annotation.XmlRootElement
 
 import org.hl7.v3.*
 
+import com.janpix.hl7dto.hl7.v3.contracts.MCCIIN000002UV01
 import com.janpix.hl7dto.hl7.v3.contracts.PRPAIN201301UV02
 import com.janpix.hl7dto.hl7.v3.datatypes.AD
 import com.janpix.hl7dto.hl7.v3.datatypes.CE
@@ -14,10 +15,13 @@ import com.janpix.hl7dto.hl7.v3.datatypes.PN
 import com.janpix.hl7dto.hl7.v3.datatypes.TEL
 import com.janpix.hl7dto.hl7.v3.datatypes.TS
 import com.janpix.hl7dto.hl7.v3.datatypes.enums.CommunicationFunctionType
+import com.janpix.hl7dto.hl7.v3.messages.Acknowledgement
 import com.janpix.hl7dto.hl7.v3.messages.Device;
 import com.janpix.hl7dto.hl7.v3.messages.HL7MessageReceiver;
 import com.janpix.hl7dto.hl7.v3.messages.HL7MessageSender;
 import com.janpix.hl7dto.hl7.v3.messages.RegistrationEvent;
+import com.janpix.hl7dto.hl7.v3.messages.ack.AcknowledgementDetail
+import com.janpix.hl7dto.hl7.v3.messages.ack.TargetMessage
 import com.janpix.rup.empi.Address
 import com.janpix.rup.empi.AssigningAuthority
 import com.janpix.rup.empi.ExtendedDate
@@ -72,53 +76,53 @@ class PIXContractMapper {
 		return device
 	}
 	
-//	MCCIIN000002UV01 mapACKMessageToHL7AcceptAcknowledgmentMessage(ACKMessage ackMessage, II messageIdentifier, AssigningAuthority receiver, AssigningAuthority sender) {
-//		def ackHl7 = new MCCIIN000002UV01()
-//		ackHl7.itsVersion = "XML_1.0" //TODO tomar valor como constante de la config
-//		ackHl7.id = messageIdentifier //FIXME esto tiene que ser un valor único
-//		ackHl7.creationTime = hl7Helper.buildHl7DateTime(actualDate())
-//		
-//		def messageName = (MCCIIN000002UV01.class.getAnnotation(XmlRootElement) as XmlRootElement).name()
-//		ackHl7.interactionId = hl7Helper.buildInteractionId(messageName)
-//		ackHl7.processingCode = hl7Helper.buildProcessingCode()
-//		ackHl7.processingModeCode = hl7Helper.buildProcessingModeCode()
-//		ackHl7.acceptAckCode = hl7Helper.buildAcceptAckCode()
-//		ackHl7.receiver.add(mapHealthEntityToACKReceiver(receiver))
-//		ackHl7.sender = mapAssigningAuthorityToACKSender(sender)
-//		def ackHl7spec = buildAcknowledgement(ackMessage)
-//		ackHl7spec.targetMessage = buildTargetMessage(messageIdentifier)
-//		ackHl7.acknowledgement.add(ackHl7spec)
-//		
-//		return ackHl7
-//	}
+	MCCIIN000002UV01 mapACKMessageToHL7AcceptAcknowledgmentMessage(ACKMessage ackMessage, II messageIdentifier, AssigningAuthority receiver, AssigningAuthority sender) {
+		def ackHl7 = new MCCIIN000002UV01()
+		ackHl7.itsVersion = "XML_1.0" //TODO tomar valor como constante de la config
+		ackHl7.id = messageIdentifier //FIXME esto tiene que ser un valor único
+		ackHl7.creationTime = hl7Helper.buildHl7DateTime(actualDate())
+		
+		def messageName = (MCCIIN000002UV01.class.getAnnotation(XmlRootElement) as XmlRootElement).name()
+		ackHl7.interactionId = hl7Helper.buildInteractionId(messageName)
+		ackHl7.processingCode = hl7Helper.buildProcessingCode()
+		ackHl7.processingModeCode = hl7Helper.buildProcessingModeCode()
+		ackHl7.acceptAckCode = hl7Helper.buildAcceptAckCode()
+		ackHl7.receiver.add(mapHealthEntityToACKReceiver(receiver))
+		ackHl7.sender = mapAssigningAuthorityToACKSender(sender)
+		def ackHl7spec = buildAcknowledgement(ackMessage)
+		ackHl7spec.targetMessage = buildTargetMessage(messageIdentifier)
+		ackHl7.acknowledgement.add(ackHl7spec)
+		
+		return ackHl7
+	}
 	
-//	private MCCIMT000200UV01Acknowledgement buildAcknowledgement(ACKMessage ackMessage) {
-//		def ackHl7spec = new MCCIMT000200UV01Acknowledgement()
-//		switch (ackMessage.typeCode) {
-//			case [ ACKMessage.TypeCode.SuccededCreation, ACKMessage.TypeCode.SuccededInsertion ]:
-//				ackHl7spec.typeCode = new CS(code:"CA")
-//				break
-//			case [ ACKMessage.TypeCode.PossibleMatchingPatientsError, ACKMessage.TypeCode.ShortDemographicError, ACKMessage.TypeCode.IdentifierError ]:
-//				ackHl7spec.typeCode = new CS(code:"CR")
-//				break
-//			default:
-//				ackHl7spec.typeCode = new CS(code:"CE")
-//		}
-//		ackHl7spec.acknowledgementDetail.add(buildAcknowledgementDetail(ackMessage))
-//		return ackHl7spec
-//	}
-//	
-//	private MCCIMT000200UV01TargetMessage buildTargetMessage(II identifier) {
-//		def targetMessage = new MCCIMT000200UV01TargetMessage()
-//		targetMessage.id = identifier
-//		return targetMessage
-//	}
-//	
-//	private MCCIMT000200UV01AcknowledgementDetail buildAcknowledgementDetail(ACKMessage ackMessage) {
-//		def ackDetail = new MCCIMT000200UV01AcknowledgementDetail()
-//		ackDetail.code = new CE(code: ackMessage.typeCode.exceptionCode())
-//		return ackDetail
-//	}
+	private Acknowledgement buildAcknowledgement(ACKMessage ackMessage) {
+		def ackHl7spec = new Acknowledgement()
+		switch (ackMessage.typeCode) {
+			case [ ACKMessage.TypeCode.SuccededCreation, ACKMessage.TypeCode.SuccededInsertion ]:
+				ackHl7spec.typeCode = new CS(code:"CA")
+				break
+			case [ ACKMessage.TypeCode.PossibleMatchingPatientsError, ACKMessage.TypeCode.ShortDemographicError, ACKMessage.TypeCode.IdentifierError ]:
+				ackHl7spec.typeCode = new CS(code:"CR")
+				break
+			default:
+				ackHl7spec.typeCode = new CS(code:"CE")
+		}
+		ackHl7spec.acknowledgementDetail.add(buildAcknowledgementDetail(ackMessage))
+		return ackHl7spec
+	}
+	
+	private TargetMessage buildTargetMessage(II identifier) {
+		def targetMessage = new TargetMessage()
+		targetMessage.id = identifier
+		return targetMessage
+	}
+	
+	private AcknowledgementDetail buildAcknowledgementDetail(ACKMessage ackMessage) {
+		def ackDetail = new AcknowledgementDetail()
+		ackDetail.code = new CE(code: ackMessage.typeCode.exceptionCode())
+		return ackDetail
+	}
 
 	/**
 	 * maps PRPAIN201301UV02 message to Person
@@ -208,9 +212,9 @@ class PIXContractMapper {
 	}
 	
 	public void validateHl7V3AddNewPatientMessage(PRPAIN201301UV02 inPatientMessage) {
-		if (inPatientMessage.getControlActProcess().getSubject().isEmpty())
+		if (inPatientMessage.controlActProcess.subject.isEmpty())
 			throw new MessageMappingException("PRPAIN201301UV02 message must contain one subject")
-		if (inPatientMessage.getControlActProcess().getSubject().size() > 1)
+		if (inPatientMessage.controlActProcess.subject.size() > 1)
 			throw new MessageMappingException("PRPAIN201301UV02 message can't contain more than one subject at this implementation")
 		if (inPatientMessage.controlActProcess.subject[0].registrationEvent.subject1.patient.patientPerson.administrativeGenderCode == null)
 			throw new MessageMappingException("PRPAIN201301UV02 message must contain an administrativeGenderCode")
