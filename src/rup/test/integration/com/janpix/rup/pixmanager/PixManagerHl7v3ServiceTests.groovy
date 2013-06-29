@@ -101,19 +101,4 @@ class PixManagerHl7v3ServiceTests {
 		assert ack.acknowledgement[0].typeCode.code == "CA"
 	}
 
-	@Test
-	public void testPixManagerPRPAIN201304UV02() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testPixManagerPRPAIN201302UV02() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testPixManagerPRPAIN201309UV02PRPAIN201309UV02() {
-		fail("Not yet implemented");
-	}
-
 }
