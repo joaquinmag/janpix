@@ -96,7 +96,7 @@ class PixManagerHl7v3ServiceTests {
 		person.asOtherIDs.add(otherId)
 		subject.registrationEvent.subject1.patient.patientPerson = person
 		body.controlActProcess.subject.add(subject)
-		def ack = PIXManagerHL7v3Service.pixManagerPRPAIN201309UV02(body)
+		def ack = PIXManagerHL7v3Service.AddNewPatient(body)
 		
 		assert ack.acknowledgement[0].typeCode.code == "CA"
 	}
