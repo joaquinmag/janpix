@@ -71,7 +71,7 @@ class PixManagerServiceTests extends GroovyTestCase {
 		assingingAuthorityArgentina.save(flush:true,failOnError:true)
 		
 		//Creo un nuevo paciente
-		patient = new Patient(givenName: new PersonName(firstName:"Martín", lastName:"Barnech",motherLastName:"Mannino"),
+		patient = new Patient(givenName: new PersonName(firstName:"Martín", lastName:"Barnech"),
 			birthdate: new ExtendedDate(precission:ExtendedDate.TYPE_PRECISSION_DAY,date:Date.parse( "yyyy-M-d", "1987-01-16" )),
 			administrativeSex:Person.TYPE_SEX_MALE,
 			birthplace:city1,
@@ -83,7 +83,7 @@ class PixManagerServiceTests extends GroovyTestCase {
 		patient.addToIdentifiers(new Identifier(type:Identifier.TYPE_IDENTIFIER_PI,number:"C123",assigningAuthority:healthEntity3))
 		patient.save(flush:true,failOnError:true)
 		
-		person = new Person(givenName: new PersonName(firstName:"Joaquin Ignacio", lastName:"Magneres",motherLastName:"Fontela"),
+		person = new Person(givenName: new PersonName(firstName:"Joaquin Ignacio", lastName:"Magneres"),
 			birthdate: new ExtendedDate(precission:ExtendedDate.TYPE_PRECISSION_DAY,date:Date.parse( "yyyy-M-d", "1987-05-01" )),
 			administrativeSex:Person.TYPE_SEX_MALE,
 			birthplace:city2,
@@ -185,7 +185,7 @@ class PixManagerServiceTests extends GroovyTestCase {
 	 */
 	void testCreateHighMatchingPatient(){
 		//Creo una persona con los mismos datos que patient
-		def p = new Person(givenName: new PersonName(firstName:"Martín", lastName:"Barnech",motherLastName:"Mannino"),
+		def p = new Person(givenName: new PersonName(firstName:"Martín", lastName:"Barnech"),
 			birthdate: new ExtendedDate(precission:ExtendedDate.TYPE_PRECISSION_DAY,date:Date.parse( "yyyy-M-d", "1987-01-16" )),
 			administrativeSex:Person.TYPE_SEX_MALE,
 			birthplace:city1,
@@ -219,7 +219,7 @@ class PixManagerServiceTests extends GroovyTestCase {
 	 */
 	void testFailCreatePatientBecauseMuchMatched(){		
 		//Creo una persona parecida al paciente que ya existe
-		def p = new Person(givenName: new PersonName(firstName:"Martín Gonzalo", lastName:"Varnech",motherLastName:"Mannino"),
+		def p = new Person(givenName: new PersonName(firstName:"Martín Gonzalo", lastName:"Varnech"),
 			birthdate: new ExtendedDate(precission:ExtendedDate.TYPE_PRECISSION_DAY,date:Date.parse( "yyyy-M-d", "1987-01-16" )),
 			administrativeSex:Person.TYPE_SEX_MALE,
 			birthplace:city1,
@@ -230,7 +230,7 @@ class PixManagerServiceTests extends GroovyTestCase {
 		
 		ACKMessage ack = pixManagerService.patientRegistryRecordAdded(p,healthEntity4,"F123456")
 		//Verifico ACK
-		assertEquals(TypeCode.PossibleMatchingPatientsError,ack.typeCode)
+		assertEquals(TypeCode.PossibleMatchingPatientsError,ack.typeCode) //FIXME hay un problema con los DNIs, no logro que llegue a este error...
 		assertEquals(i18nMessage("pixmanager.ackmessage.possiblematching.error"),ack.text)
 		
 		def patients = Patient.list()
@@ -260,7 +260,6 @@ class PixManagerServiceTests extends GroovyTestCase {
 		
 		//Patient
 		assert "${patient.givenName}" 				== "Magneres, Joaquin Ignacio"
-		assert patient.givenName.motherLastName		== "Mannino"
 		assert patient.birthdate					== new ExtendedDate(precission:ExtendedDate.TYPE_PRECISSION_DAY,date:Date.parse( "yyyy-M-d", "1987-05-01" ))
 		assert patient.administrativeSex			== Person.TYPE_SEX_AMBIGUOS
 		assert patient.birthplace					== city2
@@ -336,7 +335,7 @@ class PixManagerServiceTests extends GroovyTestCase {
 	 */
 	void testCreatePatientEvenMatchWithOthers(){		
 		//Creo una persona parecida al paciente que ya existe
-		def p = new Person(givenName: new PersonName(firstName:"Martín Gonzalo", lastName:"Varnech",motherLastName:"Mannino"),
+		def p = new Person(givenName: new PersonName(firstName:"Martín Gonzalo", lastName:"Varnech"),
 			birthdate: new ExtendedDate(precission:ExtendedDate.TYPE_PRECISSION_DAY,date:Date.parse( "yyyy-M-d", "1987-01-16" )),
 			administrativeSex:Person.TYPE_SEX_MALE,
 			birthplace:city1,
@@ -361,13 +360,13 @@ class PixManagerServiceTests extends GroovyTestCase {
 	 */
 	void testMatchedPatients(){
 		//Creo una persona parecida al paciente que ya existe
-		def p = new Person(givenName: new PersonName(firstName:"Martín Gonzalo", lastName:"Varnech",motherLastName:"Mannino"),
+		def p = new Person(givenName: new PersonName(firstName:"Martín Gonzalo", lastName:"Varnech"),
 			birthdate: new ExtendedDate(precission:ExtendedDate.TYPE_PRECISSION_DAY,date:Date.parse( "yyyy-M-d", "1987-01-16" )),
 			administrativeSex:Person.TYPE_SEX_MALE,
 			birthplace:city1,
 			)
 		p.addToAddresses(new Address(street:"Constitución",number:"2213",zipCode:"6700",city:city1))
-		p.addToIdentifiers(new Identifier(type:Identifier.TYPE_IDENTIFIER_DNI,number:"32850139",assigningAuthority:assingingAuthorityArgentina))
+		p.addToIdentifiers(new Identifier(type:Identifier.TYPE_IDENTIFIER_DNI,number:"32850137",assigningAuthority:assingingAuthorityArgentina))
 		
 		List<Patient> patients = pixManagerService.getAllPossibleMatchedPatients(p)
 		

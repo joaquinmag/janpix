@@ -33,7 +33,7 @@ class Identity {
 		def address  = p.principalAddress() 
 		
 		
-		identity.name 			= "${p.givenName?.firstName} ${p.givenName?.lastName} ${p.givenName?.motherLastName}" 
+		identity.name 			= "${p.givenName?.firstName} ${p.givenName?.lastName}" 
 		identity.sex 			= p.administrativeSex
 		identity.birthdate 		= p.birthdate
 		identity.multipleBirthIndicator = p.multipleBirthIndicator

@@ -43,7 +43,7 @@ class DemographicPersonServiceTests extends GroovyTestCase {
 		assingingAuthorityArgentina.save(flush:true,failOnError:true)
 		
 		//Creo las personas
-		p1 = new Person(givenName: new PersonName(firstName:"Martín", lastName:"Barnech",motherLastName:"Mannino"),
+		p1 = new Person(givenName: new PersonName(firstName:"Martín", lastName:"Barnech"),
 					birthdate: new ExtendedDate(precission:ExtendedDate.TYPE_PRECISSION_DAY,date:Date.parse( "yyyy-M-d", "1987-01-16" )),
 					administrativeSex:Person.TYPE_SEX_MALE,
 					birthplace:city1,
@@ -53,7 +53,7 @@ class DemographicPersonServiceTests extends GroovyTestCase {
 		p1.save(flush:true,failOnError:true)
 		
 		//p1 con error de tipeo en el nombre, la direccion y fecha de nacimiento (el dia difiere)
-		p2 = new Person(givenName: new PersonName(firstName:"Martin Gonzalo", lastName:"Barneche",motherLastName:"Mannino"),
+		p2 = new Person(givenName: new PersonName(firstName:"Martin Gonzalo", lastName:"Barneche"),
 			birthdate: new ExtendedDate(precission:ExtendedDate.TYPE_PRECISSION_DAY,date:Date.parse( "yyyy-M-d", "1987-01-06" )),
 			administrativeSex:Person.TYPE_SEX_MALE,
 			birthplace:city1,
@@ -64,7 +64,7 @@ class DemographicPersonServiceTests extends GroovyTestCase {
 		
 		
 		//p1 con error en fecha nacimiento (difiere el dia), diferente ciudad,  otra direccion y  error tipeo apellido madre
-		p3 = new Person(givenName: new PersonName(firstName:"Martín", lastName:"Barnech",motherLastName:"Manino"),
+		p3 = new Person(givenName: new PersonName(firstName:"Martín", lastName:"Barnech"),
 			birthdate: new ExtendedDate(precission:ExtendedDate.TYPE_PRECISSION_DAY,date:Date.parse( "yyyy-M-d", "1987-01-06" )),
 			administrativeSex:Person.TYPE_SEX_MALE,
 			birthplace:city3,
@@ -74,7 +74,7 @@ class DemographicPersonServiceTests extends GroovyTestCase {
 		p3.save(flush:true,failOnError:true)
 		
 		//p1 con diferente numero de documento
-		p4 = new Person(givenName: new PersonName(firstName:"Martín", lastName:"Barnech",motherLastName:"Mannino"),
+		p4 = new Person(givenName: new PersonName(firstName:"Martín", lastName:"Barnech"),
 			birthdate: new ExtendedDate(precission:ExtendedDate.TYPE_PRECISSION_DAY,date:Date.parse( "yyyy-M-d", "1987-01-16" )),
 			administrativeSex:Person.TYPE_SEX_MALE,
 			birthplace:city1,
@@ -84,7 +84,7 @@ class DemographicPersonServiceTests extends GroovyTestCase {
 		p4.save(flush:true,failOnError:true)
 		
 		//p1 con diferente precision en la fecha y errores en el tipeo del nombre
-		p5 = new Person(givenName: new PersonName(firstName:"Martin G.", lastName:"Barneix",motherLastName:"Magnino"),
+		p5 = new Person(givenName: new PersonName(firstName:"Martin G.", lastName:"Barneix"),
 			birthdate: new ExtendedDate(precission:ExtendedDate.TYPE_PRECISSION_YEAR,date:Date.parse( "yyyy-M-d", "1987-05-15" )),
 			administrativeSex:Person.TYPE_SEX_MALE,
 			birthplace:city1,
@@ -94,7 +94,7 @@ class DemographicPersonServiceTests extends GroovyTestCase {
 		p5.save(flush:true,failOnError:true)
 		
 		//Diferente paciente
-		p6 = new Person(givenName: new PersonName(firstName:"Joaquin Ignacio.", lastName:"Magneres",motherLastName:"Fontela"),
+		p6 = new Person(givenName: new PersonName(firstName:"Joaquin Ignacio.", lastName:"Magneres"),
 			birthdate: new ExtendedDate(precission:ExtendedDate.TYPE_PRECISSION_DAY,date:Date.parse( "yyyy-M-d", "1987-05-01" )),
 			administrativeSex:Person.TYPE_SEX_MALE,
 			birthplace:city2,

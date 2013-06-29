@@ -57,7 +57,7 @@ class EMPIServiceTests extends GroovyTestCase {
 		assingingAuthorityArgentina.save(flush:true,failOnError:true)
 		
 		//Creo un nuevo paciente
-		patient = new Patient(givenName: new PersonName(firstName:"Martín", lastName:"Barnech",motherLastName:"Mannino"),
+		patient = new Patient(givenName: new PersonName(firstName:"Martín", lastName:"Barnech"),
 			birthdate: new ExtendedDate(precission:ExtendedDate.TYPE_PRECISSION_DAY,date:Date.parse( "yyyy-M-d", "1987-01-16" )),
 			administrativeSex:Person.TYPE_SEX_MALE,
 			birthplace:city1,
@@ -67,7 +67,7 @@ class EMPIServiceTests extends GroovyTestCase {
 		patient.save(flush:true,failOnError:true)
 		
 		//Creo una persona
-		person = new Person(givenName: new PersonName(firstName:"Joaquin Ignacio", lastName:"Magneres",motherLastName:"Fontela"),
+		person = new Person(givenName: new PersonName(firstName:"Joaquin Ignacio", lastName:"Magneres"),
 			birthdate: new ExtendedDate(precission:ExtendedDate.TYPE_PRECISSION_DAY,date:Date.parse( "yyyy-M-d", "1987-05-01" )),
 			administrativeSex:Person.TYPE_SEX_MALE,
 			birthplace:city2,
@@ -103,7 +103,7 @@ class EMPIServiceTests extends GroovyTestCase {
 	 */
 	void testFailCreatePatientBecauseShortInformation(){
 		//Creo una persona sin administrativeSex, el cual es requerido
-		def p = new Person(givenName: new PersonName(firstName:"Martin Gonzalo", lastName:"Barneche",motherLastName:"Mannino"),
+		def p = new Person(givenName: new PersonName(firstName:"Martin Gonzalo", lastName:"Barneche"),
 			birthdate: new ExtendedDate(precission:ExtendedDate.TYPE_PRECISSION_DAY,date:Date.parse( "yyyy-M-d", "1987-01-06" )),
 			birthplace:city1,
 			)
@@ -142,7 +142,6 @@ class EMPIServiceTests extends GroovyTestCase {
 		//Verifico los datos actuales del paciente que voy a modificar
 		//Name
 		assertEquals("Magneres, Joaquin Ignacio",returnedPatient.givenName.toString())
-		assertEquals("Fontela",returnedPatient.givenName.motherLastName)
 		//Birthplace
 		assertEquals("C.A.B.A",returnedPatient.birthplace.province.name)
 		//Address
@@ -308,7 +307,7 @@ class EMPIServiceTests extends GroovyTestCase {
 		EMPIService.addEntityIdentifierToPatient(returnedPatient,healthEntity1,patientEntity1Id)
 		
 		def otherPatient = EMPIService.createPatient(
-						new Person(givenName: new PersonName(firstName:"Maria", lastName:"Juarez",motherLastName:"Rodriguez"),
+						new Person(givenName: new PersonName(firstName:"Maria", lastName:"Juarez"),
 									birthdate: new ExtendedDate(precission:ExtendedDate.TYPE_PRECISSION_DAY,date:Date.parse( "yyyy-M-d", "1977-01-26" )),
 									administrativeSex:Person.TYPE_SEX_FEMALE,
 									birthplace:city1,
@@ -384,7 +383,7 @@ class EMPIServiceTests extends GroovyTestCase {
 		EMPIService.addEntityIdentifierToPatient(returnedPatient,healthEntity1,patientEntity1Id)
 		
 		def otherPatient = EMPIService.createPatient(
-						new Person(givenName: new PersonName(firstName:"Maria", lastName:"Juarez",motherLastName:"Rodriguez"),
+						new Person(givenName: new PersonName(firstName:"Maria", lastName:"Juarez"),
 									birthdate: new ExtendedDate(precission:ExtendedDate.TYPE_PRECISSION_DAY,date:Date.parse( "yyyy-M-d", "1977-01-26" )),
 									administrativeSex:Person.TYPE_SEX_FEMALE,
 									birthplace:city1,
@@ -476,7 +475,7 @@ class EMPIServiceTests extends GroovyTestCase {
 	 * Testea el correcto matcheo de un paciente sin incluir los posibles matcheos
 	 */
 	void testGetAllMatchedPatients(){
-		def p = new Patient(givenName: new PersonName(firstName:"Martin Gonzalo", lastName:"Barneche",motherLastName:"Mannino"),
+		def p = new Patient(givenName: new PersonName(firstName:"Martin Gonzalo", lastName:"Barneche"),
 			birthdate: new ExtendedDate(precission:ExtendedDate.TYPE_PRECISSION_DAY,date:Date.parse( "yyyy-M-d", "1987-01-06" )),
 			administrativeSex:Person.TYPE_SEX_MALE,
 			birthplace:city1,
@@ -496,7 +495,7 @@ class EMPIServiceTests extends GroovyTestCase {
 	 * Testea el correcto matcheo de un paciente incluidos los que son posibles matcheos
 	 */
 	void testGetAllMatchedPatientsIncludePossible(){
-		def p = new Patient(givenName: new PersonName(firstName:"Martín", lastName:"Barnech",motherLastName:"Mannino"),
+		def p = new Patient(givenName: new PersonName(firstName:"Martín", lastName:"Barnech"),
 			birthdate: new ExtendedDate(precission:ExtendedDate.TYPE_PRECISSION_DAY,date:Date.parse( "yyyy-M-d", "1987-01-16" )),
 			administrativeSex:Person.TYPE_SEX_MALE,
 			birthplace:city1,
