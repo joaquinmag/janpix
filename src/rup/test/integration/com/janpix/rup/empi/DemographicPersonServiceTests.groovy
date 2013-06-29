@@ -111,7 +111,7 @@ class DemographicPersonServiceTests extends GroovyTestCase {
 	 */
 	void testBuildIdentity(){
 		def identity = Identity.buildFromPerson(p1)
-		assertEquals("Martín Barnech Mannino",identity.name)
+		assertEquals("Martín Barnech",identity.name)
 		assertEquals(Date.parse("yyyy-M-d","1987-01-16"),identity.birthdate.date)
 		assertEquals(Person.TYPE_SEX_MALE,identity.sex)
 		assertEquals("Argentina,Buenos Aires,Luján",identity.livingplace)
