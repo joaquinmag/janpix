@@ -41,6 +41,7 @@ class PIXContractMapper {
 	def hl7Helper
 	def actualDate
 	
+	
 	II getMessageIdentifier(PRPAIN201301UV02 message) {
 		return message.id
 	}

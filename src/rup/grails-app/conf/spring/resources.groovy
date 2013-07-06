@@ -2,6 +2,7 @@ import java.beans.beancontext.BeanContext;
 import com.janpix.rup.infrastructure.DateHelper
 import com.janpix.rup.infrastructure.UUIDGenerator
 import com.janpix.rup.pixmanager.PlaceService
+import com.janpix.rup.repository.AssigningAuthorityService
 import com.janpix.rup.services.helpers.Hl7v3MessageHelper
 import com.janpix.rup.services.mappings.PIXContractMapper
 import org.springframework.web.servlet.i18n.SessionLocaleResolver
@@ -34,6 +35,10 @@ beans = {
 	}
 	
 	placeService(PlaceService)
+	
+	assigningAuthorityService(AssigningAuthorityService){
+		grailsApplication = ref('grailsApplication')
+	}
 	
 	pixContractMapper(PIXContractMapper) {
 		placeService = ref(placeService)

@@ -64,7 +64,7 @@ class DemographicPersonServiceTests extends GroovyTestCase {
 		
 		
 		//p1 con error en fecha nacimiento (difiere el dia), diferente ciudad,  otra direccion y  error tipeo apellido madre
-		p3 = new Person(givenName: new PersonName(firstName:"Martín", lastName:"Barnech"),
+		p3 = new Person(givenName: new PersonName(firstName:"Martín", lastName:"Barnech Mannino"),
 			birthdate: new ExtendedDate(precission:ExtendedDate.TYPE_PRECISSION_DAY,date:Date.parse( "yyyy-M-d", "1987-01-06" )),
 			administrativeSex:Person.TYPE_SEX_MALE,
 			birthplace:city3,

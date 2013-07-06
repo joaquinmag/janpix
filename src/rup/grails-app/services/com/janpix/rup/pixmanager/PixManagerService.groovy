@@ -34,6 +34,10 @@ class PixManagerService {
 	 */
 	ACKMessage patientRegistryRecordAdded(Person patientRequestMessage, HealthEntity healthEntity, String organizationId){
 		try {
+			//Sino me pasan una entidad sanitaria envio error
+			//if(healthEntity == null) //TODO ver de poner un metodo de validacion
+				
+				
 			def matchedPatients = EMPIService.getAllMatchedPatients(patientRequestMessage, true)
 			//Es un paciente nuevo
 			if (matchedPatients.empty) {	
