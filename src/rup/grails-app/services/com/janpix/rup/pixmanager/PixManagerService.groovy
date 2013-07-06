@@ -33,17 +33,12 @@ class PixManagerService {
 	 * If the patient doesn't exists creates a new one and assigns the identifier from the healthentity to the patient's ids collection.
 	 */
 	ACKMessage patientRegistryRecordAdded(Person patientRequestMessage, HealthEntity healthEntity, String organizationId){
-		try {
-			//Sino me pasan una entidad sanitaria envio error
-			//if(healthEntity == null) //TODO ver de poner un metodo de validacion
-				
-				
+		try {				
 			def matchedPatients = EMPIService.getAllMatchedPatients(patientRequestMessage, true)
 			//Es un paciente nuevo
 			if (matchedPatients.empty) {	
 				def patient = EMPIService.createPatient(patientRequestMessage)
-				def validatedHealthEntity = EMPIService.validateHealthEntity(healthEntity)
-				EMPIService.addEntityIdentifierToPatient(patient, validatedHealthEntity, organizationId)
+				EMPIService.addEntityIdentifierToPatient(patient, healthEntity, organizationId)
 				return new ACKMessage(typeCode: TypeCode.SuccededCreation, text:i18nMessage("pixmanager.ackmessage.creation.succeded"))	
 			}
 			

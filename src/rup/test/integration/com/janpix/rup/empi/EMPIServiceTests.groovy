@@ -107,15 +107,10 @@ class EMPIServiceTests extends GroovyTestCase {
 			birthdate: new ExtendedDate(precission:ExtendedDate.TYPE_PRECISSION_DAY,date:Date.parse( "yyyy-M-d", "1987-01-06" )),
 			birthplace:city1,
 			)
-		try{
+
+		shouldFail(ShortDemographicDataException) {
 			def returnedPatient = EMPIService.createPatient(p)
-			fail("Deberia de lanzar la exception ShortDemographicDataException")
-		}catch(ShortDemographicDataException e){
-			assertTrue(true)
 		}
-		/*shouldFail(ShortDemographicDataException) {
-			def returnedPatient = EMPIService.createPatient(p)
-		}*/
 	}
 	
 	/**

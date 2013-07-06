@@ -226,7 +226,6 @@ class PixManagerServiceTests extends GroovyTestCase {
 			)
 		p.addToAddresses(new Address(street:"Constitución",number:"2213",zipCode:"6700",city:city1))
 		p.addToIdentifiers(new Identifier(type:Identifier.TYPE_IDENTIFIER_DNI,number:"32850139",assigningAuthority:assingingAuthorityArgentina))
-
 		
 		ACKMessage ack = pixManagerService.patientRegistryRecordAdded(p,healthEntity4,"F123456")
 		//Verifico ACK
@@ -332,6 +331,7 @@ class PixManagerServiceTests extends GroovyTestCase {
 	
 	/**
 	 * Testea la creacion forzada de un paciente aunque este matchee con otros
+	 * FIXME Falla porque al tener diferente Documento y Nombre no entra ni como posible matcheo
 	 */
 	void testCreatePatientEvenMatchWithOthers(){		
 		//Creo una persona parecida al paciente que ya existe

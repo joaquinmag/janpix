@@ -215,7 +215,7 @@ class EMPIService {
 		 * Ver Patient.withNewSession{}
 		 * **/
 		//return Patient.findByUniqueId(uuid)
-		def query =Patient.where {uniqueId.mainId == uuid.mainId} 
+		def query =Patient.where {uniqueId.mainId == uuid?.mainId} 
 		return query.find()
 
 	}
