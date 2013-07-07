@@ -36,8 +36,6 @@ class PixManagerHl7v3ServiceTests {
 	public void testWhenPixManagerPRPAIN201309UV02IsCalledShouldReturnACKCorrectly() {
 		def testAuthorityOID = "1.2.840.114350.1.13.99998.8734"
 		def testAuthorityName = "Good Health Clinic"
-		new HealthEntity(testAuthorityOID, testAuthorityName).save(flush: true, failOnError: true)
-		
 		PRPAIN201301UV02 body = new PRPAIN201301UV02()
 		body.itsVersion = "XML_1.0"
 		II messageId = new II()

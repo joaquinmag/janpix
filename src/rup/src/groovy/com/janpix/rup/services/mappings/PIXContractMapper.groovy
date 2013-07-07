@@ -81,7 +81,7 @@ class PIXContractMapper {
 	MCCIIN000002UV01 mapACKMessageToHL7AcceptAcknowledgmentMessage(ACKMessage ackMessage, II messageIdentifier, AssigningAuthority receiver, AssigningAuthority sender) {
 		def ackHl7 = new MCCIIN000002UV01()
 		ackHl7.itsVersion = "XML_1.0" //TODO tomar valor como constante de la config
-		ackHl7.id = uuidGenerator()
+		ackHl7.id = new II(root: uuidGenerator())
 		ackHl7.creationTime = hl7Helper.buildHl7DateTime(actualDate())
 		
 		def messageName = (MCCIIN000002UV01.class.getAnnotation(XmlRootElement) as XmlRootElement).name()

@@ -44,6 +44,7 @@ beans = {
 		placeService = ref(placeService)
 		hl7Helper = ref(hl7Helper)
 		actualDate = ref(actualDate)
+		uuidGenerator = ref(uuidGenerator)
 	}
 	
 	factoryMatchRecord(FactoryMatchRecord){
