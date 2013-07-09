@@ -6,6 +6,8 @@ import org.grails.cxf.utils.GrailsCxfEndpoint
 import com.janpix.hl7dto.hl7.v3.contracts.*
 import com.janpix.hl7dto.hl7.v3.interfaces.PixManagerInterface
 import com.janpix.hl7dto.hl7.v3.messages.HL7OperationMessage
+import com.janpix.hl7dto.hl7.v3.messages.AddPatientOperationMessage;
+import com.janpix.hl7dto.hl7.v3.messages.QueryPatientOperationMessage;
 import com.janpix.hl7dto.hl7.v3.messages.ack.AcknowledgmentMessage
 import com.janpix.hl7dto.hl7.v3.messages.ack.QueryAcknowledgmentMessage
 
@@ -20,7 +22,7 @@ class PIXManagerHL7v3Service implements PixManagerInterface  {
 	/**
 	 * Add new patients to the PIX. 
 	 */								
-	public AcknowledgmentMessage AddNewPatient(HL7OperationMessage body) {
+	public AcknowledgmentMessage AddNewPatient(AddPatientOperationMessage body) {
 		pixContractMapper.validateHl7V3AddNewPatientMessage(body)
 		def person = pixContractMapper.mapPersonFromhl7v3AddNewPatientMessage(body)
 		def patientId = pixContractMapper.getPatientId(body)
@@ -54,9 +56,9 @@ class PIXManagerHL7v3Service implements PixManagerInterface  {
 	/**
 	 * Returns all the identifiers of a patient.
 	 */
-	public QueryAcknowledgmentMessage GetAllIdentifiersPatient(HL7OperationMessage body) {
+	public QueryAcknowledgmentMessage GetAllIdentifiersPatient(QueryPatientOperationMessage body) {
 		// TODO Auto-generated method stub
-		return new HL7OperationMessage();
+		return new QueryAcknowledgmentMessage();
 	}
 
 

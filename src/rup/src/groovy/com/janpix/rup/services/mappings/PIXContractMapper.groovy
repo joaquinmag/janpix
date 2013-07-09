@@ -84,7 +84,7 @@ class PIXContractMapper {
 		ackHl7.id = new II(root: uuidGenerator())
 		ackHl7.creationTime = hl7Helper.buildHl7DateTime(actualDate())
 		
-		def messageName = (MCCIIN000002UV01.class.getAnnotation(XmlRootElement) as XmlRootElement).name()
+		def messageName = "MCCI_IN000002UV01"
 		ackHl7.interactionId = hl7Helper.buildInteractionId(messageName)
 		ackHl7.processingCode = hl7Helper.buildProcessingCode()
 		ackHl7.processingModeCode = hl7Helper.buildProcessingModeCode()
