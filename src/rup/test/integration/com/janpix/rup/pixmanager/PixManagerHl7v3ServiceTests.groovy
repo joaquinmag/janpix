@@ -2,9 +2,6 @@ package com.janpix.rup.pixmanager;
 
 import static org.junit.Assert.*
 
-import org.junit.Test
-
-import com.janpix.hl7dto.hl7.v3.contracts.PRPAIN201301UV02
 import com.janpix.hl7dto.hl7.v3.datatypes.AD
 import com.janpix.hl7dto.hl7.v3.datatypes.CE
 import com.janpix.hl7dto.hl7.v3.datatypes.CS
@@ -20,6 +17,7 @@ import com.janpix.hl7dto.hl7.v3.messages.ControlActProcess
 import com.janpix.hl7dto.hl7.v3.messages.Device
 import com.janpix.hl7dto.hl7.v3.messages.HL7MessageReceiver
 import com.janpix.hl7dto.hl7.v3.messages.HL7MessageSender
+import com.janpix.hl7dto.hl7.v3.messages.HL7OperationMessage
 import com.janpix.hl7dto.hl7.v3.messages.Organization
 import com.janpix.hl7dto.hl7.v3.messages.OtherIDs
 import com.janpix.hl7dto.hl7.v3.messages.Patient
@@ -36,7 +34,8 @@ class PixManagerHl7v3ServiceTests {
 	public void testWhenPixManagerPRPAIN201309UV02IsCalledShouldReturnACKCorrectly() {
 		def testAuthorityOID = "1.2.840.114350.1.13.99998.8734"
 		def testAuthorityName = "Good Health Clinic"
-		PRPAIN201301UV02 body = new PRPAIN201301UV02()
+
+		HL7OperationMessage body = new HL7OperationMessage()
 		body.itsVersion = "XML_1.0"
 		II messageId = new II()
 		messageId.root = "22a0f9e0-4454-11dc-a6be-3603d6866807"

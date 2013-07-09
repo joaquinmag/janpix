@@ -2,12 +2,12 @@ package com.janpix.rup.services.mappings;
 
 import grails.test.mixin.*
 
-import com.janpix.hl7dto.hl7.v3.contracts.PRPAIN201301UV02
 import com.janpix.hl7dto.hl7.v3.datatypes.AD
 import com.janpix.hl7dto.hl7.v3.datatypes.CE
 import com.janpix.hl7dto.hl7.v3.datatypes.PN
 import com.janpix.hl7dto.hl7.v3.datatypes.TS
 import com.janpix.hl7dto.hl7.v3.messages.ControlActProcess
+import com.janpix.hl7dto.hl7.v3.messages.HL7OperationMessage
 import com.janpix.hl7dto.hl7.v3.messages.Patient
 import com.janpix.hl7dto.hl7.v3.messages.Person
 import com.janpix.hl7dto.hl7.v3.messages.RegistrationEvent
@@ -39,7 +39,7 @@ class PIXContractMapperTest {
 		subjectControlActProcess.registrationEvent.subject1 = new Subject2()
 		subjectControlActProcess.registrationEvent.subject1.patient = new Patient()
 		subjectControlActProcess.registrationEvent.subject1.patient.patientPerson = patientPerson
-		def inPatientMessage = new PRPAIN201301UV02()
+		def inPatientMessage = new HL7OperationMessage()
 		inPatientMessage.controlActProcess = new ControlActProcess()
 		inPatientMessage.controlActProcess.subject.add(subjectControlActProcess)
 		
@@ -66,7 +66,7 @@ class PIXContractMapperTest {
 		subjectControlActProcess.registrationEvent.subject1 = new Subject2()
 		subjectControlActProcess.registrationEvent.subject1.patient = new Patient()
 		subjectControlActProcess.registrationEvent.subject1.patient.patientPerson = patientPerson
-		def inPatientMessage = new PRPAIN201301UV02()
+		def inPatientMessage = new HL7OperationMessage()
 		inPatientMessage.controlActProcess = new ControlActProcess()
 		inPatientMessage.controlActProcess.subject.add(subjectControlActProcess)
 		
@@ -93,7 +93,7 @@ class PIXContractMapperTest {
 		subjectControlActProcess.registrationEvent.subject1 = new Subject2()
 		subjectControlActProcess.registrationEvent.subject1.patient = new Patient()
 		subjectControlActProcess.registrationEvent.subject1.patient.patientPerson = patientPerson
-		def inPatientMessage = new PRPAIN201301UV02()
+		def inPatientMessage = new HL7OperationMessage()
 		inPatientMessage.controlActProcess = new ControlActProcess()
 		inPatientMessage.controlActProcess.subject.add(subjectControlActProcess)
 		
@@ -124,7 +124,7 @@ class PIXContractMapperTest {
 		subjectControlActProcess.registrationEvent.subject1 = new Subject2()
 		subjectControlActProcess.registrationEvent.subject1.patient = new Patient()
 		subjectControlActProcess.registrationEvent.subject1.patient.patientPerson = patientPerson
-		def inPatientMessage = new PRPAIN201301UV02()
+		def inPatientMessage = new HL7OperationMessage()
 		inPatientMessage.controlActProcess = new ControlActProcess()
 		inPatientMessage.controlActProcess.subject.add(subjectControlActProcess)
 		shouldFail(MessageMappingException) {

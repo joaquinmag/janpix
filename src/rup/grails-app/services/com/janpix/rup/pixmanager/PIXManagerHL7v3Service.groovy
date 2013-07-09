@@ -3,9 +3,11 @@ package com.janpix.rup.pixmanager
 import org.grails.cxf.utils.EndpointType
 import org.grails.cxf.utils.GrailsCxfEndpoint
 
-import com.janpix.hl7dto.hl7.v3.contracts.*;
-import com.janpix.hl7dto.hl7.v3.interfaces.PixManagerInterface;
-import com.janpix.hl7dto.hl7.v3.messages.HL7OperationMessage;
+import com.janpix.hl7dto.hl7.v3.contracts.*
+import com.janpix.hl7dto.hl7.v3.interfaces.PixManagerInterface
+import com.janpix.hl7dto.hl7.v3.messages.HL7OperationMessage
+import com.janpix.hl7dto.hl7.v3.messages.ack.AcknowledgmentMessage
+import com.janpix.hl7dto.hl7.v3.messages.ack.QueryAcknowledgmentMessage
 
 @GrailsCxfEndpoint(expose = EndpointType.JAX_WS,soap12=true)
 class PIXManagerHL7v3Service implements PixManagerInterface  {
@@ -19,7 +21,7 @@ class PIXManagerHL7v3Service implements PixManagerInterface  {
 	/**
 	 * Add new patients to the PIX. 
 	 */								
-	public MCCIIN000002UV01 AddNewPatient(PRPAIN201301UV02 body) {
+	public AcknowledgmentMessage AddNewPatient(HL7OperationMessage body) {
 		pixContractMapper.validateHl7V3AddNewPatientMessage(body)
 		def person = pixContractMapper.mapPersonFromhl7v3AddNewPatientMessage(body)
 		def patientId = pixContractMapper.getPatientId(body)
@@ -35,7 +37,7 @@ class PIXManagerHL7v3Service implements PixManagerInterface  {
 	/**
 	 * Merges two patients that where added as different patients
 	 */
-	public MCCIIN000002UV01 MergePatients(HL7OperationMessage body) {
+	public AcknowledgmentMessage MergePatients(HL7OperationMessage body) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -44,7 +46,7 @@ class PIXManagerHL7v3Service implements PixManagerInterface  {
 	/**
 	 * This method is for updating patient information
 	 */
-	public MCCIIN000002UV01 UpdatePatient(HL7OperationMessage body) {
+	public AcknowledgmentMessage UpdatePatient(HL7OperationMessage body) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -53,7 +55,7 @@ class PIXManagerHL7v3Service implements PixManagerInterface  {
 	/**
 	 * Returns all the identifiers of a patient.
 	 */
-	public HL7OperationMessage GetAllIdentifiersPatient(HL7OperationMessage body) {
+	public QueryAcknowledgmentMessage GetAllIdentifiersPatient(HL7OperationMessage body) {
 		// TODO Auto-generated method stub
 		return new HL7OperationMessage();
 	}

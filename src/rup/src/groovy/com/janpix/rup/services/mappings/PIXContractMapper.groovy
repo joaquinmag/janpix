@@ -1,26 +1,24 @@
 package com.janpix.rup.services.mappings
 
-import javax.xml.bind.JAXBElement
 import javax.xml.bind.annotation.XmlRootElement
 
 import org.hl7.v3.*
 
-import com.janpix.hl7dto.hl7.v3.contracts.MCCIIN000002UV01
-import com.janpix.hl7dto.hl7.v3.contracts.PRPAIN201301UV02
 import com.janpix.hl7dto.hl7.v3.datatypes.AD
 import com.janpix.hl7dto.hl7.v3.datatypes.CE
 import com.janpix.hl7dto.hl7.v3.datatypes.CS
 import com.janpix.hl7dto.hl7.v3.datatypes.II
-import com.janpix.hl7dto.hl7.v3.datatypes.PN
 import com.janpix.hl7dto.hl7.v3.datatypes.TEL
 import com.janpix.hl7dto.hl7.v3.datatypes.TS
 import com.janpix.hl7dto.hl7.v3.datatypes.enums.CommunicationFunctionType
 import com.janpix.hl7dto.hl7.v3.messages.Acknowledgement
-import com.janpix.hl7dto.hl7.v3.messages.Device;
-import com.janpix.hl7dto.hl7.v3.messages.HL7MessageReceiver;
-import com.janpix.hl7dto.hl7.v3.messages.HL7MessageSender;
-import com.janpix.hl7dto.hl7.v3.messages.RegistrationEvent;
+import com.janpix.hl7dto.hl7.v3.messages.Device
+import com.janpix.hl7dto.hl7.v3.messages.HL7MessageReceiver
+import com.janpix.hl7dto.hl7.v3.messages.HL7MessageSender
+import com.janpix.hl7dto.hl7.v3.messages.HL7OperationMessage
+import com.janpix.hl7dto.hl7.v3.messages.RegistrationEvent
 import com.janpix.hl7dto.hl7.v3.messages.ack.AcknowledgementDetail
+import com.janpix.hl7dto.hl7.v3.messages.ack.AcknowledgmentMessage
 import com.janpix.hl7dto.hl7.v3.messages.ack.TargetMessage
 import com.janpix.rup.empi.Address
 import com.janpix.rup.empi.AssigningAuthority
@@ -43,15 +41,15 @@ class PIXContractMapper {
 	def uuidGenerator
 	
 	
-	II getMessageIdentifier(PRPAIN201301UV02 message) {
+	II getMessageIdentifier(HL7OperationMessage message) {
 		return message.id
 	}
 	
-	String getPatientId(PRPAIN201301UV02 message) {
+	String getPatientId(HL7OperationMessage message) {
 		return message.controlActProcess.subject[0].registrationEvent.subject1.patient.id[0].extension
 	}
 	
-	HealthEntity mapSenderToHealthEntity(PRPAIN201301UV02 message) {
+	HealthEntity mapSenderToHealthEntity(HL7OperationMessage message) {
 		def oid = message.sender.device.id[0].root
 		def name = message.sender.device.id[0].assigningAuthorityName
 		return new HealthEntity(name: name, oid: oid)
@@ -78,8 +76,8 @@ class PIXContractMapper {
 		return device
 	}
 	
-	MCCIIN000002UV01 mapACKMessageToHL7AcceptAcknowledgmentMessage(ACKMessage ackMessage, II messageIdentifier, AssigningAuthority receiver, AssigningAuthority sender) {
-		def ackHl7 = new MCCIIN000002UV01()
+	AcknowledgmentMessage mapACKMessageToHL7AcceptAcknowledgmentMessage(ACKMessage ackMessage, II messageIdentifier, AssigningAuthority receiver, AssigningAuthority sender) {
+		def ackHl7 = new AcknowledgmentMessage()
 		ackHl7.itsVersion = "XML_1.0" //TODO tomar valor como constante de la config
 		ackHl7.id = new II(root: uuidGenerator())
 		ackHl7.creationTime = hl7Helper.buildHl7DateTime(actualDate())
@@ -131,7 +129,7 @@ class PIXContractMapper {
 	 * @param inPatientMessage {@link org.hl7.v3.PRPAIN201301UV02 PRPAIN201301UV02} object
 	 * @return {@link com.janpix.rup.empi.Person Person} mapped from PRPAIN201301UV02.
 	 */
-	Person mapPersonFromhl7v3AddNewPatientMessage(PRPAIN201301UV02 inPatientMessage) {
+	Person mapPersonFromhl7v3AddNewPatientMessage(HL7OperationMessage inPatientMessage) {
 		RegistrationEvent regEvent = inPatientMessage.controlActProcess.subject[0].registrationEvent
 		def patient = regEvent.subject1.patient
 		com.janpix.hl7dto.hl7.v3.messages.Person patientPerson = patient.patientPerson
@@ -213,7 +211,7 @@ class PIXContractMapper {
 		return calendar.getTime()
 	}
 	
-	public void validateHl7V3AddNewPatientMessage(PRPAIN201301UV02 inPatientMessage) {
+	public void validateHl7V3AddNewPatientMessage(HL7OperationMessage inPatientMessage) {
 		if (inPatientMessage.controlActProcess.subject.isEmpty())
 			throw new MessageMappingException("PRPAIN201301UV02 message must contain one subject")
 		if (inPatientMessage.controlActProcess.subject.size() > 1)
