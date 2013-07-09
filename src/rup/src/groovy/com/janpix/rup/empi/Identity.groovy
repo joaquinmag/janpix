@@ -30,15 +30,15 @@ class Identity {
 	static Identity buildFromPerson(Person p){
 		def identity = new Identity()
 		def document = p.identityDocument()
-		def address  = p.principalAddress() 
+		def address1  = p.principalAddress() 
 		
 		
 		identity.name 			= "${p.givenName?.firstName} ${p.givenName?.lastName}" 
 		identity.sex 			= p.administrativeSex
 		identity.birthdate 		= p.birthdate
 		identity.multipleBirthIndicator = p.multipleBirthIndicator
-		identity.livingplace	= (!address)?"":"${address.city?.province?.country?.name},${address.city?.province?.name},${address.city?.name}"
-		identity.address		= (!address)?"":"${address.street} ${address.number}"
+		identity.livingplace	= (!address1)?"":"${address1.city?.province?.country?.name},${address1.city?.province?.name},${address1.city?.name}"
+		identity.address		= (!address1)?"":"${address1.street} ${address1.number}"
 		identity.document		= "${document}"
 		
 		return identity

@@ -11,12 +11,11 @@ import com.janpix.hl7dto.hl7.v3.messages.ack.QueryAcknowledgmentMessage
 
 @GrailsCxfEndpoint(expose = EndpointType.JAX_WS,soap12=true)
 class PIXManagerHL7v3Service implements PixManagerInterface  {
-	
+	static transactional = false
 	def pixManagerService
 	def assigningAuthorityService
 	def pixContractMapper
-		
-	
+
 	@Override
 	/**
 	 * Add new patients to the PIX. 

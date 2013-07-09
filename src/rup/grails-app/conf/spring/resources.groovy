@@ -1,7 +1,6 @@
 import java.beans.beancontext.BeanContext;
 import com.janpix.rup.infrastructure.DateHelper
 import com.janpix.rup.infrastructure.UUIDGenerator
-import com.janpix.rup.pixmanager.PlaceService
 import com.janpix.rup.repository.AssigningAuthorityService
 import com.janpix.rup.services.helpers.Hl7v3MessageHelper
 import com.janpix.rup.services.mappings.PIXContractMapper
@@ -34,14 +33,11 @@ beans = {
 		uuidGenerator = ref(uuidGenerator)
 	}
 	
-	placeService(PlaceService)
-	
 	assigningAuthorityService(AssigningAuthorityService){
 		grailsApplication = ref('grailsApplication')
 	}
 	
 	pixContractMapper(PIXContractMapper) {
-		placeService = ref(placeService)
 		hl7Helper = ref(hl7Helper)
 		actualDate = ref(actualDate)
 		uuidGenerator = ref(uuidGenerator)

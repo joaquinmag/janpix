@@ -22,10 +22,10 @@ import com.janpix.rup.services.contracts.ACKMessage.TypeCode;
  * Service in charge of processing different Health Entities requests using the EMPIService to solve them.
  */
 class PixManagerService {
-	
 	def EMPIService
 	def assigningAuthorityService
 	def i18nMessage
+	static transactional = false
 	
 	/**
 	 * Adds the patient from the healthentity to the eMPI
@@ -33,37 +33,42 @@ class PixManagerService {
 	 * If the patient doesn't exists creates a new one and assigns the identifier from the healthentity to the patient's ids collection.
 	 */
 	ACKMessage patientRegistryRecordAdded(Person patientRequestMessage, HealthEntity healthEntity, String organizationId){
-		try {				
-			def matchedPatients = EMPIService.getAllMatchedPatients(patientRequestMessage, true)
-			//Es un paciente nuevo
-			if (matchedPatients.empty) {	
-				def patient = EMPIService.createPatient(patientRequestMessage)
-				EMPIService.addEntityIdentifierToPatient(patient, healthEntity, organizationId)
-				return new ACKMessage(typeCode: TypeCode.SuccededCreation, text:i18nMessage("pixmanager.ackmessage.creation.succeded"))	
-			}
+		Patient.withTransaction { tx ->
+			try {				
+				def matchedPatients = EMPIService.getAllMatchedPatients(patientRequestMessage, true)
+				//Es un paciente nuevo
+				if (matchedPatients.empty) {
+					def patient = EMPIService.createPatient(patientRequestMessage)
+					EMPIService.addEntityIdentifierToPatient(patient, healthEntity, organizationId)
+					return new ACKMessage(typeCode: TypeCode.SuccededCreation, text:i18nMessage("pixmanager.ackmessage.creation.succeded"))	
+				}
+				
+				//El paciente tiene un alto matcheo
+				MatchRecord record = matchedPatients.find { it.matchLevel == MatchRecord.LevelMatchRecord.High }
+				if (record) {
+					EMPIService.addEntityIdentifierToPatient(record.person, healthEntity, organizationId)
+					return new ACKMessage(typeCode: TypeCode.SuccededInsertion, text: i18nMessage("pixmanager.ackmessage.insertion.succeded"))
+				}
+				
+				// Si llega hasta acá quedan pacientes con matcheo medio. Se debe retornar un response message con error.
+				return new ACKMessage(typeCode:TypeCode.PossibleMatchingPatientsError,text:i18nMessage("pixmanager.ackmessage.possiblematching.error"))
 			
-			//El paciente tiene un alto matcheo
-			MatchRecord record = matchedPatients.find { it.matchLevel == MatchRecord.LevelMatchRecord.High }
-			if (record) {
-				EMPIService.addEntityIdentifierToPatient(record.person, healthEntity, organizationId)
-				return new ACKMessage(typeCode: TypeCode.SuccededInsertion, text: i18nMessage("pixmanager.ackmessage.insertion.succeded"))
 			}
-			
-			// Si llega hasta acá quedan pacientes con matcheo medio. Se debe retornar un response message con error.
-			return new ACKMessage(typeCode:TypeCode.PossibleMatchingPatientsError,text:i18nMessage("pixmanager.ackmessage.possiblematching.error"))
-		
-		}
-		catch(ShortDemographicDataException e) {
-			log.debug("Exception ShortDemografic : ${e.message}", e)
-			return new ACKMessage(typeCode:TypeCode.ShortDemographicError,text:e.message)
-		}
-		catch (IdentifierException e) {
-			log.debug("Exception IdentifierException : ${e.message}", e)
-			return new ACKMessage(typeCode:TypeCode.IdentifierError,text:e.message)
-		}
-		catch (Exception e) {
-			log.error("Exception : ${e.message}", e)
-			return new ACKMessage(typeCode:TypeCode.InternalError, text: e.message)
+			catch(ShortDemographicDataException e) {
+				tx.setRollbackOnly()
+				log.debug("Exception ShortDemografic : ${e.message}", e)
+				return new ACKMessage(typeCode:TypeCode.ShortDemographicError,text:e.message)
+			}
+			catch (IdentifierException e) {
+				tx.setRollbackOnly()
+				log.debug("Exception IdentifierException : ${e.message}", e)
+				return new ACKMessage(typeCode:TypeCode.IdentifierError,text:e.message)
+			}
+			catch (Exception e) {
+				tx.setRollbackOnly()
+				log.error("Exception : ${e.message}", e)
+				return new ACKMessage(typeCode:TypeCode.InternalError, text: e.message)
+			}
 		}
 	}
 

@@ -22,11 +22,14 @@ import com.janpix.hl7dto.hl7.v3.messages.ack.AcknowledgmentMessage
 import com.janpix.hl7dto.hl7.v3.messages.ack.TargetMessage
 import com.janpix.rup.empi.Address
 import com.janpix.rup.empi.AssigningAuthority
+import com.janpix.rup.empi.City
+import com.janpix.rup.empi.Country
 import com.janpix.rup.empi.ExtendedDate
 import com.janpix.rup.empi.HealthEntity
 import com.janpix.rup.empi.Person
 import com.janpix.rup.empi.PersonName
 import com.janpix.rup.empi.PhoneNumber
+import com.janpix.rup.empi.Province
 import com.janpix.rup.exceptions.MessageMappingException
 import com.janpix.rup.services.contracts.ACKMessage
 
@@ -35,7 +38,6 @@ import com.janpix.rup.services.contracts.ACKMessage
  */
 class PIXContractMapper {
 	
-	def placeService
 	def hl7Helper
 	def actualDate
 	def uuidGenerator
@@ -177,9 +179,7 @@ class PIXContractMapper {
 		def cityName = hl7Address.city
 		def provinceName = hl7Address.province
 		def countryName = hl7Address.country
-		def city = placeService.findByPlace(cityName, provinceName, countryName)
-		if (!city)
-			throw new MessageMappingException('PRPAIN201301UV02 must contain a valid city, state and country names.')
+		def city = new City(name: cityName, province: new Province(name: provinceName, country: new Country(name: countryName)))
 		address.city = city
 		address.zipCode = hl7Address.postalCode
 		return address

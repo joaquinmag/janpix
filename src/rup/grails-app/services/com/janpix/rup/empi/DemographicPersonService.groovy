@@ -8,6 +8,7 @@ class DemographicPersonService {
 	def grailsApplication
 	def identityComparatorService
 	def factoryMatchRecord
+	static transactional = false
 	
 	List<MatchRecord> matchedPersons = []
 	List<MatchRecord> possibleMatchedPersons = []

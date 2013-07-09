@@ -2,6 +2,7 @@ package com.janpix.rup.empi
 
 import com.janpix.rup.exceptions.DontExistingPatientException
 import com.janpix.rup.exceptions.ExistingPatientException
+import com.janpix.rup.exceptions.MessageMappingException
 import com.janpix.rup.exceptions.RUPException
 import com.janpix.rup.exceptions.ShortDemographicDataException
 import com.janpix.rup.exceptions.identifier.DuplicateAuthorityIdentifierException
@@ -23,6 +24,8 @@ class EMPIService {
 	def factoryMatchRecord
 	def i18nMessage
 	def assigningAuthorityService
+	def placeService
+	static transactional = false
 	
 	
 	/**
@@ -35,6 +38,7 @@ class EMPIService {
 		try{
 			//Agrego el paciente
 			def patient = new Patient(p)
+			patient.principalAddress().city = getValidCity(patient.principalAddress().city)
 			patient.uuidGenerator = uuidGenerator
 			patient.save(failOnError:true)
 			
@@ -291,6 +295,13 @@ class EMPIService {
 			throw new IdentifierNotFoundException(message:i18nMessage("empiservice.healthentity.identifiernotfound.exception","${he.oid}"))
 			
 		return currentHE
+	}
+	
+	private City getValidCity(City city) {
+		def currentCity = placeService.findByPlace(city?.name, city?.province?.name, city?.province?.country?.name)
+		if (!currentCity)
+			throw new MessageMappingException('PRPAIN201301UV02 must contain a valid city, state and country names.')
+		return currentCity
 	}
 	
 	/**

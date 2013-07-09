@@ -9,6 +9,7 @@ import com.janpix.rup.empi.avib.FactoryAVIb
 class IdentityComparatorService {
 	def grailsApplication
 	def factory
+	static transactional = false
 	/**
 	 * Calcula el porcentaje de matcheo entre 2 personas
 	 * @param Person p1

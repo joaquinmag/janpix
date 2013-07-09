@@ -5,6 +5,7 @@ import com.janpix.rup.empi.AuthorityRUP
 import com.janpix.rup.empi.HealthEntity
 
 class AssigningAuthorityService {
+	static transactional = false
 	def grailsApplication
 	
 	AssigningAuthority rupAuthority(){
