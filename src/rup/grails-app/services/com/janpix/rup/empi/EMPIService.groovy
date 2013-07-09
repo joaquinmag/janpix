@@ -37,8 +37,10 @@ class EMPIService {
 	def createPatient(Person p) {	
 		try{
 			//Agrego el paciente
-			def patient = new Patient(p)
-			patient.principalAddress().city = getValidCity(patient.principalAddress().city)
+			Patient patient = new Patient(p)
+			patient.addresses.each{ Address address->
+				address.city =getValidCity(address.city) 
+			}
 			patient.uuidGenerator = uuidGenerator
 			patient.save(failOnError:true)
 			
