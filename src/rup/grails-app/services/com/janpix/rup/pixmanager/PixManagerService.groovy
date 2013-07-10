@@ -1,19 +1,20 @@
 package com.janpix.rup.pixmanager
 
-import com.janpix.rup.empi.AssigningAuthority;
-import com.janpix.rup.empi.HealthEntity;
+import com.janpix.rup.empi.AssigningAuthority
+import com.janpix.rup.empi.HealthEntity
 import com.janpix.rup.empi.Identifier
 import com.janpix.rup.empi.MatchRecord
 import com.janpix.rup.empi.Patient
 import com.janpix.rup.empi.Person
-import com.janpix.rup.empi.MatchRecord.LevelMatchRecord;
+import com.janpix.rup.empi.MatchRecord.LevelMatchRecord
 import com.janpix.rup.exceptions.DontExistingPatientException
 import com.janpix.rup.exceptions.ExistingPatientException
 import com.janpix.rup.exceptions.ShortDemographicDataException
 import com.janpix.rup.exceptions.identifier.DuplicateAuthorityIdentifierException
 import com.janpix.rup.exceptions.identifier.IdentifierException
+import com.janpix.rup.infrastructure.FactoryDTO
 import com.janpix.rup.services.contracts.ACKMessage
-import com.janpix.rup.services.contracts.ACKMessage.TypeCode;
+import com.janpix.rup.services.contracts.ACKMessage.TypeCode
 
 
 
@@ -125,10 +126,10 @@ class PixManagerService {
 	 * @return List<Identifier> identificadores del paciente en los dominios solicitados
 	 * @return List<Identifier> empty si no hay ningun identificador
 	 */
-	List<Identifier> patientRegistryGetIdentifiersQuery(String patientIdentifier,AssigningAuthority patientIdentifierDomain,List<AssigningAuthority> othersDomain=null){
-		List<Identifier> identifiers = []
+	ACKMessage patientRegistryGetIdentifiersQuery(String patientIdentifier,AssigningAuthority patientIdentifierDomain,List<AssigningAuthority> othersDomain=null){
+		Set<Identifier> identifiers = []
 		 
-		Person rupPatient = EMPIService.findPatientByHealthEntityId(patientIdentifier,patientIdentifierDomain)
+		Patient rupPatient = EMPIService.findPatientByHealthEntityId(patientIdentifier,patientIdentifierDomain)
 		//Agrego los identificadores de los dominios pasados. Sino pasaron dominio agrego todos 
 		if(othersDomain){
 			rupPatient.identifiers.findAll{it.type == Identifier.TYPE_IDENTIFIER_PI}.each{Identifier it->
@@ -150,8 +151,10 @@ class PixManagerService {
 									
 			identifiers.add(identifier)
 		}
+		Patient patientDTO = FactoryDTO.buildPatientDTO(rupPatient) 
+		patientDTO.identifiers = identifiers;
 		
-		return identifiers
+		return new ACKMessage(typeCode:TypeCode.SuccededQuery,patient:patientDTO)
 	}
 
 	/* # Metodos Extendidos */

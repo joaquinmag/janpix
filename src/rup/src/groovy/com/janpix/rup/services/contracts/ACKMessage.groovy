@@ -1,6 +1,6 @@
 package com.janpix.rup.services.contracts
 
-import org.springframework.aop.aspectj.RuntimeTestWalker.ThisInstanceOfResidueTestVisitor;
+import com.janpix.rup.empi.Patient
 
 class ACKMessage {
 	public enum TypeCode {
@@ -12,7 +12,8 @@ class ACKMessage {
 		IdentifierError(6),
 		InternalError(7),
 		DuplicatePatientError(8),
-		DontExistingPatientError(9)
+		DontExistingPatientError(9),
+		SuccededQuery(10),
 		
 		TypeCode(int exceptionCode) { this.exceptionCode = exceptionCode }
 		private final int exceptionCode
@@ -20,6 +21,7 @@ class ACKMessage {
 	}
 	
 	TypeCode typeCode
-	String text	
+	String text
+	Patient patient	
 	
 }

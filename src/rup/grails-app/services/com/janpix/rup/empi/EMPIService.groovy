@@ -232,8 +232,8 @@ class EMPIService {
 	 * @param HealthEntity he: Entidad Sanitaria que esta buscando al paciente
 	 * @return Patient p: El paciente si lo encontro, sino NULL
 	 */
-	def findPatientByHealthEntityId(String peId,HealthEntity he){
-		def c = Person.createCriteria()
+	Patient findPatientByHealthEntityId(String peId,HealthEntity he){
+		def c = Patient.createCriteria()
 		def result = c.get {
 		   identifiers {
 			   and{

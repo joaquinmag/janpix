@@ -97,10 +97,12 @@ class PixManagerServiceTests extends GroovyTestCase {
 	 * Testea la correcta obtencion del CUIS de un paciente
 	 */
 	void testGetCUIS(){
-		def identifiers = pixManagerService.patientRegistryGetIdentifiersQuery("C123",healthEntity3,[assigningAuthorityService.rupAuthority()])
+		ACKMessage ack = pixManagerService.patientRegistryGetIdentifiersQuery("C123",healthEntity3,[assigningAuthorityService.rupAuthority()])
+		assert ack.typeCode == TypeCode.SuccededQuery
+		def identifiers = ack.patient.identifiers
 		assertEquals(1,identifiers.size())
 		
-		Identifier cuis = identifiers.get(0)
+		Identifier cuis = identifiers.first()
 		assertEquals(patient.uniqueId.toString(),cuis.number)
 		assertEquals(assigningAuthorityService.rupAuthority(),cuis.assigningAuthority)
 		assertEquals(Identifier.TYPE_IDENTIFIER_PI,cuis.type)
@@ -110,7 +112,8 @@ class PixManagerServiceTests extends GroovyTestCase {
 	 * Testea que no devuelva ningun identificador porque no existe paciente en los dominios pasados
 	 */
 	void testGetIdentifiersReturnEmpty(){
-		def identifiers = pixManagerService.patientRegistryGetIdentifiersQuery("C123",healthEntity3,[new HealthEntity("2.16.32.1.255.255", "No existe")])
+		ACKMessage ack = pixManagerService.patientRegistryGetIdentifiersQuery("C123",healthEntity3,[new HealthEntity("2.16.32.1.255.255", "No existe")])
+		def identifiers = ack.patient.identifiers
 		assertEquals(0,identifiers.size())
 	}
 	
@@ -118,7 +121,8 @@ class PixManagerServiceTests extends GroovyTestCase {
 	 * Testea que devuelva todos los identificadores de un paciente ya que no se le pasan dominios
 	 */
 	void testGetAllIdentifiers(){
-		def identifiers = pixManagerService.patientRegistryGetIdentifiersQuery("C123",healthEntity3)
+		ACKMessage ack = pixManagerService.patientRegistryGetIdentifiersQuery("C123",healthEntity3)
+		def identifiers = ack.patient.identifiers
 		assertEquals(3,identifiers.size())
 		
 		Identifier cuis = identifiers.find{it.assigningAuthority == assigningAuthorityService.rupAuthority()}
@@ -141,7 +145,8 @@ class PixManagerServiceTests extends GroovyTestCase {
 	 * Testea que se devuelvan los identificadores de los dominios pasados
 	 */
 	void testGetDomainIdentifiers(){
-		def identifiers = pixManagerService.patientRegistryGetIdentifiersQuery("C123",healthEntity3,[healthEntity1,healthEntity2])
+		ACKMessage ack = pixManagerService.patientRegistryGetIdentifiersQuery("C123",healthEntity3,[healthEntity1,healthEntity2])
+		def identifiers = ack.patient.identifiers
 		assertEquals(2,identifiers.size())
 		
 		Identifier idh1 = identifiers.find{it.assigningAuthority == healthEntity1}
