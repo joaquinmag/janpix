@@ -12,13 +12,17 @@ import com.janpix.hl7dto.hl7.v3.datatypes.TEL
 import com.janpix.hl7dto.hl7.v3.datatypes.TS
 import com.janpix.hl7dto.hl7.v3.datatypes.enums.CommunicationFunctionType
 import com.janpix.hl7dto.hl7.v3.messages.Acknowledgement
+import com.janpix.hl7dto.hl7.v3.messages.AddPatientOperationMessage;
 import com.janpix.hl7dto.hl7.v3.messages.Device
 import com.janpix.hl7dto.hl7.v3.messages.HL7MessageReceiver
 import com.janpix.hl7dto.hl7.v3.messages.HL7MessageSender
 import com.janpix.hl7dto.hl7.v3.messages.HL7OperationMessage
+import com.janpix.hl7dto.hl7.v3.messages.QueryControlActProcess;
+import com.janpix.hl7dto.hl7.v3.messages.QueryPatientOperationMessage;
 import com.janpix.hl7dto.hl7.v3.messages.RegistrationEvent
 import com.janpix.hl7dto.hl7.v3.messages.ack.AcknowledgementDetail
 import com.janpix.hl7dto.hl7.v3.messages.ack.AcknowledgmentMessage
+import com.janpix.hl7dto.hl7.v3.messages.ack.AddPatientAcknowledgmentMessage;
 import com.janpix.hl7dto.hl7.v3.messages.ack.TargetMessage
 import com.janpix.rup.empi.Address
 import com.janpix.rup.empi.AssigningAuthority
@@ -47,7 +51,7 @@ class PIXContractMapper {
 		return message.id
 	}
 	
-	String getPatientId(HL7OperationMessage message) {
+	String getPatientId(AddPatientOperationMessage message) {
 		return message.controlActProcess.subject[0].registrationEvent.subject1.patient.id[0].extension
 	}
 	
@@ -78,7 +82,7 @@ class PIXContractMapper {
 		return device
 	}
 	
-	AcknowledgmentMessage mapACKMessageToHL7AcceptAcknowledgmentMessage(ACKMessage ackMessage, II messageIdentifier, AssigningAuthority receiver, AssigningAuthority sender) {
+	AddPatientAcknowledgmentMessage mapACKMessageToHL7AcceptAcknowledgmentMessage(ACKMessage ackMessage, II messageIdentifier, AssigningAuthority receiver, AssigningAuthority sender) {
 		def ackHl7 = new AcknowledgmentMessage()
 		ackHl7.itsVersion = "XML_1.0" //TODO tomar valor como constante de la config
 		ackHl7.id = new II(root: uuidGenerator())
@@ -209,6 +213,24 @@ class PIXContractMapper {
 	private static Date buildDate(int year, int month, int day) {
 		def calendar = new GregorianCalendar(year, month, day)
 		return calendar.getTime()
+	}
+	
+	public String mapIdentifierFromhl7QueryMessage(QueryControlActProcess controlActProcess) {
+		return controlActProcess.queryByParameter.parameterList.patientIdentifier[0].value[0].extension
+	}
+	
+	public void mapQueryACKMessageToHL7QueryAcknowledgmentMessage(ACKMessage ack, II messageIdentifier, HealthEntity receiver, HealthEntity sender) {
+		
+	}
+	
+	public void validateHl7V3PatientQueryMessage(QueryPatientOperationMessage queryPatientOperationMessage) {
+		def identifier = queryPatientOperationMessage.controlActProcess.queryByParameter.parameterList.patientIdentifier
+		if (identifier.isEmpty() || identifier[0].value.isEmpty()) {
+			throw new MessageMappingException("PRPAIN201309UV02 message must contain one identifier")
+		}
+		if (identifier.size() > 1 || identifier[0].value.size() > 1) {
+			throw new MessageMappingException("PRPAIN201309UV02 message can't contain more than one identifier")
+		}
 	}
 	
 	public void validateHl7V3AddNewPatientMessage(HL7OperationMessage inPatientMessage) {

@@ -9,6 +9,7 @@ import com.janpix.hl7dto.hl7.v3.messages.HL7OperationMessage
 import com.janpix.hl7dto.hl7.v3.messages.AddPatientOperationMessage;
 import com.janpix.hl7dto.hl7.v3.messages.QueryPatientOperationMessage;
 import com.janpix.hl7dto.hl7.v3.messages.ack.AcknowledgmentMessage
+import com.janpix.hl7dto.hl7.v3.messages.ack.AddPatientAcknowledgmentMessage;
 import com.janpix.hl7dto.hl7.v3.messages.ack.QueryAcknowledgmentMessage
 
 @GrailsCxfEndpoint(expose = EndpointType.JAX_WS,soap12=true)
@@ -22,13 +23,13 @@ class PIXManagerHL7v3Service implements PixManagerInterface  {
 	/**
 	 * Add new patients to the PIX. 
 	 */								
-	public AcknowledgmentMessage AddNewPatient(AddPatientOperationMessage body) {
+	public AddPatientAcknowledgmentMessage AddNewPatient(AddPatientOperationMessage body) {
 		pixContractMapper.validateHl7V3AddNewPatientMessage(body)
 		def person = pixContractMapper.mapPersonFromhl7v3AddNewPatientMessage(body)
 		def patientId = pixContractMapper.getPatientId(body)
 		def healthEntity = pixContractMapper.mapSenderToHealthEntity(body)
 		def ack = pixManagerService.patientRegistryRecordAdded(person, healthEntity, patientId)
-		def sender = assigningAuthorityService.rupAuthority()
+		def sender = assigningAuthorityService.rupAuthority() // TODO asignar utilizando una constante. No acceder a servicio.
 		def receiver = healthEntity
 		def identifier = pixContractMapper.getMessageIdentifier(body)
 		return pixContractMapper.mapACKMessageToHL7AcceptAcknowledgmentMessage(ack, identifier,  receiver,  sender)
@@ -38,7 +39,7 @@ class PIXManagerHL7v3Service implements PixManagerInterface  {
 	/**
 	 * Merges two patients that where added as different patients
 	 */
-	public AcknowledgmentMessage MergePatients(HL7OperationMessage body) {
+	public AddPatientAcknowledgmentMessage MergePatients(HL7OperationMessage body) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -47,7 +48,7 @@ class PIXManagerHL7v3Service implements PixManagerInterface  {
 	/**
 	 * This method is for updating patient information
 	 */
-	public AcknowledgmentMessage UpdatePatient(HL7OperationMessage body) {
+	public AddPatientAcknowledgmentMessage UpdatePatient(HL7OperationMessage body) {
 		// TODO Auto-generated method stub
 		return null;
 	}
