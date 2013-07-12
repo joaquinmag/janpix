@@ -13,19 +13,18 @@ import com.janpix.hl7dto.hl7.v3.datatypes.enums.ActClassControlAct
 import com.janpix.hl7dto.hl7.v3.datatypes.enums.CommunicationFunctionType
 import com.janpix.hl7dto.hl7.v3.datatypes.enums.ParticipationTargetSubject
 import com.janpix.hl7dto.hl7.v3.datatypes.enums.XActMoodIntentEvent
-import com.janpix.hl7dto.hl7.v3.messages.ControlActProcess
+import com.janpix.hl7dto.hl7.v3.messages.AddPatientOperationMessage
 import com.janpix.hl7dto.hl7.v3.messages.Device
 import com.janpix.hl7dto.hl7.v3.messages.HL7MessageReceiver
 import com.janpix.hl7dto.hl7.v3.messages.HL7MessageSender
-import com.janpix.hl7dto.hl7.v3.messages.HL7OperationMessage
 import com.janpix.hl7dto.hl7.v3.messages.Organization
 import com.janpix.hl7dto.hl7.v3.messages.OtherIDs
 import com.janpix.hl7dto.hl7.v3.messages.Patient
+import com.janpix.hl7dto.hl7.v3.messages.PatientControlActProcess
 import com.janpix.hl7dto.hl7.v3.messages.Person
 import com.janpix.hl7dto.hl7.v3.messages.RegistrationEvent
 import com.janpix.hl7dto.hl7.v3.messages.Subject1
 import com.janpix.hl7dto.hl7.v3.messages.Subject2
-import com.janpix.rup.empi.HealthEntity
 
 class PixManagerHl7v3ServiceTests {
 
@@ -35,7 +34,7 @@ class PixManagerHl7v3ServiceTests {
 		def testAuthorityOID = "1.2.840.114350.1.13.99998.8734"
 		def testAuthorityName = "Good Health Clinic"
 
-		HL7OperationMessage body = new HL7OperationMessage()
+		AddPatientOperationMessage body = new AddPatientOperationMessage()
 		body.itsVersion = "XML_1.0"
 		II messageId = new II()
 		messageId.root = "22a0f9e0-4454-11dc-a6be-3603d6866807"
@@ -57,7 +56,7 @@ class PixManagerHl7v3ServiceTests {
 		body.sender.device = new Device()
 		body.sender.device.determinerCode = "INSTANCE"
 		body.sender.device.id.add(new II(root: testAuthorityOID))
-		body.controlActProcess = new ControlActProcess(classCode: ActClassControlAct.CACT, moodCode: XActMoodIntentEvent.EVN)
+		body.controlActProcess = new PatientControlActProcess(classCode: ActClassControlAct.CACT, moodCode: XActMoodIntentEvent.EVN)
 		Subject1 subject = new Subject1()
 		subject.typeCode.add("SUBJ")
 		subject.registrationEvent = new RegistrationEvent()

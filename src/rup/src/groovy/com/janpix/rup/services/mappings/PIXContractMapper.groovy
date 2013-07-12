@@ -8,28 +8,40 @@ import com.janpix.hl7dto.hl7.v3.datatypes.AD
 import com.janpix.hl7dto.hl7.v3.datatypes.CE
 import com.janpix.hl7dto.hl7.v3.datatypes.CS
 import com.janpix.hl7dto.hl7.v3.datatypes.II
+import com.janpix.hl7dto.hl7.v3.datatypes.PN
 import com.janpix.hl7dto.hl7.v3.datatypes.TEL
 import com.janpix.hl7dto.hl7.v3.datatypes.TS
 import com.janpix.hl7dto.hl7.v3.datatypes.enums.CommunicationFunctionType
+import com.janpix.hl7dto.hl7.v3.datatypes.enums.ParticipationTargetSubject
 import com.janpix.hl7dto.hl7.v3.messages.Acknowledgement
 import com.janpix.hl7dto.hl7.v3.messages.AddPatientOperationMessage;
 import com.janpix.hl7dto.hl7.v3.messages.Device
 import com.janpix.hl7dto.hl7.v3.messages.HL7MessageReceiver
 import com.janpix.hl7dto.hl7.v3.messages.HL7MessageSender
 import com.janpix.hl7dto.hl7.v3.messages.HL7OperationMessage
+import com.janpix.hl7dto.hl7.v3.messages.Organization
+import com.janpix.hl7dto.hl7.v3.messages.OtherIDs
 import com.janpix.hl7dto.hl7.v3.messages.QueryControlActProcess;
 import com.janpix.hl7dto.hl7.v3.messages.QueryPatientOperationMessage;
 import com.janpix.hl7dto.hl7.v3.messages.RegistrationEvent
+import com.janpix.hl7dto.hl7.v3.messages.Subject1
+import com.janpix.hl7dto.hl7.v3.messages.Subject2
 import com.janpix.hl7dto.hl7.v3.messages.ack.AcknowledgementDetail
 import com.janpix.hl7dto.hl7.v3.messages.ack.AcknowledgmentMessage
 import com.janpix.hl7dto.hl7.v3.messages.ack.AddPatientAcknowledgmentMessage;
+import com.janpix.hl7dto.hl7.v3.messages.ack.QueryAckControlActProcess;
+import com.janpix.hl7dto.hl7.v3.messages.ack.QueryAckValue
+import com.janpix.hl7dto.hl7.v3.messages.ack.QueryAcknowledgmentMessage;
 import com.janpix.hl7dto.hl7.v3.messages.ack.TargetMessage
+import com.janpix.hl7dto.hl7.v3.messages.query.QueryParameter
 import com.janpix.rup.empi.Address
 import com.janpix.rup.empi.AssigningAuthority
 import com.janpix.rup.empi.City
 import com.janpix.rup.empi.Country
 import com.janpix.rup.empi.ExtendedDate
 import com.janpix.rup.empi.HealthEntity
+import com.janpix.rup.empi.Identifier
+import com.janpix.rup.empi.Patient
 import com.janpix.rup.empi.Person
 import com.janpix.rup.empi.PersonName
 import com.janpix.rup.empi.PhoneNumber
@@ -83,23 +95,25 @@ class PIXContractMapper {
 	}
 	
 	AddPatientAcknowledgmentMessage mapACKMessageToHL7AcceptAcknowledgmentMessage(ACKMessage ackMessage, II messageIdentifier, AssigningAuthority receiver, AssigningAuthority sender) {
-		def ackHl7 = new AcknowledgmentMessage()
-		ackHl7.itsVersion = "XML_1.0" //TODO tomar valor como constante de la config
+		def messageName = "MCCI_IN000002UV01"
+		def ackHl7 = new AddPatientAcknowledgmentMessage()
+		buildBaseAckMessage(ackHl7, messageName, receiver, sender)
+		def ackHl7spec = buildAcknowledgement(ackMessage)
+		ackHl7spec.targetMessage = buildTargetMessage(messageIdentifier)
+		ackHl7.acknowledgement.add(ackHl7spec)
+		
+		return ackHl7
+	}
+
+	private void buildBaseAckMessage(AcknowledgmentMessage ackHl7, String messageName, AssigningAuthority receiver, AssigningAuthority sender) {
 		ackHl7.id = new II(root: uuidGenerator())
 		ackHl7.creationTime = hl7Helper.buildHl7DateTime(actualDate())
-		
-		def messageName = "MCCI_IN000002UV01"
 		ackHl7.interactionId = hl7Helper.buildInteractionId(messageName)
 		ackHl7.processingCode = hl7Helper.buildProcessingCode()
 		ackHl7.processingModeCode = hl7Helper.buildProcessingModeCode()
 		ackHl7.acceptAckCode = hl7Helper.buildAcceptAckCode()
 		ackHl7.receiver.add(mapHealthEntityToACKReceiver(receiver))
 		ackHl7.sender = mapAssigningAuthorityToACKSender(sender)
-		def ackHl7spec = buildAcknowledgement(ackMessage)
-		ackHl7spec.targetMessage = buildTargetMessage(messageIdentifier)
-		ackHl7.acknowledgement.add(ackHl7spec)
-		
-		return ackHl7
 	}
 	
 	private Acknowledgement buildAcknowledgement(ACKMessage ackMessage) {
