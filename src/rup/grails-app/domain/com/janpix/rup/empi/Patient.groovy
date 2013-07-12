@@ -2,7 +2,7 @@ package com.janpix.rup.empi
 
 class Patient extends Person {
 	
-	PatientIdentifier uniqueId 
+	PatientIdentifier uniqueId
 	def uuidGenerator
 
     static constraints = {

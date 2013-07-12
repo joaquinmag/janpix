@@ -119,7 +119,7 @@ class PIXContractMapper {
 	private Acknowledgement buildAcknowledgement(ACKMessage ackMessage) {
 		def ackHl7spec = new Acknowledgement()
 		switch (ackMessage.typeCode) {
-			case [ ACKMessage.TypeCode.SuccededCreation, ACKMessage.TypeCode.SuccededInsertion ]:
+			case [ ACKMessage.TypeCode.SuccededCreation, ACKMessage.TypeCode.SuccededInsertion, ACKMessage.TypeCode.SuccededQuery ]:
 				ackHl7spec.typeCode = new CS(code:"CA")
 				break
 			case [ ACKMessage.TypeCode.PossibleMatchingPatientsError, ACKMessage.TypeCode.ShortDemographicError, ACKMessage.TypeCode.IdentifierError ]:
@@ -233,9 +233,92 @@ class PIXContractMapper {
 		return controlActProcess.queryByParameter.parameterList.patientIdentifier[0].value[0].extension
 	}
 	
-	public void mapQueryACKMessageToHL7QueryAcknowledgmentMessage(ACKMessage ack, II messageIdentifier, HealthEntity receiver, HealthEntity sender) {
-		
+	public II getQueryId(QueryPatientOperationMessage message) {
+		return message.controlActProcess.queryByParameter.queryId;
 	}
+	
+	public QueryAcknowledgmentMessage mapQueryACKMessageToHL7QueryAcknowledgmentMessage(ACKMessage ack, II messageIdentifier, HealthEntity receiver, HealthEntity sender, II queryId) {
+		def returnAck = new QueryAcknowledgmentMessage()
+		def messageName = "PRPA_IN201310UV02"
+		buildBaseAckMessage(returnAck, messageName, receiver, sender)
+		def ackHl7spec = buildAcknowledgement(ack)
+		ackHl7spec.targetMessage = buildTargetMessage(messageIdentifier)
+		returnAck.acknowledgement.add(ackHl7spec)
+		def queryAck = new QueryAckValue(queryId : queryId, queryResponseCode:  buildQueryResponseCode(ack))
+		returnAck.controlActProcess = buildQueryAckControlActProcess(ack, queryAck)
+		return returnAck
+	}
+	
+	private CS buildQueryResponseCode(ACKMessage ack) {
+		def queryResponseCode = new CS()
+		switch (ack.typeCode) {
+			case [ ACKMessage.TypeCode.SuccededQuery ]:
+				if (ack.patient != null)
+					queryResponseCode.code = "OK"
+				else
+					queryResponseCode.code = "NF"
+				break;
+			default:
+				queryResponseCode.code = "QE"
+		}
+		return queryResponseCode
+	}
+	
+	private QueryAckControlActProcess buildQueryAckControlActProcess(ACKMessage ack, QueryAckValue queryAck) {
+		def queryAckCAP = new QueryAckControlActProcess()
+		queryAckCAP.queryAck = queryAck
+		ack.patient.identifiers.each { Identifier identifier ->
+			queryAckCAP.queryByParameter.parameterList.patientIdentifier.add(new QueryParameter(value: new II(root: identifier.assigningAuthority.oid, extension:identifier.number), semanticsText: "Patient.Id"))
+		}
+		queryAckCAP.queryByParameter.statusCode = new CS(code: "new")
+		queryAckCAP.subject.add(mapPatientToSubject(ack.patient))
+		return queryAckCAP
+	}
+	
+	private Subject1 mapPatientToSubject(Patient patient) {
+		Subject1 subject = new Subject1()
+		subject.registrationEvent = new RegistrationEvent()
+		subject.registrationEvent.classCode.add("REG")
+		subject.registrationEvent.moodCode.add("EVN")
+		subject.registrationEvent.statusCode = new CS(code: "active")
+		subject.registrationEvent.subject1 = new Subject2()
+		subject.registrationEvent.subject1.typeCode = ParticipationTargetSubject.SBJ
+		subject.registrationEvent.subject1.patient = new Patient()
+		subject.registrationEvent.subject1.patient.classCode.add("PAT")
+		Identifier rupId = patient.identifiers.find { Identifier identifier ->	identifier.assigningAuthority.name == "rup" } // FIXME pasar constante por configuracion del proyecto
+		subject.registrationEvent.subject1.patient.id.add(new II(root:rupId.assigningAuthority.oid, extension:rupId.number, assigningAuthorityName: rupId.assigningAuthority.name))
+		subject.registrationEvent.subject1.patient.statusCode = new CS(code:"active")
+		com.janpix.hl7dto.hl7.v3.messages.Person person = new Person()
+		PN patientName = new PN()
+		patientName.given = patient.givenName.firstName
+		patientName.family = patient.givenName.lastName
+		person.name.add(patientName)
+		person.administrativeGenderCode = new CE(code: patient.administrativeSex)
+		person.birthTime = hl7Helper.buildHl7DateTime(patient.birthdate.date)
+		patient.addresses.each { Address address ->
+			AD ad = new AD()
+			ad.streetAddressLine = "${address.street} ${address.number}"
+			ad.additionalLocator = "${address.floor} ${address.department}"
+			ad.city = "${address.city.name}"
+			ad.province = "${address.city.province.name}"
+			ad.country = "${address.city.province.country.name}"
+			ad.postalCode = "${address.zipCode}"
+			person.addr.add(ad)	
+		}
+		OtherIDs otherId = new OtherIDs()
+		otherId.classCode.add("PAT")
+		patient.identifiers.each { Identifier identifier ->
+			otherId.id.add(new II(root: identifier.assigningAuthority.oid, extension: identifier.number, assigningAuthorityName: identifier.assigningAuthority.name))
+			otherId.scopingOrganization = new Organization()
+			otherId.scopingOrganization.classCode = "ORG"
+			otherId.scopingOrganization.determinerCode = "INSTANCE"
+			otherId.scopingOrganization.id.add( new II(root: identifier.assigningAuthority.oid))
+			person.asOtherIDs.add(otherId)
+		}
+		subject.registrationEvent.subject1.patient.patientPerson = person
+		return subject
+	}
+	
 	
 	public void validateHl7V3PatientQueryMessage(QueryPatientOperationMessage queryPatientOperationMessage) {
 		def identifier = queryPatientOperationMessage.controlActProcess.queryByParameter.parameterList.patientIdentifier

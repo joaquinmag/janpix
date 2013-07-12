@@ -58,8 +58,16 @@ class PIXManagerHL7v3Service implements PixManagerInterface  {
 	 * Returns all the identifiers of a patient.
 	 */
 	public QueryAcknowledgmentMessage GetAllIdentifiersPatient(QueryPatientOperationMessage body) {
-		// TODO Auto-generated method stub
-		return new QueryAcknowledgmentMessage();
+		pixContractMapper.validateHl7V3PatientQueryMessage(body)
+		def patientIdentifier = pixContractMapper.mapIdentifierFromhl7QueryMessage(body.controlActProcess)
+		def healthEntity = pixContractMapper.mapSenderToHealthEntity(body)
+		def rup = assigningAuthorityService.rupAuthority() // TODO asignar utilizando una constante. No acceder a servicio.
+		def ack = pixManagerService.patientRegistryGetIdentifiersQuery(patientIdentifier, healthEntity, [ rup ])
+		def sender = rup
+		def receiver = healthEntity
+		def messageIdentifier = pixContractMapper.getMessageIdentifier(body)
+		def queryId = pixContractMapper.getQueryId(body)
+		return pixContractMapper.mapQueryACKMessageToHL7QueryAcknowledgmentMessage(ack, messageIdentifier,  receiver,  sender, queryId)
 	}
 
 
