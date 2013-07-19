@@ -71,4 +71,24 @@ class PIXManagerHL7v3Service implements PixManagerInterface  {
 	}
 
 
+
+	@Override
+	
+	/**
+	 * Add new patients to the PIX without validate matching with other patients. 
+	 */
+	public AcknowledgmentMessage AddNewPatientWithoutValidation(AddPatientOperationMessage body) {
+		return null;
+	}
+
+
+	@Override
+	/**
+	 * Returns all patient maching with Patient 
+	 */
+	public AcknowledgmentMessage GetAllPossibleMatchedPatients(AddPatientOperationMessage body) {
+		return null;
+	}
+
+
 }

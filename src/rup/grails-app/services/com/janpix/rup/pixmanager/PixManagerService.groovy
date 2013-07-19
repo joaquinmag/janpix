@@ -127,34 +127,41 @@ class PixManagerService {
 	 * @return List<Identifier> empty si no hay ningun identificador
 	 */
 	ACKMessage patientRegistryGetIdentifiersQuery(String patientIdentifier,AssigningAuthority patientIdentifierDomain,List<AssigningAuthority> othersDomain=null){
-		Set<Identifier> identifiers = []
-		 
-		Patient rupPatient = EMPIService.findPatientByHealthEntityId(patientIdentifier,patientIdentifierDomain)
-		//Agrego los identificadores de los dominios pasados. Sino pasaron dominio agrego todos 
-		if(othersDomain){
-			rupPatient.identifiers.findAll{it.type == Identifier.TYPE_IDENTIFIER_PI}.each{Identifier it->
-				if(othersDomain.contains(it.assigningAuthority)){
-					identifiers.add(it)
+		try{
+			Set<Identifier> identifiers = []
+			 
+			Patient rupPatient = EMPIService.findPatientByHealthEntityId(patientIdentifier,patientIdentifierDomain)
+			//Agrego los identificadores de los dominios pasados. Sino pasaron dominio agrego todos 
+			if(othersDomain){
+				rupPatient.identifiers.findAll{it.type == Identifier.TYPE_IDENTIFIER_PI}.each{Identifier it->
+					if(othersDomain.contains(it.assigningAuthority)){
+						identifiers.add(it)
+					}
 				}
+			}else{
+				identifiers.addAll(rupPatient.identifiers.findAll{it.type == Identifier.TYPE_IDENTIFIER_PI && it.assigningAuthority != patientIdentifierDomain})
 			}
-		}else{
-			identifiers.addAll(rupPatient.identifiers.findAll{it.type == Identifier.TYPE_IDENTIFIER_PI && it.assigningAuthority != patientIdentifierDomain})
-		}
-		//Si me pidieron el dominio RUP agrego el CUIS como un identificador mas
-		if( !othersDomain || othersDomain.contains(assigningAuthorityService.rupAuthority())){
-			Identifier identifier = new Identifier()
-			if(rupPatient){
-				identifier.type 				= Identifier.TYPE_IDENTIFIER_PI
-				identifier.number				= "${rupPatient.uniqueId}"
-				identifier.assigningAuthority	= assigningAuthorityService.rupAuthority()
+			//Si me pidieron el dominio RUP agrego el CUIS como un identificador mas
+			if( !othersDomain || othersDomain.contains(assigningAuthorityService.rupAuthority())){
+				Identifier identifier = new Identifier()
+				if(rupPatient){
+					identifier.type 				= Identifier.TYPE_IDENTIFIER_PI
+					identifier.number				= "${rupPatient.uniqueId}"
+					identifier.assigningAuthority	= assigningAuthorityService.rupAuthority()
+				}
+										
+				identifiers.add(identifier)
 			}
-									
-			identifiers.add(identifier)
+			Patient patientDTO = FactoryDTO.buildPatientDTO(rupPatient) 
+			patientDTO.identifiers = identifiers;
+			
+			return new ACKMessage(typeCode:TypeCode.SuccededQuery,patient:patientDTO)
+			
+		}catch (Exception e) {
+			log.error("Exception : ${e.message}", e)
+			return new ACKMessage(typeCode:TypeCode.InternalError, text: e.message)
 		}
-		Patient patientDTO = FactoryDTO.buildPatientDTO(rupPatient) 
-		patientDTO.identifiers = identifiers;
 		
-		return new ACKMessage(typeCode:TypeCode.SuccededQuery,patient:patientDTO)
 	}
 
 	/* # Metodos Extendidos */
