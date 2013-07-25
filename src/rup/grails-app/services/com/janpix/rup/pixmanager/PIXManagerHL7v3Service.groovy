@@ -94,26 +94,4 @@ class PIXManagerHL7v3Service implements PixManagerInterface  {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-
-
-	@Override
-	
-	/**
-	 * Add new patients to the PIX without validate matching with other patients. 
-	 */
-	public AddPatientAcknowledgmentMessage AddNewPatientWithoutValidation(AddPatientOperationMessage body) {
-		return null;
-	}
-
-
-	@Override
-	/**
-	 * Returns all patient maching with Patient 
-	 */
-	public QueryAcknowledgmentMessage GetAllPossibleMatchedPatients(AddPatientOperationMessage body) {
-		return null;
-	}
-
-
 }
