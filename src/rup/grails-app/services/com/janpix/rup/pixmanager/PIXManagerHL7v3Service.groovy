@@ -1,5 +1,10 @@
 package com.janpix.rup.pixmanager
 
+import javax.jws.WebMethod;
+import javax.jws.WebParam;
+import javax.jws.WebResult;
+
+import org.apache.cxf.annotations.WSDLDocumentation;
 import org.grails.cxf.utils.EndpointType
 import org.grails.cxf.utils.GrailsCxfEndpoint
 
@@ -68,6 +73,26 @@ class PIXManagerHL7v3Service implements PixManagerInterface  {
 		def messageIdentifier = pixContractMapper.getMessageIdentifier(body)
 		def queryId = pixContractMapper.getQueryId(body)
 		return pixContractMapper.mapQueryACKMessageToHL7QueryAcknowledgmentMessage(ack, messageIdentifier,  receiver,  sender, queryId)
+	}
+
+	@Override
+	@WebMethod(operationName = "PatientRegistryRecordAddedWithoutValidation")
+	@WebResult(name = "MCCI_IN000002UV01", targetNamespace = "urn:hl7-org:v3", partName = "Body")
+	@WSDLDocumentation("Add new patients to the PIX without validate matching with other patients.")
+	public AddPatientAcknowledgmentMessage AddNewPatientWithoutValidation(
+			@WebParam(name = "PRPA_IN201302UV02", targetNamespace = "urn:hl7-org:v3", partName = "Body") AddPatientOperationMessage body) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	@WebMethod(operationName = "GetAllPossibleMatchedPatients")
+	@WebResult(name = "MCCI_IN000002UV01", targetNamespace = "urn:hl7-org:v3", partName = "Body")
+	@WSDLDocumentation("Returns all patient maching with Patient")
+	public QueryAcknowledgmentMessage GetAllPossibleMatchedPatients(
+			@WebParam(name = "PRPA_IN201302UV02", targetNamespace = "urn:hl7-org:v3", partName = "Body") AddPatientOperationMessage body) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

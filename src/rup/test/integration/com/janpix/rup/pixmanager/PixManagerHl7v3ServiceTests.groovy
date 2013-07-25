@@ -22,9 +22,14 @@ import com.janpix.hl7dto.hl7.v3.messages.OtherIDs
 import com.janpix.hl7dto.hl7.v3.messages.Patient
 import com.janpix.hl7dto.hl7.v3.messages.PatientControlActProcess
 import com.janpix.hl7dto.hl7.v3.messages.Person
+import com.janpix.hl7dto.hl7.v3.messages.QueryControlActProcess
+import com.janpix.hl7dto.hl7.v3.messages.QueryPatientOperationMessage
 import com.janpix.hl7dto.hl7.v3.messages.RegistrationEvent
 import com.janpix.hl7dto.hl7.v3.messages.Subject1
 import com.janpix.hl7dto.hl7.v3.messages.Subject2
+import com.janpix.hl7dto.hl7.v3.messages.query.QueryByParameter
+import com.janpix.hl7dto.hl7.v3.messages.query.QueryParameter
+import com.janpix.hl7dto.hl7.v3.messages.query.QueryParameterList
 
 class PixManagerHl7v3ServiceTests {
 
@@ -95,6 +100,99 @@ class PixManagerHl7v3ServiceTests {
 		def ack = PIXManagerHL7v3Service.AddNewPatient(body)
 		
 		assert ack.acknowledgement[0].typeCode.code == "CA"
+	}
+	
+	public void testWhenGetIdsIsCalledShouldReturnACKCorrectly() {
+		def testAuthorityOID = "1.2.840.114350.1.13.99998.8734"
+		def testAuthorityName = "Good Health Clinic"
+
+		AddPatientOperationMessage body = new AddPatientOperationMessage()
+		body.itsVersion = "XML_1.0"
+		II messageId = new II()
+		messageId.root = "22a0f9e0-4454-11dc-a6be-3603d6866807"
+		body.id = messageId
+		body.creationTime = new TS(value: "20070803130624")
+		body.interactionId = new II(root: "2.16.840.1.113883.1.6", extension: "PRPA_IN201301UV02")
+		body.processingCode = new CS(code: "P")
+		body.processingModeCode = new CS(code: "R")
+		body.acceptAckCode = new CS(code: "AL")
+		HL7MessageReceiver recver = new HL7MessageReceiver()
+		recver.typeCode = CommunicationFunctionType.RCV
+		recver.device = new Device()
+		recver.device.determinerCode = "INSTANCE"
+		recver.device.id.add(new II(root: "1.2.840.114350.1.13.99999.4567"))
+		recver.device.telecom.add(new TEL(value: "https://example.org/PatientFeed"))
+		body.receiver.add(recver)
+		body.sender = new HL7MessageSender()
+		body.sender.typeCode = CommunicationFunctionType.SND
+		body.sender.device = new Device()
+		body.sender.device.determinerCode = "INSTANCE"
+		body.sender.device.id.add(new II(root: testAuthorityOID))
+		body.controlActProcess = new PatientControlActProcess(classCode: ActClassControlAct.CACT, moodCode: XActMoodIntentEvent.EVN)
+		Subject1 subject = new Subject1()
+		subject.typeCode.add("SUBJ")
+		subject.registrationEvent = new RegistrationEvent()
+		subject.registrationEvent.classCode.add("REG")
+		subject.registrationEvent.moodCode.add("EVN")
+		subject.registrationEvent.statusCode = new CS(code: "active")
+		subject.registrationEvent.subject1 = new Subject2()
+		subject.registrationEvent.subject1.typeCode = ParticipationTargetSubject.SBJ
+		subject.registrationEvent.subject1.patient = new Patient()
+		subject.registrationEvent.subject1.patient.classCode.add("PAT")
+		subject.registrationEvent.subject1.patient.id.add(new II(root:testAuthorityOID, extension:"34827G234", assigningAuthorityName: testAuthorityName))
+		subject.registrationEvent.subject1.patient.statusCode = new CS(code:"active")
+		Person person = new Person()
+		PN patientName = new PN()
+		patientName.given = "Juan"
+		patientName.family = "Perez García"
+		person.name.add(patientName)
+		person.administrativeGenderCode = new CE(code:"M")
+		person.birthTime = new TS(value: "19570323")
+		AD ad = new AD()
+		ad.streetAddressLine = "3443 S Beach Ave"
+		ad.city = "Venado Tuerto"
+		ad.province = "AR-S"
+		ad.country = "AR"
+		person.addr.add(ad)
+		OtherIDs otherId = new OtherIDs()
+		otherId.classCode.add("PAT")
+		otherId.id.add(new II(root: "1.2.840.114350.1.13.99997.2.3412", extension: "38273N237"))
+		otherId.scopingOrganization = new Organization()
+		otherId.scopingOrganization.classCode = "ORG"
+		otherId.scopingOrganization.determinerCode = "INSTANCE"
+		otherId.scopingOrganization.id.add( new II(root: "1.2.840.114350.1.13.99997.2.3412"))
+		person.asOtherIDs.add(otherId)
+		subject.registrationEvent.subject1.patient.patientPerson = person
+		body.controlActProcess.subject.add(subject)
+		def ack = PIXManagerHL7v3Service.AddNewPatient(body)
+		
+		assert ack.acknowledgement[0].typeCode.code == "CA"
+
+		QueryPatientOperationMessage query = new QueryPatientOperationMessage()
+		query.id = messageId
+		query.creationTime = new TS(value: "20070803130624")
+		query.interactionId = new II(root: "2.16.840.1.113883.1.6", extension:"PRPA_IN201309UV02")
+		query.processingCode = new CS(code: "P")
+		query.processingModeCode = new CS(code: "T")
+		query.receiver.add(recver)
+		query.sender = body.sender
+		query.acceptAckCode = new CS(code: "AL")
+		query.controlActProcess = new QueryControlActProcess()
+		query.controlActProcess.classCode = ActClassControlAct.CACT
+		query.controlActProcess.moodCode = XActMoodIntentEvent.EVN
+		query.controlActProcess.code = new CS(code: "PRPA_TE201309UV02", codeSystem: "2.16.840.1.113883.1.6")
+		query.controlActProcess.queryByParameter = new QueryByParameter()
+		query.controlActProcess.queryByParameter.queryId = new II(root:"1.2.840.114350.1.13.99999.4567.34", extension:"33452")
+		query.controlActProcess.queryByParameter.statusCode = new CS(code: "new")
+		query.controlActProcess.queryByParameter.parameterList = new QueryParameterList()
+		query.controlActProcess.queryByParameter.parameterList.patientIdentifier = new ArrayList<QueryParameter>()
+		def queryParameter = new QueryParameter()
+		queryParameter.value = new ArrayList<II>()
+		queryParameter.value.add(new II(root: testAuthorityOID, extension: "34827G234"))
+		query.controlActProcess.queryByParameter.parameterList.patientIdentifier.add(queryParameter)
+		
+		def ackQuery = PIXManagerHL7v3Service.GetAllIdentifiersPatient(query)
+		//TODO testear que devuelva el id correcto llamando al get identifiers
 	}
 
 }

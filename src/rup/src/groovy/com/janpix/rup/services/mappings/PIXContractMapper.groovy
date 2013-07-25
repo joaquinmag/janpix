@@ -33,7 +33,9 @@ import com.janpix.hl7dto.hl7.v3.messages.ack.QueryAckControlActProcess;
 import com.janpix.hl7dto.hl7.v3.messages.ack.QueryAckValue
 import com.janpix.hl7dto.hl7.v3.messages.ack.QueryAcknowledgmentMessage;
 import com.janpix.hl7dto.hl7.v3.messages.ack.TargetMessage
+import com.janpix.hl7dto.hl7.v3.messages.query.QueryByParameter
 import com.janpix.hl7dto.hl7.v3.messages.query.QueryParameter
+import com.janpix.hl7dto.hl7.v3.messages.query.QueryParameterList
 import com.janpix.rup.empi.Address
 import com.janpix.rup.empi.AssigningAuthority
 import com.janpix.rup.empi.City
@@ -237,7 +239,7 @@ class PIXContractMapper {
 		return message.controlActProcess.queryByParameter.queryId;
 	}
 	
-	public QueryAcknowledgmentMessage mapQueryACKMessageToHL7QueryAcknowledgmentMessage(ACKMessage ack, II messageIdentifier, HealthEntity receiver, HealthEntity sender, II queryId) {
+	public QueryAcknowledgmentMessage mapQueryACKMessageToHL7QueryAcknowledgmentMessage(ACKMessage ack, II messageIdentifier, HealthEntity receiver, AssigningAuthority sender, II queryId) {
 		def returnAck = new QueryAcknowledgmentMessage()
 		def messageName = "PRPA_IN201310UV02"
 		buildBaseAckMessage(returnAck, messageName, receiver, sender)
@@ -268,7 +270,11 @@ class PIXContractMapper {
 		def queryAckCAP = new QueryAckControlActProcess()
 		queryAckCAP.queryAck = queryAck
 		ack.patient.identifiers.each { Identifier identifier ->
-			queryAckCAP.queryByParameter.parameterList.patientIdentifier.add(new QueryParameter(value: new II(root: identifier.assigningAuthority.oid, extension:identifier.number), semanticsText: "Patient.Id"))
+			queryAckCAP.queryByParameter = new QueryByParameter()
+			queryAckCAP.queryByParameter.parameterList = new QueryParameterList()
+			queryAckCAP.queryByParameter.parameterList.patientIdentifier = new ArrayList<QueryParameter>()
+			def queryAckIdentifier = new II(root: identifier.assigningAuthority.oid, extension:identifier.number)
+			queryAckCAP.queryByParameter.parameterList.patientIdentifier.add(new QueryParameter(value: [ queryAckIdentifier ], semanticsText: [ "Patient.Id" ]))
 		}
 		queryAckCAP.queryByParameter.statusCode = new CS(code: "new")
 		queryAckCAP.subject.add(mapPatientToSubject(ack.patient))
@@ -283,12 +289,12 @@ class PIXContractMapper {
 		subject.registrationEvent.statusCode = new CS(code: "active")
 		subject.registrationEvent.subject1 = new Subject2()
 		subject.registrationEvent.subject1.typeCode = ParticipationTargetSubject.SBJ
-		subject.registrationEvent.subject1.patient = new Patient()
+		subject.registrationEvent.subject1.patient = new com.janpix.hl7dto.hl7.v3.messages.Patient()
 		subject.registrationEvent.subject1.patient.classCode.add("PAT")
-		Identifier rupId = patient.identifiers.find { Identifier identifier ->	identifier.assigningAuthority.name == "rup" } // FIXME pasar constante por configuracion del proyecto
+		Identifier rupId = patient.identifiers.find { Identifier identifier ->	identifier.assigningAuthority.name == "RUP" } // FIXME pasar constante por configuracion del proyecto
 		subject.registrationEvent.subject1.patient.id.add(new II(root:rupId.assigningAuthority.oid, extension:rupId.number, assigningAuthorityName: rupId.assigningAuthority.name))
 		subject.registrationEvent.subject1.patient.statusCode = new CS(code:"active")
-		com.janpix.hl7dto.hl7.v3.messages.Person person = new Person()
+		com.janpix.hl7dto.hl7.v3.messages.Person person = new com.janpix.hl7dto.hl7.v3.messages.Person()
 		PN patientName = new PN()
 		patientName.given = patient.givenName.firstName
 		patientName.family = patient.givenName.lastName

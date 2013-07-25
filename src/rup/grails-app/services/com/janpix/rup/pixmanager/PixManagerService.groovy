@@ -127,10 +127,14 @@ class PixManagerService {
 	 * @return List<Identifier> empty si no hay ningun identificador
 	 */
 	ACKMessage patientRegistryGetIdentifiersQuery(String patientIdentifier,AssigningAuthority patientIdentifierDomain,List<AssigningAuthority> othersDomain=null){
+
 		try{
+
 			Set<Identifier> identifiers = []
-			 
-			Patient rupPatient = EMPIService.findPatientByHealthEntityId(patientIdentifier,patientIdentifierDomain)
+			
+			def assigningAuth = AssigningAuthority.findByOid(patientIdentifierDomain.oid)
+			
+			Patient rupPatient = EMPIService.findPatientByHealthEntityId(patientIdentifier,assigningAuth)
 			//Agrego los identificadores de los dominios pasados. Sino pasaron dominio agrego todos 
 			if(othersDomain){
 				rupPatient.identifiers.findAll{it.type == Identifier.TYPE_IDENTIFIER_PI}.each{Identifier it->
