@@ -1,7 +1,8 @@
 package com.janpix.rup.empi
 
 //import com.janpix.rup.Sex
-import java.util.Set;
+import com.janpix.rup.infrastructure.Mapper
+import com.janpix.rup.infrastructure.dto.PersonDTO
 
 class Person {
 	
@@ -168,6 +169,15 @@ class Person {
 	
 	void updatePhoneNumbers(PhoneNumber newPhone){
 		
+	}
+	
+	/**
+	 * Convierte la clase de dominio en su DTO
+	 * @param mapper
+	 * @return
+	 */
+	PersonDTO convert(Mapper mapper){
+		return mapper.convert(this)
 	}
 	
 

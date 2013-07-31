@@ -119,7 +119,7 @@ class EMPIService {
 		HealthEntity healthEntity = this.getValidHealthEntity(he)
 		Patient patient = this.getValidPatient(p)
 		
-		//Verifico que ese identificador no exista ya
+		//Verifico que el identificador no este asignado por esa entidad sanitaria a otro paciente
 		if(Identifier.findWhere(type:Identifier.TYPE_IDENTIFIER_PI,number:peId,assigningAuthority:healthEntity) != null)
 			throw new DuplicateIdentifierException(i18nMessage("empiservice.duplicateidentifier.exception","${peId}","${he}"))
 			
@@ -127,7 +127,7 @@ class EMPIService {
 		if(!identifier.validate()){
 			throw new IdentifierNotValidException(i18nMessage("empiservice.identifiernotvalid.exception"))
 		}
-		//Verifico que no contenga el identificador ya
+		//Verifico que no contenga un identificador para esa entidad sanitaria
 		if(p.identifiers.contains(identifier) || (p.identifiers.find{it.assigningAuthority == healthEntity} != null)){
 			throw new DuplicateAuthorityIdentifierException(i18nMessage("empiservice.duplicateauthorityidentifier.exception","${he}"))
 		}
@@ -157,7 +157,7 @@ class EMPIService {
 			throw new DuplicateIdentifierException()
 		}
 		//Busco el identificador en el paciente
-		Identifier findedIdentifier = p.identifiers.find {it.type == Identifier.TYPE_IDENTIFIER_PI && it.assigningAuthority == he}
+		Identifier findedIdentifier = patient.identifiers.find {it.type == Identifier.TYPE_IDENTIFIER_PI && it.assigningAuthority == he}
 		if(findedIdentifier)
 			findedIdentifier.number = newId
 		else

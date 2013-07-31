@@ -1,5 +1,8 @@
 package com.janpix.rup.empi
 
+import com.janpix.rup.infrastructure.Mapper
+import com.janpix.rup.infrastructure.dto.IdentifierDTO
+
 class Identifier {
 	//Basado en HL7 Version 2.5, Chapter 2A, Section 2A.14.5
 	static final String TYPE_IDENTIFIER_BC 	= 'BC'
@@ -20,8 +23,8 @@ class Identifier {
 	static belongsTo = [Person]
 	
     static constraints = {
-		type(nullable:false)
-		number(nullable:false)
+		type(nullable:false,blank:false)
+		number(nullable:false,blank:false)
 		assigningAuthority(nullable:false)
     }
 	
@@ -37,5 +40,14 @@ class Identifier {
 	
 	String toString(){
 		return "${type}${number}${assigningAuthority}"
+	}
+	
+	/**
+	 * Convierte la clase de dominio en su DTO
+	 * @param mapper
+	 * @return
+	 */
+	IdentifierDTO convert(Mapper mapper){
+		return mapper.convert(this)
 	}
 }

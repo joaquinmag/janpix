@@ -1,5 +1,8 @@
 package com.janpix.rup.empi
 
+import com.janpix.rup.infrastructure.Mapper
+import com.janpix.rup.infrastructure.dto.PatientDTO
+
 class Patient extends Person {
 	
 	PatientIdentifier uniqueId
@@ -54,6 +57,15 @@ class Patient extends Person {
 	 */
 	Boolean addIdentifier(Identifier identifier){
 		
+	}
+	
+	/**
+	 * Convierte la clase de dominio en su DTO
+	 * @param mapper
+	 * @return
+	 */
+	PatientDTO convert(Mapper mapper){
+		return mapper.convert(this)
 	}
 	
 }

@@ -1,5 +1,8 @@
 package com.janpix.rup.empi
 
+import com.janpix.rup.infrastructure.Mapper
+import com.janpix.rup.infrastructure.dto.AddressDTO
+
 class Address {
 	String unitId
 	String street
@@ -45,5 +48,14 @@ class Address {
 	
 	String toString(){
 		return "${street} ${number} ${floor}${department}, ${city}"
+	}
+	
+	/**
+	 * Convierte la clase de dominio en su DTO
+	 * @param mapper
+	 * @return
+	 */
+	AddressDTO convert(Mapper mapper){
+		return mapper.convert(this)
 	}
 }

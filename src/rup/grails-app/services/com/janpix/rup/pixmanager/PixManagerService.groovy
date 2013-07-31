@@ -1,7 +1,6 @@
 package com.janpix.rup.pixmanager
 
 import com.janpix.rup.empi.AssigningAuthority
-import com.janpix.rup.empi.HealthEntity
 import com.janpix.rup.empi.Identifier
 import com.janpix.rup.empi.MatchRecord
 import com.janpix.rup.empi.Patient
@@ -13,6 +12,9 @@ import com.janpix.rup.exceptions.ShortDemographicDataException
 import com.janpix.rup.exceptions.identifier.DuplicateAuthorityIdentifierException
 import com.janpix.rup.exceptions.identifier.IdentifierException
 import com.janpix.rup.infrastructure.FactoryDTO
+import com.janpix.rup.infrastructure.dto.AssigningAuthorityDTO
+import com.janpix.rup.infrastructure.dto.PatientDTO
+import com.janpix.rup.infrastructure.dto.PersonDTO
 import com.janpix.rup.services.contracts.ACKMessage
 import com.janpix.rup.services.contracts.ACKMessage.TypeCode
 
@@ -26,6 +28,7 @@ class PixManagerService {
 	def EMPIService
 	def assigningAuthorityService
 	def i18nMessage
+	def mapperDtoDomain
 	static transactional = false
 	
 	/**
@@ -33,9 +36,13 @@ class PixManagerService {
 	 * If the patient already exists adds the identifier of the healthentity to the patient's ids collection.
 	 * If the patient doesn't exists creates a new one and assigns the identifier from the healthentity to the patient's ids collection.
 	 */
-	ACKMessage patientRegistryRecordAdded(Person patientRequestMessage, HealthEntity healthEntity, String organizationId){
+	ACKMessage patientRegistryRecordAdded(PersonDTO patientDTO, AssigningAuthorityDTO healthEntityDTO, String organizationId){
 		Patient.withTransaction { tx ->
 			try {				
+				//Transformo DTO a dominio
+				Person patientRequestMessage = patientDTO.convert(mapperDtoDomain);
+				AssigningAuthority healthEntity = healthEntityDTO.convert(mapperDtoDomain)
+				
 				def matchedPatients = EMPIService.getAllMatchedPatients(patientRequestMessage, true)
 				//Es un paciente nuevo
 				if (matchedPatients.empty) {
@@ -76,22 +83,27 @@ class PixManagerService {
 	/**
 	 * Updates patient's information such as ids and demographic information.
 	 */
-	ACKMessage patientRegistryRecordRevised(Patient patientRequestMessage,Person personRequestMessage, HealthEntity healthEntity){
+	ACKMessage patientRegistryRecordRevised(PatientDTO patientDTO,PersonDTO personDTO,  AssigningAuthorityDTO healthEntityDTO){
 		Patient.withTransaction { tx ->
 			try{
+				//Transformo DTO a dominio
+				Patient patientRequestMessage = patientDTO.convert(mapperDtoDomain);
+				Person personRequestMessage = personDTO.convert(mapperDtoDomain)
+				AssigningAuthority healthEntity = healthEntityDTO.convert(mapperDtoDomain)
+				
 				//Actualizo informacion demografica
 				Patient updatedPatient = EMPIService.updateDemographicDataPatient(patientRequestMessage,personRequestMessage)
 			
 				//Actualizo ids de autoridad
 				Identifier heIdentifier = personRequestMessage.identifiers.find {it.type == Identifier.TYPE_IDENTIFIER_PI && it.assigningAuthority == healthEntity}
-				if(heIdentifier)
-					try{
+				if(heIdentifier){
+					//Si no posee un identificador para esa ENtidad agrega, sino actualiza
+					if(patientRequestMessage.identifiers.find{it.assigningAuthority == healthEntity}==null)
 						EMPIService.addEntityIdentifierToPatient(patientRequestMessage,healthEntity,heIdentifier.number)
-					}
-					catch(DuplicateAuthorityIdentifierException e){
+					else
 						EMPIService.updateEntityIdentifierToPatient(patientRequestMessage,healthEntity,heIdentifier.number)
-					}
-					
+				}
+
 				return new ACKMessage(typeCode:TypeCode.SuccededUpdated,text:i18nMessage("pixmanager.ackmessage.updated.succeded"))
 			}
 			catch (DontExistingPatientException e) {
@@ -107,6 +119,11 @@ class PixManagerService {
 			catch(IdentifierException e){
 				tx.setRollbackOnly()
 				log.debug("Exception IdentifierException : ${e.message}", e)
+				return new ACKMessage(typeCode:TypeCode.IdentifierError,text:e.message)
+			}
+			catch(DuplicateAuthorityIdentifierException e){
+				tx.setRollbackOnly()
+				log.debug("DuplicateAuthorityIdentifierException : ${e.message}", e)
 				return new ACKMessage(typeCode:TypeCode.IdentifierError,text:e.message)
 			}
 			catch (Exception e) {
@@ -133,11 +150,15 @@ class PixManagerService {
 			Set<Identifier> identifiers = []
 			
 			def assigningAuth = AssigningAuthority.findByOid(patientIdentifierDomain.oid)
+			//AssigningAuthorityDTO patientIdentifierDomain = patientIdentifierDomainDTO.convert(mapperDtoDomain)
 			
 			Patient rupPatient = EMPIService.findPatientByHealthEntityId(patientIdentifier,assigningAuth)
+			//FIXME!! Verificar que rupPatient sea diferente de null
+
 			//Agrego los identificadores de los dominios pasados. Sino pasaron dominio agrego todos 
 			if(othersDomain){
 				rupPatient.identifiers.findAll{it.type == Identifier.TYPE_IDENTIFIER_PI}.each{Identifier it->
+					//IdentifierDTO identifierDTO = it.convert(mapperDomainDto)
 					if(othersDomain.contains(it.assigningAuthority)){
 						identifiers.add(it)
 					}
@@ -156,6 +177,7 @@ class PixManagerService {
 										
 				identifiers.add(identifier)
 			}
+			//FIXME!!! Utilizar un mapperDomainDto
 			Patient patientDTO = FactoryDTO.buildPatientDTO(rupPatient) 
 			patientDTO.identifiers = identifiers;
 			
@@ -177,8 +199,12 @@ class PixManagerService {
 	 * @param organizationId
 	 * @return
 	 */
-	ACKMessage patientRegistryRecordAddedWithoutMatching(Person patientRequestMessage, HealthEntity healthEntity, String organizationId){
+	ACKMessage patientRegistryRecordAddedWithoutMatching(PersonDTO personDTO, AssigningAuthorityDTO healthEntityDTO, String organizationId){
 		try {
+			//Transformo DTO a dominio
+			Person patientRequestMessage = personDTO.convert(mapperDtoDomain);
+			AssigningAuthority healthEntity = healthEntityDTO.convert(mapperDtoDomain)
+			
 			def patient = EMPIService.createPatient(patientRequestMessage)
 			EMPIService.addEntityIdentifierToPatient(patient, healthEntity, organizationId)
 			return new ACKMessage(typeCode: TypeCode.SuccededCreation, text:i18nMessage("pixmanager.ackmessage.creation.succeded"))
@@ -205,13 +231,16 @@ class PixManagerService {
 	 * Devuelve los posibles matcheos de la persona enviada
 	 * @param patientRequestMessage
 	 * @return
+	 * FIXME!! Usar DTOs
 	 */
 	List<Patient> getAllPossibleMatchedPatients(Person patientRequestMessage){
+		//Person patientRequestMessage = personDTO.convert(mapperDtoDomain)
 		List<Patient> matchedPatients = []
 		List<MatchRecord> records = EMPIService.getAllMatchedPatients(patientRequestMessage, true)
 		
 		records.each { MatchRecord it->
 			matchedPatients.add( (Patient)it.person ) //Puedo castear porque ya se que tiene una persona
+			//matchedPatients.add( ((Patient)it.person).convert(mapperDomainDto) )
 		}
 		
 		return matchedPatients

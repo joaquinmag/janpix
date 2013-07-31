@@ -7,7 +7,9 @@ import com.janpix.rup.services.mappings.PIXContractMapper
 import org.springframework.web.servlet.i18n.SessionLocaleResolver
 import com.janpix.rup.infrastructure.I18nHelper
 import com.janpix.rup.empi.FactoryMatchRecord
-
+import com.janpix.rup.infrastructure.MapperDtoDomain
+import com.janpix.rup.infrastructure.MapperDomainDto
+import com.janpix.rup.pixmanager.PixManagerService
 
 
 beans = {
@@ -46,6 +48,25 @@ beans = {
 	factoryMatchRecord(FactoryMatchRecord){
 		grailsApplication = ref('grailsApplication')
 	}
+	
+	
+	mapperDtoDomain(MapperDtoDomain){
+		placeService = ref('placeService')
+		assigningAuthorityService = ref(assigningAuthorityService)
+	}
+	
+	pixManagerService(PixManagerService){
+		mapperDtoDomain = ref(mapperDtoDomain)
+		EMPIService = ref('EMPIService')
+		assigningAuthorityService = ref(assigningAuthorityService)
+		i18nMessage = ref(i18nMessage)
+	}
+	
+	
+	mapperDomainDto(MapperDomainDto){
+		
+	}
+
 	
 
 }

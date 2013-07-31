@@ -7,15 +7,16 @@
 package com.janpix.rup.pixmanager
 
 import com.janpix.rup.empi.*
-import com.janpix.rup.exceptions.DontExistingPatientException
-import com.janpix.rup.exceptions.ExistingPatientException
-import com.janpix.rup.exceptions.RUPException;
-import com.janpix.rup.exceptions.ShortDemographicDataException
-import com.janpix.rup.exceptions.identifier.DuplicateIdentifierException
-import com.janpix.rup.exceptions.identifier.IdentifierNotFoundException
-import com.janpix.rup.repository.AssigningAuthorityService;
-import com.janpix.rup.services.contracts.ACKMessage;
-import com.janpix.rup.services.contracts.ACKMessage.TypeCode;
+import com.janpix.rup.infrastructure.dto.AddressDTO
+import com.janpix.rup.infrastructure.dto.AssigningAuthorityDTO
+import com.janpix.rup.infrastructure.dto.CityDTO
+import com.janpix.rup.infrastructure.dto.ExtendedDateDTO
+import com.janpix.rup.infrastructure.dto.IdentifierDTO
+import com.janpix.rup.infrastructure.dto.PatientDTO
+import com.janpix.rup.infrastructure.dto.PersonDTO
+import com.janpix.rup.infrastructure.dto.PersonNameDTO
+import com.janpix.rup.services.contracts.ACKMessage
+import com.janpix.rup.services.contracts.ACKMessage.TypeCode
 
  
 class PixManagerServiceTests extends GroovyTestCase {
@@ -163,8 +164,19 @@ class PixManagerServiceTests extends GroovyTestCase {
 	/**
 	 * Llama al servicio para crear un paciente que NO existe
 	 */
-	void testCreateNotExistsPatient(){
-		ACKMessage ack = pixManagerService.patientRegistryRecordAdded(person,healthEntity1,"A123456")
+	void testCreateNotExistsPatient(){	
+		CityDTO cityDTO = new CityDTO(nameCity:"C.A.B.A",nameProvince:"C.A.B.A",nameCountry:"Argentina")	
+		PersonDTO personDTO = new PersonDTO(name: new PersonNameDTO(firstName:"Joaquin Ignacio", lastName:"Magneres"),
+			birthdate: new ExtendedDateDTO(date:"1987-05-01",precission:"Day"),
+			administrativeSex:Person.TYPE_SEX_MALE,
+			birthplace:cityDTO,
+			)
+		personDTO.identifiers.add(new IdentifierDTO(type:Identifier.TYPE_IDENTIFIER_DNI,number:"32900250",assigningAuthority:new AssigningAuthorityDTO("2.16.32","Argentina")))
+		personDTO.address.add(new AddressDTO(street:"Zapata",number:"346",floor:"5",department:"A",city:cityDTO))
+		AssigningAuthorityDTO healthEntity1DTO = new AssigningAuthorityDTO("2.16.32.1.255.1", "Entidad Sanitaria 1")
+		
+		
+		ACKMessage ack = pixManagerService.patientRegistryRecordAdded(personDTO,healthEntity1DTO,"A123456")
 		
 		//Verifico ACK
 		assertEquals(TypeCode.SuccededCreation,ack.typeCode)
@@ -190,16 +202,18 @@ class PixManagerServiceTests extends GroovyTestCase {
 	 */
 	void testCreateHighMatchingPatient(){
 		//Creo una persona con los mismos datos que patient
-		def p = new Person(givenName: new PersonName(firstName:"Martín", lastName:"Barnech"),
-			birthdate: new ExtendedDate(precission:ExtendedDate.TYPE_PRECISSION_DAY,date:Date.parse( "yyyy-M-d", "1987-01-16" )),
+		CityDTO cityDTO = new CityDTO(nameCity:"Luján",nameProvince:"Buenos Aires",nameCountry:"Argentina")
+		PersonDTO personDTO = new PersonDTO(name: new PersonNameDTO(firstName:"Martín", lastName:"Barnech"),
+			birthdate: new ExtendedDateDTO(date:"1987-01-16",precission:"Day"),
 			administrativeSex:Person.TYPE_SEX_MALE,
-			birthplace:city1,
+			birthplace:cityDTO,
 			)
-		p.addToAddresses(new Address(street:"Constitución",number:"2213",zipCode:"6700",city:city1))
-		p.addToIdentifiers(new Identifier(type:Identifier.TYPE_IDENTIFIER_DNI,number:"32850137",assigningAuthority:assingingAuthorityArgentina))
-
+		personDTO.identifiers.add(new IdentifierDTO(type:Identifier.TYPE_IDENTIFIER_DNI,number:"32850137",assigningAuthority:new AssigningAuthorityDTO("2.16.32","Argentina")))
+		personDTO.address.add(new AddressDTO(street:"Constitución",number:"2213",zipCode:"6700",city:cityDTO))
 		
-		ACKMessage ack = pixManagerService.patientRegistryRecordAdded(p,healthEntity4,"F123456")
+		AssigningAuthorityDTO healthEntity4DTO = new AssigningAuthorityDTO("2.16.32.1.255.4", "Entidad Sanitaria 4")
+
+		ACKMessage ack = pixManagerService.patientRegistryRecordAdded(personDTO,healthEntity4DTO,"F123456")
 		//Verifico ACK
 		assertEquals(TypeCode.SuccededInsertion,ack.typeCode)
 		assertEquals(i18nMessage("pixmanager.ackmessage.insertion.succeded"),ack.text)
@@ -224,15 +238,18 @@ class PixManagerServiceTests extends GroovyTestCase {
 	 */
 	void testFailCreatePatientBecauseMuchMatched(){		
 		//Creo una persona parecida al paciente que ya existe
-		def p = new Person(givenName: new PersonName(firstName:"Martín Gonzalo", lastName:"Varnech"),
-			birthdate: new ExtendedDate(precission:ExtendedDate.TYPE_PRECISSION_DAY,date:Date.parse( "yyyy-M-d", "1987-01-16" )),
+		CityDTO cityDTO = new CityDTO(nameCity:"Luján",nameProvince:"Buenos Aires",nameCountry:"Argentina")
+		PersonDTO personDTO = new PersonDTO(name: new PersonNameDTO(firstName:"Martín Gonzalo", lastName:"Varnech"),
+			birthdate: new ExtendedDateDTO(date:"1987-01-16",precission:"Day"),
 			administrativeSex:Person.TYPE_SEX_MALE,
-			birthplace:city1,
+			birthplace:cityDTO,
 			)
-		p.addToAddresses(new Address(street:"Constitución",number:"2213",zipCode:"6700",city:city1))
-		p.addToIdentifiers(new Identifier(type:Identifier.TYPE_IDENTIFIER_DNI,number:"32850139",assigningAuthority:assingingAuthorityArgentina))
+		personDTO.identifiers.add(new IdentifierDTO(type:Identifier.TYPE_IDENTIFIER_DNI,number:"32850139",assigningAuthority:new AssigningAuthorityDTO("2.16.32","Argentina")))
+		personDTO.address.add(new AddressDTO(street:"Constitución",number:"2213",zipCode:"6700",city:cityDTO))
 		
-		ACKMessage ack = pixManagerService.patientRegistryRecordAdded(p,healthEntity4,"F123456")
+		AssigningAuthorityDTO healthEntity4DTO = new AssigningAuthorityDTO("2.16.32.1.255.4", "Entidad Sanitaria 4")
+		
+		ACKMessage ack = pixManagerService.patientRegistryRecordAdded(personDTO,healthEntity4DTO,"F123456")
 		//Verifico ACK
 		assertEquals(TypeCode.PossibleMatchingPatientsError,ack.typeCode) //FIXME hay un problema con los DNIs, no logro que llegue a este error...
 		assertEquals(i18nMessage("pixmanager.ackmessage.possiblematching.error"),ack.text)
@@ -246,17 +263,19 @@ class PixManagerServiceTests extends GroovyTestCase {
 	/**
 	 * Testea que se actualice correctamente la informacion demografica y se agreguen los identificadores nuevos
 	 */
-	void testUpdateDemographicDataAndIdentifiers(){
-		Person p = new Person(givenName: new PersonName(firstName:"Joaquin Ignacio", lastName:"Magneres"),
-			birthdate: new ExtendedDate(precission:ExtendedDate.TYPE_PRECISSION_DAY,date:Date.parse( "yyyy-M-d", "1987-05-01" )),
+	void testUpdateDemographicDataAndIdentifiers(){		
+		CityDTO cityDTO = new CityDTO(nameCity:"C.A.B.A",nameProvince:"C.A.B.A",nameCountry:"Argentina")
+		PersonDTO personDTO = new PatientDTO(name: new PersonNameDTO(firstName:"Joaquin Ignacio", lastName:"Magneres"),
+			birthdate: new ExtendedDateDTO(date:"1987-05-01",precission:"Day"),
 			administrativeSex:Person.TYPE_SEX_AMBIGUOS,
-			birthplace:city2
+			birthplace:cityDTO,
 			)
-		//p.addToAddresses(new Address(street:"Zapata",number:"346",floor:"5",zipCode:"6700",city:city2))
-		p.addToIdentifiers(new Identifier(type:Identifier.TYPE_IDENTIFIER_DNI,number:"33850139",assigningAuthority:assingingAuthorityArgentina))
-		p.addToIdentifiers(new Identifier(type:Identifier.TYPE_IDENTIFIER_PI,number:"YMCA123",assigningAuthority:healthEntity4))
+		personDTO.identifiers.add(new IdentifierDTO(type:Identifier.TYPE_IDENTIFIER_DNI,number:"33850139",assigningAuthority:new AssigningAuthorityDTO("2.16.32","Argentina")))
+		personDTO.identifiers.add(new IdentifierDTO(type:Identifier.TYPE_IDENTIFIER_PI,number:"YMCA123",assigningAuthority:this.buildHealthEntityDTO("4")))
+		personDTO.address.add(new AddressDTO(street:"Zapata",number:"346",floor:"5",department:"A",city:cityDTO))
 		
-		ACKMessage ack = pixManagerService.patientRegistryRecordRevised(patient,p,healthEntity4)
+	
+		ACKMessage ack = pixManagerService.patientRegistryRecordRevised(this.buildPatientDTO(),personDTO,this.buildHealthEntityDTO("4"))
 		
 		//ACK
 		assert TypeCode.SuccededUpdated == ack.typeCode
@@ -284,16 +303,17 @@ class PixManagerServiceTests extends GroovyTestCase {
 	 */
 	void testUpdateIdentifer(){
 		//Mando a actualizar el identificador
-		Person p = new Person()
-		p.addToIdentifiers(new Identifier(type:Identifier.TYPE_IDENTIFIER_PI,number:"Z321",assigningAuthority:healthEntity1))
-		ACKMessage ack = pixManagerService.patientRegistryRecordRevised(patient,p,healthEntity1)
+		PersonDTO personDTO = new PersonDTO()
+		personDTO.identifiers.add(new IdentifierDTO(type:Identifier.TYPE_IDENTIFIER_PI,number:"Z321",assigningAuthority:this.buildHealthEntityDTO("1")))
+		
+		ACKMessage ack = pixManagerService.patientRegistryRecordRevised(this.buildPatientDTO(),personDTO,this.buildHealthEntityDTO("1"))
 		
 		assert TypeCode.SuccededUpdated == ack.typeCode
 		assert i18nMessage("pixmanager.ackmessage.updated.succeded") == ack.text
 		
-		
-		assert patient.identifiers.size() == 4 //Los 4 que siempre tuvo (DNI + 3 entidades sanitarias)
-		Identifier updatedIdentifier = patient.identifiers.find {
+		Patient updatedPatient = Patient.findById(patient.id); //Vuelvo a obtener el paciente. No soluciono problema. FIXME!!! (ver transacciones y attach)
+		assert updatedPatient.identifiers.size() == 4 //Los 4 que siempre tuvo (DNI + 3 entidades sanitarias)
+		Identifier updatedIdentifier = updatedPatient.identifiers.find {
 				it.type == Identifier.TYPE_IDENTIFIER_PI && 
 				it.assigningAuthority == healthEntity1 &&
 				it.number == "Z321"
@@ -305,16 +325,17 @@ class PixManagerServiceTests extends GroovyTestCase {
 	 * Testea que falle la actualizacion de un paciente porque el mismo no existe
 	 */
 	void testFailUpdateBecauseNotExistingPatient(){
-		Patient p = new Patient(givenName: new PersonName(firstName:"Joaquin Ignacio", lastName:"Magneres"),
-			birthdate: new ExtendedDate(precission:ExtendedDate.TYPE_PRECISSION_DAY,date:Date.parse( "yyyy-M-d", "1987-05-01" )),
+		CityDTO city2DTO = new CityDTO(nameCity:"C.A.B.A",nameProvince:"Bs. As.",nameCountry:"Argentina")
+		PatientDTO p = new PatientDTO(name: new PersonNameDTO(firstName:"Joaquin Ignacio", lastName:"Magneres"),
+			birthdate: new ExtendedDateDTO(precission:"Day",date:"1987-05-01" ),
 			administrativeSex:Person.TYPE_SEX_AMBIGUOS,
-			birthplace:city2
+			birthplace:city2DTO
 			)
-		p.addToAddresses(new Address(street:"Zapata",number:"346",floor:"5",zipCode:"6700",city:city2))
-		p.addToIdentifiers(new Identifier(type:Identifier.TYPE_IDENTIFIER_DNI,number:"33850139",assigningAuthority:assingingAuthorityArgentina))
-		p.addToIdentifiers(new Identifier(type:Identifier.TYPE_IDENTIFIER_PI,number:"YMCA123",assigningAuthority:healthEntity4))
+		p.address.add(new AddressDTO(street:"Zapata",number:"346",floor:"5",zipCode:"6700",city:city2DTO))
+		p.identifiers.add(new IdentifierDTO(type:Identifier.TYPE_IDENTIFIER_DNI,number:"33850139",assigningAuthority:new AssigningAuthorityDTO("2.16.32","Argentina")))
+		p.identifiers.add(new IdentifierDTO(type:Identifier.TYPE_IDENTIFIER_PI,number:"YMCA123",assigningAuthority:this.buildHealthEntityDTO("4")))
 		
-		ACKMessage ack = pixManagerService.patientRegistryRecordRevised(p,p,healthEntity4)
+		ACKMessage ack = pixManagerService.patientRegistryRecordRevised(p,p,this.buildHealthEntityDTO("4"))
 		
 		//ACK
 		assert TypeCode.DontExistingPatientError == ack.typeCode
@@ -326,9 +347,9 @@ class PixManagerServiceTests extends GroovyTestCase {
 	 */
 	void testFailUpdateBecauseNotValidIdentifier(){
 		//Mando a actualizar el identificador
-		Person p = new Person()
-		p.addToIdentifiers(new Identifier(type:Identifier.TYPE_IDENTIFIER_PI,assigningAuthority:healthEntity1))
-		ACKMessage ack = pixManagerService.patientRegistryRecordRevised(patient,p,healthEntity1)
+		PersonDTO p = new PersonDTO()
+		p.identifiers.add(new IdentifierDTO(type:Identifier.TYPE_IDENTIFIER_PI,assigningAuthority:this.buildHealthEntityDTO("1")))
+		ACKMessage ack = pixManagerService.patientRegistryRecordRevised(this.buildPatientDTO(),p,this.buildHealthEntityDTO("1"))
 		
 		assert TypeCode.IdentifierError == ack.typeCode
 		
@@ -340,16 +361,17 @@ class PixManagerServiceTests extends GroovyTestCase {
 	 */
 	void testCreatePatientEvenMatchWithOthers(){		
 		//Creo una persona parecida al paciente que ya existe
-		def p = new Person(givenName: new PersonName(firstName:"Martín Gonzalo", lastName:"Varnech"),
-			birthdate: new ExtendedDate(precission:ExtendedDate.TYPE_PRECISSION_DAY,date:Date.parse( "yyyy-M-d", "1987-01-16" )),
+		CityDTO cityDTO = new CityDTO(nameCity:"Luján",nameProvince:"Buenos Aires",nameCountry:"Argentina")
+		PersonDTO p = new PersonDTO(name: new PersonNameDTO(firstName:"Martín Gonzalo", lastName:"Varnech"),
+			birthdate: new ExtendedDateDTO(precission:"Day",date:"1987-01-16" ),
 			administrativeSex:Person.TYPE_SEX_MALE,
-			birthplace:city1,
+			birthplace:cityDTO,
 			)
-		p.addToAddresses(new Address(street:"Constitución",number:"2213",zipCode:"6700",city:city1))
-		p.addToIdentifiers(new Identifier(type:Identifier.TYPE_IDENTIFIER_DNI,number:"32850137",assigningAuthority:assingingAuthorityArgentina))
+		p.address.add(new AddressDTO(street:"Constitución",number:"2213",zipCode:"6700",city:cityDTO))
+		p.identifiers.add(new IdentifierDTO(type:Identifier.TYPE_IDENTIFIER_DNI,number:"32850137",assigningAuthority:new AssigningAuthorityDTO("2.16.32","Argentina")))
 
 		
-		ACKMessage ack = pixManagerService.patientRegistryRecordAddedWithoutMatching(p,healthEntity4,"F123456")
+		ACKMessage ack = pixManagerService.patientRegistryRecordAddedWithoutMatching(p,this.buildHealthEntityDTO("4"),"F123456")
 		//Verifico ACK
 		assertEquals(TypeCode.SuccededCreation,ack.typeCode)
 		assertEquals(i18nMessage("pixmanager.ackmessage.creation.succeded"),ack.text)
@@ -407,5 +429,26 @@ class PixManagerServiceTests extends GroovyTestCase {
 		city4.save(flush:true,failOnError:true)
 		city5 = new City(province:provBsAs2,name:"Pergamino")
 		city5.save(flush:true,failOnError:true)
+	}
+	
+	def private buildPatientDTO(){
+		CityDTO cityDTO = new CityDTO(nameCity:"Luján",nameProvince:"Buenos Aires",nameCountry:"Argentina")
+		PatientDTO patientDTO  = new PatientDTO(name: new PersonNameDTO(firstName:"Martín", lastName:"Barnech"),
+			birthdate: new ExtendedDateDTO(date:"1987-01-06",precission:"Day"),
+			administrativeSex:this.patient.administrativeSex,
+			birthplace:cityDTO,
+			)
+		patientDTO.identifiers.add(new IdentifierDTO(type:Identifier.TYPE_IDENTIFIER_DNI,number:"32850137",assigningAuthority:new AssigningAuthorityDTO("2.16.32","Argentina")))
+		patientDTO.identifiers.add(new IdentifierDTO(type:Identifier.TYPE_IDENTIFIER_PI,number:"A123",assigningAuthority:buildHealthEntityDTO("1")))
+		patientDTO.identifiers.add(new IdentifierDTO(type:Identifier.TYPE_IDENTIFIER_PI,number:"B123",assigningAuthority:buildHealthEntityDTO("2")))
+		patientDTO.identifiers.add(new IdentifierDTO(type:Identifier.TYPE_IDENTIFIER_PI,number:"C123",assigningAuthority:buildHealthEntityDTO("3")))
+		patientDTO.address.add(new AddressDTO(street:"Constitución",number:"2213",zipCode:"6700",city:cityDTO))
+		patientDTO.uniqueId = this.patient.uniqueId.mainId
+		
+		return patientDTO
+	}
+	
+	def private buildHealthEntityDTO(String number){
+		return new AssigningAuthorityDTO("2.16.32.1.255."+number, "Entidad Sanitaria "+number)
 	}
 }

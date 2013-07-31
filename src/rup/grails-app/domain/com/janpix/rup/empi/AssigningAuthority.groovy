@@ -1,5 +1,8 @@
 package com.janpix.rup.empi
 
+import com.janpix.rup.infrastructure.Mapper
+import com.janpix.rup.infrastructure.dto.AssigningAuthorityDTO
+
 class AssigningAuthority {
 	String name
 	String oid
@@ -23,5 +26,14 @@ class AssigningAuthority {
 	
 	String toString(){
 		return name
+	}
+	
+	/**
+	 * Convierte la clase de dominio en su DTO
+	 * @param mapper
+	 * @return
+	 */
+	AssigningAuthorityDTO convert(Mapper mapper){
+		return mapper.convert(this)
 	}
 }

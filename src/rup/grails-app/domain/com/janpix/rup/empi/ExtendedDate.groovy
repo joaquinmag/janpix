@@ -1,5 +1,8 @@
 package com.janpix.rup.empi
 
+import com.janpix.rup.infrastructure.Mapper
+import com.janpix.rup.infrastructure.dto.ExtendedDateDTO
+
 
 class ExtendedDate {
 	static final Integer TYPE_PRECISSION_UNKNOWN 	= 0
@@ -60,5 +63,14 @@ class ExtendedDate {
 	
 	String toString(){
 		return "${this.date}";
+	}
+	
+	/**
+	 * Convierte la clase de dominio en su DTO
+	 * @param mapper
+	 * @return
+	 */
+	ExtendedDateDTO convert(Mapper mapper){
+		return mapper.convert(this)
 	}
 }

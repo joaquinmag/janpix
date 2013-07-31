@@ -2,20 +2,16 @@ package com.janpix.rup.services.mappings;
 
 import grails.test.mixin.*
 
-import com.janpix.hl7dto.hl7.v3.datatypes.AD
 import com.janpix.hl7dto.hl7.v3.datatypes.CE
 import com.janpix.hl7dto.hl7.v3.datatypes.PN
 import com.janpix.hl7dto.hl7.v3.datatypes.TS
 import com.janpix.hl7dto.hl7.v3.messages.AddPatientOperationMessage
-import com.janpix.hl7dto.hl7.v3.messages.ControlActProcess
-import com.janpix.hl7dto.hl7.v3.messages.HL7OperationMessage
 import com.janpix.hl7dto.hl7.v3.messages.Patient
 import com.janpix.hl7dto.hl7.v3.messages.PatientControlActProcess
 import com.janpix.hl7dto.hl7.v3.messages.Person
 import com.janpix.hl7dto.hl7.v3.messages.RegistrationEvent
 import com.janpix.hl7dto.hl7.v3.messages.Subject1
 import com.janpix.hl7dto.hl7.v3.messages.Subject2
-import com.janpix.rup.exceptions.MessageMappingException
 import com.janpix.rup.pixmanager.PlaceService
 
 @TestFor(PIXContractMapper)

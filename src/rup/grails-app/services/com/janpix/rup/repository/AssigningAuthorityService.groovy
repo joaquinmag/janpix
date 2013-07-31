@@ -12,6 +12,10 @@ class AssigningAuthorityService {
 		return AuthorityRUP.findByOid(grailsApplication.config.rup.authority.rupoid)
 	}
 	
+	AssigningAuthority findAssigningAuthorityByOid(String oid){
+		return AssigningAuthority.findByOid(oid);
+	}
+	
 	HealthEntity findHealtEntityByOid(String oid){
 		return HealthEntity.findByOid(oid);
 	}

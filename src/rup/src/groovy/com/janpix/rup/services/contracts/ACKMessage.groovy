@@ -13,7 +13,7 @@ class ACKMessage {
 		InternalError(7),
 		DuplicatePatientError(8),
 		DontExistingPatientError(9),
-		SuccededQuery(10),
+		SuccededQuery(10)
 		
 		TypeCode(int exceptionCode) { this.exceptionCode = exceptionCode }
 		private final int exceptionCode

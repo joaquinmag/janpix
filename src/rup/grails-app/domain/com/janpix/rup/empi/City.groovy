@@ -1,7 +1,7 @@
 package com.janpix.rup.empi
 
-import javax.naming.ldap.HasControls;
-import org.apache.commons.lang.builder.HashCodeBuilder
+import com.janpix.rup.infrastructure.Mapper
+import com.janpix.rup.infrastructure.dto.CityDTO
 
 class City {
 	String name
@@ -16,5 +16,13 @@ class City {
 		return (this.province == other.province && this.name == other.name)
 	}
 	
+	/**
+	 * Convierte la clase de dominio en su DTO
+	 * @param mapper
+	 * @return
+	 */
+	CityDTO convert(Mapper mapper){
+		return mapper.convert(this)
+	}
 	
 }

@@ -10,12 +10,14 @@ import org.grails.cxf.utils.GrailsCxfEndpoint
 
 import com.janpix.hl7dto.hl7.v3.contracts.*
 import com.janpix.hl7dto.hl7.v3.interfaces.PixManagerInterface
+import com.janpix.hl7dto.hl7.v3.messages.AddPatientOperationMessage
 import com.janpix.hl7dto.hl7.v3.messages.HL7OperationMessage
-import com.janpix.hl7dto.hl7.v3.messages.AddPatientOperationMessage;
-import com.janpix.hl7dto.hl7.v3.messages.QueryPatientOperationMessage;
-import com.janpix.hl7dto.hl7.v3.messages.ack.AcknowledgmentMessage
-import com.janpix.hl7dto.hl7.v3.messages.ack.AddPatientAcknowledgmentMessage;
+import com.janpix.hl7dto.hl7.v3.messages.QueryPatientOperationMessage
+import com.janpix.hl7dto.hl7.v3.messages.ack.AddPatientAcknowledgmentMessage
 import com.janpix.hl7dto.hl7.v3.messages.ack.QueryAcknowledgmentMessage
+import com.janpix.rup.empi.Person
+import com.janpix.rup.infrastructure.dto.AssigningAuthorityDTO;
+import com.janpix.rup.infrastructure.dto.PersonDTO
 
 @GrailsCxfEndpoint(expose = EndpointType.JAX_WS,soap12=true)
 class PIXManagerHL7v3Service implements PixManagerInterface  {
@@ -23,6 +25,7 @@ class PIXManagerHL7v3Service implements PixManagerInterface  {
 	def pixManagerService
 	def assigningAuthorityService
 	def pixContractMapper
+	def mapperDomainDto
 
 	@Override
 	/**
@@ -30,10 +33,18 @@ class PIXManagerHL7v3Service implements PixManagerInterface  {
 	 */								
 	public AddPatientAcknowledgmentMessage AddNewPatient(AddPatientOperationMessage body) {
 		pixContractMapper.validateHl7V3AddNewPatientMessage(body)
-		def person = pixContractMapper.mapPersonFromhl7v3AddNewPatientMessage(body)
+		
+		//FIXME!! Esto cambiarlo por un convert(mapperHL7Janpix) que transforme AddPatientOperationMessage en PersonDTO
+		Person person = pixContractMapper.mapPersonFromhl7v3AddNewPatientMessage(body)
+		PersonDTO personDTO = person?.convert(mapperDomainDto)
+		
 		def patientId = pixContractMapper.getPatientId(body)
+		
+		//FIXME!! Esto cambiarlo por un convert(mapperHL7Janpix) 
 		def healthEntity = pixContractMapper.mapSenderToHealthEntity(body)
-		def ack = pixManagerService.patientRegistryRecordAdded(person, healthEntity, patientId)
+		AssigningAuthorityDTO healthEntityDTO = healthEntity?.convert(mapperDomainDto)
+		
+		def ack = pixManagerService.patientRegistryRecordAdded(personDTO, healthEntityDTO, patientId)
 		def sender = assigningAuthorityService.rupAuthority() // TODO asignar utilizando una constante. No acceder a servicio.
 		def receiver = healthEntity
 		def identifier = pixContractMapper.getMessageIdentifier(body)
