@@ -56,8 +56,7 @@ class PIXManagerHL7v3Service implements PixManagerInterface  {
 	 * Merges two patients that where added as different patients
 	 */
 	public AddPatientAcknowledgmentMessage MergePatients(HL7OperationMessage body) {
-		// TODO Auto-generated method stub
-		return null;
+		throw new NotImplementedException("Este método no está permitido para este RUP.") //TODO utilizar internacionalización.
 	}
 
 	@Override
