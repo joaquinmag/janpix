@@ -18,7 +18,9 @@ import com.janpix.hl7dto.hl7.v3.messages.ack.AddPatientAcknowledgmentMessage
 import com.janpix.hl7dto.hl7.v3.messages.ack.QueryAcknowledgmentMessage
 import com.janpix.rup.empi.Person
 import com.janpix.rup.infrastructure.dto.AssigningAuthorityDTO;
+import com.janpix.rup.infrastructure.dto.PatientDTO;
 import com.janpix.rup.infrastructure.dto.PersonDTO
+import com.janpix.rup.services.contracts.ACKMessage;
 
 @GrailsCxfEndpoint(expose = EndpointType.JAX_WS,soap12=true)
 class PIXManagerHL7v3Service implements PixManagerInterface  {
@@ -67,6 +69,14 @@ class PIXManagerHL7v3Service implements PixManagerInterface  {
 	public AddPatientAcknowledgmentMessage UpdatePatient(PatientOperationMessage body) {
 		pixContractMapper.validateHl7v3UpdatePatientMessage(body)
 		
+		// ACKMessage patientRegistryRecordRevised(PatientDTO patientDTO,PersonDTO personDTO,  AssigningAuthorityDTO healthEntityDTO){
+		//FIXME!! Esto cambiarlo por un convert(mapperHL7Janpix) que transforme AddPatientOperationMessage en PersonDTO
+		Person person = pixContractMapper.mapPersonFromhl7v3AddNewPatientMessage(body)
+		PersonDTO personDTO = person?.convert(mapperDomainDto)
+		
+		//FIXME!! Esto cambiarlo por un convert(mapperHL7Janpix)
+		def healthEntity = pixContractMapper.mapSenderToHealthEntity(body)
+		//pixManagerService.patientRegistryRecordRevised(null, null, null)
 		
 		return null;
 	}
