@@ -13,7 +13,7 @@ import com.janpix.hl7dto.hl7.v3.datatypes.enums.ActClassControlAct
 import com.janpix.hl7dto.hl7.v3.datatypes.enums.CommunicationFunctionType
 import com.janpix.hl7dto.hl7.v3.datatypes.enums.ParticipationTargetSubject
 import com.janpix.hl7dto.hl7.v3.datatypes.enums.XActMoodIntentEvent
-import com.janpix.hl7dto.hl7.v3.messages.AddPatientOperationMessage
+import com.janpix.hl7dto.hl7.v3.messages.PatientOperationMessage
 import com.janpix.hl7dto.hl7.v3.messages.Device
 import com.janpix.hl7dto.hl7.v3.messages.HL7MessageReceiver
 import com.janpix.hl7dto.hl7.v3.messages.HL7MessageSender
@@ -39,7 +39,7 @@ class PixManagerHl7v3ServiceTests {
 		def testAuthorityOID = "1.2.840.114350.1.13.99998.8734"
 		def testAuthorityName = "Good Health Clinic"
 
-		AddPatientOperationMessage body = new AddPatientOperationMessage()
+		PatientOperationMessage body = new PatientOperationMessage()
 		body.itsVersion = "XML_1.0"
 		II messageId = new II()
 		messageId.root = "22a0f9e0-4454-11dc-a6be-3603d6866807"
@@ -106,7 +106,7 @@ class PixManagerHl7v3ServiceTests {
 		def testAuthorityOID = "1.2.840.114350.1.13.99998.8734"
 		def testAuthorityName = "Good Health Clinic"
 
-		AddPatientOperationMessage body = new AddPatientOperationMessage()
+		PatientOperationMessage body = new PatientOperationMessage()
 		body.itsVersion = "XML_1.0"
 		II messageId = new II()
 		messageId.root = "22a0f9e0-4454-11dc-a6be-3603d6866807"

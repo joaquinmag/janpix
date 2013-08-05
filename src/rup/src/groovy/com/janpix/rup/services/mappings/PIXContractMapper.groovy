@@ -14,7 +14,7 @@ import com.janpix.hl7dto.hl7.v3.datatypes.TS
 import com.janpix.hl7dto.hl7.v3.datatypes.enums.CommunicationFunctionType
 import com.janpix.hl7dto.hl7.v3.datatypes.enums.ParticipationTargetSubject
 import com.janpix.hl7dto.hl7.v3.messages.Acknowledgement
-import com.janpix.hl7dto.hl7.v3.messages.AddPatientOperationMessage;
+import com.janpix.hl7dto.hl7.v3.messages.PatientOperationMessage;
 import com.janpix.hl7dto.hl7.v3.messages.Device
 import com.janpix.hl7dto.hl7.v3.messages.HL7MessageReceiver
 import com.janpix.hl7dto.hl7.v3.messages.HL7MessageSender
@@ -65,7 +65,7 @@ class PIXContractMapper {
 		return message.id
 	}
 	
-	String getPatientId(AddPatientOperationMessage message) {
+	String getPatientId(PatientOperationMessage message) {
 		return message.controlActProcess.subject[0].registrationEvent.subject1.patient.id[0].extension
 	}
 	
@@ -323,6 +323,12 @@ class PIXContractMapper {
 		}
 		subject.registrationEvent.subject1.patient.patientPerson = person
 		return subject
+	}
+	
+	public void validateHl7V3UpdatePatientMessage(PatientOperationMessage updatePatientMessage) {
+		validateHl7V3AddNewPatientMessage(updatePatientMessage)
+		if (updatePatientMessage.controlActProcess.subject[0].registrationEvent.custodian == null)
+			throw new MessageMappingException("PRPAIN201302UV02 message must contain custodian")
 	}
 	
 	

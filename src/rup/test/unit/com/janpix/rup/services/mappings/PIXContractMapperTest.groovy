@@ -5,7 +5,7 @@ import grails.test.mixin.*
 import com.janpix.hl7dto.hl7.v3.datatypes.CE
 import com.janpix.hl7dto.hl7.v3.datatypes.PN
 import com.janpix.hl7dto.hl7.v3.datatypes.TS
-import com.janpix.hl7dto.hl7.v3.messages.AddPatientOperationMessage
+import com.janpix.hl7dto.hl7.v3.messages.PatientOperationMessage
 import com.janpix.hl7dto.hl7.v3.messages.Patient
 import com.janpix.hl7dto.hl7.v3.messages.PatientControlActProcess
 import com.janpix.hl7dto.hl7.v3.messages.Person
@@ -33,7 +33,7 @@ class PIXContractMapperTest {
 		subjectControlActProcess.registrationEvent.subject1 = new Subject2()
 		subjectControlActProcess.registrationEvent.subject1.patient = new Patient()
 		subjectControlActProcess.registrationEvent.subject1.patient.patientPerson = patientPerson
-		def inPatientMessage = new AddPatientOperationMessage()
+		def inPatientMessage = new PatientOperationMessage()
 		inPatientMessage.controlActProcess = new PatientControlActProcess()
 		inPatientMessage.controlActProcess.subject.add(subjectControlActProcess)
 		
@@ -57,7 +57,7 @@ class PIXContractMapperTest {
 		subjectControlActProcess.registrationEvent.subject1 = new Subject2()
 		subjectControlActProcess.registrationEvent.subject1.patient = new Patient()
 		subjectControlActProcess.registrationEvent.subject1.patient.patientPerson = patientPerson
-		def inPatientMessage = new AddPatientOperationMessage()
+		def inPatientMessage = new PatientOperationMessage()
 		inPatientMessage.controlActProcess = new PatientControlActProcess()
 		inPatientMessage.controlActProcess.subject.add(subjectControlActProcess)
 		
@@ -81,7 +81,7 @@ class PIXContractMapperTest {
 		subjectControlActProcess.registrationEvent.subject1 = new Subject2()
 		subjectControlActProcess.registrationEvent.subject1.patient = new Patient()
 		subjectControlActProcess.registrationEvent.subject1.patient.patientPerson = patientPerson
-		def inPatientMessage = new AddPatientOperationMessage()
+		def inPatientMessage = new PatientOperationMessage()
 		inPatientMessage.controlActProcess = new PatientControlActProcess()
 		inPatientMessage.controlActProcess.subject.add(subjectControlActProcess)
 		

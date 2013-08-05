@@ -4,13 +4,14 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
 
+import org.apache.commons.lang.NotImplementedException
 import org.apache.cxf.annotations.WSDLDocumentation;
 import org.grails.cxf.utils.EndpointType
 import org.grails.cxf.utils.GrailsCxfEndpoint
 
 import com.janpix.hl7dto.hl7.v3.contracts.*
 import com.janpix.hl7dto.hl7.v3.interfaces.PixManagerInterface
-import com.janpix.hl7dto.hl7.v3.messages.AddPatientOperationMessage
+import com.janpix.hl7dto.hl7.v3.messages.PatientOperationMessage
 import com.janpix.hl7dto.hl7.v3.messages.HL7OperationMessage
 import com.janpix.hl7dto.hl7.v3.messages.QueryPatientOperationMessage
 import com.janpix.hl7dto.hl7.v3.messages.ack.AddPatientAcknowledgmentMessage
@@ -31,7 +32,7 @@ class PIXManagerHL7v3Service implements PixManagerInterface  {
 	/**
 	 * Add new patients to the PIX. 
 	 */								
-	public AddPatientAcknowledgmentMessage AddNewPatient(AddPatientOperationMessage body) {
+	public AddPatientAcknowledgmentMessage AddNewPatient(PatientOperationMessage body) {
 		pixContractMapper.validateHl7V3AddNewPatientMessage(body)
 		
 		//FIXME!! Esto cambiarlo por un convert(mapperHL7Janpix) que transforme AddPatientOperationMessage en PersonDTO
@@ -56,15 +57,17 @@ class PIXManagerHL7v3Service implements PixManagerInterface  {
 	 * Merges two patients that where added as different patients
 	 */
 	public AddPatientAcknowledgmentMessage MergePatients(HL7OperationMessage body) {
-		throw new NotImplementedException("Este método no está permitido para este RUP.") //TODO utilizar internacionalización.
+		throw new NotImplementedException("Method not allowed at this RUP implementation.") //TODO utilizar internacionalización.
 	}
 
 	@Override
 	/**
 	 * This method is for updating patient information
 	 */
-	public AddPatientAcknowledgmentMessage UpdatePatient(HL7OperationMessage body) {
-		// TODO Auto-generated method stub
+	public AddPatientAcknowledgmentMessage UpdatePatient(PatientOperationMessage body) {
+		pixContractMapper.validateHl7v3UpdatePatientMessage(body)
+		
+		
 		return null;
 	}
 
@@ -90,7 +93,7 @@ class PIXManagerHL7v3Service implements PixManagerInterface  {
 	@WebResult(name = "MCCI_IN000002UV01", targetNamespace = "urn:hl7-org:v3", partName = "Body")
 	@WSDLDocumentation("Add new patients to the PIX without validate matching with other patients.")
 	public AddPatientAcknowledgmentMessage AddNewPatientWithoutValidation(
-			@WebParam(name = "PRPA_IN201302UV02", targetNamespace = "urn:hl7-org:v3", partName = "Body") AddPatientOperationMessage body) {
+			@WebParam(name = "PRPA_IN201302UV02", targetNamespace = "urn:hl7-org:v3", partName = "Body") PatientOperationMessage body) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -100,7 +103,7 @@ class PIXManagerHL7v3Service implements PixManagerInterface  {
 	@WebResult(name = "MCCI_IN000002UV01", targetNamespace = "urn:hl7-org:v3", partName = "Body")
 	@WSDLDocumentation("Returns all patient maching with Patient")
 	public QueryAcknowledgmentMessage GetAllPossibleMatchedPatients(
-			@WebParam(name = "PRPA_IN201302UV02", targetNamespace = "urn:hl7-org:v3", partName = "Body") AddPatientOperationMessage body) {
+			@WebParam(name = "PRPA_IN201302UV02", targetNamespace = "urn:hl7-org:v3", partName = "Body") PatientOperationMessage body) {
 		// TODO Auto-generated method stub
 		return null;
 	}
