@@ -83,9 +83,10 @@ class PixManagerService {
 	/**
 	 * Updates patient's information such as ids and demographic information.
 	 */
-	ACKMessage patientRegistryRecordRevised(PatientDTO patientDTO,PersonDTO personDTO,  AssigningAuthorityDTO healthEntityDTO){
+	ACKMessage patientRegistryRecordRevised(PatientDTO patientDTO,AssigningAuthorityDTO healthEntityDTO){
 		Patient.withTransaction { tx ->
 			try{
+				PersonDTO personDTO = patientDTO.toPersonDTO()
 				//Transformo DTO a dominio
 				Patient patientRequestMessage = patientDTO.convert(mapperDtoDomain);
 				Person personRequestMessage = personDTO.convert(mapperDtoDomain)

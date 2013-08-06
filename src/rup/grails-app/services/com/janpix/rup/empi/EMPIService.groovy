@@ -146,6 +146,9 @@ class EMPIService {
 	 */
 	def updateEntityIdentifierToPatient(Patient patient,HealthEntity he,newId,oldId=null)
 	{	
+		if(newId == null)
+			throw new IdentifierNotValidException(i18nMessage("empiservice.identifiernotvalid.exception"))
+		
 		if(!patient.isAttached())
 			throw new DontExistingPatientException(message:i18nMessage("empiservice.dontexistingpatient.exception"))
 		

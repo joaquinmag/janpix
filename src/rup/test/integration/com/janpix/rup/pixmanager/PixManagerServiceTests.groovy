@@ -235,6 +235,7 @@ class PixManagerServiceTests extends GroovyTestCase {
 	
 	/**
 	 * Testea que falle la creacion del paciente porque tiene varios matcheos
+	 * FIXME!. Me parece que no esta tirando matcheo alto
 	 */
 	void testFailCreatePatientBecauseMuchMatched(){		
 		//Creo una persona parecida al paciente que ya existe
@@ -265,17 +266,18 @@ class PixManagerServiceTests extends GroovyTestCase {
 	 */
 	void testUpdateDemographicDataAndIdentifiers(){		
 		CityDTO cityDTO = new CityDTO(nameCity:"C.A.B.A",nameProvince:"C.A.B.A",nameCountry:"Argentina")
-		PersonDTO personDTO = new PatientDTO(name: new PersonNameDTO(firstName:"Joaquin Ignacio", lastName:"Magneres"),
+		PatientDTO patientDTO = new PatientDTO(name: new PersonNameDTO(firstName:"Joaquin Ignacio", lastName:"Magneres"),
 			birthdate: new ExtendedDateDTO(date:"1987-05-01",precission:"Day"),
 			administrativeSex:Person.TYPE_SEX_AMBIGUOS,
 			birthplace:cityDTO,
 			)
-		personDTO.identifiers.add(new IdentifierDTO(type:Identifier.TYPE_IDENTIFIER_DNI,number:"33850139",assigningAuthority:new AssigningAuthorityDTO("2.16.32","Argentina")))
-		personDTO.identifiers.add(new IdentifierDTO(type:Identifier.TYPE_IDENTIFIER_PI,number:"YMCA123",assigningAuthority:this.buildHealthEntityDTO("4")))
-		personDTO.address.add(new AddressDTO(street:"Zapata",number:"346",floor:"5",department:"A",city:cityDTO))
+		patientDTO.identifiers.add(new IdentifierDTO(type:Identifier.TYPE_IDENTIFIER_DNI,number:"33850139",assigningAuthority:new AssigningAuthorityDTO("2.16.32","Argentina")))
+		patientDTO.identifiers.add(new IdentifierDTO(type:Identifier.TYPE_IDENTIFIER_PI,number:"YMCA123",assigningAuthority:this.buildHealthEntityDTO("4")))
+		patientDTO.address.add(new AddressDTO(street:"Zapata",number:"346",floor:"5",department:"A",city:cityDTO))
+		patientDTO.uniqueId = this.patient.uniqueId.mainId
 		
 	
-		ACKMessage ack = pixManagerService.patientRegistryRecordRevised(this.buildPatientDTO(),personDTO,this.buildHealthEntityDTO("4"))
+		ACKMessage ack = pixManagerService.patientRegistryRecordRevised(patientDTO,this.buildHealthEntityDTO("4"))
 		
 		//ACK
 		assert TypeCode.SuccededUpdated == ack.typeCode
@@ -303,15 +305,16 @@ class PixManagerServiceTests extends GroovyTestCase {
 	 */
 	void testUpdateIdentifer(){
 		//Mando a actualizar el identificador
-		PersonDTO personDTO = new PersonDTO()
-		personDTO.identifiers.add(new IdentifierDTO(type:Identifier.TYPE_IDENTIFIER_PI,number:"Z321",assigningAuthority:this.buildHealthEntityDTO("1")))
+		PatientDTO patientDTO = new PatientDTO()
+		patientDTO.identifiers.add(new IdentifierDTO(type:Identifier.TYPE_IDENTIFIER_PI,number:"Z321",assigningAuthority:this.buildHealthEntityDTO("1")))
+		patientDTO.uniqueId = this.patient.uniqueId.mainId
 		
-		ACKMessage ack = pixManagerService.patientRegistryRecordRevised(this.buildPatientDTO(),personDTO,this.buildHealthEntityDTO("1"))
+		ACKMessage ack = pixManagerService.patientRegistryRecordRevised(patientDTO,this.buildHealthEntityDTO("1"))
 		
 		assert TypeCode.SuccededUpdated == ack.typeCode
 		assert i18nMessage("pixmanager.ackmessage.updated.succeded") == ack.text
 		
-		Patient updatedPatient = Patient.findById(patient.id); //Vuelvo a obtener el paciente. No soluciono problema. FIXME!!! (ver transacciones y attach)
+		Patient updatedPatient = Patient.findById(patient.id); 
 		assert updatedPatient.identifiers.size() == 4 //Los 4 que siempre tuvo (DNI + 3 entidades sanitarias)
 		Identifier updatedIdentifier = updatedPatient.identifiers.find {
 				it.type == Identifier.TYPE_IDENTIFIER_PI && 
@@ -335,7 +338,7 @@ class PixManagerServiceTests extends GroovyTestCase {
 		p.identifiers.add(new IdentifierDTO(type:Identifier.TYPE_IDENTIFIER_DNI,number:"33850139",assigningAuthority:new AssigningAuthorityDTO("2.16.32","Argentina")))
 		p.identifiers.add(new IdentifierDTO(type:Identifier.TYPE_IDENTIFIER_PI,number:"YMCA123",assigningAuthority:this.buildHealthEntityDTO("4")))
 		
-		ACKMessage ack = pixManagerService.patientRegistryRecordRevised(p,p,this.buildHealthEntityDTO("4"))
+		ACKMessage ack = pixManagerService.patientRegistryRecordRevised(p,this.buildHealthEntityDTO("4"))
 		
 		//ACK
 		assert TypeCode.DontExistingPatientError == ack.typeCode
@@ -347,12 +350,12 @@ class PixManagerServiceTests extends GroovyTestCase {
 	 */
 	void testFailUpdateBecauseNotValidIdentifier(){
 		//Mando a actualizar el identificador
-		PersonDTO p = new PersonDTO()
-		p.identifiers.add(new IdentifierDTO(type:Identifier.TYPE_IDENTIFIER_PI,assigningAuthority:this.buildHealthEntityDTO("1")))
-		ACKMessage ack = pixManagerService.patientRegistryRecordRevised(this.buildPatientDTO(),p,this.buildHealthEntityDTO("1"))
+		PatientDTO patientDTO = new PatientDTO()
+		patientDTO.identifiers.add(new IdentifierDTO(type:Identifier.TYPE_IDENTIFIER_PI,assigningAuthority:this.buildHealthEntityDTO("1")))
+		patientDTO.uniqueId = this.patient.uniqueId.mainId
+		ACKMessage ack = pixManagerService.patientRegistryRecordRevised(patientDTO,this.buildHealthEntityDTO("1"))
 		
 		assert TypeCode.IdentifierError == ack.typeCode
-		
 	}
 	
 	/**
