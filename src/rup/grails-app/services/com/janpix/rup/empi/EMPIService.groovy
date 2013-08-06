@@ -23,8 +23,6 @@ class EMPIService {
 	def uuidGenerator
 	def factoryMatchRecord
 	def i18nMessage
-	def assigningAuthorityService
-	def placeService
 	static transactional = false
 	
 	
@@ -38,9 +36,6 @@ class EMPIService {
 		try{
 			//Agrego el paciente
 			Patient patient = new Patient(p)
-			patient.addresses.each{ Address address->
-				address.city =getValidCity(address.city) 
-			}
 			patient.uuidGenerator = uuidGenerator
 			patient.save(failOnError:true)
 			
@@ -60,9 +55,11 @@ class EMPIService {
 	 * @throws ExistingPatientException: Si la informacion modificada del paciente genera un matcheo con otro paciente ya existente
 	 * @throw DontExistingPatientException Si el paciente pasado no existia
 	 */
-	def updateDemographicDataPatient(Patient p, Person person){
-
-		def patient = this.getValidPatient(p)
+	def updateDemographicDataPatient(Patient patient, Person person)
+	{
+		if(!patient.isAttached())
+			throw new DontExistingPatientException(message:i18nMessage("empiservice.dontexistingpatient.exception"))
+			
 		person.properties.each{prop,val->
 			if(val){
 				//Las propiedades readonly son las que terminan con la palabra "Id"
@@ -114,22 +111,22 @@ class EMPIService {
 	 * @throw DuplicateAuthorityIdentifierException Si el paciente ya tiene un identificador asignado para esa Autoridad de Asignación
 	 * @throw IdentifierNotValidException Si los datos pasados son invalidos para crear un nuevo identificador
 	 */
-	def addEntityIdentifierToPatient(Patient p,HealthEntity he, String peId){
-		
-		HealthEntity healthEntity = this.getValidHealthEntity(he)
-		Patient patient = this.getValidPatient(p)
+	def addEntityIdentifierToPatient(Patient patient,HealthEntity healthEntity, String peId){
+
+		if(!patient.isAttached())
+			throw new DontExistingPatientException(message:i18nMessage("empiservice.dontexistingpatient.exception"))
 		
 		//Verifico que el identificador no este asignado por esa entidad sanitaria a otro paciente
 		if(Identifier.findWhere(type:Identifier.TYPE_IDENTIFIER_PI,number:peId,assigningAuthority:healthEntity) != null)
-			throw new DuplicateIdentifierException(i18nMessage("empiservice.duplicateidentifier.exception","${peId}","${he}"))
+			throw new DuplicateIdentifierException(i18nMessage("empiservice.duplicateidentifier.exception","${peId}","${healthEntity}"))
 			
 		def identifier = new Identifier(type:Identifier.TYPE_IDENTIFIER_PI,number:peId,assigningAuthority:healthEntity)
 		if(!identifier.validate()){
 			throw new IdentifierNotValidException(i18nMessage("empiservice.identifiernotvalid.exception"))
 		}
 		//Verifico que no contenga un identificador para esa entidad sanitaria
-		if(p.identifiers.contains(identifier) || (p.identifiers.find{it.assigningAuthority == healthEntity} != null)){
-			throw new DuplicateAuthorityIdentifierException(i18nMessage("empiservice.duplicateauthorityidentifier.exception","${he}"))
+		if(patient.identifiers.contains(identifier) || (patient.identifiers.find{it.assigningAuthority == healthEntity} != null)){
+			throw new DuplicateAuthorityIdentifierException(i18nMessage("empiservice.duplicateauthorityidentifier.exception","${healthEntity}"))
 		}
 		
 		patient.addToIdentifiers(identifier)
@@ -147,9 +144,10 @@ class EMPIService {
 	 * @throw IdentifierException si no existe el identificador viejo para esa entidad
 	 * @return
 	 */
-	def updateEntityIdentifierToPatient(Patient p,HealthEntity he,newId,oldId=null)
+	def updateEntityIdentifierToPatient(Patient patient,HealthEntity he,newId,oldId=null)
 	{	
-		Patient patient = this.getValidPatient(p);
+		if(!patient.isAttached())
+			throw new DontExistingPatientException(message:i18nMessage("empiservice.dontexistingpatient.exception"))
 		
 		if(newId == oldId) {return}
 				
@@ -249,19 +247,7 @@ class EMPIService {
 	}
 	
 	
-	/**
-	 * Verifica la existencia de un paciente en el EMPI en base al identificador que contiene el mismo
-	 * @param Patient p: el paciente a verificar si esta agregado
-	 * @return TRUE si el paciente existe, FALSE de lo contrario
-	 */
-	/*Boolean existsPatient(Patient p){
-		if(p.uniqueId){
-			if(findPatientByUUID(p.uniqueId)!=null){
-				return true;
-			}
-		}
-		return false
-	}*/
+
 
 	/**
 	 * FIXME!! segun la estrategia de herencia esto podria llegar a variar
@@ -283,40 +269,5 @@ class EMPIService {
 	}
 	
 	
-	/*### Validadores ###*/
-	//TODO ver si los paso a un servicio de validacion
-	/**
-	 * Verifica que el HealthEntity ingresado sea válido y devuelve el objeto HealthEntity conectado a la bd.
-	 * @param HealthEntity healthEntity: la entidad a verificar.
-	 * @return el HealthEntity conectado a la bd y validado. En caso de no existir, lanzará una excepción.
-	 * @throws IdentifierNotFoundException si no se encontró el identificador para la entidad sanitaria a validar.
-	 */
-	private HealthEntity getValidHealthEntity(HealthEntity he) {
-		def currentHE = assigningAuthorityService.findHealtEntityByOid(he.oid);
-		if (!currentHE)
-			throw new IdentifierNotFoundException(message:i18nMessage("empiservice.healthentity.identifiernotfound.exception","${he.oid}"))
-			
-		return currentHE
-	}
 	
-	private City getValidCity(City city) {
-		def currentCity = placeService.findByPlace(city?.name, city?.province?.name, city?.province?.country?.name)
-		if (!currentCity)
-			throw new MessageMappingException('PRPAIN201301UV02 must contain a valid city, state and country names.')
-		return currentCity
-	}
-	
-	/**
-	 * Verifica que el Patient enviado sea valido y devuelve el Patient conectado a la bd
-	 * @param Patient p: El paciente a validar.
-	 * @return el Patient conectado a la bd y validado. En caso de no existir, lanzará una excepción.
-	 * @throws DontExistingPatientException si no existia el paciente en la base.
-	 */
-	private Patient getValidPatient(Patient p) {
-		Patient currentPatient = findPatientByUUID(p.uniqueId)
-		if (!currentPatient)
-			throw new DontExistingPatientException(message:i18nMessage("empiservice.dontexistingpatient.exception"))
-			
-		return currentPatient
-	}
 }

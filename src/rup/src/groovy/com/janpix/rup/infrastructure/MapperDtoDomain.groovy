@@ -35,9 +35,20 @@ class MapperDtoDomain extends Mapper {
 	}
 	
 	public Patient convert (PatientDTO dto){
-		Patient patient = new Patient();
-		patient.uniqueId = new PatientIdentifier(mainId:dto.uniqueId);
-		setPropertiesPerson(patient,dto)
+		// Se busca el paciente. Si no existe se crea
+		//Patient patient = Patient.findByUniqueId(new PatientIdentifier(mainId:dto.uniqueId));
+		def c = Patient.createCriteria()
+		Patient patient = c.get {
+		   uniqueId {
+				   eq("mainId",dto.uniqueId)
+		   }
+		}
+		
+		if(patient == null){
+			patient = new Patient()
+			patient.uniqueId = new PatientIdentifier(mainId:dto.uniqueId);
+			setPropertiesPerson(patient,dto)
+		}
 		return patient
 	}
 
