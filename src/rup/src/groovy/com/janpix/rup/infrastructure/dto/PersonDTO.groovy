@@ -15,7 +15,7 @@ class PersonDTO {
 	
 	List<AddressDTO> address
 	List<String> phoneNumbers
-	List<IdentifierDTO> identifiers
+	Set<IdentifierDTO> identifiers
 	
 	PersonDTO(){
 		address = []

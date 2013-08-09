@@ -98,14 +98,14 @@ class PixManagerServiceTests extends GroovyTestCase {
 	 * Testea la correcta obtencion del CUIS de un paciente
 	 */
 	void testGetCUIS(){
-		ACKMessage ack = pixManagerService.patientRegistryGetIdentifiersQuery("C123",healthEntity3,[assigningAuthorityService.rupAuthority()])
+		ACKMessage ack = pixManagerService.patientRegistryGetIdentifiersQuery("C123",this.buildHealthEntityDTO("3"),[this.buildRupAuthorityDTO()])
 		assert ack.typeCode == TypeCode.SuccededQuery
 		def identifiers = ack.patient.identifiers
 		assertEquals(1,identifiers.size())
 		
-		Identifier cuis = identifiers.first()
+		IdentifierDTO cuis = identifiers.first()
 		assertEquals(patient.uniqueId.toString(),cuis.number)
-		assertEquals(assigningAuthorityService.rupAuthority(),cuis.assigningAuthority)
+		assertEquals(this.buildRupAuthorityDTO(),cuis.assigningAuthority)
 		assertEquals(Identifier.TYPE_IDENTIFIER_PI,cuis.type)
 	}
 	
@@ -113,7 +113,7 @@ class PixManagerServiceTests extends GroovyTestCase {
 	 * Testea que no devuelva ningun identificador porque no existe paciente en los dominios pasados
 	 */
 	void testGetIdentifiersReturnEmpty(){
-		ACKMessage ack = pixManagerService.patientRegistryGetIdentifiersQuery("C123",healthEntity3,[new HealthEntity("2.16.32.1.255.255", "No existe")])
+		ACKMessage ack = pixManagerService.patientRegistryGetIdentifiersQuery("C123",this.buildHealthEntityDTO("3"),[new AssigningAuthorityDTO("2.16.32.1.255.255", "No existe")])
 		def identifiers = ack.patient.identifiers
 		assertEquals(0,identifiers.size())
 	}
@@ -122,23 +122,23 @@ class PixManagerServiceTests extends GroovyTestCase {
 	 * Testea que devuelva todos los identificadores de un paciente ya que no se le pasan dominios
 	 */
 	void testGetAllIdentifiers(){
-		ACKMessage ack = pixManagerService.patientRegistryGetIdentifiersQuery("C123",healthEntity3)
-		def identifiers = ack.patient.identifiers
+		ACKMessage ack = pixManagerService.patientRegistryGetIdentifiersQuery("C123",this.buildHealthEntityDTO("3"))
+		Set<IdentifierDTO> identifiers = ack.patient.identifiers
 		assertEquals(3,identifiers.size())
 		
-		Identifier cuis = identifiers.find{it.assigningAuthority == assigningAuthorityService.rupAuthority()}
+		IdentifierDTO cuis = identifiers.find{it.assigningAuthority == this.buildRupAuthorityDTO()}
 		assertEquals(patient.uniqueId.toString(),cuis.number)
-		assertEquals(assigningAuthorityService.rupAuthority(),cuis.assigningAuthority)
+		assertEquals(this.buildRupAuthorityDTO(),cuis.assigningAuthority)
 		assertEquals(Identifier.TYPE_IDENTIFIER_PI,cuis.type)
 		
-		Identifier idh1 = identifiers.find{it.assigningAuthority == healthEntity1}
+		IdentifierDTO idh1 = identifiers.find{it.assigningAuthority == this.buildHealthEntityDTO("1")}
 		assertEquals("A123",idh1.number)
-		assertEquals(healthEntity1,idh1.assigningAuthority)
+		assertEquals(this.buildHealthEntityDTO("1"),idh1.assigningAuthority)
 		assertEquals(Identifier.TYPE_IDENTIFIER_PI,idh1.type)
 		
-		Identifier idh2 = identifiers.find{it.assigningAuthority == healthEntity2}
+		IdentifierDTO idh2 = identifiers.find{it.assigningAuthority == this.buildHealthEntityDTO("2")}
 		assertEquals("B123",idh2.number)
-		assertEquals(healthEntity2,idh2.assigningAuthority)
+		assertEquals(this.buildHealthEntityDTO("2"),idh2.assigningAuthority)
 		assertEquals(Identifier.TYPE_IDENTIFIER_PI,idh2.type)
 	}
 	
@@ -146,18 +146,18 @@ class PixManagerServiceTests extends GroovyTestCase {
 	 * Testea que se devuelvan los identificadores de los dominios pasados
 	 */
 	void testGetDomainIdentifiers(){
-		ACKMessage ack = pixManagerService.patientRegistryGetIdentifiersQuery("C123",healthEntity3,[healthEntity1,healthEntity2])
+		ACKMessage ack = pixManagerService.patientRegistryGetIdentifiersQuery("C123",this.buildHealthEntityDTO("3"),[this.buildHealthEntityDTO("1"),this.buildHealthEntityDTO("2")])
 		def identifiers = ack.patient.identifiers
 		assertEquals(2,identifiers.size())
 		
-		Identifier idh1 = identifiers.find{it.assigningAuthority == healthEntity1}
+		IdentifierDTO idh1 = identifiers.find{it.assigningAuthority == this.buildHealthEntityDTO("1")}
 		assertEquals("A123",idh1.number)
-		assertEquals(healthEntity1,idh1.assigningAuthority)
+		assertEquals(this.buildHealthEntityDTO("1"),idh1.assigningAuthority)
 		assertEquals(Identifier.TYPE_IDENTIFIER_PI,idh1.type)
 		
-		Identifier idh2 = identifiers.find{it.assigningAuthority == healthEntity2}
+		IdentifierDTO idh2 = identifiers.find{it.assigningAuthority == this.buildHealthEntityDTO("2")}
 		assertEquals("B123",idh2.number)
-		assertEquals(healthEntity2,idh2.assigningAuthority)
+		assertEquals(this.buildHealthEntityDTO("2"),idh2.assigningAuthority)
 		assertEquals(Identifier.TYPE_IDENTIFIER_PI,idh2.type)
 	}
 
@@ -453,5 +453,13 @@ class PixManagerServiceTests extends GroovyTestCase {
 	
 	def private buildHealthEntityDTO(String number){
 		return new AssigningAuthorityDTO("2.16.32.1.255."+number, "Entidad Sanitaria "+number)
+	}
+	
+	def private buildRupAuthorityDTO(){
+		AssigningAuthority rup = assigningAuthorityService.rupAuthority()
+		AssigningAuthorityDTO rupDTO = new AssigningAuthorityDTO()
+		rupDTO.name = rup.name
+		rupDTO.oid = rup.oid
+		return rupDTO
 	}
 }

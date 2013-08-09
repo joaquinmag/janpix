@@ -13,6 +13,7 @@ import com.janpix.rup.exceptions.identifier.DuplicateAuthorityIdentifierExceptio
 import com.janpix.rup.exceptions.identifier.IdentifierException
 import com.janpix.rup.infrastructure.FactoryDTO
 import com.janpix.rup.infrastructure.dto.AssigningAuthorityDTO
+import com.janpix.rup.infrastructure.dto.IdentifierDTO
 import com.janpix.rup.infrastructure.dto.PatientDTO
 import com.janpix.rup.infrastructure.dto.PersonDTO
 import com.janpix.rup.services.contracts.ACKMessage
@@ -29,6 +30,7 @@ class PixManagerService {
 	def assigningAuthorityService
 	def i18nMessage
 	def mapperDtoDomain
+	def mapperDomainDto
 	static transactional = false
 	
 	/**
@@ -144,44 +146,46 @@ class PixManagerService {
 	 * @return List<Identifier> identificadores del paciente en los dominios solicitados
 	 * @return List<Identifier> empty si no hay ningun identificador
 	 */
-	ACKMessage patientRegistryGetIdentifiersQuery(String patientIdentifier,AssigningAuthority patientIdentifierDomain,List<AssigningAuthority> othersDomain=null){
+	ACKMessage patientRegistryGetIdentifiersQuery(String patientIdentifier,AssigningAuthorityDTO assigningAuthorityDTO,List<AssigningAuthorityDTO> othersDomain=null){
 
 		try{
-
-			Set<Identifier> identifiers = []
+			Set<IdentifierDTO> identifiers = []
 			
-			def assigningAuth = AssigningAuthority.findByOid(patientIdentifierDomain.oid)
-			//AssigningAuthorityDTO patientIdentifierDomain = patientIdentifierDomainDTO.convert(mapperDtoDomain)
+			AssigningAuthority patientIdentifierDomain = assigningAuthorityDTO.convert(mapperDtoDomain)
 			
-			Patient rupPatient = EMPIService.findPatientByHealthEntityId(patientIdentifier,assigningAuth)
-			//FIXME!! Verificar que rupPatient sea diferente de null
+			Patient rupPatient = EMPIService.findPatientByHealthEntityId(patientIdentifier,patientIdentifierDomain)
+			if(rupPatient == null)
+				new ACKMessage(typeCode:TypeCode.DontExistingPatientError)
 
 			//Agrego los identificadores de los dominios pasados. Sino pasaron dominio agrego todos 
 			if(othersDomain){
-				rupPatient.identifiers.findAll{it.type == Identifier.TYPE_IDENTIFIER_PI}.each{Identifier it->
-					//IdentifierDTO identifierDTO = it.convert(mapperDomainDto)
-					if(othersDomain.contains(it.assigningAuthority)){
-						identifiers.add(it)
+				rupPatient.identifiers.findAll{ it.type == Identifier.TYPE_IDENTIFIER_PI }.each{ Identifier it ->
+					IdentifierDTO identifierDTO = it.convert(mapperDomainDto)
+					//AssigningAuthorityDTO aaDTO = it.assigningAuthority?.convert(mapperDomainDto) 
+					if(othersDomain.contains(identifierDTO.assigningAuthority)){
+						identifiers.add(identifierDTO)
 					}
 				}
 			}else{
-				identifiers.addAll(rupPatient.identifiers.findAll{it.type == Identifier.TYPE_IDENTIFIER_PI && it.assigningAuthority != patientIdentifierDomain})
+				Set<Identifier> identifiersPatient = rupPatient.identifiers.findAll{it.type == Identifier.TYPE_IDENTIFIER_PI && it.assigningAuthority != patientIdentifierDomain}
+				identifiersPatient.each {Identifier it->
+					identifiers.add( it.convert(mapperDomainDto))
+				} 
 			}
-			//Si me pidieron el dominio RUP agrego el CUIS como un identificador mas
-			if( !othersDomain || othersDomain.contains(assigningAuthorityService.rupAuthority())){
-				Identifier identifier = new Identifier()
-				if(rupPatient){
-					identifier.type 				= Identifier.TYPE_IDENTIFIER_PI
-					identifier.number				= "${rupPatient.uniqueId}"
-					identifier.assigningAuthority	= assigningAuthorityService.rupAuthority()
-				}
-										
-				identifiers.add(identifier)
-			}
-			//FIXME!!! Utilizar un mapperDomainDto
-			Patient patientDTO = FactoryDTO.buildPatientDTO(rupPatient) 
-			patientDTO.identifiers = identifiers;
 			
+			//Si me pidieron el dominio RUP agrego el CUIS como un identificador mas
+			AssigningAuthorityDTO rupDTO = assigningAuthorityService.rupAuthority().convert(mapperDomainDto)
+			if( !othersDomain || othersDomain.contains(rupDTO)){
+				IdentifierDTO rupIdentifierDTO 		= new IdentifierDTO()
+				rupIdentifierDTO.type 				= Identifier.TYPE_IDENTIFIER_PI
+				rupIdentifierDTO.number				= "${rupPatient.uniqueId}"
+				rupIdentifierDTO.assigningAuthority	= rupDTO
+										
+				identifiers.add(rupIdentifierDTO)
+			}
+			PatientDTO patientDTO = rupPatient.convert(mapperDomainDto)
+			patientDTO.identifiers = identifiers //Modifico los identifiers por los obtenidos 
+
 			return new ACKMessage(typeCode:TypeCode.SuccededQuery,patient:patientDTO)
 			
 		}catch (Exception e) {

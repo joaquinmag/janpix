@@ -33,7 +33,7 @@ class MapperDomainDto extends Mapper {
 	}
 	
 	public PatientDTO convert (Patient domain){
-		Patient dto = new Patient();
+		PatientDTO dto = new PatientDTO();
 		dto.uniqueId = domain.uniqueId?.mainId
 		setPropertiesPerson(dto,domain)
 		return dto

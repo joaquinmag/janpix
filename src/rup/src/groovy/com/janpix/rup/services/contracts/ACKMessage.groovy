@@ -1,6 +1,6 @@
 package com.janpix.rup.services.contracts
 
-import com.janpix.rup.empi.Patient
+import com.janpix.rup.infrastructure.dto.PatientDTO
 
 class ACKMessage {
 	public enum TypeCode {
@@ -22,6 +22,6 @@ class ACKMessage {
 	
 	TypeCode typeCode
 	String text
-	Patient patient	
+	PatientDTO patient	
 	
 }

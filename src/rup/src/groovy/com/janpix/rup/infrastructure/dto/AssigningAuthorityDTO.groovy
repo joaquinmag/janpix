@@ -17,4 +17,8 @@ class AssigningAuthorityDTO {
 	def convert(Mapper mapper){
 		mapper.convert(this);
 	}
+	
+	public boolean equals(other){
+		return (this.name == other.name && this.oid == other.oid)
+	}
 }

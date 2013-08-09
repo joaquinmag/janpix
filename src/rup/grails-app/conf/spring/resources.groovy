@@ -53,19 +53,22 @@ beans = {
 	mapperDtoDomain(MapperDtoDomain){
 		placeService = ref('placeService')
 		assigningAuthorityService = ref(assigningAuthorityService)
+	
+	}
+	mapperDomainDto(MapperDomainDto){
+
 	}
 	
 	pixManagerService(PixManagerService){
 		mapperDtoDomain = ref(mapperDtoDomain)
+		mapperDomainDto = ref(mapperDomainDto)
 		EMPIService = ref('EMPIService')
 		assigningAuthorityService = ref(assigningAuthorityService)
 		i18nMessage = ref(i18nMessage)
 	}
 	
 	
-	mapperDomainDto(MapperDomainDto){
-		
-	}
+
 
 	
 
