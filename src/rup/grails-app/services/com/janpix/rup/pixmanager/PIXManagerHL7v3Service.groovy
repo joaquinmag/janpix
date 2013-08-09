@@ -29,6 +29,7 @@ class PIXManagerHL7v3Service implements PixManagerInterface  {
 	def assigningAuthorityService
 	def pixContractMapper
 	def mapperDomainDto
+	def rupDTOFactory
 
 	@Override
 	/**
@@ -48,8 +49,8 @@ class PIXManagerHL7v3Service implements PixManagerInterface  {
 		AssigningAuthorityDTO healthEntityDTO = healthEntity?.convert(mapperDomainDto)
 		
 		def ack = pixManagerService.patientRegistryRecordAdded(personDTO, healthEntityDTO, patientId)
-		def sender = assigningAuthorityService.rupAuthority() // TODO asignar utilizando una constante. No acceder a servicio.
-		def receiver = healthEntity
+		def sender = rupDTOFactory.buildRUPDTO()
+		def receiver = healthEntityDTO
 		def identifier = pixContractMapper.getMessageIdentifier(body)
 		return pixContractMapper.mapACKMessageToHL7AcceptAcknowledgmentMessage(ack, identifier,  receiver,  sender)
 	}
@@ -88,11 +89,15 @@ class PIXManagerHL7v3Service implements PixManagerInterface  {
 	public QueryAcknowledgmentMessage GetAllIdentifiersPatient(QueryPatientOperationMessage body) {
 		pixContractMapper.validateHl7V3PatientQueryMessage(body)
 		def patientIdentifier = pixContractMapper.mapIdentifierFromhl7QueryMessage(body.controlActProcess)
+		//FIXME!! Esto cambiarlo por un convert(mapperHL7Janpix) 
 		def healthEntity = pixContractMapper.mapSenderToHealthEntity(body)
-		def rup = assigningAuthorityService.rupAuthority() // TODO asignar utilizando una constante. No acceder a servicio.
-		def ack = pixManagerService.patientRegistryGetIdentifiersQuery(patientIdentifier, healthEntity, [ rup ])
-		def sender = rup
-		def receiver = healthEntity
+		AssigningAuthorityDTO healthEntityDTO = healthEntity?.convert(mapperDomainDto)
+		
+		AssigningAuthorityDTO rupDTO = rupDTOFactory.buildRUPDTO()
+		
+		def ack = pixManagerService.patientRegistryGetIdentifiersQuery(patientIdentifier, healthEntityDTO, [ rupDTO ])
+		def sender = rupDTO
+		def receiver = healthEntityDTO
 		def messageIdentifier = pixContractMapper.getMessageIdentifier(body)
 		def queryId = pixContractMapper.getQueryId(body)
 		return pixContractMapper.mapQueryACKMessageToHL7QueryAcknowledgmentMessage(ack, messageIdentifier,  receiver,  sender, queryId)

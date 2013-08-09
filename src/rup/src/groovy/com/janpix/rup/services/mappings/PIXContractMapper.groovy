@@ -1,7 +1,5 @@
 package com.janpix.rup.services.mappings
 
-import javax.xml.bind.annotation.XmlRootElement
-
 import org.hl7.v3.*
 
 import com.janpix.hl7dto.hl7.v3.datatypes.AD
@@ -14,24 +12,24 @@ import com.janpix.hl7dto.hl7.v3.datatypes.TS
 import com.janpix.hl7dto.hl7.v3.datatypes.enums.CommunicationFunctionType
 import com.janpix.hl7dto.hl7.v3.datatypes.enums.ParticipationTargetSubject
 import com.janpix.hl7dto.hl7.v3.messages.Acknowledgement
-import com.janpix.hl7dto.hl7.v3.messages.PatientOperationMessage;
 import com.janpix.hl7dto.hl7.v3.messages.Device
 import com.janpix.hl7dto.hl7.v3.messages.HL7MessageReceiver
 import com.janpix.hl7dto.hl7.v3.messages.HL7MessageSender
 import com.janpix.hl7dto.hl7.v3.messages.HL7OperationMessage
 import com.janpix.hl7dto.hl7.v3.messages.Organization
 import com.janpix.hl7dto.hl7.v3.messages.OtherIDs
-import com.janpix.hl7dto.hl7.v3.messages.QueryControlActProcess;
-import com.janpix.hl7dto.hl7.v3.messages.QueryPatientOperationMessage;
+import com.janpix.hl7dto.hl7.v3.messages.PatientOperationMessage
+import com.janpix.hl7dto.hl7.v3.messages.QueryControlActProcess
+import com.janpix.hl7dto.hl7.v3.messages.QueryPatientOperationMessage
 import com.janpix.hl7dto.hl7.v3.messages.RegistrationEvent
 import com.janpix.hl7dto.hl7.v3.messages.Subject1
 import com.janpix.hl7dto.hl7.v3.messages.Subject2
 import com.janpix.hl7dto.hl7.v3.messages.ack.AcknowledgementDetail
 import com.janpix.hl7dto.hl7.v3.messages.ack.AcknowledgmentMessage
-import com.janpix.hl7dto.hl7.v3.messages.ack.AddPatientAcknowledgmentMessage;
-import com.janpix.hl7dto.hl7.v3.messages.ack.QueryAckControlActProcess;
+import com.janpix.hl7dto.hl7.v3.messages.ack.AddPatientAcknowledgmentMessage
+import com.janpix.hl7dto.hl7.v3.messages.ack.QueryAckControlActProcess
 import com.janpix.hl7dto.hl7.v3.messages.ack.QueryAckValue
-import com.janpix.hl7dto.hl7.v3.messages.ack.QueryAcknowledgmentMessage;
+import com.janpix.hl7dto.hl7.v3.messages.ack.QueryAcknowledgmentMessage
 import com.janpix.hl7dto.hl7.v3.messages.ack.TargetMessage
 import com.janpix.hl7dto.hl7.v3.messages.query.QueryByParameter
 import com.janpix.hl7dto.hl7.v3.messages.query.QueryParameter
@@ -49,6 +47,10 @@ import com.janpix.rup.empi.PersonName
 import com.janpix.rup.empi.PhoneNumber
 import com.janpix.rup.empi.Province
 import com.janpix.rup.exceptions.MessageMappingException
+import com.janpix.rup.infrastructure.dto.AddressDTO
+import com.janpix.rup.infrastructure.dto.AssigningAuthorityDTO
+import com.janpix.rup.infrastructure.dto.IdentifierDTO
+import com.janpix.rup.infrastructure.dto.PatientDTO;
 import com.janpix.rup.services.contracts.ACKMessage
 
 /**	
@@ -75,28 +77,28 @@ class PIXContractMapper {
 		return new HealthEntity(name: name, oid: oid)
 	}
 	
-	HL7MessageReceiver mapHealthEntityToACKReceiver(AssigningAuthority authority) {
+	HL7MessageReceiver mapHealthEntityToACKReceiver(AssigningAuthorityDTO authority) {
 		def receiver = new HL7MessageReceiver()
 		receiver.typeCode = CommunicationFunctionType.RCV
 		receiver.device = buildACKDevice(authority)
 		return receiver
 	}
 	
-	HL7MessageSender mapAssigningAuthorityToACKSender(AssigningAuthority authority) {
+	HL7MessageSender mapAssigningAuthorityToACKSender(AssigningAuthorityDTO authority) {
 		def sender = new HL7MessageSender()
 		sender.typeCode = CommunicationFunctionType.SND
 		sender.device = buildACKDevice(authority)
 		return sender
 	}
 	
-	Device buildACKDevice(AssigningAuthority authority) {
+	Device buildACKDevice(AssigningAuthorityDTO authority) {
 		def device = new Device()
 		device.determinerCode = "INSTANCE"
 		device.id.add(new II(root: authority.oid, assigningAuthorityName: authority.name))
 		return device
 	}
 	
-	AddPatientAcknowledgmentMessage mapACKMessageToHL7AcceptAcknowledgmentMessage(ACKMessage ackMessage, II messageIdentifier, AssigningAuthority receiver, AssigningAuthority sender) {
+	AddPatientAcknowledgmentMessage mapACKMessageToHL7AcceptAcknowledgmentMessage(ACKMessage ackMessage, II messageIdentifier, AssigningAuthorityDTO receiver, AssigningAuthorityDTO sender) {
 		def messageName = "MCCI_IN000002UV01"
 		def ackHl7 = new AddPatientAcknowledgmentMessage()
 		buildBaseAckMessage(ackHl7, messageName, receiver, sender)
@@ -107,7 +109,7 @@ class PIXContractMapper {
 		return ackHl7
 	}
 
-	private void buildBaseAckMessage(AcknowledgmentMessage ackHl7, String messageName, AssigningAuthority receiver, AssigningAuthority sender) {
+	private void buildBaseAckMessage(AcknowledgmentMessage ackHl7, String messageName, AssigningAuthorityDTO receiver, AssigningAuthorityDTO sender) {
 		ackHl7.id = new II(root: uuidGenerator())
 		ackHl7.creationTime = hl7Helper.buildHl7DateTime(actualDate())
 		ackHl7.interactionId = hl7Helper.buildInteractionId(messageName)
@@ -239,7 +241,7 @@ class PIXContractMapper {
 		return message.controlActProcess.queryByParameter.queryId;
 	}
 	
-	public QueryAcknowledgmentMessage mapQueryACKMessageToHL7QueryAcknowledgmentMessage(ACKMessage ack, II messageIdentifier, HealthEntity receiver, AssigningAuthority sender, II queryId) {
+	public QueryAcknowledgmentMessage mapQueryACKMessageToHL7QueryAcknowledgmentMessage(ACKMessage ack, II messageIdentifier, AssigningAuthorityDTO receiver, AssigningAuthorityDTO sender, II queryId) {
 		def returnAck = new QueryAcknowledgmentMessage()
 		def messageName = "PRPA_IN201310UV02"
 		buildBaseAckMessage(returnAck, messageName, receiver, sender)
@@ -269,7 +271,7 @@ class PIXContractMapper {
 	private QueryAckControlActProcess buildQueryAckControlActProcess(ACKMessage ack, QueryAckValue queryAck) {
 		def queryAckCAP = new QueryAckControlActProcess()
 		queryAckCAP.queryAck = queryAck
-		ack.patient.identifiers.each { Identifier identifier ->
+		ack.patient.identifiers.each { IdentifierDTO identifier ->
 			queryAckCAP.queryByParameter = new QueryByParameter()
 			queryAckCAP.queryByParameter.parameterList = new QueryParameterList()
 			queryAckCAP.queryByParameter.parameterList.patientIdentifier = new ArrayList<QueryParameter>()
@@ -281,7 +283,7 @@ class PIXContractMapper {
 		return queryAckCAP
 	}
 	
-	private Subject1 mapPatientToSubject(Patient patient) {
+	private Subject1 mapPatientToSubject(PatientDTO patient) {
 		Subject1 subject = new Subject1()
 		subject.registrationEvent = new RegistrationEvent()
 		subject.registrationEvent.classCode.add("REG")
@@ -291,29 +293,29 @@ class PIXContractMapper {
 		subject.registrationEvent.subject1.typeCode = ParticipationTargetSubject.SBJ
 		subject.registrationEvent.subject1.patient = new com.janpix.hl7dto.hl7.v3.messages.Patient()
 		subject.registrationEvent.subject1.patient.classCode.add("PAT")
-		Identifier rupId = patient.identifiers.find { Identifier identifier ->	identifier.assigningAuthority.name == "RUP" } // FIXME pasar constante por configuracion del proyecto
+		IdentifierDTO rupId = patient.identifiers.find { IdentifierDTO identifier ->	identifier.assigningAuthority.name == "RUP" } // FIXME pasar constante por configuracion del proyecto
 		subject.registrationEvent.subject1.patient.id.add(new II(root:rupId.assigningAuthority.oid, extension:rupId.number, assigningAuthorityName: rupId.assigningAuthority.name))
 		subject.registrationEvent.subject1.patient.statusCode = new CS(code:"active")
 		com.janpix.hl7dto.hl7.v3.messages.Person person = new com.janpix.hl7dto.hl7.v3.messages.Person()
 		PN patientName = new PN()
-		patientName.given = patient.givenName.firstName
-		patientName.family = patient.givenName.lastName
+		patientName.given = patient.name.firstName
+		patientName.family = patient.name.lastName
 		person.name.add(patientName)
 		person.administrativeGenderCode = new CE(code: patient.administrativeSex)
-		person.birthTime = hl7Helper.buildHl7DateTime(patient.birthdate.date)
-		patient.addresses.each { Address address ->
+		person.birthTime = hl7Helper.buildHl7DateTime(Date.parse( "yyyy-M-d", patient.birthdate.date)) //TODO mirar
+		patient.address.each { AddressDTO address ->
 			AD ad = new AD()
 			ad.streetAddressLine = "${address.street} ${address.number}"
 			ad.additionalLocator = "${address.floor} ${address.department}"
-			ad.city = "${address.city.name}"
-			ad.province = "${address.city.province.name}"
-			ad.country = "${address.city.province.country.name}"
+			ad.city = "${address.city.nameCity}"
+			ad.province = "${address.city.nameProvince}"
+			ad.country = "${address.city.nameCountry}"
 			ad.postalCode = "${address.zipCode}"
 			person.addr.add(ad)	
 		}
 		OtherIDs otherId = new OtherIDs()
 		otherId.classCode.add("PAT")
-		patient.identifiers.each { Identifier identifier ->
+		patient.identifiers.each { IdentifierDTO identifier ->
 			otherId.id.add(new II(root: identifier.assigningAuthority.oid, extension: identifier.number, assigningAuthorityName: identifier.assigningAuthority.name))
 			otherId.scopingOrganization = new Organization()
 			otherId.scopingOrganization.classCode = "ORG"

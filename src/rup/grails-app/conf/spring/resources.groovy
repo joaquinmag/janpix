@@ -10,6 +10,7 @@ import com.janpix.rup.empi.FactoryMatchRecord
 import com.janpix.rup.infrastructure.MapperDtoDomain
 import com.janpix.rup.infrastructure.MapperDomainDto
 import com.janpix.rup.pixmanager.PixManagerService
+import com.janpix.rup.infrastructure.dto.factory.RUPDTOFactory
 
 
 beans = {
@@ -36,6 +37,10 @@ beans = {
 	}
 	
 	assigningAuthorityService(AssigningAuthorityService){
+		grailsApplication = ref('grailsApplication')
+	}
+	
+	rupDTOFactory(RUPDTOFactory){
 		grailsApplication = ref('grailsApplication')
 	}
 	
