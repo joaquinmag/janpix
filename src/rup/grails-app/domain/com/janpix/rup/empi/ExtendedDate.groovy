@@ -5,15 +5,15 @@ import com.janpix.rup.infrastructure.dto.ExtendedDateDTO
 
 
 class ExtendedDate {
-	static final Integer TYPE_PRECISSION_UNKNOWN 	= 0
-	static final Integer TYPE_PRECISSION_YEAR 		= 1
-	static final Integer TYPE_PRECISSION_MONTH 	= 2
-	static final Integer TYPE_PRECISSION_DAY 		= 3
+	static final String TYPE_PRECISSION_UNKNOWN 	= "Uknown"
+	static final String TYPE_PRECISSION_YEAR 		= "Year"
+	static final String TYPE_PRECISSION_MONTH 		= "Month"
+	static final String TYPE_PRECISSION_DAY 		= "Day"
 	
 	
 	
 	Date date
-	Integer precission
+	String precission
 	
 	static belongsTo = [Person]
 	 
@@ -21,10 +21,11 @@ class ExtendedDate {
 	
 	static constraints = {
 		date(
-			nullable:true,
+			nullable:true, 
+			blank:true, 
 			validator:{val,obj->
 					if(obj.precission != ExtendedDate.TYPE_PRECISSION_UNKNOWN){
-						return val != null
+						return ((val != null) || (val != ""))
 					}
 					return true
 				}

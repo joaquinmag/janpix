@@ -49,8 +49,12 @@ import com.janpix.rup.empi.Province
 import com.janpix.rup.exceptions.MessageMappingException
 import com.janpix.rup.infrastructure.dto.AddressDTO
 import com.janpix.rup.infrastructure.dto.AssigningAuthorityDTO
+import com.janpix.rup.infrastructure.dto.CityDTO
+import com.janpix.rup.infrastructure.dto.ExtendedDateDTO;
 import com.janpix.rup.infrastructure.dto.IdentifierDTO
 import com.janpix.rup.infrastructure.dto.PatientDTO;
+import com.janpix.rup.infrastructure.dto.PersonDTO;
+import com.janpix.rup.infrastructure.dto.PersonNameDTO
 import com.janpix.rup.services.contracts.ACKMessage
 
 /**	
@@ -71,10 +75,10 @@ class PIXContractMapper {
 		return message.controlActProcess.subject[0].registrationEvent.subject1.patient.id[0].extension
 	}
 	
-	HealthEntity mapSenderToHealthEntity(HL7OperationMessage message) {
+	AssigningAuthorityDTO mapSenderToHealthEntity(HL7OperationMessage message) {
 		def oid = message.sender.device.id[0].root
 		def name = message.sender.device.id[0].assigningAuthorityName
-		return new HealthEntity(name: name, oid: oid)
+		return new AssigningAuthorityDTO(name: name, oid: oid)
 	}
 	
 	HL7MessageReceiver mapHealthEntityToACKReceiver(AssigningAuthorityDTO authority) {
@@ -153,16 +157,16 @@ class PIXContractMapper {
 	 * @param inPatientMessage {@link org.hl7.v3.PRPAIN201301UV02 PRPAIN201301UV02} object
 	 * @return {@link com.janpix.rup.empi.Person Person} mapped from PRPAIN201301UV02.
 	 */
-	Person mapPersonFromhl7v3AddNewPatientMessage(HL7OperationMessage inPatientMessage) {
+	PersonDTO mapPersonFromhl7v3AddNewPatientMessage(HL7OperationMessage inPatientMessage) {
 		RegistrationEvent regEvent = inPatientMessage.controlActProcess.subject[0].registrationEvent
 		def patient = regEvent.subject1.patient
 		com.janpix.hl7dto.hl7.v3.messages.Person patientPerson = patient.patientPerson
 		
 		//set name
-		def person = new Person()
-		person.givenName = new PersonName()
-		person.givenName.firstName = patientPerson.name[0]?.given
-		person.givenName.lastName = patientPerson.name[0]?.family
+		def person = new PersonDTO()
+		person.name = new PersonNameDTO()
+		person.name.firstName = patientPerson.name[0]?.given
+		person.name.lastName = patientPerson.name[0]?.family
 		person.administrativeSex =  patientPerson.administrativeGenderCode.code
 		person.maritalStatus = patientPerson.maritalStatusCode?.code
 		// TODO person.birthplace = placeService.findByPlace(cityName, provinceName, countryName)patientPerson.birthPlace?.addr.city
@@ -172,20 +176,20 @@ class PIXContractMapper {
 			person.deathdate = convertToExtendedDateFromTS(patientPerson.deceasedTime)
 		}
 		patientPerson.addr.each { AD it ->
-			person.addToAddresses(convertToAddress(it))
+			person.address.add(convertToAddress(it))
 		}
 		patientPerson.telecom.each { TEL it ->
-			person.addToPhoneNumbers(convertToPhoneNumber(it))
+			person.phoneNumbers.add(convertToPhoneNumber(it))
 		}
 		return person
 	}
 	
-	private PhoneNumber convertToPhoneNumber(TEL hl7Telephone) {
-		return new PhoneNumber(number: hl7Telephone.value)
+	private String convertToPhoneNumber(TEL hl7Telephone) {
+		return hl7Telephone.value
 	}
 	
-	private Address convertToAddress(AD hl7Address) {
-		def address = new Address()
+	private AddressDTO convertToAddress(AD hl7Address) {
+		def address = new AddressDTO()
 		def street = hl7Address.streetAddressLine?.split(" ", 2)
 		if (street) {
 			if (!(street[0]?.isNumber()))
@@ -201,33 +205,33 @@ class PIXContractMapper {
 		def cityName = hl7Address.city
 		def provinceName = hl7Address.province
 		def countryName = hl7Address.country
-		def city = new City(name: cityName, province: new Province(name: provinceName, country: new Country(name: countryName)))
+		def city = new CityDTO(nameCity: cityName, nameProvince: provinceName, nameCountry: countryName)
 		address.city = city
 		address.zipCode = hl7Address.postalCode
 		return address
 	}
 	
-	private ExtendedDate convertToExtendedDateFromTS(TS hl7Date) {
+	private ExtendedDateDTO convertToExtendedDateFromTS(TS hl7Date) {
 		def precission = ExtendedDate.TYPE_PRECISSION_UNKNOWN
 		def year = 1900
 		def month = 1
 		def day = 1
 		if (hl7Date?.value?.length() >= 4) {
-			year = hl7Date.value.substring(0, 4) as int
+			year = hl7Date.value.substring(0, 4)
 			precission = ExtendedDate.TYPE_PRECISSION_YEAR
 		}
 		if (hl7Date?.value?.length() >= 6) {
-			month = hl7Date.value.substring(4, 6) as int
+			month = hl7Date.value.substring(4, 6)
 			precission = ExtendedDate.TYPE_PRECISSION_MONTH
 		}
 		if (hl7Date?.value?.length() >= 8) {
-			day = hl7Date.value.substring(6, 8) as int
+			day = hl7Date.value.substring(6, 8)
 			precission = ExtendedDate.TYPE_PRECISSION_DAY
 		}
-		def date = buildDate(year, month, day)
-		return new ExtendedDate(date: date, precission: precission)
+		return new ExtendedDateDTO(date: "${year}-${month}-${day}", precission: precission)
 	}
 	
+	//TODO no se está usando
 	private static Date buildDate(int year, int month, int day) {
 		def calendar = new GregorianCalendar(year, month, day)
 		return calendar.getTime()

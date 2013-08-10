@@ -38,15 +38,11 @@ class PIXManagerHL7v3Service implements PixManagerInterface  {
 	public AddPatientAcknowledgmentMessage AddNewPatient(PatientOperationMessage body) {
 		pixContractMapper.validateHl7V3AddNewPatientMessage(body)
 		
-		//FIXME!! Esto cambiarlo por un convert(mapperHL7Janpix) que transforme AddPatientOperationMessage en PersonDTO
-		Person person = pixContractMapper.mapPersonFromhl7v3AddNewPatientMessage(body)
-		PersonDTO personDTO = person?.convert(mapperDomainDto)
+		PersonDTO personDTO = pixContractMapper.mapPersonFromhl7v3AddNewPatientMessage(body)
 		
 		def patientId = pixContractMapper.getPatientId(body)
 		
-		//FIXME!! Esto cambiarlo por un convert(mapperHL7Janpix) 
-		def healthEntity = pixContractMapper.mapSenderToHealthEntity(body)
-		AssigningAuthorityDTO healthEntityDTO = healthEntity?.convert(mapperDomainDto)
+		def healthEntityDTO = pixContractMapper.mapSenderToHealthEntity(body)
 		
 		def ack = pixManagerService.patientRegistryRecordAdded(personDTO, healthEntityDTO, patientId)
 		def sender = rupDTOFactory.buildRUPDTO()
@@ -71,11 +67,8 @@ class PIXManagerHL7v3Service implements PixManagerInterface  {
 		pixContractMapper.validateHl7v3UpdatePatientMessage(body)
 		
 		// ACKMessage patientRegistryRecordRevised(PatientDTO patientDTO,PersonDTO personDTO,  AssigningAuthorityDTO healthEntityDTO){
-		//FIXME!! Esto cambiarlo por un convert(mapperHL7Janpix) que transforme AddPatientOperationMessage en PersonDTO
-		Person person = pixContractMapper.mapPersonFromhl7v3AddNewPatientMessage(body)
-		PersonDTO personDTO = person?.convert(mapperDomainDto)
+		PersonDTO personDTO = pixContractMapper.mapPersonFromhl7v3AddNewPatientMessage(body)
 		
-		//FIXME!! Esto cambiarlo por un convert(mapperHL7Janpix)
 		def healthEntity = pixContractMapper.mapSenderToHealthEntity(body)
 		//pixManagerService.patientRegistryRecordRevised(null, null, null)
 		
@@ -89,9 +82,8 @@ class PIXManagerHL7v3Service implements PixManagerInterface  {
 	public QueryAcknowledgmentMessage GetAllIdentifiersPatient(QueryPatientOperationMessage body) {
 		pixContractMapper.validateHl7V3PatientQueryMessage(body)
 		def patientIdentifier = pixContractMapper.mapIdentifierFromhl7QueryMessage(body.controlActProcess)
-		//FIXME!! Esto cambiarlo por un convert(mapperHL7Janpix) 
-		def healthEntity = pixContractMapper.mapSenderToHealthEntity(body)
-		AssigningAuthorityDTO healthEntityDTO = healthEntity?.convert(mapperDomainDto)
+
+		def healthEntityDTO = pixContractMapper.mapSenderToHealthEntity(body)
 		
 		AssigningAuthorityDTO rupDTO = rupDTOFactory.buildRUPDTO()
 		

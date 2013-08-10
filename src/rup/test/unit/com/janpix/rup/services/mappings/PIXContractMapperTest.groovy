@@ -39,8 +39,8 @@ class PIXContractMapperTest {
 		
 		def patient = pixContractMapper.mapPersonFromhl7v3AddNewPatientMessage(inPatientMessage)
 
-		assert patient.givenName.firstName == "Juan"
-		assert patient.givenName.lastName == "Perez García"
+		assert patient.name.firstName == "Juan"
+		assert patient.name.lastName == "Perez García"
 	}
 	
 	public void testWhenHl7AddPatientObjectHasNoFirstNameThenCheckThatTheMapMethodReturnsAPatientDomainObjectWithFirstNameAsNull() {
@@ -63,8 +63,8 @@ class PIXContractMapperTest {
 		
 		def patient = pixContractMapper.mapPersonFromhl7v3AddNewPatientMessage(inPatientMessage)
 
-		assert patient.givenName.firstName == null
-		assert patient.givenName.lastName == "Perez García"
+		assert patient.name.firstName == null
+		assert patient.name.lastName == "Perez García"
 	}
 	
 	public void testWhenHl7AddPatientObjectHasBirthTimeCompleteCheckThePersonHasDayPrecissionAndCorrectDate() {
@@ -87,7 +87,7 @@ class PIXContractMapperTest {
 		
 		def patient = pixContractMapper.mapPersonFromhl7v3AddNewPatientMessage(inPatientMessage)
 
-		assert patient.birthdate.date == new GregorianCalendar(1985,5,23).getTime()
+		assert patient.birthdate.date == "1985-05-23"
 	}
 
 }
