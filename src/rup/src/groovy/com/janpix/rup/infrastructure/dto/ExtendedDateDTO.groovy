@@ -1,9 +1,17 @@
 package com.janpix.rup.infrastructure.dto
 
-import com.janpix.rup.infrastructure.Mapper;
+import javax.xml.bind.annotation.XmlElement
+import javax.xml.bind.annotation.XmlRootElement
 
-class ExtendedDateDTO {
+import com.janpix.rup.infrastructure.Mapper
+
+@XmlRootElement
+class ExtendedDateDTO 
+{
+	@XmlElement(required=true)
 	String date
+	
+	@XmlElement
 	String precission
 	
 	

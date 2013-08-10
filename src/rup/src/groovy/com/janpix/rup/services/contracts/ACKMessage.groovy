@@ -1,7 +1,12 @@
 package com.janpix.rup.services.contracts
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+
 import com.janpix.rup.infrastructure.dto.PatientDTO
 
+
+@XmlAccessorType(XmlAccessType.FIELD)
 class ACKMessage {
 	public enum TypeCode {
 		SuccededCreation(1),

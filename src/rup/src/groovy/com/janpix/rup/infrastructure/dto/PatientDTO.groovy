@@ -1,9 +1,14 @@
 package com.janpix.rup.infrastructure.dto
-
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import com.janpix.rup.infrastructure.Mapper
 
+@XmlRootElement
 class PatientDTO extends PersonDTO {
+	@XmlElement(required = true)
 	String uniqueId
 	
 	def convert(Mapper mapper){
