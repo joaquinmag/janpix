@@ -1,5 +1,6 @@
 package com.janpix.rup.infrastructure
 
+import com.google.protobuf.TextFormat.ParseException;
 import com.janpix.rup.empi.Address
 import com.janpix.rup.empi.AssigningAuthority
 import com.janpix.rup.empi.City
@@ -36,7 +37,6 @@ class MapperDtoDomain extends Mapper {
 	
 	public Patient convert (PatientDTO dto){
 		// Se busca el paciente. Si no existe se crea
-		//Patient patient = Patient.findByUniqueId(new PatientIdentifier(mainId:dto.uniqueId));
 		def c = Patient.createCriteria()
 		Patient patient = c.get {
 		   uniqueId {
@@ -62,22 +62,18 @@ class MapperDtoDomain extends Mapper {
 	
 	public ExtendedDate convert(ExtendedDateDTO dto){
 		ExtendedDate extendedDate = new ExtendedDate()
-		extendedDate.date = Date.parse( "yyyy-M-d", dto.date ) //FIXME! Revisar si el formato es correcto 
-		switch(dto.precission){
-			case "Unknown" : 
-				extendedDate.precission = ExtendedDate.TYPE_PRECISSION_UNKNOWN 
-				break
-			case "Year" :
-				extendedDate.precission = ExtendedDate.TYPE_PRECISSION_YEAR
-				break
-			case "Month" :
-				extendedDate.precission = ExtendedDate.TYPE_PRECISSION_MONTH
-				break
-			case "Day" :
-				extendedDate.precission = ExtendedDate.TYPE_PRECISSION_DAY
-				break
+		extendedDate.precission = dto.precission
+		try
+		{
+			extendedDate.date = Date.parse( "yyyy-M-d", dto.date )
 		}
-		return extendedDate;
+		catch(ParseException e){
+			extendedDate.date = null
+			log.debug("Exception Parse Date : ${e.message}", e)
+		} 
+		finally{
+			return extendedDate;
+		}
 	}
 	
 	public City convert(CityDTO dto){
@@ -92,7 +88,8 @@ class MapperDtoDomain extends Mapper {
 		address.floor = dto.floor
 		address.department = dto.department
 		address.zipCode = dto.zipCode
-		address.city = this.convert(dto.city)
+		address.city = dto.city?.convert(this)
+		
 		return address
 	}
 	
@@ -100,7 +97,7 @@ class MapperDtoDomain extends Mapper {
 		Identifier identifier = new Identifier(
 				type:dto.type,
 				number:dto.number,
-				assigningAuthority:this.convert(dto.assigningAuthority)
+				assigningAuthority:dto.assigningAuthority?.convert(this)
 			);
 		return identifier
 	}

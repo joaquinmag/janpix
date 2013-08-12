@@ -11,7 +11,7 @@ class PersonNameDTO
 	@XmlElement(required=true)
 	String firstName
 	
-	@XmlElement
+	@XmlElement(required=true)
 	String lastName
 	
 	

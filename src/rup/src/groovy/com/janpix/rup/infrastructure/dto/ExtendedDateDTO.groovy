@@ -8,10 +8,10 @@ import com.janpix.rup.infrastructure.Mapper
 @XmlRootElement
 class ExtendedDateDTO 
 {
-	@XmlElement(required=true)
+	@XmlElement
 	String date
 	
-	@XmlElement
+	@XmlElement(required=true)
 	String precission
 	
 	

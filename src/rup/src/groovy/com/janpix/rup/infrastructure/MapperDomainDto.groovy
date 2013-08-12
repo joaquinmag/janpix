@@ -49,21 +49,9 @@ class MapperDomainDto extends Mapper {
 	
 	public ExtendedDateDTO convert(ExtendedDate domain){
 		ExtendedDateDTO dto = new ExtendedDateDTO()
-		dto.date = domain.date.format("yyyy-M-d") 
-		switch(domain.precission){
-			case ExtendedDate.TYPE_PRECISSION_UNKNOWN : 
-				dto.precission =  "Unknown"
-				break
-			case ExtendedDate.TYPE_PRECISSION_YEAR :
-				dto.precission = "Year"
-				break
-			case ExtendedDate.TYPE_PRECISSION_MONTH :
-				dto.precission = "Month"
-				break
-			case ExtendedDate.TYPE_PRECISSION_DAY :
-				dto.precission = "Day"
-				break
-		}
+		dto.date = domain.date?.format("yyyy-M-d")
+		dto.precission = domain.precission 
+		
 		return dto;
 	}
 	

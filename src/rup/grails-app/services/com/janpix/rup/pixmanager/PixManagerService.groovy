@@ -146,8 +146,10 @@ class PixManagerService {
 	 * @return List<Identifier> identificadores del paciente en los dominios solicitados
 	 * @return List<Identifier> empty si no hay ningun identificador
 	 */
-	ACKMessage patientRegistryGetIdentifiersQuery(String patientIdentifier,AssigningAuthorityDTO assigningAuthorityDTO,List<AssigningAuthorityDTO> othersDomain=null){
-
+	ACKMessage patientRegistryGetIdentifiersQuery(String patientIdentifier,AssigningAuthorityDTO assigningAuthorityDTO,List<AssigningAuthorityDTO> othersDomain=null)
+	{
+		// Se coloca mediante withTransaction porque sino lanza error de lazy-initialization
+		Patient.withTransaction { tx -> 
 		try{
 			Set<IdentifierDTO> identifiers = []
 			
@@ -192,7 +194,7 @@ class PixManagerService {
 			log.error("Exception : ${e.message}", e)
 			return new ACKMessage(typeCode:TypeCode.InternalError, text: e.message)
 		}
-		
+		}
 	}
 
 	/* # Metodos Extendidos */

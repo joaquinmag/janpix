@@ -2,12 +2,15 @@ package com.janpix.rup.services.contracts
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import com.janpix.rup.infrastructure.dto.PatientDTO
 
 
-@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement
 class ACKMessage {
+	@XmlRootElement
 	public enum TypeCode {
 		SuccededCreation(1),
 		SuccededInsertion(2),
@@ -25,8 +28,13 @@ class ACKMessage {
 		public int exceptionCode() { return this.exceptionCode }
 	}
 	
+	@XmlElement
 	TypeCode typeCode
+	
+	@XmlElement
 	String text
+	
+	@XmlElement
 	PatientDTO patient	
 	
 }

@@ -8,4 +8,4 @@
 )
 @javax.xml.bind.annotation.XmlAccessorType(javax.xml.bind.annotation.XmlAccessType.NONE)
 
-package com.janpix.rup.infrastructure.dto;
+package com.janpix.rup.services.contracts;

@@ -5,7 +5,7 @@ import com.janpix.rup.infrastructure.dto.ExtendedDateDTO
 
 
 class ExtendedDate {
-	static final String TYPE_PRECISSION_UNKNOWN 	= "Uknown"
+	static final String TYPE_PRECISSION_UNKNOWN 	= "Unknown"
 	static final String TYPE_PRECISSION_YEAR 		= "Year"
 	static final String TYPE_PRECISSION_MONTH 		= "Month"
 	static final String TYPE_PRECISSION_DAY 		= "Day"
@@ -30,7 +30,10 @@ class ExtendedDate {
 					return true
 				}
 			)
-		precission(nullable:false)
+		precission(
+			nullable:false,
+			inList: [TYPE_PRECISSION_UNKNOWN, TYPE_PRECISSION_YEAR, TYPE_PRECISSION_MONTH,TYPE_PRECISSION_DAY]
+			)
 		
 	}
 	

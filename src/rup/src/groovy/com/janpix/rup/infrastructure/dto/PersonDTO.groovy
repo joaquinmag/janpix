@@ -1,7 +1,8 @@
 package com.janpix.rup.infrastructure.dto
 
 
-import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElement
+import javax.xml.bind.annotation.XmlElementWrapper
 import javax.xml.bind.annotation.XmlRootElement
 
 import com.janpix.rup.infrastructure.Mapper
@@ -12,10 +13,10 @@ class PersonDTO {
 	@XmlElement(required=true)
 	PersonNameDTO name
 	
-	@XmlElement
+	@XmlElement(required=true)
 	ExtendedDateDTO birthdate
 	
-	@XmlElement
+	@XmlElement(required=true)
 	String administrativeSex
 	
 	@XmlElement
@@ -33,8 +34,17 @@ class PersonDTO {
 	@XmlElement
 	ExtendedDateDTO deathdate
 	
+	@XmlElementWrapper(name = "addresses")
+	@XmlElement(name = "address")
 	List<AddressDTO> address
+	
+
+	@XmlElementWrapper(name = "phoneNumbers")
+	@XmlElement(name = "phoneNumber")
 	List<String> phoneNumbers
+	
+	@XmlElementWrapper(name = "identifiers")
+	@XmlElement(name = "identifier")
 	Set<IdentifierDTO> identifiers
 	
 	PersonDTO(){
@@ -42,7 +52,7 @@ class PersonDTO {
 		phoneNumbers = []
 		identifiers = []
 	}
-	
+		
 	def convert(Mapper mapper){
 		mapper.convert(this);
 	}
