@@ -7,8 +7,6 @@
 package com.janpix.rup.empi
 
 import com.janpix.rup.exceptions.DontExistingPatientException
-import com.janpix.rup.exceptions.ExistingPatientException
-import com.janpix.rup.exceptions.RUPException;
 import com.janpix.rup.exceptions.ShortDemographicDataException
 import com.janpix.rup.exceptions.identifier.DuplicateIdentifierException
 import com.janpix.rup.exceptions.identifier.IdentifierNotFoundException
@@ -63,7 +61,7 @@ class EMPIServiceTests extends GroovyTestCase {
 			birthplace:city1,
 			)
 		patient.addToIdentifiers(new Identifier(type:Identifier.TYPE_IDENTIFIER_DNI,number:"32850137",assigningAuthority:assingingAuthorityArgentina))
-		patient.addToAddresses(new Address(street:"Constitución",number:"2213",zipCode:"6700",city:city1))
+		patient.addToAddresses(new Address(type:Address.TYPE_LEGAL,street:"Constitución",number:"2213",zipCode:"6700",city:city1))
 		patient.save(flush:true,failOnError:true)
 		
 		//Creo una persona
@@ -73,7 +71,8 @@ class EMPIServiceTests extends GroovyTestCase {
 			birthplace:city2,
 			)
 		person.addToIdentifiers(new Identifier(type:Identifier.TYPE_IDENTIFIER_DNI,number:"32900250",assigningAuthority:assingingAuthorityArgentina))
-		person.addToAddresses(new Address(street:"Zapata",number:"346",floor:"5",department:"A",city:city2))
+		person.addToAddresses(new Address(type:Address.TYPE_LEGAL,street:"Zapata",number:"346",floor:"5",department:"A",city:city2))
+		person.addToPhoneNumbers(new PhoneNumber(type:PhoneNumber.TYPE_CELL,number:"2323521616"))
 
 	}
 
@@ -150,16 +149,24 @@ class EMPIServiceTests extends GroovyTestCase {
 		assertEquals(ExtendedDate.TYPE_PRECISSION_DAY,birthdate.precission)
 		assertEquals(Date.parse( "yyyy-M-d", "1987-05-01" ),birthdate.date)
 		
+		//PhoneNumber
+		def phone = returnedPatient.phoneNumbers.find{it.type == PhoneNumber.TYPE_CELL}
+		assert phone.number == "2323521616"
+		
 		
 		//Modifico los datos, para eso creo una persona nueva
 		def p = new Person(givenName: new PersonName(lastName:"Sosa"),
 			birthdate: new ExtendedDate(precission:ExtendedDate.TYPE_PRECISSION_MONTH,date:Date.parse( "yyyy-M-d", "1987-07-15" )),
 			birthplace:city3,
 			)
-		p.addToAddresses(new Address(street:"Zapata",number:"346",floor:"5",department:"B",city:city2))
+		p.addToAddresses(new Address(type:Address.TYPE_CIVIL,street:"Zapata",number:"346",floor:"5",department:"B",city:city2))
 		//Le agrego un identificador a la nueva persona
 		p.addToIdentifiers(new Identifier(type:Identifier.TYPE_IDENTIFIER_LE,number:"12870104",assigningAuthority:assingingAuthorityArgentina))
 		p.addToIdentifiers(new Identifier(type:Identifier.TYPE_IDENTIFIER_PPN,number:"AABB1234",assigningAuthority:assingingAuthorityArgentina))
+		
+		//Phones
+		p.addToPhoneNumbers(new PhoneNumber(type:PhoneNumber.TYPE_CELL,number:"2323521717"))
+		p.addToPhoneNumbers(new PhoneNumber(type:PhoneNumber.TYPE_HOME,number:"2323421646"))
 		
 		
 		//Modifico y controlo
@@ -200,7 +207,12 @@ class EMPIServiceTests extends GroovyTestCase {
 		assertEquals("12870104",le.number)
 		assertEquals(assingingAuthorityArgentina,le.assigningAuthority)
 		
-		
+		//Debe tener 2 telefonos
+		assert 2 == changedPatient.phoneNumbers.size()
+		def oldPhone = changedPatient.phoneNumbers.find{it.type == PhoneNumber.TYPE_CELL}
+		assert oldPhone.number == "2323521717"
+		def newPhone = changedPatient.phoneNumbers.find{it.type == PhoneNumber.TYPE_HOME}
+		assert newPhone.number == "2323421646"
 	}
 	
 	/**
@@ -232,10 +244,9 @@ class EMPIServiceTests extends GroovyTestCase {
 		//Primero creo el paciente agregandole un unitId a la direccion
 		def returnedPatient = EMPIService.createPatient(person)
 		def patientUUID = returnedPatient.uniqueId
-		returnedPatient.principalAddress().unitId = "1234"
 		
 		def p = new Person()
-		p.addToAddresses(new Address(unitId:"1234",street:"Zabala",number:"1300",city:city1))
+		p.addToAddresses(new Address(type:Address.TYPE_LEGAL,street:"Zabala",number:"1300",city:city1))
 		EMPIService.updateDemographicDataPatient(returnedPatient,p)
 		
 		//Address
@@ -245,6 +256,7 @@ class EMPIServiceTests extends GroovyTestCase {
 		assertEquals("5",address.floor)
 		assertEquals("A",address.department)
 		assertEquals(city1,address.city)
+		assertEquals(Address.TYPE_LEGAL,address.type)
 	}
 	
 	/**
@@ -476,7 +488,7 @@ class EMPIServiceTests extends GroovyTestCase {
 			birthplace:city1,
 			)
 		p.addToIdentifiers(new Identifier(type:'DNI',number:"32850137",assigningAuthority:assingingAuthorityArgentina))
-		p.addToAddresses(new Address(street:"Constitucion",number:"2203",zipCode:"6700",city:city1))
+		p.addToAddresses(new Address(type:Address.TYPE_CIVIL,street:"Constitucion",number:"2203",zipCode:"6700",city:city1))
 		p.save(flush:true,failOnError:true)
 		
 		def matchedPatients = EMPIService.getAllMatchedPatients(patient,false)
@@ -496,7 +508,7 @@ class EMPIServiceTests extends GroovyTestCase {
 			birthplace:city1,
 			)
 		p.addToIdentifiers(new Identifier(type:'DNI',number:"33850137",assigningAuthority:assingingAuthorityArgentina))
-		p.addToAddresses(new Address(street:"Constitución",number:"2213",zipCode:"6700",city:city1))
+		p.addToAddresses(new Address(type:Address.TYPE_CIVIL,street:"Constitución",number:"2213",zipCode:"6700",city:city1))
 		p.save(flush:true,failOnError:true)
 		
 		//Primero busco sin incluir posibles

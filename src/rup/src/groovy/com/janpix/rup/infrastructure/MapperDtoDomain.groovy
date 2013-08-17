@@ -1,6 +1,6 @@
 package com.janpix.rup.infrastructure
 
-import com.google.protobuf.TextFormat.ParseException;
+import com.google.protobuf.TextFormat.ParseException
 import com.janpix.rup.empi.Address
 import com.janpix.rup.empi.AssigningAuthority
 import com.janpix.rup.empi.City
@@ -10,6 +10,7 @@ import com.janpix.rup.empi.Patient
 import com.janpix.rup.empi.PatientIdentifier
 import com.janpix.rup.empi.Person
 import com.janpix.rup.empi.PersonName
+import com.janpix.rup.empi.PhoneNumber
 import com.janpix.rup.infrastructure.dto.AddressDTO
 import com.janpix.rup.infrastructure.dto.AssigningAuthorityDTO
 import com.janpix.rup.infrastructure.dto.CityDTO
@@ -18,6 +19,7 @@ import com.janpix.rup.infrastructure.dto.IdentifierDTO
 import com.janpix.rup.infrastructure.dto.PatientDTO
 import com.janpix.rup.infrastructure.dto.PersonDTO
 import com.janpix.rup.infrastructure.dto.PersonNameDTO
+import com.janpix.rup.infrastructure.dto.PhoneNumberDTO
 
 
 /**
@@ -82,7 +84,7 @@ class MapperDtoDomain extends Mapper {
 	
 	public Address convert(AddressDTO dto){
 		Address address = new Address();
-		address.unitId = dto.unitId
+		address.type = (dto.type)?dto.type:Address.TYPE_CIVIL
 		address.street = dto.street
 		address.number = dto.number
 		address.floor = dto.floor
@@ -91,6 +93,14 @@ class MapperDtoDomain extends Mapper {
 		address.city = dto.city?.convert(this)
 		
 		return address
+	}
+	
+	public PhoneNumber convert(PhoneNumberDTO dto){
+		PhoneNumber phone = new PhoneNumber()
+		phone.type = dto.type
+		phone.number = dto.number
+		
+		return phone
 	}
 	
 	public Identifier convert(IdentifierDTO dto){
@@ -123,14 +133,15 @@ class MapperDtoDomain extends Mapper {
 		person.deathdate = dto.deathdate?.convert(this)
 		
 		dto.address.each { AddressDTO it ->
-			person.addresses.add(it.convert(this))
+			person.addToAddresses(it.convert(this))
 		}
 		
 		dto.identifiers.each { IdentifierDTO it->
-			person.identifiers.add(it.convert(this))
+			person.addToIdentifiers(it.convert(this))
 		}
-		if(dto.phoneNumbers!=null)
-			person.phoneNumbers.addAll(dto.phoneNumbers);
-		
+		dto.phoneNumbers.each{ PhoneNumberDTO it->
+			person.addToPhoneNumbers(it.convert(this))
+		}
+
 	}
 }

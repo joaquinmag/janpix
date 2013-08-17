@@ -41,7 +41,7 @@ class PersonDTO {
 
 	@XmlElementWrapper(name = "phoneNumbers")
 	@XmlElement(name = "phoneNumber")
-	List<String> phoneNumbers
+	List<PhoneNumberDTO> phoneNumbers
 	
 	@XmlElementWrapper(name = "identifiers")
 	@XmlElement(name = "identifier")

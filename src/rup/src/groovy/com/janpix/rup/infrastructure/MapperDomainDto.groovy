@@ -6,9 +6,9 @@ import com.janpix.rup.empi.City
 import com.janpix.rup.empi.ExtendedDate
 import com.janpix.rup.empi.Identifier
 import com.janpix.rup.empi.Patient
-import com.janpix.rup.empi.PatientIdentifier
 import com.janpix.rup.empi.Person
 import com.janpix.rup.empi.PersonName
+import com.janpix.rup.empi.PhoneNumber
 import com.janpix.rup.infrastructure.dto.AddressDTO
 import com.janpix.rup.infrastructure.dto.AssigningAuthorityDTO
 import com.janpix.rup.infrastructure.dto.CityDTO
@@ -17,6 +17,7 @@ import com.janpix.rup.infrastructure.dto.IdentifierDTO
 import com.janpix.rup.infrastructure.dto.PatientDTO
 import com.janpix.rup.infrastructure.dto.PersonDTO
 import com.janpix.rup.infrastructure.dto.PersonNameDTO
+import com.janpix.rup.infrastructure.dto.PhoneNumberDTO
 
 
 /**
@@ -67,13 +68,21 @@ class MapperDomainDto extends Mapper {
 	public AddressDTO convert(Address domain){
 		AddressDTO dto = new AddressDTO()
 		
-		dto.unitId = domain.unitId
+		dto.type = domain.type
 		dto.street = domain.street
 		dto.number = domain.number
 		dto.floor = domain.floor
 		dto.department = domain.department
 		dto.zipCode = domain.zipCode
 		dto.city = domain.city?.convert(this)
+		return dto
+	}
+	
+	public PhoneNumberDTO convert(PhoneNumber domain){
+		PhoneNumberDTO dto = new PhoneNumberDTO();
+		dto.type = domain.type
+		dto.number = domain.number
+		
 		return dto
 	}
 	
@@ -110,8 +119,10 @@ class MapperDomainDto extends Mapper {
 		domain.identifiers.each { Identifier it->
 			dto.identifiers.add(it.convert(this))
 		}
-		if(dto.phoneNumbers!=null)
-			dto.phoneNumbers.addAll(domain.phoneNumbers);
+		
+		domain.phoneNumbers.each { PhoneNumber it->
+			dto.phoneNumbers.add(it.convert(this))
+		} 
 		
 	}
 }

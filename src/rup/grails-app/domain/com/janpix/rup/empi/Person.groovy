@@ -62,33 +62,28 @@ class Person {
 	String toString(){
 		return "${givenName}-${birthdate}"
 	}
-	
-	/**
-	 * Agrega un identificador a la persona
-	 * @param id
-	 * @return
-	 */
-	Boolean addIdentifier(Identifier id){
-		//TODO revisar que el identificador con ese tipo NO exista antes de agregar
-	}
-	
+
 	/**
 	 * Devuelve la dirección principal de la persona
-	 * TODO Ver como decidir cual es la direccion principal
+	 * La dirección principal es en orden decreciente CIVIL, LEGAL, FISCAL
 	 * @return Address si tiene direcciones cargadas, NULL de lo contrario
 	 */
-	Address principalAddress(){
-		def address
+	Address principalAddress()
+	{
 		if(!this.addresses.empty){
-			address = this.addresses.get(0)
-			this.addresses.each {
-				if(it.dateCreated > address.dateCreated)
-					address = it
-			}
+			def civilAddress = this.addresses.find{it.type == Address.TYPE_CIVIL}
+			if(civilAddress)
+				return civilAddress
+			
+			def legalAddress = this.addresses.find{it.type == Address.TYPE_LEGAL}
+			if(legalAddress)
+				return legalAddress
+				
+			def fiscalAddress = this.addresses.find{it.type == Address.TYPE_FISCAL}
+			if(fiscalAddress)
+				return fiscalAddress
 		}
-		
-		return address
-		
+		return null
 	}
 	
 	/**
@@ -117,14 +112,14 @@ class Person {
 
 	/**
 	 * Actualiza la dirección basandose en si tiene que agregar una nueva
-	 * o actualizar la existente
+	 * o actualizar la existente segun el tipo de dirección
 	 * @param newAddress
 	 */
 	void updateAddresses(ArrayList<Address> newAddresses){
 		newAddresses.each{Address address->
 			if(address.validate()){
-				if(address.unitId){
-					def actualAddress = this.addresses.find{it.unitId ==address.unitId }
+				if(this.addresses*.type.contains(address.type)){
+					def actualAddress = this.addresses.find{it.type ==address.type }
 					actualAddress?.update(address) 
 				}else{
 					this.addToAddresses(address)
@@ -167,8 +162,17 @@ class Person {
 		}
 	}
 	
-	void updatePhoneNumbers(PhoneNumber newPhone){
-		
+	void updatePhoneNumbers(ArrayList<PhoneNumber> newPhoneNumbers){
+		newPhoneNumbers.each{PhoneNumber phone->
+			if(phone.validate()){
+				if(this.phoneNumbers*.type.contains(phone.type)){
+					def actualPhone = this.phoneNumbers.find{it.type == phone.type }
+					actualPhone?.update(phone)
+				}else{
+					this.addToPhoneNumbers(phone)
+				}
+			}
+		}
 	}
 	
 	/**

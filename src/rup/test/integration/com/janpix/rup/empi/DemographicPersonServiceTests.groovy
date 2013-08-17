@@ -49,7 +49,7 @@ class DemographicPersonServiceTests extends GroovyTestCase {
 					birthplace:city1,
 					)
 		p1.addToIdentifiers(new Identifier(type:'DNI',number:"32850137",assigningAuthority:assingingAuthorityArgentina))
-		p1.addToAddresses(new Address(street:"Constitución",number:"2213",zipCode:"6700",neighborhood:"Luján",city:city1))
+		p1.addToAddresses(new Address(type:Address.TYPE_CIVIL,street:"Constitución",number:"2213",zipCode:"6700",neighborhood:"Luján",city:city1))
 		p1.save(flush:true,failOnError:true)
 		
 		//p1 con error de tipeo en el nombre, la direccion y fecha de nacimiento (el dia difiere)
@@ -59,7 +59,7 @@ class DemographicPersonServiceTests extends GroovyTestCase {
 			birthplace:city1,
 			)
 		p2.addToIdentifiers(new Identifier(type:'DNI',number:"32850137",assigningAuthority:assingingAuthorityArgentina))
-		p2.addToAddresses(new Address(street:"Constitucion",number:"2203",zipCode:"6700",neighborhood:"Luján",city:city1))
+		p2.addToAddresses(new Address(type:Address.TYPE_CIVIL,street:"Constitucion",number:"2203",zipCode:"6700",neighborhood:"Luján",city:city1))
 		p2.save(flush:true,failOnError:true)
 		
 		
@@ -70,7 +70,7 @@ class DemographicPersonServiceTests extends GroovyTestCase {
 			birthplace:city3,
 			)
 		p3.addToIdentifiers(new Identifier(type:'DNI',number:"32850137",assigningAuthority:assingingAuthorityArgentina))
-		p3.addToAddresses(new Address(street:"Rosario",number:"130",zipCode:"7700",neighborhood:"Caballito",city:city3))
+		p3.addToAddresses(new Address(type:Address.TYPE_CIVIL,street:"Rosario",number:"130",zipCode:"7700",neighborhood:"Caballito",city:city3))
 		p3.save(flush:true,failOnError:true)
 		
 		//p1 con diferente numero de documento
@@ -80,7 +80,7 @@ class DemographicPersonServiceTests extends GroovyTestCase {
 			birthplace:city1,
 			)
 		p4.addToIdentifiers(new Identifier(type:'DNI',number:"33850137",assigningAuthority:assingingAuthorityArgentina))
-		p4.addToAddresses(new Address(street:"Constitución",number:"2213",zipCode:"6700",neighborhood:"Luján",city:city1))
+		p4.addToAddresses(new Address(type:Address.TYPE_CIVIL,street:"Constitución",number:"2213",zipCode:"6700",neighborhood:"Luján",city:city1))
 		p4.save(flush:true,failOnError:true)
 		
 		//p1 con diferente precision en la fecha y errores en el tipeo del nombre
@@ -90,7 +90,7 @@ class DemographicPersonServiceTests extends GroovyTestCase {
 			birthplace:city1,
 			)
 		p5.addToIdentifiers(new Identifier(type:'DNI',number:"32850137",assigningAuthority:assingingAuthorityArgentina))
-		p5.addToAddresses(new Address(street:"Constitución",number:"2213",zipCode:"6700",neighborhood:"Luján",city:city1))
+		p5.addToAddresses(new Address(type:Address.TYPE_CIVIL,street:"Constitución",number:"2213",zipCode:"6700",neighborhood:"Luján",city:city1))
 		p5.save(flush:true,failOnError:true)
 		
 		//Diferente paciente
@@ -100,7 +100,7 @@ class DemographicPersonServiceTests extends GroovyTestCase {
 			birthplace:city2,
 			)
 		p6.addToIdentifiers(new Identifier(type:'DNI',number:"33900700",assigningAuthority:assingingAuthorityArgentina))
-		p6.addToAddresses(new Address(street:"Zapata",number:"346",floor:"5",department:"A",neighborhood:"Belgrano",city:city2))
+		p6.addToAddresses(new Address(type:Address.TYPE_CIVIL,street:"Zapata",number:"346",floor:"5",department:"A",neighborhood:"Belgrano",city:city2))
 		p6.save(flush:true,failOnError:true)
 		
 	}

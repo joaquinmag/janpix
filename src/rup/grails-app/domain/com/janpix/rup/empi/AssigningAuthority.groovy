@@ -20,8 +20,7 @@ class AssigningAuthority {
 	 * Compara 2 autoridades de asignacion
 	 */
 	boolean equals(other){
-		//TODO ver que otros datos comparar
-		return (this.name == other?.name)
+		return (this.oid == other?.oid)
 	}
 	
 	String toString(){

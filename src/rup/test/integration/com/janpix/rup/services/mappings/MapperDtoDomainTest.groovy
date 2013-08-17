@@ -37,7 +37,6 @@ class MapperDtoDomainTest extends GroovyTestCase {
 			);
 		dto.address = []
 		dto.address.add(new AddressDTO(
-				unitId:"123",
 				street:"Zapata",
 				number:"345",
 				floor:"5",
@@ -66,11 +65,13 @@ class MapperDtoDomainTest extends GroovyTestCase {
 		assert person.administrativeSex == Person.TYPE_SEX_MALE
 		assert person.maritalStatus == Person.TYPE_MARITALSTATUS_SINGLE
 		assert person.birthplace == City.findByName("Venado Tuerto");
-		assert person.addresses[0] == new Address(unitId:"123",street:"Zapata",number:"345",
+		assert person.addresses[0] == new Address(type:Address.TYPE_CIVIL,street:"Zapata",number:"345",
 													floor:"5",department:"A",zipCode:"1267",city:City.findByName("Venado Tuerto"))
 		assert person.identifiers.find{it->it.number == "123"} == new Identifier(type:Identifier.TYPE_IDENTIFIER_PI,number:"123",
 																		assigningAuthority:assigningAuthorityService.rupAuthority())
 		assert person.phoneNumbers[0] == "2323-421646"
+		
+		assert person.principalAddress().type == Address.TYPE_CIVIL
 	}
 	
 	public void testFailConvertDateWithIncorrectFormat(){

@@ -4,9 +4,9 @@ import com.janpix.rup.infrastructure.Mapper
 import com.janpix.rup.infrastructure.dto.PatientDTO
 
 class Patient extends Person {
+	def uuidGenerator
 	
 	PatientIdentifier uniqueId
-	def uuidGenerator
 
     static constraints = {
 		uniqueId(nullable:false)
@@ -35,7 +35,6 @@ class Patient extends Person {
 	 * Compara 2 pacientes
 	 */
 	boolean equals(Patient other){
-		//TODO ver si tengo que comparar algo mas
 		if(this.uniqueId == other.uniqueId){
 			return true
 		}
@@ -50,14 +49,6 @@ class Patient extends Person {
 		return this.identifiers.find{it.assigningAuthority == healthEntity}
 	}
 	
-	/**
-	 * Agrega un identificador al paciente
-	 * @param identifier
-	 * @return
-	 */
-	Boolean addIdentifier(Identifier identifier){
-		
-	}
 	
 	/**
 	 * Convierte la clase de dominio en su DTO

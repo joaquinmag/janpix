@@ -3,8 +3,13 @@ package com.janpix.rup.empi
 import com.janpix.rup.infrastructure.Mapper
 import com.janpix.rup.infrastructure.dto.AddressDTO
 
-class Address {
-	String unitId
+class Address 
+{	
+	static final String TYPE_LEGAL = 'LEGAL'
+	static final String TYPE_CIVIL = 'CIVIL'
+	static final String TYPE_FISCAL = 'FISCAL'
+	
+	String type
 	String street
 	String number
 	String floor
@@ -20,15 +25,17 @@ class Address {
 		zipCode(nullable:true,blank:true)
 		floor(nullable:true,blank:true)
 		department(nullable:true,blank:true)
-		unitId(nullable:true)
+		type(nullable:false)
     }
+
 	
 	boolean equals(other){
 		if(	this.street == other.street &&
 			this.number == other.number &&
 			this.floor	== other.floor &&
 			this.zipCode == other.zipCode &&
-			this.city == other.city
+			this.city == other.city &&
+			this.type == other.type
 		)
 			return true
 			
@@ -46,6 +53,8 @@ class Address {
 		}
 	}
 	
+
+	
 	String toString(){
 		return "${street} ${number} ${floor}${department}, ${city}"
 	}
@@ -57,5 +66,9 @@ class Address {
 	 */
 	AddressDTO convert(Mapper mapper){
 		return mapper.convert(this)
-	}
+	}	
 }
+
+
+
+

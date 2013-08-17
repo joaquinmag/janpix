@@ -15,6 +15,7 @@ import com.janpix.rup.infrastructure.dto.IdentifierDTO
 import com.janpix.rup.infrastructure.dto.PatientDTO
 import com.janpix.rup.infrastructure.dto.PersonDTO
 import com.janpix.rup.infrastructure.dto.PersonNameDTO
+import com.janpix.rup.infrastructure.dto.PhoneNumberDTO
 import com.janpix.rup.services.contracts.ACKMessage
 import com.janpix.rup.services.contracts.ACKMessage.TypeCode
 
@@ -77,11 +78,12 @@ class PixManagerServiceTests extends GroovyTestCase {
 			administrativeSex:Person.TYPE_SEX_MALE,
 			birthplace:city1,
 			)
-		patient.addToAddresses(new Address(street:"Constitución",number:"2213",zipCode:"6700",city:city1))
+		patient.addToAddresses(new Address(type:Address.TYPE_CIVIL,street:"Constitución",number:"2213",zipCode:"6700",city:city1))
 		patient.addToIdentifiers(new Identifier(type:Identifier.TYPE_IDENTIFIER_DNI,number:"32850137",assigningAuthority:assingingAuthorityArgentina))
 		patient.addToIdentifiers(new Identifier(type:Identifier.TYPE_IDENTIFIER_PI,number:"A123",assigningAuthority:healthEntity1))
 		patient.addToIdentifiers(new Identifier(type:Identifier.TYPE_IDENTIFIER_PI,number:"B123",assigningAuthority:healthEntity2))
 		patient.addToIdentifiers(new Identifier(type:Identifier.TYPE_IDENTIFIER_PI,number:"C123",assigningAuthority:healthEntity3))
+		patient.addToPhoneNumbers(new PhoneNumber(type:PhoneNumber.TYPE_CELL,number:"2323521616"))
 		patient.save(flush:true,failOnError:true)
 		
 		person = new Person(givenName: new PersonName(firstName:"Joaquin Ignacio", lastName:"Magneres"),
@@ -90,7 +92,8 @@ class PixManagerServiceTests extends GroovyTestCase {
 			birthplace:city2,
 			)
 		person.addToIdentifiers(new Identifier(type:Identifier.TYPE_IDENTIFIER_DNI,number:"32900250",assigningAuthority:assingingAuthorityArgentina))
-		person.addToAddresses(new Address(street:"Zapata",number:"346",floor:"5",department:"A",city:city2))
+		person.addToAddresses(new Address(type:Address.TYPE_CIVIL,street:"Zapata",number:"346",floor:"5",department:"A",city:city2))
+		
 	}
 	
 	
@@ -273,10 +276,14 @@ class PixManagerServiceTests extends GroovyTestCase {
 			)
 		patientDTO.identifiers.add(new IdentifierDTO(type:Identifier.TYPE_IDENTIFIER_DNI,number:"33850139",assigningAuthority:new AssigningAuthorityDTO("2.16.32","Argentina")))
 		patientDTO.identifiers.add(new IdentifierDTO(type:Identifier.TYPE_IDENTIFIER_PI,number:"YMCA123",assigningAuthority:this.buildHealthEntityDTO("4")))
-		patientDTO.address.add(new AddressDTO(street:"Zapata",number:"346",floor:"5",department:"A",city:cityDTO))
-		patientDTO.uniqueId = this.patient.uniqueId.mainId
+		patientDTO.address.add(new AddressDTO(type:Address.TYPE_CIVIL,street:"Zapata",number:"346",floor:"5",department:"B",city:cityDTO))
 		
-	
+		//Phones
+		patientDTO.phoneNumbers.add(new PhoneNumberDTO(type:PhoneNumber.TYPE_CELL,number:"2323521717"))
+		patientDTO.phoneNumbers.add(new PhoneNumberDTO(type:PhoneNumber.TYPE_HOME,number:"2323421646"))
+		
+		patientDTO.uniqueId = this.patient.uniqueId.mainId
+
 		ACKMessage ack = pixManagerService.patientRegistryRecordRevised(patientDTO,this.buildHealthEntityDTO("4"))
 		
 		//ACK
@@ -297,6 +304,20 @@ class PixManagerServiceTests extends GroovyTestCase {
 			it.number == "YMCA123"
 			 }
 		assertNotNull(addedIdentifier)
+		
+		//Address
+		assert Address.TYPE_CIVIL == patient.principalAddress().type
+		assert "Zapata" == patient.principalAddress().street
+		assert "346" == patient.principalAddress().number
+		assert "5" == patient.principalAddress().floor
+		assert "B" == patient.principalAddress().department
+		
+		//PhoneNumbers
+		assert 2 == patient.phoneNumbers.size()
+		def oldPhone = patient.phoneNumbers.find{it.type == PhoneNumber.TYPE_CELL}
+		assert oldPhone.number == "2323521717"
+		def newPhone = patient.phoneNumbers.find{it.type == PhoneNumber.TYPE_HOME}
+		assert newPhone.number == "2323421646"
 		
 	}
 	
