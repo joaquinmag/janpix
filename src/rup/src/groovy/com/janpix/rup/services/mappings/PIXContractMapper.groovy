@@ -151,19 +151,33 @@ class PIXContractMapper {
 		ackDetail.code = new CE(code: ackMessage.typeCode.exceptionCode())
 		return ackDetail
 	}
+	
+	PatientDTO mapPatientFromhl7v3UpdatePatientMessage(PatientOperationMessage updatePatientMessage) {
+		def patientDTO = new PatientDTO()
+		patientDTO.uniqueId = updatePatientMessage.controlActProcess.subject[0].registrationEvent.subject1.patient.id.find {
+			it.assigningAuthorityName == "RUP"
+		}?.extension
+		mapPersonFromhl7v3AddNewPatientMessage(updatePatientMessage, patientDTO)
+		return patientDTO
+	}
+	
+	PersonDTO mapPersonFromhl7v3AddNewPatientMessage(HL7OperationMessage inPatientMessage) {
+		PersonDTO personDTO = new PersonDTO()
+		mapPersonFromhl7v3AddNewPatientMessage(inPatientMessage, personDTO)
+		return personDTO
+	}
 
 	/**
 	 * maps PRPAIN201301UV02 message to Person
 	 * @param inPatientMessage {@link org.hl7.v3.PRPAIN201301UV02 PRPAIN201301UV02} object
 	 * @return {@link com.janpix.rup.empi.Person Person} mapped from PRPAIN201301UV02.
 	 */
-	PersonDTO mapPersonFromhl7v3AddNewPatientMessage(HL7OperationMessage inPatientMessage) {
+	public void mapPersonFromhl7v3AddNewPatientMessage(HL7OperationMessage inPatientMessage, PersonDTO person) {
 		RegistrationEvent regEvent = inPatientMessage.controlActProcess.subject[0].registrationEvent
 		def patient = regEvent.subject1.patient
 		com.janpix.hl7dto.hl7.v3.messages.Person patientPerson = patient.patientPerson
 		
 		//set name
-		def person = new PersonDTO()
 		person.name = new PersonNameDTO()
 		person.name.firstName = patientPerson.name[0]?.given
 		person.name.lastName = patientPerson.name[0]?.family
@@ -181,7 +195,6 @@ class PIXContractMapper {
 		patientPerson.telecom.each { TEL it ->
 			person.phoneNumbers.add(convertToPhoneNumber(it))
 		}
-		return person
 	}
 	
 	private String convertToPhoneNumber(TEL hl7Telephone) {
@@ -334,7 +347,7 @@ class PIXContractMapper {
 	public void validateHl7V3UpdatePatientMessage(PatientOperationMessage updatePatientMessage) {
 		validateHl7V3AddNewPatientMessage(updatePatientMessage)
 		if (updatePatientMessage.controlActProcess.subject[0].registrationEvent.custodian == null)
-			throw new MessageMappingException("PRPAIN201302UV02 message must contain custodian")
+			throw new MessageMappingException("PRPAIN201302UV02 message must contain a custodian")
 	}
 	
 	

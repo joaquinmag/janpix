@@ -64,15 +64,15 @@ class PIXManagerHL7v3Service implements PixManagerInterface  {
 	 * This method is for updating patient information
 	 */
 	public AddPatientAcknowledgmentMessage UpdatePatient(PatientOperationMessage body) {
-		pixContractMapper.validateHl7v3UpdatePatientMessage(body)
+		pixContractMapper.validateHl7V3UpdatePatientMessage(body)
 		
-		// ACKMessage patientRegistryRecordRevised(PatientDTO patientDTO,PersonDTO personDTO,  AssigningAuthorityDTO healthEntityDTO){
-		PersonDTO personDTO = pixContractMapper.mapPersonFromhl7v3AddNewPatientMessage(body)
-		
+		def patientDTO = pixContractMapper.mapPatientFromhl7v3UpdatePatientMessage(body)
 		def healthEntity = pixContractMapper.mapSenderToHealthEntity(body)
-		//pixManagerService.patientRegistryRecordRevised(null, null, null)
-		
-		return null;
+		def receiver = healthEntity
+		def ackMessage = pixManagerService.patientRegistryRecordRevised(patientDTO, healthEntity)
+		def identifier = pixContractMapper.getMessageIdentifier(body)
+		def sender = rupDTOFactory.buildRUPDTO()
+		return pixContractMapper.mapACKMessageToHL7AcceptAcknowledgmentMessage(ackMessage, identifier,  receiver,  sender)
 	}
 
 	@Override
