@@ -97,11 +97,18 @@ class PixManagerHl7v3ServiceTests {
 		ackQuery.controlActProcess.subject[0].registrationEvent.id.each { II id ->
 			println "id: ${id}"
 		}
-		ackQuery.controlActProcess.subject[0].registrationEvent.subject1.patient.id.each { II id ->
+		ackQuery.controlActProcess.subject[0].registrationEvent.subject1.patient.id.find { II id ->
 			println "id: ${id}"
 		}
 		
-		//TODO testear que devuelva el id correcto llamando al get identifiers
+		def currentId = ackQuery.controlActProcess.subject[0].registrationEvent.subject1.patient.id.find { II id ->
+			id.root == testAuthorityOID
+		}
+		assert currentId?.extension == "34827G234"
+		def rupId =  ackQuery.controlActProcess.subject[0].registrationEvent.subject1.patient.id.find { II id ->
+			id.assigningAuthorityName == "RUP"
+		}
+		assert rupId
 	}
 
 	public void testWhenUpdatePatientShouldNotThrowException() {
