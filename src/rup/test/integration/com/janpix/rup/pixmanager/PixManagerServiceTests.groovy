@@ -149,9 +149,9 @@ class PixManagerServiceTests extends GroovyTestCase {
 	 * Testea que se devuelvan los identificadores de los dominios pasados
 	 */
 	void testGetDomainIdentifiers(){
-		ACKMessage ack = pixManagerService.patientRegistryGetIdentifiersQuery("C123",this.buildHealthEntityDTO("3"),[this.buildHealthEntityDTO("1"),this.buildHealthEntityDTO("2")])
+		ACKMessage ack = pixManagerService.patientRegistryGetIdentifiersQuery("C123",this.buildHealthEntityDTO("3"),[this.buildHealthEntityDTO("1"),this.buildHealthEntityDTO("2"),this.buildRupAuthorityDTO()])
 		def identifiers = ack.patient.identifiers
-		assertEquals(2,identifiers.size())
+		assertEquals(3,identifiers.size())
 		
 		IdentifierDTO idh1 = identifiers.find{it.assigningAuthority == this.buildHealthEntityDTO("1")}
 		assertEquals("A123",idh1.number)
@@ -162,6 +162,11 @@ class PixManagerServiceTests extends GroovyTestCase {
 		assertEquals("B123",idh2.number)
 		assertEquals(this.buildHealthEntityDTO("2"),idh2.assigningAuthority)
 		assertEquals(Identifier.TYPE_IDENTIFIER_PI,idh2.type)
+		
+		IdentifierDTO cuis = identifiers.find{it.assigningAuthority == this.buildRupAuthorityDTO()}
+		assertEquals(patient.uniqueId.toString(),cuis.number)
+		assertEquals(this.buildRupAuthorityDTO(),cuis.assigningAuthority)
+		assertEquals(Identifier.TYPE_IDENTIFIER_PI,cuis.type)
 	}
 
 	/**
