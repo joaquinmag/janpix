@@ -122,7 +122,14 @@ class PIXManagerHL7v3Service implements PixManagerInterface  {
 	@WSDLDocumentation("Returns all patient maching with Patient")
 	public QueryAcknowledgmentMessage GetAllPossibleMatchedPatients(
 			@WebParam(name = "PRPA_IN201302UV02", targetNamespace = "urn:hl7-org:v3", partName = "Body") PatientOperationMessage body) {
-		// TODO Auto-generated method stub
-		return null;
+		pixContractMapper.validateHl7V3AddNewPatientMessage(body)
+		PersonDTO personDTO = pixContractMapper.mapPersonFromhl7v3AddNewPatientMessage(body)
+		def healthEntityDTO = pixContractMapper.mapSenderToHealthEntity(body)
+		
+		def patients = pixManagerService.getAllPossibleMatchedPatients(personDTO)
+		def sender = rupDTOFactory.buildRUPDTO()
+		def receiver = healthEntityDTO
+		def messageIdentifier = pixContractMapper.getMessageIdentifier(body)
+		return pixContractMapper.mapPatientListToHL7QueryAcknowledgmentMessage(patients, messageIdentifier,  receiver,  sender)
 	}
 }

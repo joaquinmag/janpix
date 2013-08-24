@@ -270,6 +270,18 @@ class PIXContractMapper {
 		return returnAck
 	}
 	
+	public QueryAcknowledgmentMessage mapPatientListToHL7QueryAcknowledgmentMessage(List<PatientDTO>  patients, II messageIdentifier, AssigningAuthorityDTO receiver, AssigningAuthorityDTO sender) {
+		def returnAck = new QueryAcknowledgmentMessage()
+		def messageName = "PRPA_IN201310UV02"
+		buildBaseAckMessage(returnAck, messageName, receiver, sender)
+		def ackHl7spec = new Acknowledgement( typeCode: new CS(code:"CA") )
+		ackHl7spec.targetMessage = buildTargetMessage(messageIdentifier)
+		returnAck.acknowledgement.add(ackHl7spec)
+		def queryAck = new QueryAckValue(queryResponseCode:  new CS(code: (patients.size() > 0) ? "OK" : "NF" ))
+		returnAck.controlActProcess = buildQueryAckControlActProcessForPatients(patients, queryAck)
+		return returnAck
+	}
+	
 	private CS buildQueryResponseCode(ACKMessage ack) {
 		def queryResponseCode = new CS()
 		switch (ack.typeCode) {
@@ -283,6 +295,15 @@ class PIXContractMapper {
 				queryResponseCode.code = "QE"
 		}
 		return queryResponseCode
+	}
+	
+	private QueryAckControlActProcess buildQueryAckControlActProcessForPatients(List<PatientDTO> patients, QueryAckValue queryAck) {
+		def queryAckCAP = new QueryAckControlActProcess()
+		queryAckCAP.queryAck = queryAck
+		patients.each { PatientDTO patient ->
+			queryAckCAP.subject.add(mapPatientToSubject(patient))
+		}
+		return queryAckCAP
 	}
 	
 	private QueryAckControlActProcess buildQueryAckControlActProcess(ACKMessage ack, QueryAckValue queryAck) {

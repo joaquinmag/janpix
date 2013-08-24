@@ -178,7 +178,37 @@ class PixManagerHl7v3ServiceTests {
 		
 		PatientOperationMessage body = new PatientOperationMessage()
 		body = buildAddNewPatientMessage(messageId, recver, sender, testAuthorityOID, testAuthorityName, body)
+		def ack = PIXManagerHL7v3Service.AddNewPatientWithoutValidation(body)
+		
+		assert ack.acknowledgement[0].typeCode.code == "CA"
+	}
+	
+	
+	public void testWhenGetAllPossibleMatchedPatientsIsCalledShouldNotThrowException() {
+		def testAuthorityOID = "1.2.840.114350.1.13.99998.8734"
+		def testAuthorityName = "Good Health Clinic"
+		
+		II messageId = new II()
+		messageId.root = "22a0f9e0-4454-11dc-a6be-3603d6866807"
+		HL7MessageReceiver recver = new HL7MessageReceiver()
+		recver.typeCode = CommunicationFunctionType.RCV
+		recver.device = new Device()
+		recver.device.determinerCode = "INSTANCE"
+		recver.device.id.add(new II(root: "1.2.840.114350.1.13.99999.4567"))
+		recver.device.telecom.add(new TEL(value: "https://example.org/PatientFeed"))
+		def sender= new HL7MessageSender()
+		sender.typeCode = CommunicationFunctionType.SND
+		sender.device = new Device()
+		sender.device.determinerCode = "INSTANCE"
+		sender.device.id.add(new II(root: testAuthorityOID))
+		
+		PatientOperationMessage body = new PatientOperationMessage()
+		body = buildAddNewPatientMessage(messageId, recver, sender, testAuthorityOID, testAuthorityName, body)
 		def ack = PIXManagerHL7v3Service.AddNewPatient(body)
+		
+		assert ack.acknowledgement[0].typeCode.code == "CA"
+		
+		ack = PIXManagerHL7v3Service.GetAllPossibleMatchedPatients(body)
 		
 		assert ack.acknowledgement[0].typeCode.code == "CA"
 	}
