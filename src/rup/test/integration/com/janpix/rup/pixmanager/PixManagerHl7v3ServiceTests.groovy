@@ -60,7 +60,8 @@ class PixManagerHl7v3ServiceTests {
 		sender.device.id.add(new II(root: testAuthorityOID))
 		
 		PatientOperationMessage body = new PatientOperationMessage()
-		def ack = addNewPatient(messageId, recver, sender, testAuthorityOID, testAuthorityName, body)
+		body = buildAddNewPatientMessage(messageId, recver, sender, testAuthorityOID, testAuthorityName, body)
+		def ack = PIXManagerHL7v3Service.AddNewPatient(body)
 		
 		assert ack.acknowledgement[0].typeCode.code == "CA"
 	}
@@ -86,7 +87,8 @@ class PixManagerHl7v3ServiceTests {
 		
 
 		PatientOperationMessage body = new PatientOperationMessage()
-		def ack = addNewPatient(messageId, recver, sender, testAuthorityOID, testAuthorityName, body)
+		body = buildAddNewPatientMessage(messageId, recver, sender, testAuthorityOID, testAuthorityName, body)
+		def ack = PIXManagerHL7v3Service.AddNewPatient(body)
 		
 		assert ack.acknowledgement[0].typeCode.code == "CA"
 
@@ -130,7 +132,8 @@ class PixManagerHl7v3ServiceTests {
 		sender.device.id.add(new II(root: testAuthorityOID))
 		
 		PatientOperationMessage body = new PatientOperationMessage()
-		def ack = addNewPatient(messageId, recver, sender, testAuthorityOID, testAuthorityName, body)
+		body = buildAddNewPatientMessage(messageId, recver, sender, testAuthorityOID, testAuthorityName, body)
+		def ack = PIXManagerHL7v3Service.AddNewPatient(body)
 		
 		assert ack.acknowledgement[0].typeCode.code == "CA"
 		
@@ -155,7 +158,7 @@ class PixManagerHl7v3ServiceTests {
 		//TODO testear con get all posible matched patients que este paciente se haya actualizado
 	}
 
-	private AddPatientAcknowledgmentMessage addNewPatient(II messageId, HL7MessageReceiver recver, HL7MessageSender sender, String testAuthorityOID, String testAuthorityName, PatientOperationMessage body) {
+	private PatientOperationMessage buildAddNewPatientMessage(II messageId, HL7MessageReceiver recver, HL7MessageSender sender, String testAuthorityOID, String testAuthorityName, PatientOperationMessage body) {
 		body.itsVersion = "XML_1.0"
 		body.id = messageId
 		body.creationTime = new TS(value: "20070803130624")
@@ -201,8 +204,7 @@ class PixManagerHl7v3ServiceTests {
 		person.asOtherIDs.add(otherId)
 		subject.registrationEvent.subject1.patient.patientPerson = person
 		body.controlActProcess.subject.add(subject)
-		def ack = PIXManagerHL7v3Service.AddNewPatient(body)
-		return ack
+		return body
 	}
 	
 	private QueryPatientOperationMessage buildQueryOperationMessage(II messageId, HL7MessageReceiver recver, HL7MessageSender sender, String testAuthorityOID) {
