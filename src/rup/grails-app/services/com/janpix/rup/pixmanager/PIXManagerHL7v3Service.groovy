@@ -101,8 +101,19 @@ class PIXManagerHL7v3Service implements PixManagerInterface  {
 	@WSDLDocumentation("Add new patients to the PIX without validate matching with other patients.")
 	public AddPatientAcknowledgmentMessage AddNewPatientWithoutValidation(
 			@WebParam(name = "PRPA_IN201302UV02", targetNamespace = "urn:hl7-org:v3", partName = "Body") PatientOperationMessage body) {
-		// TODO Auto-generated method stub
-		return null;
+		pixContractMapper.validateHl7V3AddNewPatientMessage(body)
+		
+		PersonDTO personDTO = pixContractMapper.mapPersonFromhl7v3AddNewPatientMessage(body)
+		
+		def patientId = pixContractMapper.getPatientId(body)
+		
+		def healthEntityDTO = pixContractMapper.mapSenderToHealthEntity(body)
+		
+		def ack = pixManagerService.patientRegistryRecordAddedWithoutMatching(personDTO, healthEntityDTO, patientId)
+		def sender = rupDTOFactory.buildRUPDTO()
+		def receiver = healthEntityDTO
+		def identifier = pixContractMapper.getMessageIdentifier(body)
+		return pixContractMapper.mapACKMessageToHL7AcceptAcknowledgmentMessage(ack, identifier,  receiver,  sender)
 	}
 
 	@Override
