@@ -127,7 +127,7 @@ class PIXContractMapper {
 	private Acknowledgement buildAcknowledgement(ACKMessage ackMessage) {
 		def ackHl7spec = new Acknowledgement()
 		switch (ackMessage.typeCode) {
-			case [ ACKMessage.TypeCode.SuccededCreation, ACKMessage.TypeCode.SuccededInsertion, ACKMessage.TypeCode.SuccededQuery ]:
+			case [ ACKMessage.TypeCode.SuccededCreation, ACKMessage.TypeCode.SuccededInsertion, ACKMessage.TypeCode.SuccededQuery, ACKMessage.TypeCode.SuccededUpdated ]:
 				ackHl7spec.typeCode = new CS(code:"CA")
 				break
 			case [ ACKMessage.TypeCode.PossibleMatchingPatientsError, ACKMessage.TypeCode.ShortDemographicError, ACKMessage.TypeCode.IdentifierError ]:

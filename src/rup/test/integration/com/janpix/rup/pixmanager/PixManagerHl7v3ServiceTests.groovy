@@ -151,6 +151,8 @@ class PixManagerHl7v3ServiceTests {
 		ack = PIXManagerHL7v3Service.UpdatePatient(body)
 		
 		assert ack.acknowledgement[0].typeCode.code == "CA"
+		
+		//TODO testear con get all posible matched patients que este paciente se haya actualizado
 	}
 
 	private AddPatientAcknowledgmentMessage addNewPatient(II messageId, HL7MessageReceiver recver, HL7MessageSender sender, String testAuthorityOID, String testAuthorityName, PatientOperationMessage body) {
