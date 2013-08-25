@@ -13,37 +13,28 @@ hibernate {
 environments {
     development {
         dataSource {
-            //dbCreate = "create-drop" // one of 'create', 'create-drop', 'update', 'validate', ''
-            //url = "jdbc:h2:mem:devDb;MVCC=TRUE;LOCK_TIMEOUT=10000"
-			driverClassName = "com.mysql.jdbc.Driver"
-			dbCreate = "" //sino lo puedo eliminar
-			username = "grails"
-			password = "grails"
-			url = "jdbc:mysql://localhost:3306/janpix_rup"
-			dialect = 'org.hibernate.dialect.MySQL5InnoDBDialect' //Para que genere tablas InnoDB
+            dbCreate = "create-drop" // one of 'create', 'create-drop', 'update', 'validate', ''
+            url = "jdbc:h2:mem:devDb;MVCC=TRUE;LOCK_TIMEOUT=10000"
         }
     }
     test {
         dataSource {
-            dbCreate = "update"
-            url = "jdbc:h2:mem:testDb;MVCC=TRUE;LOCK_TIMEOUT=10000"
-        }
+            dbCreate = "create-drop"
+			driverClassName = "com.mysql.jdbc.Driver"
+			username = "janpix_rup"
+			password = "janpix_rup"
+			url = "jdbc:mysql://localhost:3306/janpix_rup"
+			dialect = 'org.hibernate.dialect.MySQL5InnoDBDialect' //Para que genere tablas InnoDB
+		}
     }
     production {
         dataSource {
-            dbCreate = "update"
-            url = "jdbc:h2:prodDb;MVCC=TRUE;LOCK_TIMEOUT=10000"
-            pooled = true
-            properties {
-               maxActive = -1
-               minEvictableIdleTimeMillis=1800000
-               timeBetweenEvictionRunsMillis=1800000
-               numTestsPerEvictionRun=3
-               testOnBorrow=true
-               testWhileIdle=true
-               testOnReturn=true
-               validationQuery="SELECT 1"
-            }
+            dbCreate = "validate"
+			driverClassName = "com.mysql.jdbc.Driver"
+			username = "janpix_rup_prod"
+			password = "janpix_rup_prod"
+			url = "jdbc:mysql://localhost:3306/janpix_rup_prod"
+			dialect = 'org.hibernate.dialect.MySQL5InnoDBDialect' //Para que genere tablas InnoDB
         }
     }
 }
