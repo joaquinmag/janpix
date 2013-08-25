@@ -13,8 +13,14 @@ hibernate {
 environments {
     development {
         dataSource {
-            dbCreate = "create-drop" // one of 'create', 'create-drop', 'update', 'validate', ''
-            url = "jdbc:h2:mem:devDb;MVCC=TRUE;LOCK_TIMEOUT=10000"
+            //dbCreate = "create-drop" // one of 'create', 'create-drop', 'update', 'validate', ''
+            //url = "jdbc:h2:mem:devDb;MVCC=TRUE;LOCK_TIMEOUT=10000"
+			driverClassName = "com.mysql.jdbc.Driver"
+			dbCreate = "" //sino lo puedo eliminar
+			username = "grails"
+			password = "grails"
+			url = "jdbc:mysql://localhost:3306/janpix_rup"
+			dialect = 'org.hibernate.dialect.MySQL5InnoDBDialect' //Para que genere tablas InnoDB
         }
     }
     test {

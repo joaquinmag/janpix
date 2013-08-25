@@ -6,6 +6,7 @@ class EmitterCountry extends AssigningAuthority {
 	}
 	
 	static EmitterCountry buildArgentinaEmitterCountry() {
-		return new EmitterCountry(name:"Argentina", oid:"2.16.32")
+		//return new EmitterCountry(name:"Argentina", oid:"2.16.32")
+		return EmitterCountry.findByOid("2.16.32")
 	}
 }

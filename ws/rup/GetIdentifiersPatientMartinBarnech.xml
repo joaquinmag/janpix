@@ -1,0 +1,12 @@
+<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:pix="http://pixmanager.rup.janpix.com/" xmlns:jpx="jpx:ar.com.janpix">
+   <soap:Header/>
+   <soap:Body>
+      <pix:getIdentifiersRequestMessage>
+         <jpx:patientIdentifier>ID1024</jpx:patientIdentifier>
+         <jpx:assigningAuthority>
+            <jpx:name>Hospital Municipal Luján</jpx:name>
+            <jpx:oid>2.16.840.1.113883.2.10.100.1</jpx:oid>
+         </jpx:assigningAuthority>
+      </pix:getIdentifiersRequestMessage>
+   </soap:Body>
+</soap:Envelope>
