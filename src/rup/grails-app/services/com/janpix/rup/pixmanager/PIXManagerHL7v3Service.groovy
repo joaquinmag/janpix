@@ -87,7 +87,7 @@ class PIXManagerHL7v3Service implements PixManagerInterface  {
 		
 		AssigningAuthorityDTO rupDTO = rupDTOFactory.buildRUPDTO()
 		
-		def ack = pixManagerService.patientRegistryGetIdentifiersQuery(patientIdentifier, healthEntityDTO, [ rupDTO ])
+		def ack = pixManagerService.patientRegistryGetIdentifiersQuery(patientIdentifier, healthEntityDTO, null)
 		def sender = rupDTO
 		def receiver = healthEntityDTO
 		def messageIdentifier = pixContractMapper.getMessageIdentifier(body)
