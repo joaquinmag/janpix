@@ -103,10 +103,6 @@ class PixManagerHl7v3ServiceTests {
 			println "id: ${id}"
 		}
 		
-		def currentId = ackQuery.controlActProcess.subject[0].registrationEvent.subject1.patient.id.find { II id ->
-			id.root == testAuthorityOID
-		}
-		assert currentId?.extension == "34827G234"
 		def rupId =  ackQuery.controlActProcess.subject[0].registrationEvent.subject1.patient.id.find { II id ->
 			id.assigningAuthorityName == "RUP"
 		}
