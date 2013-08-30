@@ -332,7 +332,7 @@ class PIXContractMapper {
 		subject.registrationEvent.subject1.patient = new com.janpix.hl7dto.hl7.v3.messages.Patient()
 		subject.registrationEvent.subject1.patient.classCode.add("PAT")
 		IdentifierDTO rupId = patient.identifiers.find { IdentifierDTO identifier ->	identifier.assigningAuthority.name == "RUP" } // FIXME pasar constante por configuracion del proyecto
-		subject.registrationEvent.subject1.patient.id.add(new II(root:rupId.assigningAuthority.oid, extension:rupId.number, assigningAuthorityName: rupId.assigningAuthority.name))
+		subject.registrationEvent.subject1.patient.id.add(new II(root:rupId?.assigningAuthority?.oid, extension:rupId?.number, assigningAuthorityName: rupId?.assigningAuthority?.name))
 		subject.registrationEvent.subject1.patient.statusCode = new CS(code:"active")
 		com.janpix.hl7dto.hl7.v3.messages.Person person = new com.janpix.hl7dto.hl7.v3.messages.Person()
 		PN patientName = new PN()
