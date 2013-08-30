@@ -8,6 +8,7 @@ import com.janpix.rup.empi.Identifier
 import com.janpix.rup.empi.Person
 import com.janpix.rup.empi.PersonName
 import com.janpix.rup.empi.City
+import com.janpix.rup.empi.PhoneNumber;
 import com.janpix.rup.infrastructure.MapperDtoDomain
 import com.janpix.rup.infrastructure.dto.AddressDTO
 import com.janpix.rup.infrastructure.dto.AssigningAuthorityDTO
@@ -16,6 +17,7 @@ import com.janpix.rup.infrastructure.dto.ExtendedDateDTO
 import com.janpix.rup.infrastructure.dto.IdentifierDTO
 import com.janpix.rup.infrastructure.dto.PatientDTO
 import com.janpix.rup.infrastructure.dto.PersonNameDTO
+import com.janpix.rup.infrastructure.dto.PhoneNumberDTO
 
 
 class MapperDtoDomainTest extends GroovyTestCase {
@@ -52,7 +54,7 @@ class MapperDtoDomainTest extends GroovyTestCase {
 			));
 		
 		dto.phoneNumbers = []
-		dto.phoneNumbers.add("2323-421646")
+		dto.phoneNumbers.add(new PhoneNumberDTO(number:"2323-421646", type: PhoneNumber.TYPE_HOME))
 		
 		//MapperDtoDomain mapper = new MapperDtoDomain();
 		//mapper.placeService = placeService
@@ -69,7 +71,7 @@ class MapperDtoDomainTest extends GroovyTestCase {
 													floor:"5",department:"A",zipCode:"1267",city:City.findByName("Venado Tuerto"))
 		assert person.identifiers.find{it->it.number == "123"} == new Identifier(type:Identifier.TYPE_IDENTIFIER_PI,number:"123",
 																		assigningAuthority:assigningAuthorityService.rupAuthority())
-		assert person.phoneNumbers[0] == "2323-421646"
+		assert person.phoneNumbers[0].number == "2323-421646"
 		
 		assert person.principalAddress().type == Address.TYPE_CIVIL
 	}
