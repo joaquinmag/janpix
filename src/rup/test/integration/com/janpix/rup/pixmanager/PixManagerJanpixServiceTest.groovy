@@ -23,24 +23,67 @@ class PixManagerJanpixServiceTest {
 	
 	@Test
 	public void testAddNewPatientAndGetUniqueIdIdentifiersPatient() {
-		def assigningAuthDTO = new AssigningAuthorityDTO("2.16.840.1.113883.2.10.1", "Hospital Italiano de Buenos Aires")
-		def orgId = "1"
-		def person = new PersonDTO(
-			name: new PersonNameDTO(firstName: "Isabel", 
-									lastName: "Gimenez"),
-			birthdate: new ExtendedDateDTO(date: "1985-05-15", precission: ExtendedDate.TYPE_PRECISSION_DAY),
-			administrativeSex: Person.TYPE_SEX_FEMALE
-		)
-		def ackNewPatient = PIXManagerJanpixService.AddNewPatient(new AddPatientRequestMessage(person: person, healthEntity: assigningAuthDTO, organizationId: orgId))
+		def assigningAuthPatId = "1"
+		def assigningAuthOID = "2.16.840.1.113883.2.10.1"
+		def assigningAuthName = "Hospital Italiano de Buenos Aires"
+		def assigningAuthDTO = new AssigningAuthorityDTO(assigningAuthOID, assigningAuthName)
+		def ackNewPatient = addNewPatient("Isabel", "Gimenez", assigningAuthOID, assigningAuthName, "1985-05-15", assigningAuthPatId, "32.365.363")
 		
+		println "texto ack: ${ackNewPatient.text}"
 		assert ackNewPatient.typeCode == ACKMessage.TypeCode.SuccededCreation
 		
-		def getIdentifiersRequestMessage = new GetIdentifiersRequestMessage(patientIdentifier: orgId, assigningAuthority: assigningAuthDTO, othersDomain: null)
+		def getIdentifiersRequestMessage = new GetIdentifiersRequestMessage(patientIdentifier: assigningAuthPatId, assigningAuthority: assigningAuthDTO, othersDomain: null)
 		
 		def ackIdentifiers = PIXManagerJanpixService.GetIdentifiersPatient(getIdentifiersRequestMessage)
 		
 		println "uniqueId: ${ackIdentifiers.patient.uniqueId}"
 		assert ackIdentifiers.patient.uniqueId		
+	}
+	
+	@Test
+	public void testWhenAddTwoNewPatientsAndGetUniqueIdentifierFromFirstPatient() {
+		def assigningAuthPatId = "1"
+		def assigningAuthOID = "2.16.840.1.113883.2.10.1"
+		def assigningAuthName = "Hospital Italiano de Buenos Aires"
+		def assigningAuthDTO = new AssigningAuthorityDTO(assigningAuthOID, assigningAuthName)
+		def ackNewPatient = addNewPatient("Isabel", "Gimenez", assigningAuthOID, assigningAuthName, "1985-05-15", assigningAuthPatId, "66.365.363")
+		
+		println "texto ack: ${ackNewPatient.text}"
+		assert ackNewPatient.typeCode == ACKMessage.TypeCode.SuccededCreation
+		
+		def assigningAuthPat2Id = "1"
+		def assigningAuthOID2 = "2.16.840.1.113883.2.10.11"
+		def assigningAuthName2 = "Clinica Parque SRL"
+		def assigningAuthDTO2 = new AssigningAuthorityDTO(assigningAuthOID2, assigningAuthName2)
+		def ackNewPatient2 = addNewPatient("Gabriel", "Ramirez", assigningAuthOID, assigningAuthName, "1985-05-11", assigningAuthPatId, "66.653.362")
+		
+		println "texto ack: ${ackNewPatient2.text}"
+		assert ackNewPatient2.typeCode == ACKMessage.TypeCode.SuccededCreation
+		
+		def getIdentifiersRequestMessage = new GetIdentifiersRequestMessage(patientIdentifier: assigningAuthPatId, assigningAuthority: assigningAuthDTO, othersDomain: null)
+		def ackIdentifiers = PIXManagerJanpixService.GetIdentifiersPatient(getIdentifiersRequestMessage)
+		
+		assert ackIdentifiers.patient.uniqueId
+		println "uniqueId: ${ackIdentifiers.patient.uniqueId}"
+		assert ackIdentifiers.patient.identifiers.count == 1
+		def idDTO = ackIdentifiers.patient.identifiers[0]
+		assert idDTO.type == Identifier.TYPE_IDENTIFIER_DNI
+		assert idDTO.number == "66.365.363"
+		println "dni: ${idDTO.number}"
+
+	}
+	
+	def addNewPatient(def firstName, def lastName, def birthDate, def assigningAuthOID, def assigningAuthName, def assigningAuthPatId, def personDNI) {
+		def assigningAuthDTO = new AssigningAuthorityDTO(assigningAuthOID, assigningAuthName)
+		def dniAssigningAuthDTO = new AssigningAuthorityDTO("2.16.32","Argentina")
+		def person = new PersonDTO(
+			name: new PersonNameDTO(firstName: firstName,
+									lastName: lastName),
+			birthdate: new ExtendedDateDTO(date: birthDate, precission: ExtendedDate.TYPE_PRECISSION_DAY),
+			administrativeSex: Person.TYPE_SEX_FEMALE,
+			identifiers: [ new IdentifierDTO(type: Identifier.TYPE_IDENTIFIER_DNI, number: personDNI, assigningAuthority: dniAssigningAuthDTO) ]
+		)
+		def ackNewPatient = PIXManagerJanpixService.AddNewPatient(new AddPatientRequestMessage(person: person, healthEntity: assigningAuthDTO, organizationId: assigningAuthPatId))
 	}
 
 }
