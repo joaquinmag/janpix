@@ -11,7 +11,7 @@ class CityDTO
 	@XmlElement(required=true)
 	String nameCity
 	
-	@XmlElement
+	@XmlElement(required=true)
 	String nameProvince
 	
 	@XmlElement

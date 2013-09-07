@@ -46,6 +46,12 @@ class Person {
 		givenName(nullable:false)
 		administrativeSex(nullable:false)
 		birthdate(nullable:false)
+		addresses(
+			nullable:true,
+			validator:{ val, obj->
+				return !obj.addresses.empty
+			}
+			)
 		
 		maritalStatus(nullable:true)
 		deathdate(nullable:true)
@@ -55,7 +61,7 @@ class Person {
 		
 		identifiers(nullable:true)
 		phoneNumbers(nullable:true)
-		addresses(nullable:true)
+		
 		
     }
 	

@@ -7,7 +7,9 @@ import org.junit.Test;
 import com.janpix.rup.empi.ExtendedDate;
 import com.janpix.rup.empi.Person;
 import com.janpix.rup.empi.Identifier;
+import com.janpix.rup.infrastructure.dto.AddressDTO
 import com.janpix.rup.infrastructure.dto.AssigningAuthorityDTO
+import com.janpix.rup.infrastructure.dto.CityDTO
 import com.janpix.rup.infrastructure.dto.ExtendedDateDTO
 import com.janpix.rup.infrastructure.dto.IdentifierDTO
 import com.janpix.rup.infrastructure.dto.PatientDTO;
@@ -71,13 +73,16 @@ class PixManagerJanpixServiceTest {
 	def addNewPatient(def firstName, def lastName, def birthDate, def assigningAuthOID, def assigningAuthName, def assigningAuthPatId, def personDNI) {
 		def assigningAuthDTO = new AssigningAuthorityDTO(assigningAuthOID, assigningAuthName)
 		def dniAssigningAuthDTO = new AssigningAuthorityDTO("2.16.32","Argentina")
+		CityDTO city = new CityDTO(nameCity:"Venado Tuerto",nameProvince:"AR-S",nameCountry:"AR");
 		def person = new PersonDTO(
 			name: new PersonNameDTO(firstName: firstName,
 									lastName: lastName),
 			birthdate: new ExtendedDateDTO(date: birthDate, precission: ExtendedDate.TYPE_PRECISSION_DAY),
 			administrativeSex: Person.TYPE_SEX_FEMALE,
-			identifiers: [ new IdentifierDTO(type: Identifier.TYPE_IDENTIFIER_DNI, number: personDNI, assigningAuthority: dniAssigningAuthDTO) ]
+			identifiers: [ new IdentifierDTO(type: Identifier.TYPE_IDENTIFIER_DNI, number: personDNI, assigningAuthority: dniAssigningAuthDTO) ],
+			address:[new AddressDTO(type:"CIVIL",street:"Direccion",number:"numero",city:city)]
 		)
+
 		def ackNewPatient = PIXManagerJanpixService.AddNewPatient(new AddPatientRequestMessage(person: person, healthEntity: assigningAuthDTO, organizationId: assigningAuthPatId))
 	}
 

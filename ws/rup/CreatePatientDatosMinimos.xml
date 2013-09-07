@@ -1,0 +1,78 @@
+<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:pix="http://pixmanager.rup.janpix.com/" xmlns:jpx="jpx:ar.com.janpix">
+   <soap:Header/>
+   <soap:Body>
+      <pix:addPatientRequestMessage>
+         <jpx:person>
+            <jpx:name>
+               <jpx:firstName>Paciente</jpx:firstName>
+               <jpx:lastName>Minimo</jpx:lastName>
+            </jpx:name>
+            <jpx:birthdate>
+               <!--Optional:-->
+               <jpx:date>1987-01-15</jpx:date>
+               <jpx:precission>Day</jpx:precission>
+            </jpx:birthdate>
+            <jpx:administrativeSex>M</jpx:administrativeSex>
+            <!--Optional:-->
+            <jpx:maritalStatus>S</jpx:maritalStatus>
+            <!--Optional:-->
+            <jpx:birthplace>
+               <jpx:nameCity>Campana</jpx:nameCity>
+               <!--Optional:-->
+               <jpx:nameProvince>Buenos Aires</jpx:nameProvince>
+               <!--Optional:-->
+               <jpx:nameCountry>Argentina</jpx:nameCountry>
+            </jpx:birthplace>
+            <!--Optional:-->
+            <jpx:addresses>
+               <!--Zero or more repetitions:-->
+               <jpx:address>
+                  <jpx:type>LEGAL</jpx:type>
+                  <!--Optional:-->
+                  <jpx:street>Sarmiento</jpx:street>
+                  <!--Optional:-->
+                  <jpx:number>737</jpx:number>
+                  <!--Optional:-->
+                  <jpx:zipCode>1612</jpx:zipCode>
+                  <jpx:city>
+                     <jpx:nameCity>Campana</jpx:nameCity>
+                     <!--Optional:-->
+                     <jpx:nameProvince>Buenos Aires</jpx:nameProvince>
+                     <!--Optional:-->
+                     <jpx:nameCountry>Argentina</jpx:nameCountry>
+                  </jpx:city>
+               </jpx:address>
+            </jpx:addresses>
+            <!--Optional:-->
+            <jpx:phoneNumbers>
+               <!--Zero or more repetitions:-->
+               <jpx:phoneNumber>
+                  <jpx:type>HOME</jpx:type>
+                  <jpx:number>3232-641646</jpx:number>
+               </jpx:phoneNumber>
+               <jpx:phoneNumber>
+                  <jpx:type>CELL</jpx:type>
+                  <jpx:number>3232-556677</jpx:number>
+               </jpx:phoneNumber>
+            </jpx:phoneNumbers>
+            <!--Optional:-->
+            <jpx:identifiers>
+               <!--Zero or more repetitions:-->
+               <jpx:identifier>
+                  <jpx:type>DNI</jpx:type>
+                  <jpx:number>30100200</jpx:number>
+                  <jpx:assigningAuthority>
+                     <jpx:name>Argentina</jpx:name>
+                     <jpx:oid>2.16.32</jpx:oid>
+                  </jpx:assigningAuthority>
+               </jpx:identifier>
+            </jpx:identifiers>
+         </jpx:person>
+         <jpx:healthEntity>
+            <jpx:name>Hospital Municipal Luján</jpx:name>
+            <jpx:oid>2.16.840.1.113883.2.10.100.1</jpx:oid>
+         </jpx:healthEntity>
+         <jpx:organizationId>ID1024</jpx:organizationId>
+      </pix:addPatientRequestMessage>
+   </soap:Body>
+</soap:Envelope>

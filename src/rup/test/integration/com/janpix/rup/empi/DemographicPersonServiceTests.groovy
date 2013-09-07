@@ -20,6 +20,7 @@ class DemographicPersonServiceTests extends GroovyTestCase {
 	def p4
 	def p5
 	def p6
+	def pMinimun
 	def city1
 	def city2
 	def city3
@@ -103,6 +104,8 @@ class DemographicPersonServiceTests extends GroovyTestCase {
 		p6.addToAddresses(new Address(type:Address.TYPE_CIVIL,street:"Zapata",number:"346",floor:"5",department:"A",neighborhood:"Belgrano",city:city2))
 		p6.save(flush:true,failOnError:true)
 		
+	
+		
 	}
 	
 	
@@ -174,6 +177,19 @@ class DemographicPersonServiceTests extends GroovyTestCase {
 		assertFalse("Entre los posibles matcheados se encuentra el paciente 6",demographicPersonService.lastPossibleMatchedPersons().contains(new MatchRecord(p6,0d)))
 		assertFalse("Entre los matcheados se encuentra el paciente 6",demographicPersonService.lastMatchedPersons().contains(new MatchRecord(p6,0d)))
 		
+	}
+	
+	void testP1WithPatientMinimunInformation(){
+		//Paciente Minimo
+		pMinimun = new Person(givenName: new PersonName(firstName:"Martín", lastName:"Barnech"),
+			birthdate: new ExtendedDate(precission:ExtendedDate.TYPE_PRECISSION_UNKNOWN),
+			administrativeSex:Person.TYPE_SEX_MALE,
+			)
+		pMinimun.addToAddresses(new Address(type:Address.TYPE_LEGAL,street:"Constitución",number:"2213",city:city1))
+		
+		demographicPersonService.matchPerson(pMinimun)
+		assertTrue("El paciente minimo no matchea con el paciente 1",demographicPersonService.lastPossibleMatchedPersons().contains(new MatchRecord(p1,0d)))
+		assertFalse("El paciente minimo matche con el paciente 2",demographicPersonService.lastMatchedPersons().contains(new MatchRecord(pMinimun,0d)))
 	}
 	
 	

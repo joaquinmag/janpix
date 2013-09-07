@@ -183,11 +183,11 @@ demographic{
 identityMethods{
 	avib{
 		weights{
-			document		= 0.3
+			document		= 0.25
 			name 			= 0.25
 			birthdate		= 0.15
 			sex				= 0.05
-			livingplace		= 0.15
+			livingplace		= 0.2
 			address			= 0.1
 		}
 	}

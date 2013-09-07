@@ -34,9 +34,9 @@ class DemographicPersonService {
 			def percentage = identityComparatorService.calculatePercentageOfMatch(p,it)
 			def matchRecord = factoryMatchRecord.buildWithPersonAndPercentage(it,percentage)
 			log.info("${matchRecord}")
-			if( percentage > upperLimit){
+			if( percentage >= upperLimit){
 				matchedPersons.add(matchRecord)
-			}else if(percentage > lowerLimit){
+			}else if(percentage >= lowerLimit){
 				possibleMatchedPersons.add(matchRecord)
 			}
 		}

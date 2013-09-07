@@ -10,7 +10,7 @@ class AddressDTO {
 	@XmlElement(required=true)
 	String type
 	
-	@XmlElement
+	@XmlElement (required=true)
 	String street
 	
 	@XmlElement

@@ -313,13 +313,14 @@ class EMPIServiceTests extends GroovyTestCase {
 		def patientEntity1Id = "IDH1001"
 		EMPIService.addEntityIdentifierToPatient(returnedPatient,healthEntity1,patientEntity1Id)
 		
-		def otherPatient = EMPIService.createPatient(
-						new Person(givenName: new PersonName(firstName:"Maria", lastName:"Juarez"),
+		def otherPerson = new Person(givenName: new PersonName(firstName:"Maria", lastName:"Juarez"),
 									birthdate: new ExtendedDate(precission:ExtendedDate.TYPE_PRECISSION_DAY,date:Date.parse( "yyyy-M-d", "1977-01-26" )),
 									administrativeSex:Person.TYPE_SEX_FEMALE,
 									birthplace:city1,
 						)
-						)
+		otherPerson.addToAddresses(new Address(type:Address.TYPE_LEGAL,street:"Zabala",number:"1300",city:city1))
+		def otherPatient = EMPIService.createPatient(otherPerson)
+		
 		def patientEntity2Id = "IDH1001"
 		shouldFail(DuplicateIdentifierException) {
 			EMPIService.addEntityIdentifierToPatient(otherPatient,healthEntity1,patientEntity2Id)
@@ -389,13 +390,15 @@ class EMPIServiceTests extends GroovyTestCase {
 		def patientEntity1Id = "IDH1001"
 		EMPIService.addEntityIdentifierToPatient(returnedPatient,healthEntity1,patientEntity1Id)
 		
-		def otherPatient = EMPIService.createPatient(
-						new Person(givenName: new PersonName(firstName:"Maria", lastName:"Juarez"),
+		def otherPerson = new Person(givenName: new PersonName(firstName:"Maria", lastName:"Juarez"),
 									birthdate: new ExtendedDate(precission:ExtendedDate.TYPE_PRECISSION_DAY,date:Date.parse( "yyyy-M-d", "1977-01-26" )),
 									administrativeSex:Person.TYPE_SEX_FEMALE,
 									birthplace:city1,
 						)
-						)
+		otherPerson.addToAddresses(new Address(type:Address.TYPE_LEGAL,street:"Zabala",number:"1300",city:city1))
+		def otherPatient = EMPIService.createPatient(otherPerson)	
+
+		
 		def patientEntity2Id = "IDH1002"
 		EMPIService.addEntityIdentifierToPatient(otherPatient,healthEntity1,patientEntity2Id)
 		
