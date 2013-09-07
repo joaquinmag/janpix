@@ -42,7 +42,22 @@ class PixManagerJanpixServiceTest {
 		println "uniqueId: ${ackIdentifiers.patient.uniqueId}"
 		assert ackIdentifiers.patient.uniqueId		
 	}
-	
+
+	@Test
+	public void testAddNewPatientThenRetrieveIdentifiersAndCheckThatOnlyHavePIIdentifiers() {
+		def assigningAuthPatId = "1"
+		def assigningAuthOID = "2.16.840.1.113883.2.10.1"
+		def assigningAuthName = "Hospital Italiano de Buenos Aires"
+		def assigningAuthDTO = new AssigningAuthorityDTO(assigningAuthOID, assigningAuthName)
+		def ackNewPatient = addNewPatient("Isabel", "Gimenez", "1985-05-15", assigningAuthOID, assigningAuthName, assigningAuthPatId, "24.365.363")
+		
+		def getIdentifiersRequestMessage = new GetIdentifiersRequestMessage(patientIdentifier: assigningAuthPatId, assigningAuthority: assigningAuthDTO, othersDomain: null)
+		
+		def ackIdentifiers = PIXManagerJanpixService.GetIdentifiersPatient(getIdentifiersRequestMessage)
+		
+		assert ackIdentifiers.patient.identifiers.findAll { it.type != Identifier.TYPE_IDENTIFIER_PI }.empty
+	}
+		
 	@Test
 	public void testWhenAddTwoNewPatientsAndGetUniqueIdentifierFromFirstPatient() {
 		def assigningAuthPatId = "1"
@@ -82,7 +97,7 @@ class PixManagerJanpixServiceTest {
 		println "texto ack: ${ackNewPatient.text}"
 		assert ackNewPatient.typeCode == ACKMessage.TypeCode.SuccededCreation
 		
-		def assigningAuthPat2Id = "1"
+		def assigningAuthPat2Id = "2"
 		def assigningAuthOID2 = "2.16.840.1.113883.2.10.11"
 		def assigningAuthName2 = "Clinica Parque SRL"
 		def assigningAuthDTO2 = new AssigningAuthorityDTO(assigningAuthOID2, assigningAuthName2)
@@ -98,8 +113,13 @@ class PixManagerJanpixServiceTest {
 		println "uniqueId: ${ackIdentifiers.patient.uniqueId}"
 		
 		assert ackIdentifiers.patient.identifiers.size() == 2
-
+		ackIdentifiers.patient.identifiers.each {
+			println "identifiers ${it.type} : ${it.number}"
+		}
+		assert ackIdentifiers.patient.identifiers.find { it.type == Identifier.TYPE_IDENTIFIER_PI && it.assigningAuthority.oid == assigningAuthOID2 }.number == assigningAuthPat2Id
 	}
+	
+	
 	
 	def addNewPatient(def firstName, def lastName, def birthDate, def assigningAuthOID, def assigningAuthName, def assigningAuthPatId, def personDNI) {
 		def assigningAuthDTO = new AssigningAuthorityDTO(assigningAuthOID, assigningAuthName)
