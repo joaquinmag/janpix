@@ -1,23 +1,24 @@
 package com.janpix.rup.pixmanager;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.*
 
-import org.junit.Test;
+import org.junit.Test
 
-import com.janpix.rup.empi.ExtendedDate
-import com.janpix.rup.empi.Person
-import com.janpix.rup.empi.Identifier
 import com.janpix.rup.empi.Address
+import com.janpix.rup.empi.ExtendedDate
+import com.janpix.rup.empi.Identifier
+import com.janpix.rup.empi.Person
 import com.janpix.rup.infrastructure.dto.AddressDTO
 import com.janpix.rup.infrastructure.dto.AssigningAuthorityDTO
 import com.janpix.rup.infrastructure.dto.CityDTO
 import com.janpix.rup.infrastructure.dto.ExtendedDateDTO
 import com.janpix.rup.infrastructure.dto.IdentifierDTO
-import com.janpix.rup.infrastructure.dto.PatientDTO;
 import com.janpix.rup.infrastructure.dto.PersonDTO
 import com.janpix.rup.infrastructure.dto.PersonNameDTO
 import com.janpix.rup.services.contracts.ACKMessage
+import com.janpix.rup.services.contracts.ACKQueryPatientMessage;
 import com.janpix.rup.services.contracts.AddPatientRequestMessage
+import com.janpix.rup.services.contracts.GetAllPossibleMatchedPatientsRequestMessage
 import com.janpix.rup.services.contracts.GetIdentifiersRequestMessage
 
 class PixManagerJanpixServiceTest {
@@ -117,6 +118,29 @@ class PixManagerJanpixServiceTest {
 			println "identifiers ${it.type} : ${it.number}"
 		}
 		assert ackIdentifiers.patient.identifiers.find { it.type == Identifier.TYPE_IDENTIFIER_PI && it.assigningAuthority.oid == assigningAuthOID2 }.number == assigningAuthPat2Id
+	}
+	
+	@Test
+	public void testGetAllIdentifiersPatientReturnAddedPatient(){
+		def assigningAuthPatId = "1"
+		def assigningAuthOID = "2.16.840.1.113883.2.10.1"
+		def assigningAuthName = "Hospital Italiano de Buenos Aires"
+		def assigningAuthDTO = new AssigningAuthorityDTO(assigningAuthOID, assigningAuthName)
+		def ackNewPatient = addNewPatient("Isabel", "Gimenez", "1985-05-15", assigningAuthOID, assigningAuthName, assigningAuthPatId, "66.365.363")
+		
+		def person = new PersonDTO(
+			name: new PersonNameDTO(firstName: "Isabel",
+									lastName: "Gimenez"),
+			birthdate: new ExtendedDateDTO(date: "1985-05-15", precission: ExtendedDate.TYPE_PRECISSION_DAY),
+			administrativeSex: Person.TYPE_SEX_FEMALE,
+			address: [ new AddressDTO(type: Address.TYPE_CIVIL, street: "Siempreviva", number: "555", zipCode: "U3434ARR", city: new CityDTO(nameCity: "Luján", nameProvince: "AR-B", nameCountry: "AR")) ]
+		)
+		ACKQueryPatientMessage ackListPatient = PIXManagerJanpixService.GetAllPossibleMatchedPatients(
+				new GetAllPossibleMatchedPatientsRequestMessage(person:person)
+			)
+		
+		assert ackListPatient.patients.size() == 1
+		assert ackListPatient.patients[0].name.firstName == "Isabel"
 	}
 	
 	

@@ -242,18 +242,20 @@ class PixManagerService {
 	 */
 	List<PatientDTO> getAllPossibleMatchedPatients(PersonDTO personDTO)
 	{
-		//Convierto a clase de dominio
-		Person patientRequestMessage = personDTO.convert(mapperDtoDomain)
-
-		List<PatientDTO> matchedPatients = []
-		List<MatchRecord> records = EMPIService.getAllMatchedPatients(patientRequestMessage, true)
-		
-		records.each { MatchRecord it->
-			PatientDTO patientDTO = it.person.convert(mapperDomainDto) as PatientDTO //Puedo castear porque ya se que tiene una persona
-			matchedPatients.add( patientDTO )
+		Patient.withTransaction { tx ->
+			//Convierto a clase de dominio
+			Person patientRequestMessage = personDTO.convert(mapperDtoDomain)
+	
+			List<PatientDTO> matchedPatients = []
+			List<MatchRecord> records = EMPIService.getAllMatchedPatients(patientRequestMessage, true)
+			
+			records.each { MatchRecord it->
+				PatientDTO patientDTO = it.person.convert(mapperDomainDto) as PatientDTO //Puedo castear porque ya se que tiene una persona
+				matchedPatients.add( patientDTO )
+			}
+			
+			return matchedPatients
 		}
-		
-		return matchedPatients
 	}
 
 }

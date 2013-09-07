@@ -1,15 +1,9 @@
 package com.janpix.rup.pixmanager
 
-import java.util.List;
-
 import javax.jws.WebMethod
 import javax.jws.WebParam
-import javax.jws.WebService;
-import javax.jws.soap.SOAPBinding;
-import javax.jws.soap.SOAPBinding.ParameterStyle;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlTransient;
+import javax.jws.soap.SOAPBinding
+import javax.jws.soap.SOAPBinding.ParameterStyle
 
 import org.apache.commons.lang.NotImplementedException
 import org.apache.cxf.annotations.WSDLDocumentation
@@ -21,9 +15,11 @@ import com.janpix.rup.infrastructure.dto.AssigningAuthorityDTO
 import com.janpix.rup.infrastructure.dto.PatientDTO
 import com.janpix.rup.infrastructure.dto.PersonDTO
 import com.janpix.rup.services.contracts.ACKMessage
+import com.janpix.rup.services.contracts.ACKQueryPatientMessage
+import com.janpix.rup.services.contracts.AddPatientRequestMessage
+import com.janpix.rup.services.contracts.GetAllPossibleMatchedPatientsRequestMessage
+import com.janpix.rup.services.contracts.GetIdentifiersRequestMessage
 import com.janpix.rup.services.contracts.ACKMessage.TypeCode
-import com.janpix.rup.services.contracts.AddPatientRequestMessage;
-import com.janpix.rup.services.contracts.GetIdentifiersRequestMessage;
 
 /*@WebService(
 	name = "JanpixPixManager",
@@ -76,7 +72,9 @@ class PIXManagerJanpixService
 	}
 
 	@WSDLDocumentation("Returns all patient maching with Patient")
-	public ACKMessage GetAllPossibleMatchedPatients(PersonDTO person) {
-		throw new NotImplementedException("Method not allowed at this RUP implementation.") 
+	@WebMethod
+	public ACKQueryPatientMessage GetAllPossibleMatchedPatients(@WebParam(name = "getAllPossibleMatchedPatientsRequestMessage")GetAllPossibleMatchedPatientsRequestMessage requestMessage) {
+		 List<PatientDTO> patients = pixManagerService.getAllPossibleMatchedPatients(requestMessage.person)
+		 return new ACKQueryPatientMessage(patients:patients,typeCode: TypeCode.SuccededQuery)
 	}
 }
