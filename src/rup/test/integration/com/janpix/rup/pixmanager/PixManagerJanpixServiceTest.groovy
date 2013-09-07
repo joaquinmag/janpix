@@ -89,7 +89,7 @@ class PixManagerJanpixServiceTest {
 		def ackNewPatient2 = addNewPatient("Isabel", "Gimenez", "1985-05-15", assigningAuthOID2, assigningAuthName2, assigningAuthPat2Id, "66.365.363")
 		
 		println "texto ack: ${ackNewPatient2.text}"
-		assert ackNewPatient2.typeCode == ACKMessage.TypeCode.SuccededCreation
+		assert ackNewPatient2.typeCode == ACKMessage.TypeCode.SuccededInsertion
 		
 		def getIdentifiersRequestMessage = new GetIdentifiersRequestMessage(patientIdentifier: assigningAuthPatId, assigningAuthority: assigningAuthDTO, othersDomain: null)
 		def ackIdentifiers = PIXManagerJanpixService.GetIdentifiersPatient(getIdentifiersRequestMessage)
@@ -97,7 +97,7 @@ class PixManagerJanpixServiceTest {
 		assert ackIdentifiers.patient.uniqueId
 		println "uniqueId: ${ackIdentifiers.patient.uniqueId}"
 		
-		assert ackIdentifiers.identifiers.size() == 2
+		assert ackIdentifiers.patient.identifiers.size() == 2
 
 	}
 	
@@ -111,7 +111,7 @@ class PixManagerJanpixServiceTest {
 			birthdate: new ExtendedDateDTO(date: birthDate, precission: ExtendedDate.TYPE_PRECISSION_DAY),
 			administrativeSex: Person.TYPE_SEX_FEMALE,
 			identifiers: [ new IdentifierDTO(type: Identifier.TYPE_IDENTIFIER_DNI, number: personDNI, assigningAuthority: dniAssigningAuthDTO) ],
-			address: [ new AddressDTO(type: Address.TYPE_CIVIL, street: "Siempreviva", number: "555", zipCode: "U3434ARR", city: new CityDTO(nameCity: "Luján", nameProvince: "Buenos Aires", nameCountry: "Argentina")) ]
+			address: [ new AddressDTO(type: Address.TYPE_CIVIL, street: "Siempreviva", number: "555", zipCode: "U3434ARR", city: new CityDTO(nameCity: "Luján", nameProvince: "AR-B", nameCountry: "AR")) ]
 		)
 
 		def ackNewPatient = PIXManagerJanpixService.AddNewPatient(new AddPatientRequestMessage(person: person, healthEntity: assigningAuthDTO, organizationId: assigningAuthPatId))

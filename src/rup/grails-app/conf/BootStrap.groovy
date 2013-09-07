@@ -43,6 +43,8 @@ class BootStrap {
 			def country = Country.findOrCreateWhere(name: "AR").save(failOnError: true, flush: true)
 			def province = Province.findOrCreateWhere(country: country, name: "AR-S").save(failOnError: true, flush: true)
 			City.findOrCreateWhere(province: province, name: "Venado Tuerto").save(failOnError: true, flush: true)
+			province = Province.findOrCreateWhere(country: country, name: "AR-B").save(failOnError: true, flush: true)
+			City.findOrCreateWhere(province: province, name: "Luján").save(failOnError: true, flush: true)
 		}
     }
     def destroy = {
