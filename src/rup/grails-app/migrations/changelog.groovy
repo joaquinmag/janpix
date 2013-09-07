@@ -408,4 +408,6 @@ databaseChangeLog = {
 		addForeignKeyConstraint(baseColumnNames: "country_id", baseTableName: "province", constraintName: "FKC5242B30518D6EE7", deferrable: "false", initiallyDeferred: "false", referencedColumnNames: "id", referencedTableName: "country", referencesUniqueColumn: "false")
 	}
 
+
+	include file: 'add-constraints-address.groovy'
 }

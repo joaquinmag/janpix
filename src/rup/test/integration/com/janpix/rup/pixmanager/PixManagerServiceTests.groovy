@@ -121,6 +121,11 @@ class PixManagerServiceTests extends GroovyTestCase {
 		assertEquals(0,identifiers.size())
 	}
 	
+	void testGetIdentifiersReturnEmptyBecausePatientDontHaveThisIdentifier(){
+		ACKMessage ack = pixManagerService.patientRegistryGetIdentifiersQuery("C321",this.buildHealthEntityDTO("3"))
+		assert ack.typeCode == ACKMessage.TypeCode.DontExistingPatientError
+	}
+	
 	/**
 	 * Testea que devuelva todos los identificadores de un paciente ya que no se le pasan dominios
 	 */

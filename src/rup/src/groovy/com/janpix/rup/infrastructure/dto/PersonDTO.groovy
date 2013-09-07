@@ -5,6 +5,8 @@ import javax.xml.bind.annotation.XmlElement
 import javax.xml.bind.annotation.XmlElementWrapper
 import javax.xml.bind.annotation.XmlRootElement
 
+import org.springframework.beans.factory.annotation.Required;
+
 import com.janpix.rup.infrastructure.Mapper
 
 
@@ -35,7 +37,7 @@ class PersonDTO {
 	ExtendedDateDTO deathdate
 	
 	@XmlElementWrapper(name = "addresses")
-	@XmlElement(name = "address")
+	@XmlElement(name = "address",required=true)
 	List<AddressDTO> address
 	
 

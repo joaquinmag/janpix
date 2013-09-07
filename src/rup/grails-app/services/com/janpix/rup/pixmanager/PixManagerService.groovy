@@ -157,7 +157,7 @@ class PixManagerService {
 			
 			Patient rupPatient = EMPIService.findPatientByHealthEntityId(patientIdentifier,patientIdentifierDomain)
 			if(rupPatient == null)
-				new ACKMessage(typeCode:TypeCode.DontExistingPatientError)
+				return new ACKMessage(typeCode:TypeCode.DontExistingPatientError)
 
 			//Agrego los identificadores de los dominios pasados. Sino pasaron dominio agrego todos 
 			if(othersDomain){

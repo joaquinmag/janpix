@@ -21,11 +21,13 @@ class Address
 	static belongsTo = Person
 	
     static constraints = {
+		type(nullable:false)
+		street(nullable:false,blank:false)
 		city(nullable:false)
+		number(nullable:true,blank:true)
 		zipCode(nullable:true,blank:true)
 		floor(nullable:true,blank:true)
 		department(nullable:true,blank:true)
-		type(nullable:false)
     }
 
 	

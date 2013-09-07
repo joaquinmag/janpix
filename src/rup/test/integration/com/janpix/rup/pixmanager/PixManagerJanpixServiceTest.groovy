@@ -73,7 +73,7 @@ class PixManagerJanpixServiceTest {
 	def addNewPatient(def firstName, def lastName, def birthDate, def assigningAuthOID, def assigningAuthName, def assigningAuthPatId, def personDNI) {
 		def assigningAuthDTO = new AssigningAuthorityDTO(assigningAuthOID, assigningAuthName)
 		def dniAssigningAuthDTO = new AssigningAuthorityDTO("2.16.32","Argentina")
-		CityDTO city = new CityDTO(nameCity:"Venado Tuerto",nameProvince:"AR-S",nameCountry:"AR");
+		CityDTO city = new CityDTO(nameCity:"Venado Tuerto",nameProvince:"AR-S");
 		def person = new PersonDTO(
 			name: new PersonNameDTO(firstName: firstName,
 									lastName: lastName),

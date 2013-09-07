@@ -7,14 +7,17 @@ import com.janpix.rup.empi.Province;
 class PlaceService {
 	static transactional = false
 	
-    City findByPlace(String cityName, String provinceName, String countryName) {
-		def country = Country.findByName(countryName)
-		if (country) {
-			def province = Province.findByCountryAndName(country, provinceName)
-			if (province) {
-				return City.findByProvinceAndName(province, cityName)
-			}
+    City findByPlace(String cityName, String provinceName, String countryName) 
+	{
+		def hql = "FROM City WHERE name=:cityName AND province.name = :provinceName"
+		def arguments = ["cityName":cityName,"provinceName":provinceName]
+		
+		if(countryName){
+			hql += " AND province.country.name = :countryName"
+			arguments["countryName"]=countryName
 		}
-		return null
+		def result = City.find(hql,arguments);
+		return result
+	
     }
 }
