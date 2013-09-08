@@ -4,6 +4,7 @@ import com.janpix.rup.empi.AssigningAuthority
 import com.janpix.rup.empi.Identifier
 import com.janpix.rup.empi.MatchRecord
 import com.janpix.rup.empi.Patient
+import com.janpix.rup.empi.PatientIdentifier
 import com.janpix.rup.empi.Person
 import com.janpix.rup.exceptions.DontExistingPatientException
 import com.janpix.rup.exceptions.ExistingPatientException
@@ -105,8 +106,10 @@ class PixManagerService {
 					else
 						EMPIService.updateEntityIdentifierToPatient(patientRequestMessage,healthEntity,heIdentifier.number)
 				}
-
-				return new ACKMessage(typeCode:TypeCode.SuccededUpdated,text:i18nMessage("pixmanager.ackmessage.updated.succeded"))
+				
+				Patient rupPatient = EMPIService.findPatientByUUID(new PatientIdentifier(mainId: patientDTO.uniqueId))
+				def patientDto = rupPatient.convert(mapperDomainDto)
+				return new ACKMessage(typeCode:TypeCode.SuccededUpdated,text:i18nMessage("pixmanager.ackmessage.updated.succeded"), patient: patientDto)
 			}
 			catch (DontExistingPatientException e) {
 				tx.setRollbackOnly()

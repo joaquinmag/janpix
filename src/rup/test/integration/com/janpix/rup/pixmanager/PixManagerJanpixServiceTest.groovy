@@ -140,7 +140,7 @@ class PixManagerJanpixServiceTest {
 	
 	
 	@Test
-	public void testUpdatePatientInformation() {
+	public void testUpdatePatientWithSSNAndCheckItsOk() {
 		def assigningAuthPatId = "1"
 		def assigningAuthOID = "2.16.840.1.113883.2.10.1"
 		def assigningAuthName = "Hospital Italiano de Buenos Aires"
@@ -151,16 +151,15 @@ class PixManagerJanpixServiceTest {
 		def ackIdentifiers = PIXManagerJanpixService.GetIdentifiersPatient(getIdentifiersRequestMessage)
 		
 		PatientDTO patient = new PatientDTO(uniqueId: ackIdentifiers.patient.uniqueId,
-											name: new PersonNameDTO(firstName: "Isabel",
-																lastName: "Gimenez"),
-											birthdate: new ExtendedDateDTO(date: "1985-05-15", precission: ExtendedDate.TYPE_PRECISSION_DAY),
-											administrativeSex: Person.TYPE_SEX_FEMALE,
 											identifiers: [ new IdentifierDTO(type: Identifier.TYPE_IDENTIFIER_SS, number: "45676898987", assigningAuthority: new AssigningAuthorityDTO("2.16.32","Argentina")) ],
-											address: [ new AddressDTO(type: Address.TYPE_CIVIL, street: "Juncal", number: "453", zipCode: "U3434ARR", city: new CityDTO(nameCity: "Luján", nameProvince: "AR-B", nameCountry: "AR")) ]
 										)
 		
 		def ackUpdate = PIXManagerJanpixService.UpdatePatient(patient, assigningAuthDTO)
-		println ackUpdate
+		ackUpdate.patient.identifiers.each {
+			println "identifiers ${it.type} : ${it.number}"
+		}
+		
+		assert ackUpdate.patient.identifiers.find { it.type == Identifier.TYPE_IDENTIFIER_SS }.number == "45676898987"
 	}
 	
 	def addNewPatient(def firstName, def lastName, def birthDate, def assigningAuthOID, def assigningAuthName, def assigningAuthPatId, def personDNI) {
