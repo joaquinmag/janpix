@@ -123,7 +123,12 @@ class PixManagerJanpixServiceTest {
 	
 	@Test
 	public void testGetAllIdentifiersPatientReturnAddedPatient(){
-
+		def assigningAuthPatId = "1"
+		def assigningAuthOID = "2.16.840.1.113883.2.10.1"
+		def assigningAuthName = "Hospital Italiano de Buenos Aires"
+		def assigningAuthDTO = new AssigningAuthorityDTO(assigningAuthOID, assigningAuthName)
+		def ackNewPatient = addNewPatient("Isabel", "Gimenez", "1985-05-15", assigningAuthOID, assigningAuthName, assigningAuthPatId, "66.365.363")
+		
 		def person = new PersonDTO(
 			name: new PersonNameDTO(firstName: "Isabel",
 									lastName: "Gimenez"),
