@@ -47,7 +47,7 @@ class PIXManagerJanpixService
 	 * This method is for updating patient information
 	 */
 	public ACKMessage UpdatePatient(PatientDTO patient,AssigningAuthorityDTO healthEntity) {
-		throw new NotImplementedException("Method not allowed at this RUP implementation.") 
+		return pixManagerService.patientRegistryRecordRevised(patient, healthEntity)
 	}
 
 
