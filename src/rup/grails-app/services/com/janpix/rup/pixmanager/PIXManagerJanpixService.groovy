@@ -39,8 +39,7 @@ class PIXManagerJanpixService
 	 * Add new patients to the PIX. 
 	 */	
 	@WebMethod
-	public ACKMessage AddNewPatient(@WebParam(name = "addPatientRequestMessage")AddPatientRequestMessage requestMessage) 
-	{
+	public ACKMessage AddNewPatient(@WebParam(name = "addPatientRequestMessage")AddPatientRequestMessage requestMessage) {
 		return pixManagerService.patientRegistryRecordAdded(requestMessage.person,requestMessage.healthEntity, requestMessage.organizationId)
 	}
 
@@ -56,8 +55,7 @@ class PIXManagerJanpixService
 	 * Returns all the identifiers of a patient.
 	 */
 	@WebMethod
-	public ACKMessage GetIdentifiersPatient(@WebParam(name = "getIdentifiersRequestMessage")GetIdentifiersRequestMessage requestMessage) 
-	{
+	public ACKMessage GetIdentifiersPatient(@WebParam(name = "getIdentifiersRequestMessage")GetIdentifiersRequestMessage requestMessage) {
 		return pixManagerService.patientRegistryGetIdentifiersQuery(
 					requestMessage.patientIdentifier,
 					requestMessage.assigningAuthority,
