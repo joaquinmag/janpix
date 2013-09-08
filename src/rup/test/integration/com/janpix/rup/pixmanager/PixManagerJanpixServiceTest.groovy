@@ -122,12 +122,7 @@ class PixManagerJanpixServiceTest {
 	
 	@Test
 	public void testGetAllIdentifiersPatientReturnAddedPatient(){
-		def assigningAuthPatId = "1"
-		def assigningAuthOID = "2.16.840.1.113883.2.10.1"
-		def assigningAuthName = "Hospital Italiano de Buenos Aires"
-		def assigningAuthDTO = new AssigningAuthorityDTO(assigningAuthOID, assigningAuthName)
-		def ackNewPatient = addNewPatient("Isabel", "Gimenez", "1985-05-15", assigningAuthOID, assigningAuthName, assigningAuthPatId, "66.365.363")
-		
+
 		def person = new PersonDTO(
 			name: new PersonNameDTO(firstName: "Isabel",
 									lastName: "Gimenez"),
@@ -144,11 +139,33 @@ class PixManagerJanpixServiceTest {
 	}
 	
 	
+	@Test
+	public void testUpdatePatientInformation() {
+		def assigningAuthPatId = "1"
+		def assigningAuthOID = "2.16.840.1.113883.2.10.1"
+		def assigningAuthName = "Hospital Italiano de Buenos Aires"
+		def assigningAuthDTO = new AssigningAuthorityDTO(assigningAuthOID, assigningAuthName)
+		def ackNewPatient = addNewPatient("Isabel", "Gimenez", "1985-05-15", assigningAuthOID, assigningAuthName, assigningAuthPatId, "66.365.363")
+
+		def getIdentifiersRequestMessage = new GetIdentifiersRequestMessage(patientIdentifier: assigningAuthPatId, assigningAuthority: assigningAuthDTO, othersDomain: null)
+		def ackIdentifiers = PIXManagerJanpixService.GetIdentifiersPatient(getIdentifiersRequestMessage)
+		
+		PatientDTO patient = new PatientDTO(uniqueId: ackIdentifiers.patient.uniqueId,
+											name: new PersonNameDTO(firstName: "Isabel",
+																lastName: "Gimenez"),
+											birthdate: new ExtendedDateDTO(date: "1985-05-15", precission: ExtendedDate.TYPE_PRECISSION_DAY),
+											administrativeSex: Person.TYPE_SEX_FEMALE,
+											identifiers: [ new IdentifierDTO(type: Identifier.TYPE_IDENTIFIER_SS, number: "45676898987", assigningAuthority: new AssigningAuthorityDTO("2.16.32","Argentina")) ],
+											address: [ new AddressDTO(type: Address.TYPE_CIVIL, street: "Juncal", number: "453", zipCode: "U3434ARR", city: new CityDTO(nameCity: "Luján", nameProvince: "AR-B", nameCountry: "AR")) ]
+										)
+		
+		def ackUpdate = PIXManagerJanpixService.UpdatePatient(patient, assigningAuthDTO)
+		println ackUpdate
+	}
 	
 	def addNewPatient(def firstName, def lastName, def birthDate, def assigningAuthOID, def assigningAuthName, def assigningAuthPatId, def personDNI) {
 		def assigningAuthDTO = new AssigningAuthorityDTO(assigningAuthOID, assigningAuthName)
 		def dniAssigningAuthDTO = new AssigningAuthorityDTO("2.16.32","Argentina")
-		CityDTO city = new CityDTO(nameCity:"Venado Tuerto",nameProvince:"AR-S");
 		def person = new PersonDTO(
 			name: new PersonNameDTO(firstName: firstName,
 									lastName: lastName),
