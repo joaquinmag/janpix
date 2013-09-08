@@ -19,11 +19,16 @@ class AVIbMeasurementDistanceDocument extends MeasurementDistanceAttribute {
 	 */
 	Double calculateDistance(Identity identity1, Identity identity2){
 		//return this.weight * this.calculateLevenshteinDistance(identity1.document, identity2.document)
-		if(identity1.document == identity2.document)
-			return 0*this.weight
-		else
-			return 1*this.weight
+		if(isValidDocument(identity1.document) && isValidDocument(identity2.document)){
+			if(identity1.document == identity2.document)
+				return 0*this.weight
+		}
+		
+		return 1*this.weight
 	}
 	
+	private Boolean isValidDocument(String doc){
+		return (doc!=null && doc?.trim()!="")
+	}
 	
 }

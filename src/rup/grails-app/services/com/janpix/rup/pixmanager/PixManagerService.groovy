@@ -5,19 +5,18 @@ import com.janpix.rup.empi.Identifier
 import com.janpix.rup.empi.MatchRecord
 import com.janpix.rup.empi.Patient
 import com.janpix.rup.empi.Person
-import com.janpix.rup.empi.MatchRecord.LevelMatchRecord
 import com.janpix.rup.exceptions.DontExistingPatientException
 import com.janpix.rup.exceptions.ExistingPatientException
 import com.janpix.rup.exceptions.ShortDemographicDataException
 import com.janpix.rup.exceptions.identifier.DuplicateAuthorityIdentifierException
 import com.janpix.rup.exceptions.identifier.IdentifierException
-import com.janpix.rup.infrastructure.FactoryDTO
 import com.janpix.rup.infrastructure.dto.AssigningAuthorityDTO
 import com.janpix.rup.infrastructure.dto.IdentifierDTO
 import com.janpix.rup.infrastructure.dto.PatientDTO
 import com.janpix.rup.infrastructure.dto.PersonDTO
 import com.janpix.rup.services.contracts.ACKMessage
 import com.janpix.rup.services.contracts.ACKMessage.TypeCode
+
 
 
 
@@ -238,23 +237,31 @@ class PixManagerService {
 	 * Devuelve los posibles matcheos de la persona enviada
 	 * @param patientRequestMessage
 	 * @return
-	 * FIXME!! Usar DTOs
 	 */
 	List<PatientDTO> getAllPossibleMatchedPatients(PersonDTO personDTO)
 	{
 		Patient.withTransaction { tx ->
-			//Convierto a clase de dominio
-			Person patientRequestMessage = personDTO.convert(mapperDtoDomain)
-	
 			List<PatientDTO> matchedPatients = []
-			List<MatchRecord> records = EMPIService.getAllMatchedPatients(patientRequestMessage, true)
-			
-			records.each { MatchRecord it->
-				PatientDTO patientDTO = it.person.convert(mapperDomainDto) as PatientDTO //Puedo castear porque ya se que tiene una persona
-				matchedPatients.add( patientDTO )
+			try{
+				// Se convierto a clase de dominio
+				Person patientRequestMessage = personDTO.convert(mapperDtoDomain)
+		
+				List<MatchRecord> records = EMPIService.getAllMatchedPatients(patientRequestMessage, true)
+				
+				records.each { MatchRecord it->
+					// Se caste porque se sabe que tiene una persona
+					PatientDTO patientDTO = it.person.convert(mapperDomainDto) as PatientDTO 
+					matchedPatients.add( patientDTO )
+				}
+	
 			}
-			
-			return matchedPatients
+			catch (Exception e) {
+				tx.setRollbackOnly()
+				log.error("Exception : ${e.message}", e)
+			}
+			finally{
+				return matchedPatients
+			}
 		}
 	}
 

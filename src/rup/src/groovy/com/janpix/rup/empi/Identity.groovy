@@ -39,7 +39,7 @@ class Identity {
 		identity.multipleBirthIndicator = p.multipleBirthIndicator
 		identity.livingplace	= (!address1)?"":"${address1.city?.province?.country?.name},${address1.city?.province?.name},${address1.city?.name}"
 		identity.address		= (!address1)?"":"${address1.street} ${address1.number}"
-		identity.document		= "${document}"
+		identity.document		= (document)?document:""
 		
 		return identity
 	}
