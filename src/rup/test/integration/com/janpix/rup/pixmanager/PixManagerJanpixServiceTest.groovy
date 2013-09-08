@@ -13,6 +13,7 @@ import com.janpix.rup.infrastructure.dto.AssigningAuthorityDTO
 import com.janpix.rup.infrastructure.dto.CityDTO
 import com.janpix.rup.infrastructure.dto.ExtendedDateDTO
 import com.janpix.rup.infrastructure.dto.IdentifierDTO
+import com.janpix.rup.infrastructure.dto.PatientDTO
 import com.janpix.rup.infrastructure.dto.PersonDTO
 import com.janpix.rup.infrastructure.dto.PersonNameDTO
 import com.janpix.rup.services.contracts.ACKMessage
