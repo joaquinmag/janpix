@@ -65,8 +65,9 @@ class PIXManagerJanpixService
 
 
 	@WSDLDocumentation("Add new patients to the PIX without validate matching with other patients.")
-	public ACKMessage AddNewPatientWithoutValidation(PersonDTO person, AssigningAuthorityDTO healthEntity, String organizationId) {
-		throw new NotImplementedException("Method not allowed at this RUP implementation.") 
+	@WebMethod
+	public ACKMessage AddNewPatientWithoutValidation(@WebParam(name = "addPatientWithoutValidationRequestMessage")AddPatientRequestMessage requestMessage) {
+		return pixManagerService.patientRegistryRecordAddedWithoutMatching(requestMessage.person,requestMessage.healthEntity, requestMessage.organizationId)
 	}
 
 	@WSDLDocumentation("Returns all patient maching with Patient")

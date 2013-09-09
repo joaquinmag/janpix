@@ -209,30 +209,36 @@ class PixManagerService {
 	 * @return
 	 */
 	ACKMessage patientRegistryRecordAddedWithoutMatching(PersonDTO personDTO, AssigningAuthorityDTO healthEntityDTO, String organizationId){
-		try {
-			//Transformo DTO a dominio
-			Person patientRequestMessage = personDTO.convert(mapperDtoDomain);
-			AssigningAuthority healthEntity = healthEntityDTO.convert(mapperDtoDomain)
-			
-			def patient = EMPIService.createPatient(patientRequestMessage)
-			EMPIService.addEntityIdentifierToPatient(patient, healthEntity, organizationId)
-			return new ACKMessage(typeCode: TypeCode.SuccededCreation, text:i18nMessage("pixmanager.ackmessage.creation.succeded"))
-		}
-		catch(ShortDemographicDataException e) {
-			log.debug("Exception ShortDemografic : ${e.message}", e)
-			return new ACKMessage(typeCode:TypeCode.ShortDemographicError,text:e.message)
-		}
-		catch (DontExistingPatientException e) {
-			log.error("Exception : ${e.message}", e)
-			return new ACKMessage(typeCode:TypeCode.DontExistingPatientError, text: e.message)
-		}
-		catch (IdentifierException e) {
-			log.debug("Exception IdentifierException : ${e.message}", e)
-			return new ACKMessage(typeCode:TypeCode.IdentifierError,text:e.message)
-		}
-		catch (Exception e) {
-			log.error("Exception : ${e.message}", e)
-			return new ACKMessage(typeCode:TypeCode.InternalError, text: e.message)
+		Patient.withTransaction { tx ->
+			try {
+				//Transformo DTO a dominio
+				Person patientRequestMessage = personDTO.convert(mapperDtoDomain);
+				AssigningAuthority healthEntity = healthEntityDTO.convert(mapperDtoDomain)
+				
+				def patient = EMPIService.createPatient(patientRequestMessage)
+				EMPIService.addEntityIdentifierToPatient(patient, healthEntity, organizationId)
+				return new ACKMessage(typeCode: TypeCode.SuccededCreation, text:i18nMessage("pixmanager.ackmessage.creation.succeded"))
+			}
+			catch(ShortDemographicDataException e) {
+				tx.setRollbackOnly()
+				log.debug("Exception ShortDemografic : ${e.message}", e)
+				return new ACKMessage(typeCode:TypeCode.ShortDemographicError,text:e.message)
+			}
+			catch (DontExistingPatientException e) {
+				tx.setRollbackOnly()
+				log.error("Exception : ${e.message}", e)
+				return new ACKMessage(typeCode:TypeCode.DontExistingPatientError, text: e.message)
+			}
+			catch (IdentifierException e) {
+				tx.setRollbackOnly()
+				log.debug("Exception IdentifierException : ${e.message}", e)
+				return new ACKMessage(typeCode:TypeCode.IdentifierError,text:e.message)
+			}
+			catch (Exception e) {
+				tx.setRollbackOnly()
+				log.error("Exception : ${e.message}", e)
+				return new ACKMessage(typeCode:TypeCode.InternalError, text: e.message)
+			}
 		}
 	}
 	
