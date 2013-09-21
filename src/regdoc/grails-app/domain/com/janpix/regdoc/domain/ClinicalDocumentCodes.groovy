@@ -11,10 +11,15 @@ class ClinicalDocumentType {
 		father (nullable: true)
 	}
 	
+	ClinicalDocumentType(String name, ClinicalDocumentType documentType) {
+		this.name = name
+		this.documentType = documentType
+	}
+	
 	ClinicalDocumentType getRootType() {
 		if (father) 
 			return this
 		else
 			return father.getRootType()
-	}	
+	}
 }
