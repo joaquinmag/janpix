@@ -23,3 +23,9 @@ class ClinicalDocumentType {
 			return father.getRootType()
 	}
 }
+
+
+enum FormatType {
+	PDF,
+	ScannedLab
+}
