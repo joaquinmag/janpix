@@ -1,17 +1,20 @@
 package com.janpix.regdoc.domain
 
-enum KindOfDocument {
-	Prescription,
-	DischargeSummary,
-	Report
-}
-
-enum Confidentiality {
-	Visible
-}
-
-enum PracticeSetting {
-	FamilyPractice,
-	Laboratory,
-	Radiology
+class ClinicalDocumentType {
+	String name
+	ClinicalDocumentType father
+	
+	static hasMany = [ children: ClinicalDocumentType ]
+	
+	static constraints = {
+		name (nullable: false, unique: true)
+		father (nullable: true)
+	}
+	
+	ClinicalDocumentType getRootType() {
+		if (father) 
+			return this
+		else
+			return father.getRootType()
+	}	
 }

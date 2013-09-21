@@ -11,7 +11,5 @@ class ClinicalDocument {
 	String formatCode
 	String language
 	
-	PracticeSetting practiceSetting
-	KindOfDocument kindOfDocument // tipo de documento
-	Confidentiality confidentiality // estado de confidencialidad
+	ClinicalDocumentType type // tipo de documento
 }
