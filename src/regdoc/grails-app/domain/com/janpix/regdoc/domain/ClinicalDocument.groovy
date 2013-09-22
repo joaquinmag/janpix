@@ -8,7 +8,6 @@ class ClinicalDocument {
 	DocumentState state // Estado asignado por los auditores
 	
 	String comments // Comentarios sobre el documento
-	String formatCode
 	String language
 	
 	Date documentCreationStarted
