@@ -14,6 +14,12 @@ class ClinicalDocument {
 	Date documentCreationStarted
 	Date documentCreationEnded
 	
-	ClinicalDocumentType type // Tipo de documento
+	ClinicalDocumentType documentType // Tipo de documento
 	FormatType format // Indica el formato del documento. Tiene algo que ver con el formato del archivo, pero también tiene que ver con el tipo de documento.
+	
+	static mapping = {
+		state type: DocumentStateUserType, {
+			column name: "state"
+		}
+	}
 }
