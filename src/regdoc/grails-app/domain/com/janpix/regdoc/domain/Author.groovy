@@ -1,7 +1,7 @@
 package com.janpix.regdoc.domain
 
 class Author {
-	String authorInstitution
+	HealthEntity institution
 	String authorPerson
 	String authorRole
 	String authorSpecialty
