@@ -11,6 +11,8 @@ class ClinicalDocumentType {
 		father (nullable: true)
 	}
 	
+	static transients = [ 'rootType' ]
+	
 	ClinicalDocumentType(String name, ClinicalDocumentType documentType) {
 		this.name = name
 		this.documentType = documentType
