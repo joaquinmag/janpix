@@ -2,6 +2,11 @@ package com.janpix.regdoc.domain
 
 import com.janpix.regdoc.infrastructure.DocumentStateUserType
 
+enum FormatType {
+	PDF,
+	ScannedLab
+}
+
 class ClinicalDocument {
 	String uniqueId // Utilizado para referenciar otros docs
 	String patientId // El paciente al que representa

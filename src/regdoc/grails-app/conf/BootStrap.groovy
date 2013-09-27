@@ -1,5 +1,5 @@
 
-import com.janpix.regdoc.domain.ClinicalDocumentType
+import com.janpix.regdoc.domain.*
 
 class BootStrap {
 

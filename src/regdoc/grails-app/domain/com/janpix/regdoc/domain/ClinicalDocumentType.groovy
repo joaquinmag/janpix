@@ -5,9 +5,10 @@ class ClinicalDocumentType {
 	ClinicalDocumentType father
 	
 	static hasMany = [ children: ClinicalDocumentType ]
+	static mappedBy = [ children: 'father' ]
 	
 	static constraints = {
-		name (nullable: false, unique: true)
+		name (nullable: false)
 		father (nullable: true)
 	}
 	
@@ -15,7 +16,7 @@ class ClinicalDocumentType {
 	
 	ClinicalDocumentType(String name, ClinicalDocumentType documentType) {
 		this.name = name
-		this.documentType = documentType
+		this.father = documentType
 	}
 	
 	ClinicalDocumentType getRootType() {
@@ -24,10 +25,4 @@ class ClinicalDocumentType {
 		else
 			return father.getRootType()
 	}
-}
-
-
-enum FormatType {
-	PDF,
-	ScannedLab
 }
