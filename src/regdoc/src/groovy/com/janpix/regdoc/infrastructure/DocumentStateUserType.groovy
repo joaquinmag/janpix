@@ -9,11 +9,11 @@ import java.sql.*
 
 class DocumentStateUserType implements UserType {
 	
-	Serializable disassemble(Object a, SessionImplementor b) {
+	Serializable disassemble(Object a) {
 		throw new UnsupportedOperationException()
 	}
 
-	Object assemble(Serializable a, SessionImplementor b, Object c) {
+	Object assemble(Serializable a, Object b) {
 		throw new UnsupportedOperationException()
 	}
 	
@@ -35,7 +35,7 @@ class DocumentStateUserType implements UserType {
 		false
 	}
 	
-	Object nullSafeGet(ResultSet rs, String[] names, SessionImplementor session, Object owner) {
+	Object nullSafeGet(ResultSet rs, String[] names, Object owner) {
 		assert names.length == 1
 
 		String state = StringType.INSTANCE.get(rs, names[0])
@@ -53,7 +53,7 @@ class DocumentStateUserType implements UserType {
 		}
 	}
 	
-	void nullSafeSet(PreparedStatement st, Object state, int index, SessionImplementor session) {
+	void nullSafeSet(PreparedStatement st, Object state, int index) {
 		if (value == null) {
 			StringType.INSTANCE.set(st, null, index);
 		} else {
@@ -61,7 +61,7 @@ class DocumentStateUserType implements UserType {
 		}
 	}
 
-	Object replace(Object a, Object b, SessionImplementor c, Object d) {
+	Object replace(Object a, Object b, Object d) {
 		throw new UnsupportedOperationException()
 	}
 	
