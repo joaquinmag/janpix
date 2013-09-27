@@ -3,16 +3,17 @@ package com.janpix.regdoc.domain
 import com.janpix.regdoc.exceptions.*
 
 enum DocumentStateTypes {
-	Inserted,
+	Submitted,
 	Approved,
-	Deprecated
+	Deprecated,
+	Deleted
 }
 
 class DocumentState {
 	String name
 	
 	def approve() {
-		if (this.name == DocumentStateTypes.Inserted.toString())
+		if (this.name == DocumentStateTypes.Submitted.toString())
 			this.name = DocumentStateTypes.Approved.toString()
 		else
 			throw new CantChangeDocumentState()
@@ -25,8 +26,17 @@ class DocumentState {
 			throw new CantChangeDocumentState()
 	}
 	
+	def erase() {
+		if (this.name == DocumentStateTypes.Submitted.toString() || 
+			this.name == DocumentStateTypes.Approved.toString() || 
+			this.name == DocumentStateTypes.Deprecated.toString())
+			this.name = DocumentStateTypes.Deleted.toString()
+		else
+			throw new CantChangeDocumentState()
+	}
+	
 	static DocumentState insertedState() {
-		return new DocumentState(name: DocumentStateTypes.Inserted.toString())
+		return new DocumentState(name: DocumentStateTypes.Submitted.toString())
 	}
 	
 	static DocumentState approvedState() {

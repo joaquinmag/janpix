@@ -1,4 +1,4 @@
-package com.janpix.regdoc.infraestructure
+package com.janpix.regdoc.infrastructure
 
 import com.janpix.regdoc.domain.*
 import org.hibernate.type.*
@@ -7,7 +7,7 @@ import org.hibernate.engine.spi.*
 import org.hibernate.usertype.*
 import java.sql.*
 
-class EstadoAsistenciaCompositeUserType implements UserType {
+class DocumentStateUserType implements UserType {
 	
 	Serializable disassemble(Object a, SessionImplementor b) {
 		throw new UnsupportedOperationException()
@@ -36,7 +36,7 @@ class EstadoAsistenciaCompositeUserType implements UserType {
 	}
 	
 	Object nullSafeGet(ResultSet rs, String[] names, SessionImplementor session, Object owner) {
-		assert names.length == 3
+		assert names.length == 1
 
 		String state = StringType.INSTANCE.get(rs, names[0])
 

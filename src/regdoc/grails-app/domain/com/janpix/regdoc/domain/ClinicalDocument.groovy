@@ -1,5 +1,7 @@
 package com.janpix.regdoc.domain
 
+import com.janpix.regdoc.infrastructure.DocumentStateUserType
+
 class ClinicalDocument {
 	String uniqueId // Utilizado para referenciar otros docs
 	String patientId // El paciente al que representa
