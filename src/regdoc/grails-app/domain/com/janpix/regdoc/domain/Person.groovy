@@ -1,8 +1,8 @@
 package com.janpix.regdoc.domain
 
 class Person {
-	String matricula
-	String nombre
+	String identifier
+	String name
 	String specialty
 	String role
 	String email
