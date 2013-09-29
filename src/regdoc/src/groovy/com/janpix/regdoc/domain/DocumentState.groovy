@@ -12,6 +12,10 @@ enum DocumentStateTypes {
 class DocumentState {
 	String name
 	
+	private DocumentState(String name) {
+		this.name = name
+	}
+	
 	def approve() {
 		if (this.name == DocumentStateTypes.Submitted.toString())
 			this.name = DocumentStateTypes.Approved.toString()
@@ -35,7 +39,7 @@ class DocumentState {
 			throw new CantChangeDocumentState()
 	}
 	
-	static DocumentState insertedState() {
+	static DocumentState submittedState() {
 		return new DocumentState(name: DocumentStateTypes.Submitted.toString())
 	}
 	
@@ -45,5 +49,9 @@ class DocumentState {
 	
 	static DocumentState deprecatedState() {
 		return new DocumentState(name: DocumentStateTypes.Deprecated.toString())
+	}
+	
+	static DocumentState deletedState() {
+		return new DocumentState(name: DocumentStateTypes.Deleted.toString())
 	}
 }

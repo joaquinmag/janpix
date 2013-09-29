@@ -8,7 +8,7 @@ class ClinicalDocumentType {
 	static mappedBy = [ children: 'father' ]
 	
 	static constraints = {
-		name (nullable: false)
+		name (nullable: false, blank: false)
 		father (nullable: true)
 	}
 	

@@ -45,9 +45,10 @@ class DocumentStateUserType implements UserType {
 		}
 
 		switch (state) {
-			case toString(DocumentStateTypes.Inserted): return DocumentState.insertedState()
+			case toString(DocumentStateTypes.Submitted): return DocumentState.submittedState()
 			case toString(DocumentStateTypes.Approved): return DocumentState.approvedState()
 			case toString(DocumentStateTypes.Deprecated): return DocumentState.deprecatedState()
+			case toString(DocumentStateTypes.Deleted): return DocumentState.deletedState()
 			default:
 				throw new IllegalArgumentException("invalid state value [${state}]")
 		}

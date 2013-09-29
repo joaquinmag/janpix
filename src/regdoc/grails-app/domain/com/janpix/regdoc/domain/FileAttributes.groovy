@@ -5,6 +5,13 @@ class FileAttributes {
 	String repositoryId
 	String mimeType
 	Date creationTime
-	String fileHash
 	String size
+	
+	static constraints = {
+		uuid(unique: 'repositoryId', nullable: false, blank: false)
+		repositoryId(nullable: false, blank: false)
+		mimeType(nullable: false, blank: false)
+		creationTime(nullable: false)
+		size(nullable: false, blank: false)
+	}
 }
