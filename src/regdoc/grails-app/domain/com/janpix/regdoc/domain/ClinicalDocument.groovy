@@ -61,4 +61,11 @@ class ClinicalDocument {
 			return true
 		return false
 	}
+	
+	int hashCode() {
+		int hash = 1
+		hash = hash*17 + uniqueId.hashCode()
+		hash = hash*31 + patientId.hashCode()
+		return hash
+	}
 }
