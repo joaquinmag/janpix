@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite errors="0" failures="0" hostname="martin-notebuque" name="com.janpix.repodoc.domain.ClinicalDocumentTestSpec" tests="1" time="0.668" timestamp="2013-09-29T20:07:25">
+  <properties />
+  <testcase classname="com.janpix.repodoc.domain.ClinicalDocumentTestSpec" name="test serialize and deserialize clinical document" time="0.666" />
+  <system-out><![CDATA[--Output from test serialize and deserialize clinical document--
+]]></system-out>
+  <system-err><![CDATA[--Output from test serialize and deserialize clinical document--
+]]></system-err>
+</testsuite>

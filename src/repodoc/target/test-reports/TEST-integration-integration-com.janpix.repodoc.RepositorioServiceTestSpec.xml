@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite errors="0" failures="0" hostname="martin-notebuque" name="com.janpix.repodoc.RepositorioServiceTestSpec" tests="1" time="0.067" timestamp="2013-09-29T20:07:29">
+  <properties />
+  <testcase classname="com.janpix.repodoc.RepositorioServiceTestSpec" name="test retrieve document already exists in repository" time="0.063" />
+  <system-out><![CDATA[--Output from test retrieve document already exists in repository--
+]]></system-out>
+  <system-err><![CDATA[--Output from test retrieve document already exists in repository--
+]]></system-err>
+</testsuite>

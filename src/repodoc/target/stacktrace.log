@@ -1,0 +1,721 @@
+2013-09-27 19:09:03,885 [main] ERROR StackTrace  - Full Stack Trace:
+Condition not satisfied:
+
+clinicalDocument.uniqueId=="unUniqueId2"
+|                |       |
+|                |       false
+|                |       1 difference (90% similarity)
+|                |       unUniqueId(-)
+|                |       unUniqueId(2)
+|                unUniqueId
+com.janpix.repodoc.domain.ClinicalDocument : (unsaved)
+
+	at com.janpix.repodoc.domain.ClinicalDocumentTestSpec.test persistence clinical document(ClinicalDocumentTestSpec.groovy:26)
+2013-09-27 19:09:03,925 [main] ERROR StackTrace  - Full Stack Trace:
+Condition not satisfied:
+
+clinicalDocument.uniqueId=="unUniqueId2"
+|                |       |
+|                |       false
+|                |       1 difference (90% similarity)
+|                |       unUniqueId(-)
+|                |       unUniqueId(2)
+|                unUniqueId
+com.janpix.repodoc.domain.ClinicalDocument : (unsaved)
+
+	at com.janpix.repodoc.domain.ClinicalDocumentTestSpec.test persistence clinical document(ClinicalDocumentTestSpec.groovy:26)
+2013-09-27 19:09:03,929 [main] ERROR StackTrace  - Full Stack Trace:
+junit.framework.AssertionFailedError: Condition not satisfied:
+
+clinicalDocument.uniqueId=="unUniqueId2"
+|                |       |
+|                |       false
+|                |       1 difference (90% similarity)
+|                |       unUniqueId(-)
+|                |       unUniqueId(2)
+|                unUniqueId
+com.janpix.repodoc.domain.ClinicalDocument : (unsaved)
+
+	at com.janpix.repodoc.domain.ClinicalDocumentTestSpec.test persistence clinical document(ClinicalDocumentTestSpec.groovy:26)
+2013-09-27 19:09:03,930 [main] ERROR StackTrace  - Full Stack Trace:
+junit.framework.AssertionFailedError: Condition not satisfied:
+
+clinicalDocument.uniqueId=="unUniqueId2"
+|                |       |
+|                |       false
+|                |       1 difference (90% similarity)
+|                |       unUniqueId(-)
+|                |       unUniqueId(2)
+|                unUniqueId
+com.janpix.repodoc.domain.ClinicalDocument : (unsaved)
+
+	at com.janpix.repodoc.domain.ClinicalDocumentTestSpec.test persistence clinical document(ClinicalDocumentTestSpec.groovy:26)
+2013-09-27 19:09:03,943 [main] ERROR StackTrace  - Full Stack Trace:
+junit.framework.AssertionFailedError: Condition not satisfied:
+
+clinicalDocument.uniqueId=="unUniqueId2"
+|                |       |
+|                |       false
+|                |       1 difference (90% similarity)
+|                |       unUniqueId(-)
+|                |       unUniqueId(2)
+|                unUniqueId
+com.janpix.repodoc.domain.ClinicalDocument : (unsaved)
+
+	at com.janpix.repodoc.domain.ClinicalDocumentTestSpec.test persistence clinical document(ClinicalDocumentTestSpec.groovy:26)
+2013-09-27 19:09:03,943 [main] ERROR StackTrace  - Full Stack Trace:
+junit.framework.AssertionFailedError: Condition not satisfied:
+
+clinicalDocument.uniqueId=="unUniqueId2"
+|                |       |
+|                |       false
+|                |       1 difference (90% similarity)
+|                |       unUniqueId(-)
+|                |       unUniqueId(2)
+|                unUniqueId
+com.janpix.repodoc.domain.ClinicalDocument : (unsaved)
+
+	at com.janpix.repodoc.domain.ClinicalDocumentTestSpec.test persistence clinical document(ClinicalDocumentTestSpec.groovy:26)
+2013-09-27 19:16:57,745 [main] ERROR StackTrace  - Full Stack Trace:
+groovy.lang.MissingMethodException: No signature of method: com.janpix.repodoc.domain.ClinicalDocument.save() is applicable for argument types: () values: []
+Possible solutions: save(), save(boolean), save(java.util.Map), wait(), last(), any()
+	at org.springsource.loaded.ri.ReflectiveInterceptor.jlrConstructorNewInstance(ReflectiveInterceptor.java:991)
+	at com.janpix.repodoc.domain.ClinicalDocumentTestSpec.test persistence clinical document(ClinicalDocumentTestSpec.groovy:25)
+2013-09-27 19:16:57,798 [main] ERROR StackTrace  - Full Stack Trace:
+groovy.lang.MissingMethodException: No signature of method: com.janpix.repodoc.domain.ClinicalDocument.save() is applicable for argument types: () values: []
+Possible solutions: save(), save(boolean), save(java.util.Map), wait(), last(), any()
+	at com.janpix.repodoc.domain.ClinicalDocumentTestSpec.test persistence clinical document(ClinicalDocumentTestSpec.groovy:25)
+2013-09-27 19:16:57,903 [main] ERROR StackTrace  - Full Stack Trace:
+groovy.lang.MissingMethodException: No signature of method: com.janpix.repodoc.domain.ClinicalDocument.save() is applicable for argument types: () values: []
+Possible solutions: save(), save(boolean), save(java.util.Map), wait(), last(), any()
+	at com.janpix.repodoc.domain.ClinicalDocumentTestSpec.test persistence clinical document(ClinicalDocumentTestSpec.groovy:25)
+2013-09-27 19:16:57,945 [main] ERROR StackTrace  - Full Stack Trace:
+groovy.lang.MissingMethodException: No signature of method: com.janpix.repodoc.domain.ClinicalDocument.save() is applicable for argument types: () values: []
+Possible solutions: save(), save(boolean), save(java.util.Map), wait(), last(), any()
+	at com.janpix.repodoc.domain.ClinicalDocumentTestSpec.test persistence clinical document(ClinicalDocumentTestSpec.groovy:25)
+2013-09-27 19:16:58,134 [main] ERROR StackTrace  - Full Stack Trace:
+groovy.lang.MissingMethodException: No signature of method: com.janpix.repodoc.domain.ClinicalDocument.save() is applicable for argument types: () values: []
+Possible solutions: save(), save(boolean), save(java.util.Map), wait(), last(), any()
+	at com.janpix.repodoc.domain.ClinicalDocumentTestSpec.test persistence clinical document(ClinicalDocumentTestSpec.groovy:25)
+2013-09-27 19:16:58,168 [main] ERROR StackTrace  - Full Stack Trace:
+groovy.lang.MissingMethodException: No signature of method: com.janpix.repodoc.domain.ClinicalDocument.save() is applicable for argument types: () values: []
+Possible solutions: save(), save(boolean), save(java.util.Map), wait(), last(), any()
+	at com.janpix.repodoc.domain.ClinicalDocumentTestSpec.test persistence clinical document(ClinicalDocumentTestSpec.groovy:25)
+2013-09-27 19:21:18,849 [main] ERROR StackTrace  - Full Stack Trace:
+groovy.lang.MissingMethodException: No signature of method: com.janpix.repodoc.domain.ClinicalDocument.save() is applicable for argument types: () values: []
+Possible solutions: save(), save(boolean), save(java.util.Map), wait(), last(), any()
+	at org.springsource.loaded.ri.ReflectiveInterceptor.jlrConstructorNewInstance(ReflectiveInterceptor.java:991)
+	at com.janpix.repodoc.domain.ClinicalDocumentTestSpec.test persistence clinical document(ClinicalDocumentTestSpec.groovy:25)
+2013-09-27 19:21:18,851 [main] ERROR StackTrace  - Full Stack Trace:
+groovy.lang.MissingMethodException: No signature of method: com.janpix.repodoc.domain.ClinicalDocument.save() is applicable for argument types: () values: []
+Possible solutions: save(), save(boolean), save(java.util.Map), wait(), last(), any()
+	at com.janpix.repodoc.domain.ClinicalDocumentTestSpec.test persistence clinical document(ClinicalDocumentTestSpec.groovy:25)
+2013-09-27 19:21:18,853 [main] ERROR StackTrace  - Full Stack Trace:
+groovy.lang.MissingMethodException: No signature of method: com.janpix.repodoc.domain.ClinicalDocument.save() is applicable for argument types: () values: []
+Possible solutions: save(), save(boolean), save(java.util.Map), wait(), last(), any()
+	at com.janpix.repodoc.domain.ClinicalDocumentTestSpec.test persistence clinical document(ClinicalDocumentTestSpec.groovy:25)
+2013-09-27 19:21:18,854 [main] ERROR StackTrace  - Full Stack Trace:
+groovy.lang.MissingMethodException: No signature of method: com.janpix.repodoc.domain.ClinicalDocument.save() is applicable for argument types: () values: []
+Possible solutions: save(), save(boolean), save(java.util.Map), wait(), last(), any()
+	at com.janpix.repodoc.domain.ClinicalDocumentTestSpec.test persistence clinical document(ClinicalDocumentTestSpec.groovy:25)
+2013-09-27 19:21:18,862 [main] ERROR StackTrace  - Full Stack Trace:
+groovy.lang.MissingMethodException: No signature of method: com.janpix.repodoc.domain.ClinicalDocument.save() is applicable for argument types: () values: []
+Possible solutions: save(), save(boolean), save(java.util.Map), wait(), last(), any()
+	at com.janpix.repodoc.domain.ClinicalDocumentTestSpec.test persistence clinical document(ClinicalDocumentTestSpec.groovy:25)
+2013-09-27 19:21:18,864 [main] ERROR StackTrace  - Full Stack Trace:
+groovy.lang.MissingMethodException: No signature of method: com.janpix.repodoc.domain.ClinicalDocument.save() is applicable for argument types: () values: []
+Possible solutions: save(), save(boolean), save(java.util.Map), wait(), last(), any()
+	at com.janpix.repodoc.domain.ClinicalDocumentTestSpec.test persistence clinical document(ClinicalDocumentTestSpec.groovy:25)
+2013-09-27 19:23:19,814 [main] ERROR StackTrace  - Full Stack Trace:
+groovy.lang.MissingMethodException: No signature of method: com.janpix.repodoc.domain.ClinicalDocument.save() is applicable for argument types: () values: []
+Possible solutions: save(), save(boolean), save(java.util.Map), wait(), last(), any()
+	at org.springsource.loaded.ri.ReflectiveInterceptor.jlrConstructorNewInstance(ReflectiveInterceptor.java:991)
+	at com.janpix.repodoc.domain.ClinicalDocumentTestSpec.test persistence clinical document(ClinicalDocumentTestSpec.groovy:25)
+2013-09-27 19:23:19,882 [main] ERROR StackTrace  - Full Stack Trace:
+groovy.lang.MissingMethodException: No signature of method: com.janpix.repodoc.domain.ClinicalDocument.save() is applicable for argument types: () values: []
+Possible solutions: save(), save(boolean), save(java.util.Map), wait(), last(), any()
+	at com.janpix.repodoc.domain.ClinicalDocumentTestSpec.test persistence clinical document(ClinicalDocumentTestSpec.groovy:25)
+2013-09-27 19:23:19,971 [main] ERROR StackTrace  - Full Stack Trace:
+groovy.lang.MissingMethodException: No signature of method: com.janpix.repodoc.domain.ClinicalDocument.save() is applicable for argument types: () values: []
+Possible solutions: save(), save(boolean), save(java.util.Map), wait(), last(), any()
+	at com.janpix.repodoc.domain.ClinicalDocumentTestSpec.test persistence clinical document(ClinicalDocumentTestSpec.groovy:25)
+2013-09-27 19:23:20,018 [main] ERROR StackTrace  - Full Stack Trace:
+groovy.lang.MissingMethodException: No signature of method: com.janpix.repodoc.domain.ClinicalDocument.save() is applicable for argument types: () values: []
+Possible solutions: save(), save(boolean), save(java.util.Map), wait(), last(), any()
+	at com.janpix.repodoc.domain.ClinicalDocumentTestSpec.test persistence clinical document(ClinicalDocumentTestSpec.groovy:25)
+2013-09-27 19:23:20,242 [main] ERROR StackTrace  - Full Stack Trace:
+groovy.lang.MissingMethodException: No signature of method: com.janpix.repodoc.domain.ClinicalDocument.save() is applicable for argument types: () values: []
+Possible solutions: save(), save(boolean), save(java.util.Map), wait(), last(), any()
+	at com.janpix.repodoc.domain.ClinicalDocumentTestSpec.test persistence clinical document(ClinicalDocumentTestSpec.groovy:25)
+2013-09-27 19:23:20,275 [main] ERROR StackTrace  - Full Stack Trace:
+groovy.lang.MissingMethodException: No signature of method: com.janpix.repodoc.domain.ClinicalDocument.save() is applicable for argument types: () values: []
+Possible solutions: save(), save(boolean), save(java.util.Map), wait(), last(), any()
+	at com.janpix.repodoc.domain.ClinicalDocumentTestSpec.test persistence clinical document(ClinicalDocumentTestSpec.groovy:25)
+2013-09-27 19:23:59,488 [main] ERROR StackTrace  - Full Stack Trace:
+groovy.lang.MissingMethodException: No signature of method: com.janpix.repodoc.domain.ClinicalDocument.save() is applicable for argument types: () values: []
+Possible solutions: save(), save(boolean), save(java.util.Map), wait(), last(), any()
+	at org.springsource.loaded.ri.ReflectiveInterceptor.jlrConstructorNewInstance(ReflectiveInterceptor.java:991)
+	at com.janpix.repodoc.domain.ClinicalDocumentTestSpec.test persistence clinical document(ClinicalDocumentTestSpec.groovy:26)
+2013-09-27 19:23:59,489 [main] ERROR StackTrace  - Full Stack Trace:
+groovy.lang.MissingMethodException: No signature of method: com.janpix.repodoc.domain.ClinicalDocument.save() is applicable for argument types: () values: []
+Possible solutions: save(), save(boolean), save(java.util.Map), wait(), last(), any()
+	at com.janpix.repodoc.domain.ClinicalDocumentTestSpec.test persistence clinical document(ClinicalDocumentTestSpec.groovy:26)
+2013-09-27 19:23:59,494 [main] ERROR StackTrace  - Full Stack Trace:
+groovy.lang.MissingMethodException: No signature of method: com.janpix.repodoc.domain.ClinicalDocument.save() is applicable for argument types: () values: []
+Possible solutions: save(), save(boolean), save(java.util.Map), wait(), last(), any()
+	at com.janpix.repodoc.domain.ClinicalDocumentTestSpec.test persistence clinical document(ClinicalDocumentTestSpec.groovy:26)
+2013-09-27 19:23:59,495 [main] ERROR StackTrace  - Full Stack Trace:
+groovy.lang.MissingMethodException: No signature of method: com.janpix.repodoc.domain.ClinicalDocument.save() is applicable for argument types: () values: []
+Possible solutions: save(), save(boolean), save(java.util.Map), wait(), last(), any()
+	at com.janpix.repodoc.domain.ClinicalDocumentTestSpec.test persistence clinical document(ClinicalDocumentTestSpec.groovy:26)
+2013-09-27 19:23:59,500 [main] ERROR StackTrace  - Full Stack Trace:
+groovy.lang.MissingMethodException: No signature of method: com.janpix.repodoc.domain.ClinicalDocument.save() is applicable for argument types: () values: []
+Possible solutions: save(), save(boolean), save(java.util.Map), wait(), last(), any()
+	at com.janpix.repodoc.domain.ClinicalDocumentTestSpec.test persistence clinical document(ClinicalDocumentTestSpec.groovy:26)
+2013-09-27 19:23:59,501 [main] ERROR StackTrace  - Full Stack Trace:
+groovy.lang.MissingMethodException: No signature of method: com.janpix.repodoc.domain.ClinicalDocument.save() is applicable for argument types: () values: []
+Possible solutions: save(), save(boolean), save(java.util.Map), wait(), last(), any()
+	at com.janpix.repodoc.domain.ClinicalDocumentTestSpec.test persistence clinical document(ClinicalDocumentTestSpec.groovy:26)
+2013-09-27 19:24:41,953 [main] ERROR StackTrace  - Full Stack Trace:
+groovy.lang.MissingMethodException: No signature of method: com.janpix.repodoc.domain.ClinicalDocument.save() is applicable for argument types: () values: []
+Possible solutions: save(), save(boolean), save(java.util.Map), wait(), last(), any()
+	at org.springsource.loaded.ri.ReflectiveInterceptor.jlrConstructorNewInstance(ReflectiveInterceptor.java:991)
+	at org.springsource.loaded.ri.OriginalClassInvoker.invoke(OriginalClassInvoker.java:47)
+	at org.springsource.loaded.ri.ReflectiveInterceptor.jlrMethodInvoke(ReflectiveInterceptor.java:1288)
+	at com.janpix.repodoc.domain.ClinicalDocumentTestSpec.test persistence clinical document(ClinicalDocumentTestSpec.groovy:28)
+2013-09-27 19:24:41,954 [main] ERROR StackTrace  - Full Stack Trace:
+groovy.lang.MissingMethodException: No signature of method: com.janpix.repodoc.domain.ClinicalDocument.save() is applicable for argument types: () values: []
+Possible solutions: save(), save(boolean), save(java.util.Map), wait(), last(), any()
+	at com.janpix.repodoc.domain.ClinicalDocumentTestSpec.test persistence clinical document(ClinicalDocumentTestSpec.groovy:28)
+2013-09-27 19:24:41,974 [main] ERROR StackTrace  - Full Stack Trace:
+groovy.lang.MissingMethodException: No signature of method: com.janpix.repodoc.domain.ClinicalDocument.save() is applicable for argument types: () values: []
+Possible solutions: save(), save(boolean), save(java.util.Map), wait(), last(), any()
+	at com.janpix.repodoc.domain.ClinicalDocumentTestSpec.test persistence clinical document(ClinicalDocumentTestSpec.groovy:28)
+2013-09-27 19:24:41,976 [main] ERROR StackTrace  - Full Stack Trace:
+groovy.lang.MissingMethodException: No signature of method: com.janpix.repodoc.domain.ClinicalDocument.save() is applicable for argument types: () values: []
+Possible solutions: save(), save(boolean), save(java.util.Map), wait(), last(), any()
+	at com.janpix.repodoc.domain.ClinicalDocumentTestSpec.test persistence clinical document(ClinicalDocumentTestSpec.groovy:28)
+2013-09-27 19:24:41,989 [main] ERROR StackTrace  - Full Stack Trace:
+groovy.lang.MissingMethodException: No signature of method: com.janpix.repodoc.domain.ClinicalDocument.save() is applicable for argument types: () values: []
+Possible solutions: save(), save(boolean), save(java.util.Map), wait(), last(), any()
+	at com.janpix.repodoc.domain.ClinicalDocumentTestSpec.test persistence clinical document(ClinicalDocumentTestSpec.groovy:28)
+2013-09-27 19:24:41,990 [main] ERROR StackTrace  - Full Stack Trace:
+groovy.lang.MissingMethodException: No signature of method: com.janpix.repodoc.domain.ClinicalDocument.save() is applicable for argument types: () values: []
+Possible solutions: save(), save(boolean), save(java.util.Map), wait(), last(), any()
+	at com.janpix.repodoc.domain.ClinicalDocumentTestSpec.test persistence clinical document(ClinicalDocumentTestSpec.groovy:28)
+2013-09-27 19:29:16,431 [main] ERROR StackTrace  - Full Stack Trace:
+Condition not satisfied:
+
+clinicalDocument.uniqueId=="unUniqueId2"
+|                |       |
+|                |       false
+|                |       1 difference (90% similarity)
+|                |       unUniqueId(-)
+|                |       unUniqueId(2)
+|                unUniqueId
+com.janpix.repodoc.domain.ClinicalDocument : (unsaved)
+
+	at com.janpix.repodoc.domain.ClinicalDocumentTestSpec.test serialize clinical document(ClinicalDocumentTestSpec.groovy:31)
+2013-09-27 19:29:16,439 [main] ERROR StackTrace  - Full Stack Trace:
+Condition not satisfied:
+
+clinicalDocument.uniqueId=="unUniqueId2"
+|                |       |
+|                |       false
+|                |       1 difference (90% similarity)
+|                |       unUniqueId(-)
+|                |       unUniqueId(2)
+|                unUniqueId
+com.janpix.repodoc.domain.ClinicalDocument : (unsaved)
+
+	at com.janpix.repodoc.domain.ClinicalDocumentTestSpec.test serialize clinical document(ClinicalDocumentTestSpec.groovy:31)
+2013-09-27 19:29:16,440 [main] ERROR StackTrace  - Full Stack Trace:
+junit.framework.AssertionFailedError: Condition not satisfied:
+
+clinicalDocument.uniqueId=="unUniqueId2"
+|                |       |
+|                |       false
+|                |       1 difference (90% similarity)
+|                |       unUniqueId(-)
+|                |       unUniqueId(2)
+|                unUniqueId
+com.janpix.repodoc.domain.ClinicalDocument : (unsaved)
+
+	at com.janpix.repodoc.domain.ClinicalDocumentTestSpec.test serialize clinical document(ClinicalDocumentTestSpec.groovy:31)
+2013-09-27 19:29:16,440 [main] ERROR StackTrace  - Full Stack Trace:
+junit.framework.AssertionFailedError: Condition not satisfied:
+
+clinicalDocument.uniqueId=="unUniqueId2"
+|                |       |
+|                |       false
+|                |       1 difference (90% similarity)
+|                |       unUniqueId(-)
+|                |       unUniqueId(2)
+|                unUniqueId
+com.janpix.repodoc.domain.ClinicalDocument : (unsaved)
+
+	at com.janpix.repodoc.domain.ClinicalDocumentTestSpec.test serialize clinical document(ClinicalDocumentTestSpec.groovy:31)
+2013-09-27 19:29:16,441 [main] ERROR StackTrace  - Full Stack Trace:
+junit.framework.AssertionFailedError: Condition not satisfied:
+
+clinicalDocument.uniqueId=="unUniqueId2"
+|                |       |
+|                |       false
+|                |       1 difference (90% similarity)
+|                |       unUniqueId(-)
+|                |       unUniqueId(2)
+|                unUniqueId
+com.janpix.repodoc.domain.ClinicalDocument : (unsaved)
+
+	at com.janpix.repodoc.domain.ClinicalDocumentTestSpec.test serialize clinical document(ClinicalDocumentTestSpec.groovy:31)
+2013-09-27 19:29:16,441 [main] ERROR StackTrace  - Full Stack Trace:
+junit.framework.AssertionFailedError: Condition not satisfied:
+
+clinicalDocument.uniqueId=="unUniqueId2"
+|                |       |
+|                |       false
+|                |       1 difference (90% similarity)
+|                |       unUniqueId(-)
+|                |       unUniqueId(2)
+|                unUniqueId
+com.janpix.repodoc.domain.ClinicalDocument : (unsaved)
+
+	at com.janpix.repodoc.domain.ClinicalDocumentTestSpec.test serialize clinical document(ClinicalDocumentTestSpec.groovy:31)
+2013-09-29 13:33:31,691 [main] ERROR StackTrace  - Full Stack Trace:
+org.codehaus.groovy.runtime.typehandling.GroovyCastException: Cannot cast object '[B@1607fa8' with class '[B' to class 'java.sql.Blob'
+	at com.janpix.repodoc.domain.ClinicalDocumentTestSpec.test serialize and deserialize clinical document(ClinicalDocumentTestSpec.groovy:29)
+2013-09-29 13:33:31,736 [main] ERROR StackTrace  - Full Stack Trace:
+org.codehaus.groovy.runtime.typehandling.GroovyCastException: Cannot cast object '[B@1607fa8' with class '[B' to class 'java.sql.Blob'
+	at com.janpix.repodoc.domain.ClinicalDocumentTestSpec.test serialize and deserialize clinical document(ClinicalDocumentTestSpec.groovy:29)
+2013-09-29 13:33:31,738 [main] ERROR StackTrace  - Full Stack Trace:
+org.codehaus.groovy.runtime.typehandling.GroovyCastException: Cannot cast object '[B@1607fa8' with class '[B' to class 'java.sql.Blob'
+	at com.janpix.repodoc.domain.ClinicalDocumentTestSpec.test serialize and deserialize clinical document(ClinicalDocumentTestSpec.groovy:29)
+2013-09-29 13:33:31,738 [main] ERROR StackTrace  - Full Stack Trace:
+org.codehaus.groovy.runtime.typehandling.GroovyCastException: Cannot cast object '[B@1607fa8' with class '[B' to class 'java.sql.Blob'
+	at com.janpix.repodoc.domain.ClinicalDocumentTestSpec.test serialize and deserialize clinical document(ClinicalDocumentTestSpec.groovy:29)
+2013-09-29 13:33:31,796 [main] ERROR StackTrace  - Full Stack Trace:
+org.codehaus.groovy.runtime.typehandling.GroovyCastException: Cannot cast object '[B@1607fa8' with class '[B' to class 'java.sql.Blob'
+	at com.janpix.repodoc.domain.ClinicalDocumentTestSpec.test serialize and deserialize clinical document(ClinicalDocumentTestSpec.groovy:29)
+2013-09-29 13:33:31,796 [main] ERROR StackTrace  - Full Stack Trace:
+org.codehaus.groovy.runtime.typehandling.GroovyCastException: Cannot cast object '[B@1607fa8' with class '[B' to class 'java.sql.Blob'
+	at com.janpix.repodoc.domain.ClinicalDocumentTestSpec.test serialize and deserialize clinical document(ClinicalDocumentTestSpec.groovy:29)
+2013-09-29 13:34:57,952 [main] ERROR StackTrace  - Full Stack Trace:
+groovy.lang.MissingMethodException: No signature of method: [B.length() is applicable for argument types: () values: []
+Possible solutions: getAt(java.lang.String), getAt(groovy.lang.Range), getAt(java.lang.Integer), with(groovy.lang.Closure), getAt(java.util.Collection), getAt(groovy.lang.ObjectRange)
+	at com.janpix.repodoc.domain.ClinicalDocumentTestSpec.test serialize and deserialize clinical document(ClinicalDocumentTestSpec.groovy:36)
+2013-09-29 13:34:58,024 [main] ERROR StackTrace  - Full Stack Trace:
+groovy.lang.MissingMethodException: No signature of method: [B.length() is applicable for argument types: () values: []
+Possible solutions: getAt(java.lang.String), getAt(groovy.lang.Range), getAt(java.lang.Integer), with(groovy.lang.Closure), getAt(java.util.Collection), getAt(groovy.lang.ObjectRange)
+	at com.janpix.repodoc.domain.ClinicalDocumentTestSpec.test serialize and deserialize clinical document(ClinicalDocumentTestSpec.groovy:36)
+2013-09-29 13:34:58,093 [main] ERROR StackTrace  - Full Stack Trace:
+groovy.lang.MissingMethodException: No signature of method: [B.length() is applicable for argument types: () values: []
+Possible solutions: getAt(java.lang.String), getAt(groovy.lang.Range), getAt(java.lang.Integer), with(groovy.lang.Closure), getAt(java.util.Collection), getAt(groovy.lang.ObjectRange)
+	at com.janpix.repodoc.domain.ClinicalDocumentTestSpec.test serialize and deserialize clinical document(ClinicalDocumentTestSpec.groovy:36)
+2013-09-29 13:34:58,120 [main] ERROR StackTrace  - Full Stack Trace:
+groovy.lang.MissingMethodException: No signature of method: [B.length() is applicable for argument types: () values: []
+Possible solutions: getAt(java.lang.String), getAt(groovy.lang.Range), getAt(java.lang.Integer), with(groovy.lang.Closure), getAt(java.util.Collection), getAt(groovy.lang.ObjectRange)
+	at com.janpix.repodoc.domain.ClinicalDocumentTestSpec.test serialize and deserialize clinical document(ClinicalDocumentTestSpec.groovy:36)
+2013-09-29 13:34:58,262 [main] ERROR StackTrace  - Full Stack Trace:
+groovy.lang.MissingMethodException: No signature of method: [B.length() is applicable for argument types: () values: []
+Possible solutions: getAt(java.lang.String), getAt(groovy.lang.Range), getAt(java.lang.Integer), with(groovy.lang.Closure), getAt(java.util.Collection), getAt(groovy.lang.ObjectRange)
+	at com.janpix.repodoc.domain.ClinicalDocumentTestSpec.test serialize and deserialize clinical document(ClinicalDocumentTestSpec.groovy:36)
+2013-09-29 13:34:58,288 [main] ERROR StackTrace  - Full Stack Trace:
+groovy.lang.MissingMethodException: No signature of method: [B.length() is applicable for argument types: () values: []
+Possible solutions: getAt(java.lang.String), getAt(groovy.lang.Range), getAt(java.lang.Integer), with(groovy.lang.Closure), getAt(java.util.Collection), getAt(groovy.lang.ObjectRange)
+	at com.janpix.repodoc.domain.ClinicalDocumentTestSpec.test serialize and deserialize clinical document(ClinicalDocumentTestSpec.groovy:36)
+2013-09-29 13:47:55,031 [main] ERROR StackTrace  - Full Stack Trace:
+Condition not satisfied:
+
+text == "zaraza"
+|    |
+|    false
+|    62 differences (6% similarity)
+|    (Este es un )ar(chivo de prueb)a(\nñññññññññññ\ná)a(ááá\nasd\nasd\n\n\n\nasd\na\nd\n)
+|    (z----------)ar(--------------)a(z~------------~-)a(----~----~----~-~-~-~----~--~--~)
+Este es un archivo de prueba
+ñññññññññññ
+áaááá
+asd
+asd
+ 
+ 
+ 
+asd
+a
+d
+
+	at com.janpix.repodoc.domain.ClinicalDocumentTestSpec.test serialize and deserialize clinical document(ClinicalDocumentTestSpec.groovy:38)
+2013-09-29 13:47:55,068 [main] ERROR StackTrace  - Full Stack Trace:
+Condition not satisfied:
+
+text == "zaraza"
+|    |
+|    false
+|    62 differences (6% similarity)
+|    (Este es un )ar(chivo de prueb)a(\nñññññññññññ\ná)a(ááá\nasd\nasd\n\n\n\nasd\na\nd\n)
+|    (z----------)ar(--------------)a(z~------------~-)a(----~----~----~-~-~-~----~--~--~)
+Este es un archivo de prueba
+ñññññññññññ
+áaááá
+asd
+asd
+ 
+ 
+ 
+asd
+a
+d
+
+	at com.janpix.repodoc.domain.ClinicalDocumentTestSpec.test serialize and deserialize clinical document(ClinicalDocumentTestSpec.groovy:38)
+2013-09-29 13:47:55,069 [main] ERROR StackTrace  - Full Stack Trace:
+junit.framework.AssertionFailedError: Condition not satisfied:
+
+text == "zaraza"
+|    |
+|    false
+|    62 differences (6% similarity)
+|    (Este es un )ar(chivo de prueb)a(\nñññññññññññ\ná)a(ááá\nasd\nasd\n\n\n\nasd\na\nd\n)
+|    (z----------)ar(--------------)a(z~------------~-)a(----~----~----~-~-~-~----~--~--~)
+Este es un archivo de prueba
+ñññññññññññ
+áaááá
+asd
+asd
+ 
+ 
+ 
+asd
+a
+d
+
+	at com.janpix.repodoc.domain.ClinicalDocumentTestSpec.test serialize and deserialize clinical document(ClinicalDocumentTestSpec.groovy:38)
+2013-09-29 13:47:55,069 [main] ERROR StackTrace  - Full Stack Trace:
+junit.framework.AssertionFailedError: Condition not satisfied:
+
+text == "zaraza"
+|    |
+|    false
+|    62 differences (6% similarity)
+|    (Este es un )ar(chivo de prueb)a(\nñññññññññññ\ná)a(ááá\nasd\nasd\n\n\n\nasd\na\nd\n)
+|    (z----------)ar(--------------)a(z~------------~-)a(----~----~----~-~-~-~----~--~--~)
+Este es un archivo de prueba
+ñññññññññññ
+áaááá
+asd
+asd
+ 
+ 
+ 
+asd
+a
+d
+
+	at com.janpix.repodoc.domain.ClinicalDocumentTestSpec.test serialize and deserialize clinical document(ClinicalDocumentTestSpec.groovy:38)
+2013-09-29 13:47:55,069 [main] ERROR StackTrace  - Full Stack Trace:
+junit.framework.AssertionFailedError: Condition not satisfied:
+
+text == "zaraza"
+|    |
+|    false
+|    62 differences (6% similarity)
+|    (Este es un )ar(chivo de prueb)a(\nñññññññññññ\ná)a(ááá\nasd\nasd\n\n\n\nasd\na\nd\n)
+|    (z----------)ar(--------------)a(z~------------~-)a(----~----~----~-~-~-~----~--~--~)
+Este es un archivo de prueba
+ñññññññññññ
+áaááá
+asd
+asd
+ 
+ 
+ 
+asd
+a
+d
+
+	at com.janpix.repodoc.domain.ClinicalDocumentTestSpec.test serialize and deserialize clinical document(ClinicalDocumentTestSpec.groovy:38)
+2013-09-29 13:47:55,077 [main] ERROR StackTrace  - Full Stack Trace:
+junit.framework.AssertionFailedError: Condition not satisfied:
+
+text == "zaraza"
+|    |
+|    false
+|    62 differences (6% similarity)
+|    (Este es un )ar(chivo de prueb)a(\nñññññññññññ\ná)a(ááá\nasd\nasd\n\n\n\nasd\na\nd\n)
+|    (z----------)ar(--------------)a(z~------------~-)a(----~----~----~-~-~-~----~--~--~)
+Este es un archivo de prueba
+ñññññññññññ
+áaááá
+asd
+asd
+ 
+ 
+ 
+asd
+a
+d
+
+	at com.janpix.repodoc.domain.ClinicalDocumentTestSpec.test serialize and deserialize clinical document(ClinicalDocumentTestSpec.groovy:38)
+2013-09-29 14:45:10,275 [main] ERROR StackTrace  - Full Stack Trace:
+2013-09-29 14:45:29,060 [main] ERROR StackTrace  - Full Stack Trace:
+java.lang.OutOfMemoryError: Java heap space
+	at org.spockframework.runtime.condition.EditDistance.calculateMatrix(EditDistance.java:47)
+	at org.spockframework.runtime.condition.EditDistance.<init>(EditDistance.java:42)
+	at java.lang.String.valueOf(String.java:2826)
+	at java.io.PrintWriter.println(PrintWriter.java:710)
+	at java.lang.Throwable.printStackTrace(Throwable.java:509)
+	at org.apache.log4j.DefaultThrowableRenderer.render(DefaultThrowableRenderer.java:60)
+	at org.apache.log4j.spi.ThrowableInformation.getThrowableStrRep(ThrowableInformation.java:87)
+	at org.apache.log4j.spi.LoggingEvent.getThrowableStrRep(LoggingEvent.java:413)
+	at org.apache.log4j.WriterAppender.subAppend(WriterAppender.java:313)
+	at org.apache.log4j.WriterAppender.append(WriterAppender.java:162)
+	at org.apache.log4j.AppenderSkeleton.doAppend(AppenderSkeleton.java:251)
+	at org.apache.log4j.helpers.AppenderAttachableImpl.appendLoopOnAppenders(AppenderAttachableImpl.java:66)
+	at org.apache.log4j.Category.callAppenders(Category.java:206)
+	at org.apache.log4j.Category.forcedLog(Category.java:391)
+	at org.apache.log4j.Category.log(Category.java:856)
+	at org.slf4j.impl.GrailsLog4jLoggerAdapter.logMessage(GrailsLog4jLoggerAdapter.java:192)
+	at org.slf4j.impl.GrailsLog4jLoggerAdapter.error(GrailsLog4jLoggerAdapter.java:167)
+	at org.apache.commons.logging.impl.SLF4JLog.error(SLF4JLog.java:213)
+	at org.codehaus.groovy.grails.exceptions.DefaultStackTraceFilterer.filter(DefaultStackTraceFilterer.java:105)
+	at org.codehaus.groovy.grails.exceptions.DefaultStackTraceFilterer.filter(DefaultStackTraceFilterer.java:84)
+	at org.codehaus.groovy.grails.test.event.GrailsTestRunNotifier.fireTestFailure(GrailsTestRunNotifier.java:72)
+	at org.codehaus.groovy.grails.test.spock.listener.PerSpecRunListener.testFailure(PerSpecRunListener.groovy:157)
+	at org.codehaus.groovy.grails.test.spock.listener.OverallRunListener.testFailure(OverallRunListener.groovy:47)
+2013-09-29 14:45:29,092 [main] ERROR StackTrace  - Full Stack Trace:
+java.lang.OutOfMemoryError: Java heap space
+	at org.spockframework.runtime.condition.EditDistance.calculateMatrix(EditDistance.java:47)
+	at org.spockframework.runtime.condition.EditDistance.<init>(EditDistance.java:42)
+	at java.lang.String.valueOf(String.java:2826)
+	at java.io.PrintWriter.println(PrintWriter.java:710)
+	at java.lang.Throwable.printStackTrace(Throwable.java:509)
+	at org.apache.log4j.DefaultThrowableRenderer.render(DefaultThrowableRenderer.java:60)
+	at org.apache.log4j.spi.ThrowableInformation.getThrowableStrRep(ThrowableInformation.java:87)
+	at org.apache.log4j.spi.LoggingEvent.getThrowableStrRep(LoggingEvent.java:413)
+	at org.apache.log4j.WriterAppender.subAppend(WriterAppender.java:313)
+	at org.apache.log4j.WriterAppender.append(WriterAppender.java:162)
+	at org.apache.log4j.AppenderSkeleton.doAppend(AppenderSkeleton.java:251)
+	at org.apache.log4j.helpers.AppenderAttachableImpl.appendLoopOnAppenders(AppenderAttachableImpl.java:66)
+	at org.apache.log4j.Category.callAppenders(Category.java:206)
+	at org.apache.log4j.Category.forcedLog(Category.java:391)
+	at org.apache.log4j.Category.log(Category.java:856)
+	at org.slf4j.impl.GrailsLog4jLoggerAdapter.logMessage(GrailsLog4jLoggerAdapter.java:192)
+	at org.slf4j.impl.GrailsLog4jLoggerAdapter.error(GrailsLog4jLoggerAdapter.java:167)
+	at org.apache.commons.logging.impl.SLF4JLog.error(SLF4JLog.java:213)
+2013-09-29 14:45:29,134 [main] ERROR StackTrace  - Full Stack Trace:
+java.lang.OutOfMemoryError: Java heap space
+	at org.spockframework.runtime.condition.EditDistance.calculateMatrix(EditDistance.java:47)
+	at org.spockframework.runtime.condition.EditDistance.<init>(EditDistance.java:42)
+	at java.lang.String.valueOf(String.java:2826)
+	at java.io.PrintWriter.println(PrintWriter.java:710)
+	at java.lang.Throwable.printStackTrace(Throwable.java:509)
+	at org.apache.log4j.DefaultThrowableRenderer.render(DefaultThrowableRenderer.java:60)
+	at org.apache.log4j.spi.ThrowableInformation.getThrowableStrRep(ThrowableInformation.java:87)
+	at org.apache.log4j.spi.LoggingEvent.getThrowableStrRep(LoggingEvent.java:413)
+	at org.apache.log4j.WriterAppender.subAppend(WriterAppender.java:313)
+	at org.apache.log4j.WriterAppender.append(WriterAppender.java:162)
+	at org.apache.log4j.AppenderSkeleton.doAppend(AppenderSkeleton.java:251)
+	at org.apache.log4j.helpers.AppenderAttachableImpl.appendLoopOnAppenders(AppenderAttachableImpl.java:66)
+	at org.apache.log4j.Category.callAppenders(Category.java:206)
+	at org.apache.log4j.Category.forcedLog(Category.java:391)
+	at org.apache.log4j.Category.log(Category.java:856)
+	at org.slf4j.impl.GrailsLog4jLoggerAdapter.logMessage(GrailsLog4jLoggerAdapter.java:192)
+	at org.slf4j.impl.GrailsLog4jLoggerAdapter.error(GrailsLog4jLoggerAdapter.java:167)
+	at org.apache.commons.logging.impl.SLF4JLog.error(SLF4JLog.java:213)
+2013-09-29 14:45:29,134 [main] ERROR StackTrace  - Full Stack Trace:
+java.lang.OutOfMemoryError: Java heap space
+	at org.spockframework.runtime.condition.EditDistance.calculateMatrix(EditDistance.java:47)
+	at org.spockframework.runtime.condition.EditDistance.<init>(EditDistance.java:42)
+	at java.lang.String.valueOf(String.java:2826)
+	at java.io.PrintWriter.println(PrintWriter.java:710)
+	at java.lang.Throwable.printStackTrace(Throwable.java:509)
+	at org.apache.log4j.DefaultThrowableRenderer.render(DefaultThrowableRenderer.java:60)
+	at org.apache.log4j.spi.ThrowableInformation.getThrowableStrRep(ThrowableInformation.java:87)
+	at org.apache.log4j.spi.LoggingEvent.getThrowableStrRep(LoggingEvent.java:413)
+	at org.apache.log4j.WriterAppender.subAppend(WriterAppender.java:313)
+	at org.apache.log4j.WriterAppender.append(WriterAppender.java:162)
+	at org.apache.log4j.AppenderSkeleton.doAppend(AppenderSkeleton.java:251)
+	at org.apache.log4j.helpers.AppenderAttachableImpl.appendLoopOnAppenders(AppenderAttachableImpl.java:66)
+	at org.apache.log4j.Category.callAppenders(Category.java:206)
+	at org.apache.log4j.Category.forcedLog(Category.java:391)
+	at org.apache.log4j.Category.log(Category.java:856)
+	at org.slf4j.impl.GrailsLog4jLoggerAdapter.logMessage(GrailsLog4jLoggerAdapter.java:192)
+	at org.slf4j.impl.GrailsLog4jLoggerAdapter.error(GrailsLog4jLoggerAdapter.java:167)
+	at org.apache.commons.logging.impl.SLF4JLog.error(SLF4JLog.java:213)
+2013-09-29 14:45:29,677 [main] ERROR StackTrace  - Full Stack Trace:
+java.lang.OutOfMemoryError: Java heap space
+	at org.spockframework.runtime.condition.EditDistance.calculateMatrix(EditDistance.java:47)
+	at org.spockframework.runtime.condition.EditDistance.<init>(EditDistance.java:42)
+	at java.lang.String.valueOf(String.java:2826)
+	at java.io.PrintWriter.println(PrintWriter.java:710)
+	at java.lang.Throwable.printStackTrace(Throwable.java:509)
+	at org.apache.log4j.DefaultThrowableRenderer.render(DefaultThrowableRenderer.java:60)
+	at org.apache.log4j.spi.ThrowableInformation.getThrowableStrRep(ThrowableInformation.java:87)
+	at org.apache.log4j.spi.LoggingEvent.getThrowableStrRep(LoggingEvent.java:413)
+	at org.apache.log4j.WriterAppender.subAppend(WriterAppender.java:313)
+	at org.apache.log4j.WriterAppender.append(WriterAppender.java:162)
+	at org.apache.log4j.AppenderSkeleton.doAppend(AppenderSkeleton.java:251)
+	at org.apache.log4j.helpers.AppenderAttachableImpl.appendLoopOnAppenders(AppenderAttachableImpl.java:66)
+	at org.apache.log4j.Category.callAppenders(Category.java:206)
+	at org.apache.log4j.Category.forcedLog(Category.java:391)
+	at org.apache.log4j.Category.log(Category.java:856)
+	at org.slf4j.impl.GrailsLog4jLoggerAdapter.logMessage(GrailsLog4jLoggerAdapter.java:192)
+	at org.slf4j.impl.GrailsLog4jLoggerAdapter.error(GrailsLog4jLoggerAdapter.java:167)
+	at org.apache.commons.logging.impl.SLF4JLog.error(SLF4JLog.java:213)
+2013-09-29 14:45:29,677 [main] ERROR StackTrace  - Full Stack Trace:
+java.lang.OutOfMemoryError: Java heap space
+	at org.spockframework.runtime.condition.EditDistance.calculateMatrix(EditDistance.java:47)
+	at org.spockframework.runtime.condition.EditDistance.<init>(EditDistance.java:42)
+	at java.lang.String.valueOf(String.java:2826)
+	at java.io.PrintWriter.println(PrintWriter.java:710)
+	at java.lang.Throwable.printStackTrace(Throwable.java:509)
+	at org.apache.log4j.DefaultThrowableRenderer.render(DefaultThrowableRenderer.java:60)
+	at org.apache.log4j.spi.ThrowableInformation.getThrowableStrRep(ThrowableInformation.java:87)
+	at org.apache.log4j.spi.LoggingEvent.getThrowableStrRep(LoggingEvent.java:413)
+	at org.apache.log4j.WriterAppender.subAppend(WriterAppender.java:313)
+	at org.apache.log4j.WriterAppender.append(WriterAppender.java:162)
+	at org.apache.log4j.AppenderSkeleton.doAppend(AppenderSkeleton.java:251)
+	at org.apache.log4j.helpers.AppenderAttachableImpl.appendLoopOnAppenders(AppenderAttachableImpl.java:66)
+	at org.apache.log4j.Category.callAppenders(Category.java:206)
+	at org.apache.log4j.Category.forcedLog(Category.java:391)
+	at org.apache.log4j.Category.log(Category.java:856)
+	at org.slf4j.impl.GrailsLog4jLoggerAdapter.logMessage(GrailsLog4jLoggerAdapter.java:192)
+	at org.slf4j.impl.GrailsLog4jLoggerAdapter.error(GrailsLog4jLoggerAdapter.java:167)
+	at org.apache.commons.logging.impl.SLF4JLog.error(SLF4JLog.java:213)
+2013-09-29 15:54:33,702 [main] ERROR StackTrace  - Full Stack Trace:
+groovy.lang.MissingMethodException: No signature of method: com.janpix.repodoc.RepositorioService.retriveDocumentByUUID() is applicable for argument types: (java.lang.String) values: [urn:uuid:7edca82f-054d-47f2-a032-9b2a5b5186c1]
+Possible solutions: retrieveDocumentByUUID(java.lang.String)
+	at com.janpix.repodoc.RepositorioServiceTestSpec.test retrieve document already exists in repository(RepositorioServiceTestSpec.groovy:32)
+2013-09-29 15:54:34,080 [main] ERROR StackTrace  - Full Stack Trace:
+groovy.lang.MissingMethodException: No signature of method: com.janpix.repodoc.RepositorioService.retriveDocumentByUUID() is applicable for argument types: (java.lang.String) values: [urn:uuid:7edca82f-054d-47f2-a032-9b2a5b5186c1]
+Possible solutions: retrieveDocumentByUUID(java.lang.String)
+	at com.janpix.repodoc.RepositorioServiceTestSpec.test retrieve document already exists in repository(RepositorioServiceTestSpec.groovy:32)
+2013-09-29 15:54:34,497 [main] ERROR StackTrace  - Full Stack Trace:
+groovy.lang.MissingMethodException: No signature of method: com.janpix.repodoc.RepositorioService.retriveDocumentByUUID() is applicable for argument types: (java.lang.String) values: [urn:uuid:7edca82f-054d-47f2-a032-9b2a5b5186c1]
+Possible solutions: retrieveDocumentByUUID(java.lang.String)
+	at com.janpix.repodoc.RepositorioServiceTestSpec.test retrieve document already exists in repository(RepositorioServiceTestSpec.groovy:32)
+2013-09-29 15:54:34,679 [main] ERROR StackTrace  - Full Stack Trace:
+groovy.lang.MissingMethodException: No signature of method: com.janpix.repodoc.RepositorioService.retriveDocumentByUUID() is applicable for argument types: (java.lang.String) values: [urn:uuid:7edca82f-054d-47f2-a032-9b2a5b5186c1]
+Possible solutions: retrieveDocumentByUUID(java.lang.String)
+	at com.janpix.repodoc.RepositorioServiceTestSpec.test retrieve document already exists in repository(RepositorioServiceTestSpec.groovy:32)
+2013-09-29 15:54:35,079 [main] ERROR StackTrace  - Full Stack Trace:
+groovy.lang.MissingMethodException: No signature of method: com.janpix.repodoc.RepositorioService.retriveDocumentByUUID() is applicable for argument types: (java.lang.String) values: [urn:uuid:7edca82f-054d-47f2-a032-9b2a5b5186c1]
+Possible solutions: retrieveDocumentByUUID(java.lang.String)
+	at com.janpix.repodoc.RepositorioServiceTestSpec.test retrieve document already exists in repository(RepositorioServiceTestSpec.groovy:32)
+2013-09-29 15:54:35,158 [main] ERROR StackTrace  - Full Stack Trace:
+groovy.lang.MissingMethodException: No signature of method: com.janpix.repodoc.RepositorioService.retriveDocumentByUUID() is applicable for argument types: (java.lang.String) values: [urn:uuid:7edca82f-054d-47f2-a032-9b2a5b5186c1]
+Possible solutions: retrieveDocumentByUUID(java.lang.String)
+	at com.janpix.repodoc.RepositorioServiceTestSpec.test retrieve document already exists in repository(RepositorioServiceTestSpec.groovy:32)
+2013-09-29 15:59:08,356 [main] ERROR StackTrace  - Full Stack Trace:
+java.lang.NullPointerException: Cannot get property 'name' on null object
+	at com.janpix.repodoc.RepositorioServiceTestSpec.test retrieve document already exists in repository(RepositorioServiceTestSpec.groovy:34)
+2013-09-29 15:59:08,356 [main] ERROR StackTrace  - Full Stack Trace:
+java.lang.NullPointerException: Cannot get property 'name' on null object
+	at com.janpix.repodoc.RepositorioServiceTestSpec.test retrieve document already exists in repository(RepositorioServiceTestSpec.groovy:34)
+2013-09-29 15:59:08,358 [main] ERROR StackTrace  - Full Stack Trace:
+java.lang.NullPointerException: Cannot get property 'name' on null object
+	at com.janpix.repodoc.RepositorioServiceTestSpec.test retrieve document already exists in repository(RepositorioServiceTestSpec.groovy:34)
+2013-09-29 15:59:08,358 [main] ERROR StackTrace  - Full Stack Trace:
+java.lang.NullPointerException: Cannot get property 'name' on null object
+	at com.janpix.repodoc.RepositorioServiceTestSpec.test retrieve document already exists in repository(RepositorioServiceTestSpec.groovy:34)
+2013-09-29 15:59:08,358 [main] ERROR StackTrace  - Full Stack Trace:
+java.lang.NullPointerException: Cannot get property 'name' on null object
+	at com.janpix.repodoc.RepositorioServiceTestSpec.test retrieve document already exists in repository(RepositorioServiceTestSpec.groovy:34)
+2013-09-29 15:59:08,358 [main] ERROR StackTrace  - Full Stack Trace:
+java.lang.NullPointerException: Cannot get property 'name' on null object
+	at com.janpix.repodoc.RepositorioServiceTestSpec.test retrieve document already exists in repository(RepositorioServiceTestSpec.groovy:34)
+2013-09-29 16:54:28,714 [main] ERROR StackTrace  - Full Stack Trace:
+java.lang.NullPointerException: Cannot get property 'name' on null object
+	at com.janpix.repodoc.RepositorioServiceTestSpec.test retrieve document already exists in repository(RepositorioServiceTestSpec.groovy:35)
+2013-09-29 16:54:28,732 [main] ERROR StackTrace  - Full Stack Trace:
+java.lang.NullPointerException: Cannot get property 'name' on null object
+	at com.janpix.repodoc.RepositorioServiceTestSpec.test retrieve document already exists in repository(RepositorioServiceTestSpec.groovy:35)
+2013-09-29 16:54:28,735 [main] ERROR StackTrace  - Full Stack Trace:
+java.lang.NullPointerException: Cannot get property 'name' on null object
+	at com.janpix.repodoc.RepositorioServiceTestSpec.test retrieve document already exists in repository(RepositorioServiceTestSpec.groovy:35)
+2013-09-29 16:54:28,735 [main] ERROR StackTrace  - Full Stack Trace:
+java.lang.NullPointerException: Cannot get property 'name' on null object
+	at com.janpix.repodoc.RepositorioServiceTestSpec.test retrieve document already exists in repository(RepositorioServiceTestSpec.groovy:35)
+2013-09-29 16:54:28,782 [main] ERROR StackTrace  - Full Stack Trace:
+java.lang.NullPointerException: Cannot get property 'name' on null object
+	at com.janpix.repodoc.RepositorioServiceTestSpec.test retrieve document already exists in repository(RepositorioServiceTestSpec.groovy:35)
+2013-09-29 16:54:28,782 [main] ERROR StackTrace  - Full Stack Trace:
+java.lang.NullPointerException: Cannot get property 'name' on null object
+	at com.janpix.repodoc.RepositorioServiceTestSpec.test retrieve document already exists in repository(RepositorioServiceTestSpec.groovy:35)
+2013-09-29 17:04:34,909 [main] ERROR StackTrace  - Full Stack Trace:
+java.lang.NullPointerException: Cannot get property 'name' on null object
+	at com.janpix.repodoc.RepositorioServiceTestSpec.test retrieve document already exists in repository(RepositorioServiceTestSpec.groovy:35)
+2013-09-29 17:04:34,922 [main] ERROR StackTrace  - Full Stack Trace:
+java.lang.NullPointerException: Cannot get property 'name' on null object
+	at com.janpix.repodoc.RepositorioServiceTestSpec.test retrieve document already exists in repository(RepositorioServiceTestSpec.groovy:35)
+2013-09-29 17:04:34,925 [main] ERROR StackTrace  - Full Stack Trace:
+java.lang.NullPointerException: Cannot get property 'name' on null object
+	at com.janpix.repodoc.RepositorioServiceTestSpec.test retrieve document already exists in repository(RepositorioServiceTestSpec.groovy:35)
+2013-09-29 17:04:34,925 [main] ERROR StackTrace  - Full Stack Trace:
+java.lang.NullPointerException: Cannot get property 'name' on null object
+	at com.janpix.repodoc.RepositorioServiceTestSpec.test retrieve document already exists in repository(RepositorioServiceTestSpec.groovy:35)
+2013-09-29 17:04:35,003 [main] ERROR StackTrace  - Full Stack Trace:
+java.lang.NullPointerException: Cannot get property 'name' on null object
+	at com.janpix.repodoc.RepositorioServiceTestSpec.test retrieve document already exists in repository(RepositorioServiceTestSpec.groovy:35)
+2013-09-29 17:04:35,004 [main] ERROR StackTrace  - Full Stack Trace:
+java.lang.NullPointerException: Cannot get property 'name' on null object
+	at com.janpix.repodoc.RepositorioServiceTestSpec.test retrieve document already exists in repository(RepositorioServiceTestSpec.groovy:35)
+2013-09-29 17:05:32,672 [main] ERROR StackTrace  - Full Stack Trace:
+Condition not satisfied:
+
+document.name == nameFile
+|        |    |  |
+|        null |  archivo1.txt
+|             false
+com.janpix.servidordocumentos.dto.ClinicalDocumentDTO@926e27
+
+	at com.janpix.repodoc.RepositorioServiceTestSpec.test retrieve document already exists in repository(RepositorioServiceTestSpec.groovy:34)
+2013-09-29 17:05:32,677 [main] ERROR StackTrace  - Full Stack Trace:
+Condition not satisfied:
+
+document.name == nameFile
+|        |    |  |
+|        null |  archivo1.txt
+|             false
+com.janpix.servidordocumentos.dto.ClinicalDocumentDTO@926e27
+
+	at com.janpix.repodoc.RepositorioServiceTestSpec.test retrieve document already exists in repository(RepositorioServiceTestSpec.groovy:34)
+2013-09-29 17:05:32,678 [main] ERROR StackTrace  - Full Stack Trace:
+junit.framework.AssertionFailedError: Condition not satisfied:
+
+document.name == nameFile
+|        |    |  |
+|        null |  archivo1.txt
+|             false
+com.janpix.servidordocumentos.dto.ClinicalDocumentDTO@926e27
+
+	at com.janpix.repodoc.RepositorioServiceTestSpec.test retrieve document already exists in repository(RepositorioServiceTestSpec.groovy:34)
+2013-09-29 17:05:32,678 [main] ERROR StackTrace  - Full Stack Trace:
+junit.framework.AssertionFailedError: Condition not satisfied:
+
+document.name == nameFile
+|        |    |  |
+|        null |  archivo1.txt
+|             false
+com.janpix.servidordocumentos.dto.ClinicalDocumentDTO@926e27
+
+	at com.janpix.repodoc.RepositorioServiceTestSpec.test retrieve document already exists in repository(RepositorioServiceTestSpec.groovy:34)
+2013-09-29 17:05:32,679 [main] ERROR StackTrace  - Full Stack Trace:
+junit.framework.AssertionFailedError: Condition not satisfied:
+
+document.name == nameFile
+|        |    |  |
+|        null |  archivo1.txt
+|             false
+com.janpix.servidordocumentos.dto.ClinicalDocumentDTO@926e27
+
+	at com.janpix.repodoc.RepositorioServiceTestSpec.test retrieve document already exists in repository(RepositorioServiceTestSpec.groovy:34)
+2013-09-29 17:05:32,679 [main] ERROR StackTrace  - Full Stack Trace:
+junit.framework.AssertionFailedError: Condition not satisfied:
+
+document.name == nameFile
+|        |    |  |
+|        null |  archivo1.txt
+|             false
+com.janpix.servidordocumentos.dto.ClinicalDocumentDTO@926e27
+
+	at com.janpix.repodoc.RepositorioServiceTestSpec.test retrieve document already exists in repository(RepositorioServiceTestSpec.groovy:34)

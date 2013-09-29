@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites>
+  <testsuite errors="0" failures="0" hostname="martin-notebuque" id="0" name="RepositorioServiceTestSpec" package="com.janpix.repodoc" tests="1" time="0.067" timestamp="2013-09-29T20:07:29">
+      <properties />
+
+      <testcase classname="com.janpix.repodoc.RepositorioServiceTestSpec" name="test retrieve document already exists in repository" time="0.063" />
+
+      <system-out><![CDATA[--Output from test retrieve document already exists in repository--
+]]></system-out>
+
+      <system-err><![CDATA[--Output from test retrieve document already exists in repository--
+]]></system-err>
+
+  </testsuite>
+  <testsuite errors="0" failures="0" hostname="martin-notebuque" id="1" name="ClinicalDocumentTestSpec" package="com.janpix.repodoc.domain" tests="1" time="0.668" timestamp="2013-09-29T20:07:25">
+      <properties />
+
+      <testcase classname="com.janpix.repodoc.domain.ClinicalDocumentTestSpec" name="test serialize and deserialize clinical document" time="0.666" />
+
+      <system-out><![CDATA[--Output from test serialize and deserialize clinical document--
+]]></system-out>
+
+      <system-err><![CDATA[--Output from test serialize and deserialize clinical document--
+]]></system-err>
+
+  </testsuite>
+</testsuites>
