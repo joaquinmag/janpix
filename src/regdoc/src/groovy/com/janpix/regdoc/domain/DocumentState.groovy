@@ -39,6 +39,22 @@ class DocumentState {
 			throw new CantChangeDocumentState()
 	}
 	
+	def isDeleted() {
+		return this.name == DocumentStateTypes.Deleted.toString()
+	}
+	
+	def isDeprecated() {
+		return this.name == DocumentStateTypes.Deprecated.toString()
+	}
+	
+	def isApproved() {
+		return this.name == DocumentStateTypes.Approved.toString()
+	}
+	
+	def isSubmitted() {
+		return this.name == DocumentStateTypes.Submitted.toString()
+	}
+	
 	static DocumentState submittedState() {
 		return new DocumentState(name: DocumentStateTypes.Submitted.toString())
 	}

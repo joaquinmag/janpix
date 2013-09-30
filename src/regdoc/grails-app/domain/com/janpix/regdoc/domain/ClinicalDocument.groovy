@@ -27,6 +27,8 @@ class ClinicalDocument {
 	static hasMany = [
 		relatedTo: DocumentRelationship
 	]
+	boolean isSigned = false
+	boolean isVersionUpdated = false
 	
 	static mappedBy = [ relatedTo: 'parentDocument', relatedFrom: 'relatedDocument' ]
 
@@ -50,10 +52,58 @@ class ClinicalDocument {
 		documentCreationEnded(nullable: true)
 		documentType(nullable: false)
 		format(nullable: false, inList: FormatType.values())
+		relatedFrom(nullable: true, validator: { val, obj ->
+			( val == null || !obj.relatedTo.contains(val) )
+		})
 	}
 	
-	def relate(ClinicalDocument document, DocumentRelationshipType relationType) {
-		//def documentRelation = new DocumentRelationship(
+	def sign(document) {
+		if (document.state.isDeleted())
+			throw new InvalidDocumentStateException()
+			
+		if (isSigned)
+			throw new DocumentAlreadySignedException()
+		
+		// solo se permite una firma por documento.
+		
+		relate(document, DocumentRelationshipType.Sign)
+		
+		isSigned = true
+	}
+	
+	def append(document) {
+		if (document.state.isDeprecated() || document.state.isDeleted())
+			throw new InvalidDocumentStateException()
+		
+		// todos los documentos pueden tener muchos append, por lo que no se valida contra otras relaciones existentes.
+		
+		relate(document, DocumentRelationshipType.Append)
+	}
+	
+	/***
+	 * Actualiza la versión del documento generando una relación entre documentos.
+	 * Por defecto la relación entre documentos es de transformación. Se puede indicar como una relación de reemplazo indicando el segundo parámetro en true.
+	 * Solo se admite una nueva relación de actualización de versión por documento.
+	 */
+	def updateVersion(document, isReplaced = false) {
+		if (!isReplaced && document.state.isDeleted())
+			throw new InvalidDocumentStateException()
+
+		if (isVersionUpdated)
+			throw new DocumentAlreadyUpdatedVersionException()
+		
+		relate(document, (isReplaced) ? DocumentRelationshipType.Replace : DocumentRelationshipType.Transform) 
+		
+		isVersionUpdated = true
+	}
+	
+	private void relate(document, relationType) {
+		if (document.relatedFrom)
+			throw new DocumentAlreadyRelatedException()
+		
+		def documentRelation = new DocumentRelationship(this, document, relationType)
+		relatedTo.add(documentRelation)
+		document.relatedFrom = documentRelation
 	}
 	
 	boolean equals(other) {
