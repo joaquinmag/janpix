@@ -18,8 +18,8 @@ class ClinicalDocumentAssembler {
 			dto.fileAttributes.repositoryId = "PonerUUIDDelRepositorio"
 			dto.fileAttributes.uuid = domain.uuid
 			dto.fileAttributes.mimeType = domain.mimeType
-			//dto.fileAttributes.fileHash = domain.hash //TODO ver
-			//dto.fileAttributes.size //TODO ver
+			dto.fileAttributes.fileHash = domain.hash 
+			dto.fileAttributes.size  = domain.size
 			
 			dto.binaryData = domain.binaryData
 		}

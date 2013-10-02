@@ -11,7 +11,8 @@ class ClinicalDocument {
 	String uuid //Identificador asignado por la Entidad Sanitaria
 	String mimeType
 	Date dateCreated
-	//String hash //TODO ver
+	String hash
+	Long size
 	
 	static constraints = {
 		

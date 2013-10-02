@@ -6,6 +6,7 @@ import spock.lang.*
 
 import com.janpix.repodoc.domain.ClinicalDocument
 import com.janpix.servidordocumentos.dto.ClinicalDocumentDTO
+import com.janpix.servidordocumentos.FileUtils
 
 /**
  * Testea el correcto funcionamiento del Servicio que aloja los documentos
@@ -34,10 +35,10 @@ class RepositorioServiceTestSpec extends Specification {
 			document.name == nameFile
 			document.fileAttributes.uuid == uuid
 			document.fileAttributes.mimeType == mimeType
-			//document.fileAttributes.repositoryId == "uuid del repositorio"
-			//document.fileAttributes.fileHash == "calcular hash del documento"
-			//document.fileAttributes.size == 10
+			
+			document.fileAttributes.size == new File(PATH_RESOURCES+nameFile).bytes.size()
 			document.binaryData == new File(PATH_RESOURCES+nameFile).bytes
+			document.fileAttributes.fileHash == FileUtils.calculateSHA1(document.binaryData);
     }
 	
 	/*void "test provide document and seek"(){
@@ -57,6 +58,8 @@ class RepositorioServiceTestSpec extends Specification {
 		clinicalDocument.uuid = uniqueId
 		clinicalDocument.binaryData = byteArray
 		clinicalDocument.mimeType = mimeType
-		clinicalDocument.save()
+		clinicalDocument.hash = FileUtils.calculateSHA1(byteArray);
+		clinicalDocument.size = byteArray.size()
+		clinicalDocument.save(failOnError:true)
 	}
 }
