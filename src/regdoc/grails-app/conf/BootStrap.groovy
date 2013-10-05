@@ -1,5 +1,6 @@
 
 import com.janpix.regdoc.domain.*
+import com.janpix.servidordocumentos.dto.AuthorDTO
 
 class BootStrap {
 
@@ -23,6 +24,8 @@ class BootStrap {
 		new ClinicalDocumentType("LDL", laboratoryAdults).save(flush: true, failOnError: true)
 		new ClinicalDocumentType("Glóbulos blancos", laboratoryAdults).save(flush: true, failOnError: true)
 		new ClinicalDocumentType("CD4", laboratoryAdults).save(flush: true, failOnError: true)
+		
+		
     }
     def destroy = {
     }
