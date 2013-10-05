@@ -1,3 +1,5 @@
+*.zip
+*.zip.sha1
 target/
 target-eclipse/
 .settings/
