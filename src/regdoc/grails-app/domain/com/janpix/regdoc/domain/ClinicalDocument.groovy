@@ -1,6 +1,7 @@
 package com.janpix.regdoc.domain
 
 import com.janpix.regdoc.infrastructure.DocumentStateUserType
+import com.janpix.regdoc.exceptions.*
 
 enum FormatType {
 	PDF,
