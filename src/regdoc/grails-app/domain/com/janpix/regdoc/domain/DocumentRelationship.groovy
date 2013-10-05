@@ -1,5 +1,6 @@
 package com.janpix.regdoc.domain
 
+
 enum DocumentRelationshipType {
 	Replace,
 	Append,
@@ -9,16 +10,20 @@ enum DocumentRelationshipType {
 
 class DocumentRelationship {
 
-	String type
+	DocumentRelationshipType type
 	ClinicalDocument parentDocument
 	ClinicalDocument relatedDocument
 	
 	static constraints = {
-		type (nullable: false, inList: DocumentRelationshipType.values())
+		type (nullable: false)
 		parentDocument(nullable: false, validator: { val, obj ->
 			!(obj.relatedDocument == val)
 		})
 		relatedDocument(nullable: false)
+	}
+	
+	static mapping = {
+		type enumType: "values"
 	}
 	
 	public DocumentRelationship(ClinicalDocument parentDocument, ClinicalDocument relatedDocument, DocumentRelationshipType type) {

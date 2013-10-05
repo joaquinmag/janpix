@@ -22,7 +22,7 @@ class ClinicalDocument {
 	Date documentCreationEnded
 
 	ClinicalDocumentType documentType // Tipo de documento
-	String format // Indica el formato del documento. Tiene algo que ver con el formato del archivo, pero también tiene que ver con el tipo de documento.
+	FormatType format // Indica el formato del documento. Tiene algo que ver con el formato del archivo, pero también tiene que ver con el tipo de documento.
 
 	DocumentRelationship relatedFrom
 	static hasMany = [
@@ -37,6 +37,7 @@ class ClinicalDocument {
 		state type: DocumentStateUserType, {
 			column name: "state"
 		}
+		format enumType: "values"
 	}
 	
 	static constraints = {
@@ -52,7 +53,7 @@ class ClinicalDocument {
 		})
 		documentCreationEnded(nullable: true)
 		documentType(nullable: false)
-		format(nullable: false, inList: FormatType.values())
+		format(nullable: false)
 		relatedFrom(nullable: true, validator: { val, obj ->
 			( val == null || !obj.relatedTo.contains(val) )
 		})
