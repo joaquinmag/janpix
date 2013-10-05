@@ -107,7 +107,7 @@
 			<attribute name="org.grails.ide.eclipse.core.SOURCE_FOLDER" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="src" path=".link_to_grails_plugins/modulos-servidor-documentos-0.1/src/groovy">
+	<classpathentry kind="src" path=".link_to_grails_plugins/modulos-servidor-documentos-0.2/src/groovy">
 		<attributes>
 			<attribute name="org.grails.ide.eclipse.core.SOURCE_FOLDER" value="true"/>
 		</attributes>
