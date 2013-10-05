@@ -2,16 +2,19 @@ package com.janpix.repodoc.assemblers
 
 import com.janpix.repodoc.domain.ClinicalDocument
 import com.janpix.servidordocumentos.dto.ClinicalDocumentDTO
-import com.janpix.servidordocumentos.dto.FileAttributesDTO;
+import com.janpix.servidordocumentos.dto.FileAttributesDTO
 
 class ClinicalDocumentAssembler {
 
 	public static ClinicalDocumentDTO toDTO(ClinicalDocument domain){
+		if(domain == null)
+			return null
+			
 		ClinicalDocumentDTO dto = new ClinicalDocumentDTO()
 		dto.fileAttributes = new FileAttributesDTO()
 		
-		if(domain != null){
-			//dto.uniqueId = dto.id //TODO VER
+		
+			dto.uniqueId = domain.id.toString()
 			dto.name = domain.name
 			dto.documentCreationStarted = domain.dateCreated
 			dto.documentCreationEnded = domain.dateCreated
@@ -22,12 +25,24 @@ class ClinicalDocumentAssembler {
 			dto.fileAttributes.size  = domain.size
 			
 			dto.binaryData = domain.binaryData
-		}
+		
 
 		return dto
 	}
 	
-	public static ClinicalDocument fromDTO(ClinicalDocumentDTO dto){
-		return null;
+	public static ClinicalDocument fromDTO(ClinicalDocumentDTO dto) {
+		if(dto == null)
+			return null
+		
+		ClinicalDocument document = new ClinicalDocument()
+		document.name = dto.name
+		document.binaryData = dto.binaryData
+		document.dateCreated = dto.documentCreationStarted
+		document.uuid = dto.fileAttributes?.uuid
+		document.mimeType = dto.fileAttributes?.mimeType
+		document.hash = dto.fileAttributes?.fileHash
+		document.size = dto.fileAttributes?.size
+		
+		return document
 	}
 }

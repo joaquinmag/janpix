@@ -1,4 +1,4 @@
-dataSource {
+/*dataSource {
     pooled = true
     driverClassName = "org.h2.Driver"
     username = "sa"
@@ -9,10 +9,10 @@ hibernate {
     cache.use_query_cache = false
     cache.region.factory_class = 'net.sf.ehcache.hibernate.EhCacheRegionFactory' // Hibernate 3
 //    cache.region.factory_class = 'org.hibernate.cache.ehcache.EhCacheRegionFactory' // Hibernate 4
-}
+}*/
 
 // environment specific settings
-environments {
+/*environments {
     development {
         dataSource {
             dbCreate = "create-drop" // one of 'create', 'create-drop', 'update', 'validate', ''
@@ -42,4 +42,29 @@ environments {
             }
         }
     }
+}*/
+
+environments {
+	development {
+		grails{
+			mongo {
+				host = "localhost"
+				port = 27017
+				//username = "mongodb"
+				//password = "mongodb"
+				databaseName = "janpix_repodoc"
+			}
+		}
+	}
+	test {
+		grails{
+			mongo {
+				host = "localhost"
+				port = 27017
+				//username = "mongodb"
+				//password = "mongodb"
+				databaseName = "janpix_repodoc"
+			}
+		}
+	}
 }

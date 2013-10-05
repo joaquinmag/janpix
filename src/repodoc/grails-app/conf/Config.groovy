@@ -113,3 +113,12 @@ log4j = {
            'org.hibernate',
            'net.sf.ehcache.hibernate'
 }
+
+// Mongo
+environments{
+	test{
+		grails.mongo.default.mapping = {
+			writeConcern WriteConcern.JOURNAL_SAFE 
+		}
+	}
+}
