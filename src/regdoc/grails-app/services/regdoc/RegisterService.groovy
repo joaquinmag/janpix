@@ -16,7 +16,7 @@ import grails.transaction.Transactional
 @Transactional
 @SOAPBinding(parameterStyle=ParameterStyle.BARE)
 @GrailsCxfEndpoint(expose = EndpointType.JAX_WS,soap12=true)
-class RegistroService {
+class RegisterService {
 
 	@WebMethod
 	public void registerDocument(@WebParam(name = "clinicalDocument")ClinicalDocument clinicalDocument) {
