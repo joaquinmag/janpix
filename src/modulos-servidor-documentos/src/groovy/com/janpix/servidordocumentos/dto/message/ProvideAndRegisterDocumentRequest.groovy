@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlRootElement
 import com.janpix.servidordocumentos.dto.ClinicalDocumentDTO
 
 @XmlRootElement
-class RegisterDocumentMessage {
+class ProvideAndRegisterDocumentResponse {
 	
 	@XmlElement(required=true)
 	ClinicalDocumentDTO clinicalDocument
