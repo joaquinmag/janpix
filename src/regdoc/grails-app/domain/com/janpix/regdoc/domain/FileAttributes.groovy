@@ -1,17 +1,20 @@
 package com.janpix.regdoc.domain
 
 class FileAttributes {
-	String uuid
+	String uuid // Llega desde entidad sanitaria.
+	String filename
 	String repositoryId
 	String mimeType
 	Date creationTime
-	String size
+	Long size
+	String fileHash
 	
 	static constraints = {
-		uuid(unique: 'repositoryId', nullable: false, blank: false)
+		uuid(unique: true, nullable: false, blank: false)
+		filename(nullable: false)
 		repositoryId(nullable: false, blank: false)
 		mimeType(nullable: false, blank: false)
 		creationTime(nullable: false)
-		size(nullable: false, blank: false)
+		fileHash(nullable: false, blank: false)
 	}
 }

@@ -9,7 +9,8 @@ enum FormatType {
 }
 
 class ClinicalDocument {
-	String uniqueId // Utilizado para referenciar otros docs
+	String uniqueId // Utilizado para referenciar a otros docs (mongo). Es el que se retorna.
+	String title
 	String patientId // El paciente al que representa
 	Author author // El autor del documento
 	FileAttributes file // Atributos que pertenecen unicamente al archivo
@@ -43,6 +44,7 @@ class ClinicalDocument {
 	static constraints = {
 		uniqueId(nullable: false, unique: true, blank: false)
 		patientId(nullable: false, blank: false)
+		title(nullable: false)
 		author(nullable: false)
 		file(nullable: false)
 		state(nullable: false)
