@@ -26,7 +26,7 @@
 		<link>
 			<name>.link_to_grails_plugins</name>
 			<type>2</type>
-			<location>/home/joaquin/Janpix/janpix/src/repodoc/target/work/plugins</location>
+			<location>/home/martin/workspace/tpprof/janpix/janpix/src/repodoc/target/work/plugins</location>
 		</link>
 	</linkedResources>
 </projectDescription>
