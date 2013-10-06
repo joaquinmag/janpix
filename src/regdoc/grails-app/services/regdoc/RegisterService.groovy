@@ -10,6 +10,7 @@ import org.apache.cxf.annotations.WSDLDocumentation
 import org.grails.cxf.utils.EndpointType
 import org.grails.cxf.utils.GrailsCxfEndpoint
 
+import com.janpix.regdoc.domain.ClinicalDocument;
 import com.janpix.servidordocumentos.dto.message.*
 import grails.transaction.Transactional
 
@@ -19,8 +20,8 @@ import grails.transaction.Transactional
 class RegisterService {
 
 	@WebMethod
-	public void registerDocument(@WebParam(name = "clinicalDocument")RegisterDocumentMessage clinicalDocument) {
-		
+	public void registerDocument(@WebParam(name = "clinicalDocument") RegisterDocumentMessage clinicalDocument) {
+		ClinicalDocument document = new ClinicalDocument()
 	}
 	
 }
