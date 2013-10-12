@@ -6,6 +6,8 @@ import com.janpix.repodoc.assemblers.ClinicalDocumentAssembler
 import com.janpix.repodoc.domain.ClinicalDocument
 import com.janpix.servidordocumentos.FileUtils;
 import com.janpix.servidordocumentos.dto.ClinicalDocumentDTO
+import com.janpix.servidordocumentos.dto.message.*;
+import com.janpix.servidordocumentos.dto.message.ACKMessage.TypeCode;
 
 @Transactional
 class RepositorioService {
@@ -16,27 +18,40 @@ class RepositorioService {
 	 * @return
 	 */
     def provideAndRegisterDocument(ClinicalDocumentDTO documentDTO) {
-		//try{
+		try{
+			log.debug("Iniciando ProvideAndRegisterDocument...")
+			
+			log.debug("Realizando validaciones...")
 			String hash = FileUtils.calculateSHA1(documentDTO.binaryData)
+			
+			validateHash(hash,documentDTO) 
+			validateSize(documentDTO) 
+		
+			
 			// Busco el documento. Si existe y tiene el mismo HASH no hago nada
 			// TODO hacer
 			
+			log.debug("Convirtiendo DTO...")
 			// Ingreso el documento
 			ClinicalDocument document = ClinicalDocumentAssembler.fromDTO(documentDTO)
 			document.hash = hash
 			document.size = documentDTO.binaryData.size()
 			
+			log.debug("Grabando documento...")
 			document.save(failOnError:true,flush:true)
 			
 			// Registro el documento en el Registro
+			log.debug("Registrando documento...")
 			this.registerDocument(document)
-	/*	}
-		catch (Exception e) {
+			
+			log.debug("ProvideAndRegisterDocument finalizada correctamente!")
+			return new ACKMessage(typeCode:TypeCode.SuccededInsertion, clinicalDocument:ClinicalDocumentAssembler.toDTO(document))
+		}
+		catch (Exception e) { //TODO definir Exception propia
 			//tx.setRollbackOnly()
 			log.error("Exception : ${e.message}", e)
-			//return new ACKMessage(typeCode:TypeCode.InternalError, text: e.message)
-			throw e
-		}*/
+			return new ACKMessage(typeCode:TypeCode.InternalError, text: e.message)
+		}
 		
     }
 	
@@ -59,6 +74,25 @@ class RepositorioService {
 	 */
 	private def registerDocument(ClinicalDocument document){
 		
+	}
+	
+	/**
+	 * Valida que el hash enviado sea igual al calculado
+	 * @param calculatedHash
+	 * @param documentDTO
+	 * @return
+	 */
+	private def validateHash(String calculatedHash, ClinicalDocumentDTO documentDTO){
+		// TODO hacer
+	}
+	
+	/**
+	 * Valida que el size enviado sea igual al calculado
+	 * @param documentDTO
+	 * @return
+	 */
+	private def validateSize(documentDTO){
+	
 	}
 }
 

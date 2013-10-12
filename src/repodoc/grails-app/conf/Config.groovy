@@ -93,14 +93,74 @@ environments {
     }
 }
 
-// log4j configuration
+/** log4j configuration **/
 log4j = {
-    // Example of changing the log pattern for the default console appender:
-    //
-    //appenders {
-    //    console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
-    //}
+	appenders {
+		console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
+					
+		file name: 'applicationLog',
+					maxFileSize: 1024,
+					file: "/tmp/logs/janpix/repodoc/application.log"
+	}
 
+	environments {
+		production {
+			root {
+				error 'applicationLog'
+			}
+		}
+		test{
+			root {
+				error 'applicationLog','stdout'
+			}
+			//Usa los appenders 'stdout' y 'applicationLog' para el nivel debug
+			debug stdout: [
+				'grails.app.controllers.com.janpix.repodoc',
+				'grails.app.domain.com.janpix.repodoc',
+				'grails.app.services.com.janpix.repodoc',
+				'grails.app.taglib.com.janpix.repodoc',
+				'grails.app.conf.com.janpix.repodoc',
+				'grails.app.filters.com.janpix.repodoc'
+			],additivity:false
+		
+			debug applicationLog: [
+				'grails.app.controllers.com.janpix.repodoc',
+				'grails.app.domain.com.janpix.repodoc',
+				'grails.app.services.com.janpix.repodoc',
+				'grails.app.taglib.com.janpix.repodoc',
+				'grails.app.conf.com.janpix.repodoc',
+				'grails.app.filters.com.janpix.repodoc'
+		   ],additivity:false
+
+		}
+		development{
+			root {
+				error 'applicationLog','stdout'
+			}
+			//Usa los appenders 'stdout' y 'applicationLog' para el nivel debug
+			debug stdout: [
+				'grails.app.controllers.com.janpix.repodoc',
+				'grails.app.domain.com.janpix.repodoc',
+				'grails.app.services.com.janpix.repodoc',
+				'grails.app.taglib.com.janpix.repodoc',
+				'grails.app.conf.com.janpix.repodoc',
+				'grails.app.filters.com.janpix.repodoc'
+			],additivity:false
+		
+			debug applicationLog: [
+				'grails.app.controllers.com.janpix.repodoc',
+				'grails.app.domain.com.janpix.repodoc',
+				'grails.app.services.com.janpix.repodoc',
+				'grails.app.taglib.com.janpix.repodoc',
+				'grails.app.conf.com.janpix.repodoc',
+				'grails.app.filters.com.janpix.repodoc'
+		   ],additivity:false
+
+		}
+	}
+	
+	//###Configuraciones ajenas a los entornos
+	//#Grails
     error  'org.codehaus.groovy.grails.web.servlet',        // controllers
            'org.codehaus.groovy.grails.web.pages',          // GSP
            'org.codehaus.groovy.grails.web.sitemesh',       // layouts
@@ -111,10 +171,10 @@ log4j = {
            'org.codehaus.groovy.grails.orm.hibernate',      // hibernate integration
            'org.springframework',
            'org.hibernate',
-           'net.sf.ehcache.hibernate'
+           'net.sf.ehcache.hibernate'			
 }
 
-// Mongo
+/** Mongo **/
 environments{
 	test{
 		grails.mongo.default.mapping = {

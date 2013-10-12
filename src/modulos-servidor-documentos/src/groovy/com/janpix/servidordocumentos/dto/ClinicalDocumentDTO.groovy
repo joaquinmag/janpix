@@ -44,8 +44,18 @@ class ClinicalDocumentDTO {
 	String typeName
 	
 	@XmlElement
-	String formatName  
+	String formatName
 	
+	//TODO hacer
 	@XmlElement
-	byte[] binaryData //RepoDoc
+	String availabilityStatus; //Approved or Deprecated
+	
+	//TODO falta ver el tema de las relaciones
+	//Yo haria 
+	@XmlElement
+	String option //Replace, Addendum, Transformation
+	
+	//RepoDoc
+	@XmlElement
+	byte[] binaryData 
 }

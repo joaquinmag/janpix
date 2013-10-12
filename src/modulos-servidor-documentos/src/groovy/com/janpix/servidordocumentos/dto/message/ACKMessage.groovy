@@ -10,8 +10,14 @@ class ACKMessage {
 
 	@XmlRootElement
 	public enum TypeCode {
-		SuccededCreation(1),
-		// TODO definir
+		SuccededInsertion(1),
+		SuccededRegistration(2),
+		SuccededQuery(3),
+		SuccededRetrive(4),
+		MetadataError(5),
+		ValidationError(6),
+		InternalError(7),
+		// TODO definir los faltantes
 		
 		TypeCode(int exceptionCode) { this.exceptionCode = exceptionCode }
 		private final int exceptionCode
@@ -20,6 +26,9 @@ class ACKMessage {
 	
 	@XmlElement
 	TypeCode typeCode
+	
+	@XmlElement
+	String text
 	
 	@XmlElement(required=true)
 	ClinicalDocumentDTO clinicalDocument

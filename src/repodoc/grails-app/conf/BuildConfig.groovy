@@ -12,8 +12,8 @@ grails.project.fork = [
     //  compile: [maxMemory: 256, minMemory: 64, debug: false, maxPerm: 256, daemon:true],
 	
     // configure settings for the test-app JVM, uses the daemon by default
-    //test: [maxMemory: 768, minMemory: 64, debug: false, maxPerm: 512, daemon:false],
-	test:false,
+    test: [maxMemory: 768, minMemory: 64, debug: false, maxPerm: 512, daemon:false], //Para modo DEBUG
+	//test:false,
     // configure settings for the run-app JVM
     run: [maxMemory: 768, minMemory: 64, debug: false, maxPerm: 256, forkReserve:false],
     // configure settings for the run-war JVM
@@ -59,8 +59,9 @@ grails.project.dependency.resolution = {
         // plugins for the compile step
         compile ":scaffolding:2.0.0"
         compile ':cache:1.1.1'
-        compile ":modulos-servidor-documentos:0.3"
+        compile ":modulos-servidor-documentos:0.5"
 		compile ":mongodb:1.3.0"
+		compile ":cxf:1.1.1"
 
         // plugins needed at runtime but not for compilation
         runtime ":hibernate:3.6.10.1" // or ":hibernate4:4.1.11.1"
