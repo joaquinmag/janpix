@@ -7,8 +7,13 @@ import javax.xml.bind.annotation.XmlRootElement
 @XmlRootElement
 class HealthEntityDTO {
 
+	@XmlElement
 	String healthcareFacilityTypeCode
+
+	@XmlElement
 	String name
+
+	@XmlElement
 	String oid
 
 }

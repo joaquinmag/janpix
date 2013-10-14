@@ -56,18 +56,18 @@ class DocumentState {
 	}
 	
 	static DocumentState submittedState() {
-		return new DocumentState(name: DocumentStateTypes.Submitted.toString())
+		return new DocumentState(DocumentStateTypes.Submitted.toString())
 	}
 	
 	static DocumentState approvedState() {
-		return new DocumentState(name: DocumentStateTypes.Approved.toString())
+		return new DocumentState(DocumentStateTypes.Approved.toString())
 	}
 	
 	static DocumentState deprecatedState() {
-		return new DocumentState(name: DocumentStateTypes.Deprecated.toString())
+		return new DocumentState(DocumentStateTypes.Deprecated.toString())
 	}
 	
 	static DocumentState deletedState() {
-		return new DocumentState(name: DocumentStateTypes.Deleted.toString())
+		return new DocumentState(DocumentStateTypes.Deleted.toString())
 	}
 }

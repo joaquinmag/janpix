@@ -1,6 +1,7 @@
 package com.janpix.regdoc.infrastructure
 
 import com.janpix.regdoc.domain.Author
+import com.janpix.regdoc.domain.Person
 import com.janpix.servidordocumentos.dto.AuthorDTO
 
 class AuthorAssembler {

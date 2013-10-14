@@ -2,6 +2,7 @@ package regdoc
 
 import com.janpix.regdoc.domain.ClinicalDocument;
 import com.janpix.servidordocumentos.dto.message.*
+import com.janpix.servidordocumentos.dto.*
 import com.janpix.regdoc.infrastructure.*
 import grails.transaction.Transactional
 

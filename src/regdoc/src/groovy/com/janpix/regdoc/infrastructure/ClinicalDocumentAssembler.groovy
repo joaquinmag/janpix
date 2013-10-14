@@ -1,6 +1,7 @@
 package com.janpix.regdoc.infrastructure
 
 import com.janpix.regdoc.domain.ClinicalDocument
+import com.janpix.regdoc.domain.ClinicalDocumentType
 import com.janpix.servidordocumentos.dto.ClinicalDocumentDTO
 
 class ClinicalDocumentAssembler {
