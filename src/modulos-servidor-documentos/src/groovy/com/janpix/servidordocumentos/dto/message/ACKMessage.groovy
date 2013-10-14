@@ -13,11 +13,12 @@ class ACKMessage {
 		SuccededInsertion(1),
 		SuccededRegistration(2),
 		SuccededQuery(3),
-		SuccededRetrive(4),
+		SuccededRetrieve(4),
 		MetadataError(5),
 		ValidationError(6),
 		InternalError(7),
-		RegistrationError(8)
+		RegistrationError(8),
+		RetrieveError(9)
 		// TODO definir los faltantes
 		
 		TypeCode(int exceptionCode) { this.exceptionCode = exceptionCode }

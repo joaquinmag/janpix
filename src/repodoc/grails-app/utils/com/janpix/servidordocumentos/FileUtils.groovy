@@ -6,6 +6,8 @@ import javax.activation.DataHandler
 import javax.activation.DataSource
 import javax.mail.util.ByteArrayDataSource
 
+import org.apache.commons.io.IOUtils
+
 class FileUtils {
 
 	/**
@@ -40,7 +42,8 @@ class FileUtils {
 	 */
 	private static byte[] DataHandlerToByteArray(DataHandler data)
 	{
-		return data?.inputStream.bytes
+		return IOUtils.toByteArray(data.getInputStream());
+		//return data?.inputStream.bytes
 	}
 	
 	private static DataHandler ByteArrayToDataHandler(byte[] byteArray,String mimeType){

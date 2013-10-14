@@ -1,13 +1,19 @@
 package com.janpix.repodoc
 
 import grails.transaction.Transactional
+import grails.validation.ValidationException
+
+import org.bson.types.ObjectId
 
 import com.janpix.repodoc.assemblers.ClinicalDocumentAssembler
 import com.janpix.repodoc.domain.ClinicalDocument
-import com.janpix.servidordocumentos.FileUtils;
+import com.janpix.repodoc.exceptions.BussinessRuleException
+import com.janpix.repodoc.exceptions.MetadataException
+import com.janpix.repodoc.exceptions.RegistrationServiceException
+import com.janpix.servidordocumentos.FileUtils
 import com.janpix.servidordocumentos.dto.ClinicalDocumentDTO
-import com.janpix.servidordocumentos.dto.message.*;
-import com.janpix.servidordocumentos.dto.message.ACKMessage.TypeCode;
+import com.janpix.servidordocumentos.dto.message.*
+import com.janpix.servidordocumentos.dto.message.ACKMessage.TypeCode
 
 @Transactional
 class RepositorioService {
@@ -18,6 +24,7 @@ class RepositorioService {
 	 * @return
 	 */
     def provideAndRegisterDocument(ClinicalDocumentDTO documentDTO) {
+		ClinicalDocument.withTransaction { tx->
 		try{
 			log.debug("Iniciando ProvideAndRegisterDocument...")
 			
@@ -29,7 +36,7 @@ class RepositorioService {
 			String hash = FileUtils.calculateSHA1(document.binaryData)
 			
 			validateHash(hash,document) 
-			validateSize(document) 
+			validateSize(documentDTO?.fileAttributes?.size,document?.size) 
 		
 			
 			// Busco el documento. Si existe y tiene el mismo HASH no hago nada
@@ -40,21 +47,42 @@ class RepositorioService {
 			document.size = document.binaryData?.size()
 			
 			log.debug("Grabando documento...")
-			document.save(failOnError:true,flush:true)
+			document.save(failOnError:true)
 			
 			// Registro el documento en el Registro
 			log.debug("Registrando documento...")
 			this.registerDocument(document)
 			
 			log.debug("ProvideAndRegisterDocument finalizada correctamente!")
-			return new ACKMessage(typeCode:TypeCode.SuccededInsertion, clinicalDocument:ClinicalDocumentAssembler.toDTO(document))
+			return new ACKMessage(typeCode:TypeCode.SuccededInsertion)
 		}
-		catch (Exception e) { //TODO definir Exception propia
-			//tx.setRollbackOnly()
+		catch(ValidationException ve) {
+			tx.setRollbackOnly()
+			log.error("Validation Exception : ${ve.message}", ve)
+			return new ACKMessage(typeCode:TypeCode.ValidationError, text: ve.message)
+		}
+		catch(RegistrationServiceException rse) {
+			tx.setRollbackOnly()
+			log.error("RegistrationService Exception : ${rse.message}", rse)
+			return new ACKMessage(typeCode:TypeCode.InternalError, text: rse.message)
+		}
+		catch (MetadataException me) {
+			tx.setRollbackOnly()
+			log.error("Metadata Exception : ${me.message}", me)
+			return new ACKMessage(typeCode:TypeCode.MetadataError, text: me.message)
+		}
+		catch (BussinessRuleException bre) {
+			tx.setRollbackOnly()
+			log.error("BussinessRule Exception : ${bre.message}", bre)
+			//return new ACKMessage(typeCode:TypeCode.RegistrationError, text: bre.message)
+			return new ACKMessage(typeCode:TypeCode.InternalError, text: bre.message)
+		}
+		catch (Exception e) {
+			tx.setRollbackOnly()
 			log.error("Exception : ${e.message}", e)
 			return new ACKMessage(typeCode:TypeCode.InternalError, text: e.message)
 		}
-		
+		}
     }
 	
 	/**
@@ -62,12 +90,39 @@ class RepositorioService {
 	 * @param uniqueId
 	 * @return
 	 */
-	ClinicalDocumentDTO retrieveDocumentByUUID(String uuid){
-		// Se obtiene el documento
-		ClinicalDocument document = ClinicalDocument.findByUuid(uuid)
-		
-		// Se transforma el documento
-		return ClinicalDocumentAssembler.toDTO(document)
+	ACKMessage retrieveDocumentByUUID(String uuid){
+		try{
+			log.debug("Iniciando RetrieveDocument...")
+			
+			log.debug("Obteniendo documento...")
+			ClinicalDocument document = ClinicalDocument.findById(new ObjectId(uuid))
+			
+			if(document == null){
+				log.debug("El documento solicitado no existe")
+				return new ACKMessage(typeCode:TypeCode.RetrieveError, text:"El documento solicitado no existe en el repositorio")
+			}
+				
+			log.debug("Armando respuesta...")
+			ClinicalDocumentDTO dto = ClinicalDocumentAssembler.toDTO(document)
+			
+			log.debug("RetrieveDocument finalizado correctamente")
+			return new ACKMessage(typeCode:TypeCode.SuccededRetrieve, clinicalDocument:dto)
+		}
+		catch (BussinessRuleException bre) {
+			//tx.setRollbackOnly()
+			log.error("BussinessRule Exception : ${bre.message}", bre)
+			return new ACKMessage(typeCode:TypeCode.RetrieveError, text: bre.message)
+		}
+		catch(IllegalArgumentException iae) {
+			//tx.setRollbackOnly()
+			log.error("IllegalArgument Exception : ${iae.message}", iae)
+			return new ACKMessage(typeCode:TypeCode.RetrieveError, text: "El UUID enviado no es valido")
+		}
+		catch (Exception e) {
+			//tx.setRollbackOnly()
+			log.error("Exception : ${e.message}", e)
+			return new ACKMessage(typeCode:TypeCode.InternalError, text: e.message)
+		}
 	}
 	
 	/**
@@ -75,7 +130,7 @@ class RepositorioService {
 	 * @param document
 	 */
 	private def registerDocument(ClinicalDocument document){
-		
+		//throw new Exception("Excepcion de prueba en RepositorioService.registerDocument");
 	}
 	
 	/**
@@ -85,7 +140,9 @@ class RepositorioService {
 	 * @return
 	 */
 	private def validateHash(String calculatedHash, ClinicalDocument documentDTO){
-		// TODO hacer
+		if(documentDTO?.hash != null)
+			if(documentDTO.hash != calculatedHash)
+				throw new MetadataException("El Hash enviado no coincide con el Hash del documento.")
 	}
 	
 	/**
@@ -93,8 +150,10 @@ class RepositorioService {
 	 * @param documentDTO
 	 * @return
 	 */
-	private def validateSize(document){
-	
+	private def validateSize(sizeDTO,sizeDomain){
+		if(sizeDTO != null)
+			if(sizeDTO != sizeDomain)
+				throw new MetadataException("El tamaño enviado del archivo no coincide con el tamaño original")
 	}
 }
 

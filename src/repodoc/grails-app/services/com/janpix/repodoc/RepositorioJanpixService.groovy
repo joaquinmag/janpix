@@ -39,11 +39,11 @@ class RepositorioJanpixService {
 	 * @return
 	 */
 	@WebMethod
-	public ACKMessage retriveDocument(
-		@WebParam(name = "retriveDocumentMessage")
-		RetriveDocumentRequest retriveRequest
+	public ACKMessage retrieveDocument(
+		@WebParam(name = "retrieveDocumentMessage")
+		RetrieveDocumentRequest retrieveRequest
 		)
 	{
-		return null
+		return repositorioService.retrieveDocumentByUUID(retrieveRequest.uuid);
 	}
 }

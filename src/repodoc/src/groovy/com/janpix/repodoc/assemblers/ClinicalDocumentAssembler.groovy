@@ -25,7 +25,10 @@ class ClinicalDocumentAssembler {
 		dto.fileAttributes.fileHash = domain.hash 
 		dto.fileAttributes.size  = domain.size
 			
-		dto.binaryData = FileUtils.ByteArrayToDataHandler(domain.binaryData,"application/octet-stream")
+		dto.binaryData = FileUtils.ByteArrayToDataHandler(
+									domain.binaryData,
+									(domain.mimeType)?domain.mimeType:"application/octet-stream"
+									)
 		
 
 		return dto

@@ -17,14 +17,14 @@ class ClinicalDocument {
 	static mapWith = "mongo"
 	
 	static constraints = {
-		
+		id(unique:true)
+		name(nullable:false)
+		binaryData(nullable:false)
+		uuid(unique:true,nullable:false)
+		mimeType(nullable:false)
+		dateCreated(nullable:false)
+		hash(nullable:false)
+		size(nullable:false)
 	}
-	/*def setData(InputStream is, long length) {
-		binaryDataSize = length
-		  binaryData = new BlobImpl(is, (int)length)
-	  }
-	 
-	  InputStream getData() {
-		  return binaryData?.binaryStream
-	  }*/
+
 }

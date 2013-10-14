@@ -6,9 +6,9 @@ import javax.xml.bind.annotation.XmlRootElement
 import com.janpix.servidordocumentos.dto.ClinicalDocumentDTO
 
 @XmlRootElement
-class RetriveDocumentRequest {
+class RetrieveDocumentRequest {
 	
 	@XmlElement(required=true)
-	ClinicalDocumentDTO clinicalDocument
+	String uuid
 	
 }
