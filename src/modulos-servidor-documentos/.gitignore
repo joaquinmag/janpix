@@ -1,6 +1,7 @@
 *.zip
 *.zip.sha1
 target/
+bin/
 target-eclipse/
 .settings/
 .project
