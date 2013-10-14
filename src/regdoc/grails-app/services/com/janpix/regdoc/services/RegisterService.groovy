@@ -1,10 +1,12 @@
-package regdoc
+package com.janpix.regdoc.services
 
-import com.janpix.regdoc.domain.ClinicalDocument;
-import com.janpix.servidordocumentos.dto.message.*
-import com.janpix.servidordocumentos.dto.*
-import com.janpix.regdoc.infrastructure.*
 import grails.transaction.Transactional
+
+import com.janpix.regdoc.domain.ClinicalDocument
+import com.janpix.regdoc.infrastructure.*
+import com.janpix.servidordocumentos.dto.*
+import com.janpix.servidordocumentos.dto.message.*
+import com.janpix.servidordocumentos.dto.message.ACKMessage.TypeCode
 
 @Transactional
 class RegisterService {
@@ -12,8 +14,8 @@ class RegisterService {
 	def clinicalDocumentAssembler
 
 	public ACKMessage registerDocument(RegisterDocumentRequest registerDocumentRequestMessage) {
+		def clinicalDocDTO = registerDocumentRequestMessage.clinicalDocument
 		try {
-			def clinicalDocDTO = registerDocumentRequestMessage.clinicalDocument
 			def clinicalDoc = clinicalDocumentAssembler.fromDTO(clinicalDocDTO)
 			validateClinicalDocument(clinicalDoc, clinicalDocDTO)
 			clinicalDoc.save()

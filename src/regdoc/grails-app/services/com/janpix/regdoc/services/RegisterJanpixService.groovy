@@ -1,4 +1,4 @@
-package regdoc
+package com.janpix.regdoc.services
 
 import javax.jws.WebMethod
 import javax.jws.WebParam

@@ -1,5 +1,7 @@
 package regdoc
 
+import com.janpix.regdoc.services.RegisterService;
+
 import grails.test.mixin.TestFor
 import spock.lang.Specification
 
