@@ -17,6 +17,7 @@ class ACKMessage {
 		MetadataError(5),
 		ValidationError(6),
 		InternalError(7),
+		RegistrationError(8)
 		// TODO definir los faltantes
 		
 		TypeCode(int exceptionCode) { this.exceptionCode = exceptionCode }

@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 class AuthorDTO {
 	
 	@XmlElement(required=true)
-	String oidHealthEntity
+	HealthEntityDTO healthEntity
 	
 	@XmlElement
 	String authorPerson
