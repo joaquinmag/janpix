@@ -61,6 +61,10 @@ class ClinicalDocument {
 		})
 	}
 	
+	ClinicalDocument() {
+		state = DocumentState.submittedState()
+	}
+	
 	def sign(document) {
 		if (document.state.isDeleted())
 			throw new InvalidDocumentStateException()

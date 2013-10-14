@@ -5,7 +5,7 @@ import com.janpix.servidordocumentos.dto.ClinicalDocumentDTO
 
 class ClinicalDocumentAssembler {
 
-	static ClinicalDocumentDTO toDTO(ClinicalDocument domainDocument) {
+	ClinicalDocumentDTO toDTO(ClinicalDocument domainDocument) {
 		ClinicalDocumentDTO dto = new ClinicalDocumentDTO()
 		dto.uniqueId = domainDocument.uniqueId
 		dto.patientId = domainDocument.patientId
@@ -22,8 +22,20 @@ class ClinicalDocumentAssembler {
 		dto.formatName = domainDocument.format.value()
 	}
 
-	static ClinicalDocument fromDTO(ClinicalDocumentDTO dtoDocument) {
-		
+	ClinicalDocument fromDTO(ClinicalDocumentDTO dtoDocument) {
+		def clinicalDoc = new ClinicalDocument()
+		clinicalDoc.uniqueId = dtoDocument.uniqueId
+		clinicalDoc.title = dtoDocument.name
+		clinicalDoc.patientId = dtoDocument.patientId
+		clinicalDoc.author = AuthorAssembler.fromDTO(dtoDocument.author)
+		clinicalDoc.file = FileAttributesAssembler.fromDTO(dtoDocument.fileAttributes)
+		clinicalDoc.documentCreationEnded = dtoDocument.documentCreationEnded
+		clinicalDoc.documentCreationStarted = dtoDocument.documentCreationStarted
+		clinicalDoc.comments = dtoDocument.comments
+		clinicalDoc.language = dtoDocument.language
+		clinicalDoc.documentType = new ClinicalDocumentType(dtoDocument.typeName, null, typeId)
+		clinicalDoc.format = dtoDocument.formatName
+		clinicalDoc
 	}
 	
 }

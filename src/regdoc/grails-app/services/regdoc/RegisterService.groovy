@@ -1,27 +1,30 @@
 package regdoc
 
-import javax.jws.WebMethod
-import javax.jws.WebParam
-import javax.jws.soap.SOAPBinding
-import javax.jws.soap.SOAPBinding.ParameterStyle
-
-import org.apache.commons.lang.NotImplementedException
-import org.apache.cxf.annotations.WSDLDocumentation
-import org.grails.cxf.utils.EndpointType
-import org.grails.cxf.utils.GrailsCxfEndpoint
-
 import com.janpix.regdoc.domain.ClinicalDocument;
 import com.janpix.servidordocumentos.dto.message.*
+import com.janpix.regdoc.infrastructure.*
 import grails.transaction.Transactional
 
 @Transactional
-@SOAPBinding(parameterStyle=ParameterStyle.BARE)
-@GrailsCxfEndpoint(expose = EndpointType.JAX_WS,soap12=true)
 class RegisterService {
 
-	@WebMethod
-	public void registerDocument(@WebParam(name = "registerDocumentRequestMessage") RegisterDocumentRequest registerDocumentRequestMessage) {
-		ClinicalDocument document = new ClinicalDocument()
+	def clinicalDocumentAssembler
+
+	public ACKMessage registerDocument(RegisterDocumentRequest registerDocumentRequestMessage) {
+		try {
+			def clinicalDocDTO = registerDocumentRequestMessage.clinicalDocument
+			def clinicalDoc = clinicalDocumentAssembler.fromDTO(clinicalDocDTO)
+			validateClinicalDocument(clinicalDoc, clinicalDocDTO)
+			clinicalDoc.save()
+			return new ACKMessage(typeCode: TypeCode.SuccededRegistration, clinicalDocument: clinicalDocDTO)
+		}
+		catch (Exception e) {
+			return new ACKMessage(typeCode: TypeCode.RegistrationError, text:e.message, clinicalDocument: clinicalDocDTO)
+		}
 	}
-	
+
+	private void validateClinicalDocument(ClinicalDocument document, ClinicalDocumentDTO dto) {
+		// TODO
+	}
+
 }
