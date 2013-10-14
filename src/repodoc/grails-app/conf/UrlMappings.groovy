@@ -10,4 +10,7 @@ class UrlMappings {
         "/"(view:"/index")
         "500"(view:'/error')
 	}
+	
+	// Esto es para que funcione MTOM con WS SOAP
+	static excludes = ['/services*']
 }

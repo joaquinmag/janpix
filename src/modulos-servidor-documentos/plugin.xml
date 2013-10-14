@@ -1,4 +1,4 @@
-<plugin name='modulos-servidor-documentos' version='0.5' grailsVersion='2.3 &gt; *'>
+<plugin name='modulos-servidor-documentos' version='0.6' grailsVersion='2.3 &gt; *'>
   <author>Martín Barnech y Joaquín Magneres</author>
   <title>Modulos Servidor Documentos</title>
   <description>Plugin que contiene clases compartidas entre los proyectos del servidor de documentos.

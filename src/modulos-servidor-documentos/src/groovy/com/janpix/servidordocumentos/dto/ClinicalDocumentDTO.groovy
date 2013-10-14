@@ -1,6 +1,8 @@
 package com.janpix.servidordocumentos.dto
 
+import javax.activation.DataHandler
 import javax.xml.bind.annotation.XmlElement
+import javax.xml.bind.annotation.XmlMimeType
 import javax.xml.bind.annotation.XmlRootElement
 
 @XmlRootElement
@@ -56,6 +58,8 @@ class ClinicalDocumentDTO {
 	String option //Replace, Addendum, Transformation
 	
 	//RepoDoc
-	@XmlElement
-	byte[] binaryData 
+	//@XmlElement
+	//byte[] binaryData
+	@XmlMimeType("application/octet-stream")
+	DataHandler binaryData
 }

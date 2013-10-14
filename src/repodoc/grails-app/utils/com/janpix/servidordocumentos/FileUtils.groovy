@@ -2,6 +2,10 @@ package com.janpix.servidordocumentos
 
 import java.security.MessageDigest
 
+import javax.activation.DataHandler
+import javax.activation.DataSource
+import javax.mail.util.ByteArrayDataSource
+
 class FileUtils {
 
 	/**
@@ -27,5 +31,20 @@ class FileUtils {
 		def sha1Hex = new BigInteger(1, messageDigest.digest()).toString(16).padLeft( 40, '0' )
 		
 		return sha1Hex
+	}
+	
+	/**
+	 * Transforma un DataHandler en un byte[]
+	 * @param data
+	 * @return
+	 */
+	private static byte[] DataHandlerToByteArray(DataHandler data)
+	{
+		return data?.inputStream.bytes
+	}
+	
+	private static DataHandler ByteArrayToDataHandler(byte[] byteArray,String mimeType){
+		DataSource dataSource = new ByteArrayDataSource(byteArray, mimeType);
+		return new DataHandler(dataSource);
 	}
 }

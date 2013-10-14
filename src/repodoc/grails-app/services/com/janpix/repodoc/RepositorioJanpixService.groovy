@@ -4,13 +4,14 @@ import javax.jws.WebMethod
 import javax.jws.WebParam
 import javax.jws.soap.SOAPBinding
 import javax.jws.soap.SOAPBinding.ParameterStyle
+import javax.xml.ws.soap.MTOM
 
-import org.apache.cxf.annotations.WSDLDocumentation
 import org.grails.cxf.utils.EndpointType
 import org.grails.cxf.utils.GrailsCxfEndpoint
 
-import com.janpix.servidordocumentos.dto.message.*;
+import com.janpix.servidordocumentos.dto.message.*
 
+@MTOM(enabled = true)
 @SOAPBinding(parameterStyle=ParameterStyle.BARE)
 @GrailsCxfEndpoint(expose = EndpointType.JAX_WS,soap12=true)
 

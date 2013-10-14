@@ -1,6 +1,7 @@
 package com.janpix.repodoc.assemblers
 
 import com.janpix.repodoc.domain.ClinicalDocument
+import com.janpix.servidordocumentos.FileUtils
 import com.janpix.servidordocumentos.dto.ClinicalDocumentDTO
 import com.janpix.servidordocumentos.dto.FileAttributesDTO
 
@@ -14,17 +15,17 @@ class ClinicalDocumentAssembler {
 		dto.fileAttributes = new FileAttributesDTO()
 		
 		
-			dto.uniqueId = domain.id.toString()
-			dto.name = domain.name
-			dto.documentCreationStarted = domain.dateCreated
-			dto.documentCreationEnded = domain.dateCreated
-			dto.fileAttributes.repositoryId = "PonerUUIDDelRepositorio"
-			dto.fileAttributes.uuid = domain.uuid
-			dto.fileAttributes.mimeType = domain.mimeType
-			dto.fileAttributes.fileHash = domain.hash 
-			dto.fileAttributes.size  = domain.size
+		dto.uniqueId = domain.id.toString()
+		dto.name = domain.name
+		dto.documentCreationStarted = domain.dateCreated
+		dto.documentCreationEnded = domain.dateCreated
+		dto.fileAttributes.repositoryId = "PonerUUIDDelRepositorio"
+		dto.fileAttributes.uuid = domain.uuid
+		dto.fileAttributes.mimeType = domain.mimeType
+		dto.fileAttributes.fileHash = domain.hash 
+		dto.fileAttributes.size  = domain.size
 			
-			dto.binaryData = domain.binaryData
+		dto.binaryData = FileUtils.ByteArrayToDataHandler(domain.binaryData,"application/octet-stream")
 		
 
 		return dto
@@ -36,7 +37,7 @@ class ClinicalDocumentAssembler {
 		
 		ClinicalDocument document = new ClinicalDocument()
 		document.name = dto.name
-		document.binaryData = dto.binaryData
+		document.binaryData = FileUtils.DataHandlerToByteArray(dto.binaryData);
 		document.dateCreated = dto.documentCreationStarted
 		document.uuid = dto.fileAttributes?.uuid
 		document.mimeType = dto.fileAttributes?.mimeType
@@ -45,4 +46,6 @@ class ClinicalDocumentAssembler {
 		
 		return document
 	}
+	
+	
 }

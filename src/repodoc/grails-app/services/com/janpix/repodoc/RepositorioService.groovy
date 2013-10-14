@@ -21,21 +21,23 @@ class RepositorioService {
 		try{
 			log.debug("Iniciando ProvideAndRegisterDocument...")
 			
-			log.debug("Realizando validaciones...")
-			String hash = FileUtils.calculateSHA1(documentDTO.binaryData)
+			log.debug("Convirtiendo DTO...")
+			// Ingreso el documento
+			ClinicalDocument document = ClinicalDocumentAssembler.fromDTO(documentDTO)
 			
-			validateHash(hash,documentDTO) 
-			validateSize(documentDTO) 
+			log.debug("Realizando validaciones...")
+			String hash = FileUtils.calculateSHA1(document.binaryData)
+			
+			validateHash(hash,document) 
+			validateSize(document) 
 		
 			
 			// Busco el documento. Si existe y tiene el mismo HASH no hago nada
 			// TODO hacer
 			
-			log.debug("Convirtiendo DTO...")
-			// Ingreso el documento
-			ClinicalDocument document = ClinicalDocumentAssembler.fromDTO(documentDTO)
+			// Se vuelve a setear Hash y size por si el cliente no los envio
 			document.hash = hash
-			document.size = documentDTO.binaryData.size()
+			document.size = document.binaryData?.size()
 			
 			log.debug("Grabando documento...")
 			document.save(failOnError:true,flush:true)
@@ -82,7 +84,7 @@ class RepositorioService {
 	 * @param documentDTO
 	 * @return
 	 */
-	private def validateHash(String calculatedHash, ClinicalDocumentDTO documentDTO){
+	private def validateHash(String calculatedHash, ClinicalDocument documentDTO){
 		// TODO hacer
 	}
 	
@@ -91,7 +93,7 @@ class RepositorioService {
 	 * @param documentDTO
 	 * @return
 	 */
-	private def validateSize(documentDTO){
+	private def validateSize(document){
 	
 	}
 }
