@@ -6,12 +6,13 @@ import com.janpix.servidordocumentos.dto.FileAttributesDTO
 class FileAttributesAssembler {
 
 	static FileAttributesDTO toDTO(FileAttributes domainFileAttr) {
-		dto.fileAttributes.uuid = domainDocument.file.uuid
-		dto.fileAttributes.repositoryId = domainDocument.file.repositoryId
-		dto.fileAttributes.mimeType = domainDocument.file.mimeType
-		dto.fileAttributes.creationTime = domainDocument.file.creationTime
-		dto.fileAttributes.fileHash = domainDocument.file.fileHash
-		dto.fileAttributes.size = domainDocument.file.size
+		def dto = new FileAttributesDTO()
+		dto.uuid = domainFileAttr.uuid
+		dto.repositoryId = domainFileAttr.repositoryId
+		dto.mimeType = domainFileAttr.mimeType
+		dto.creationTime = domainFileAttr.creationTime
+		dto.fileHash = domainFileAttr.fileHash
+		dto.size = domainFileAttr.size
 	}
 
 	static FileAttributes fromDTO(FileAttributesDTO dtoFileAttr) {

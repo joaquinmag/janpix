@@ -20,7 +20,7 @@ import grails.transaction.Transactional
 class RegisterService {
 
 	@WebMethod
-	public void registerDocument(@WebParam(name = "clinicalDocument") RegisterDocumentMessage clinicalDocument) {
+	public void registerDocument(@WebParam(name = "registerDocumentRequestMessage") RegisterDocumentRequest registerDocumentRequestMessage) {
 		ClinicalDocument document = new ClinicalDocument()
 	}
 	
