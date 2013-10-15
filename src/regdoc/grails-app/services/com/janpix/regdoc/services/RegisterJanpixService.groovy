@@ -18,12 +18,14 @@ import grails.transaction.Transactional
 @SOAPBinding(parameterStyle=ParameterStyle.BARE)
 @GrailsCxfEndpoint(expose = EndpointType.JAX_WS,soap12=true)
 class RegisterJanpixService {
-	
+
+	static transactional = false
+
 	def registerService
 
 	@WebMethod
 	public ACKMessage registerDocument(@WebParam(name = "registerDocumentRequestMessage") RegisterDocumentRequest registerDocumentRequestMessage) {
 		registerService.registerDocument(registerDocumentRequestMessage)
 	}
-	
+
 }

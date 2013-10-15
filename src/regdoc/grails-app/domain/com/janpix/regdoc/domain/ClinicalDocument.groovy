@@ -32,7 +32,9 @@ class ClinicalDocument {
 	boolean isSigned = false
 	boolean isVersionUpdated = false
 	
-	static mappedBy = [ relatedTo: 'parentDocument', relatedFrom: 'relatedDocument' ]
+	static mappedBy = [ 
+		relatedTo: 'parentDocument', 
+		relatedFrom: 'relatedDocument' ]
 
 	static mapping = {
 		state type: DocumentStateUserType, {

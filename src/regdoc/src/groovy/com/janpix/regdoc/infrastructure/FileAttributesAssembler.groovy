@@ -15,8 +15,16 @@ class FileAttributesAssembler {
 		dto.size = domainFileAttr.size
 	}
 
-	static FileAttributes fromDTO(FileAttributesDTO dtoFileAttr) {
-		
+	static FileAttributes fromDTO(FileAttributesDTO dto) {
+		def attr = new FileAttributes()
+		attr.uuid = dto.uuid
+		attr.filename = dto.filename
+		attr.repositoryId = dto.repositoryId
+		attr.mimeType = dto.mimeType
+		attr.creationTime = dto.creationTime
+		attr.size = dto.size
+		attr.fileHash = dto.fileHash
+		attr
 	}
 
 }

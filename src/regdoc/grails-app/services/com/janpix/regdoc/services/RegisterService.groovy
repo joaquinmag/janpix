@@ -3,6 +3,7 @@ package com.janpix.regdoc.services
 import grails.transaction.Transactional
 
 import com.janpix.regdoc.domain.ClinicalDocument
+import com.janpix.regdoc.domain.ClinicalDocumentType
 import com.janpix.regdoc.infrastructure.*
 import com.janpix.servidordocumentos.dto.*
 import com.janpix.servidordocumentos.dto.message.*
@@ -17,8 +18,12 @@ class RegisterService {
 		def clinicalDocDTO = registerDocumentRequestMessage.clinicalDocument
 		try {
 			def clinicalDoc = clinicalDocumentAssembler.fromDTO(clinicalDocDTO)
-			validateClinicalDocument(clinicalDoc, clinicalDocDTO)
+			clinicalDoc.author.institution.save()
+			clinicalDoc.author.person.save()
+			clinicalDoc.author.save()
+			clinicalDoc.file.save()
 			clinicalDoc.save()
+			validateClinicalDocument(clinicalDoc, clinicalDocDTO)
 			return new ACKMessage(typeCode: TypeCode.SuccededRegistration, clinicalDocument: clinicalDocDTO)
 		}
 		catch (Exception e) {
@@ -27,7 +32,7 @@ class RegisterService {
 	}
 
 	private void validateClinicalDocument(ClinicalDocument document, ClinicalDocumentDTO dto) {
-		// TODO
+		document.documentType = ClinicalDocumentType.findByIdDocumentType(dto.typeId)
 	}
 
 }
