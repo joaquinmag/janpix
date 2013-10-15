@@ -12,6 +12,9 @@ class FileAttributesDTO {
 	@XmlElement
 	String repositoryId
 	
+	@XmlElement
+	String filename
+	
 	@XmlElement(required=true)
 	String mimeType
 	
