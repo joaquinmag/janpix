@@ -1,7 +1,9 @@
 package com.janpix.regdoc.infrastructure
 
+import com.janpix.regdoc.domain.Author
 import com.janpix.regdoc.domain.ClinicalDocument
 import com.janpix.regdoc.domain.ClinicalDocumentType
+import com.janpix.regdoc.domain.FileAttributes;
 import com.janpix.servidordocumentos.dto.ClinicalDocumentDTO
 
 class ClinicalDocumentAssembler {
@@ -26,18 +28,18 @@ class ClinicalDocumentAssembler {
 		dto.formatName = domainDocument.format.value()
 	}
 
-	ClinicalDocument fromDTO(ClinicalDocumentDTO dtoDocument) {
+	ClinicalDocument fromDTO(ClinicalDocumentDTO dtoDocument, Author author, FileAttributes fileAttr) {
 		def clinicalDoc = new ClinicalDocument()
 		clinicalDoc.uniqueId = dtoDocument.uniqueId
 		clinicalDoc.title = dtoDocument.name
 		clinicalDoc.patientId = dtoDocument.patientId
-		clinicalDoc.author = authorAssembler.fromDTO(dtoDocument.author)
-		clinicalDoc.file = fileAttributesAssembler.fromDTO(dtoDocument.fileAttributes)
+		clinicalDoc.author = author
+		clinicalDoc.file = fileAttr
 		clinicalDoc.documentCreationEnded = dtoDocument.documentCreationEnded
 		clinicalDoc.documentCreationStarted = dtoDocument.documentCreationStarted
 		clinicalDoc.comments = dtoDocument.comments
 		clinicalDoc.language = dtoDocument.language
-		clinicalDoc.documentType = new ClinicalDocumentType(dtoDocument.typeName, null, dtoDocument.typeId)
+		clinicalDoc.documentType = ClinicalDocumentType.find { idDocumentType == dtoDocument.typeId }
 		clinicalDoc.format = dtoDocument.formatName
 		clinicalDoc
 	}

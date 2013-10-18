@@ -55,10 +55,10 @@ class DocumentStateUserType implements UserType {
 	}
 	
 	void nullSafeSet(PreparedStatement st, Object state, int index) {
-		if (value == null) {
+		if (state == null) {
 			StringType.INSTANCE.set(st, null, index);
 		} else {
-			StringType.INSTANCE.set(st, toString(state.name), index);
+			StringType.INSTANCE.set(st, state.name, index);
 		}
 	}
 

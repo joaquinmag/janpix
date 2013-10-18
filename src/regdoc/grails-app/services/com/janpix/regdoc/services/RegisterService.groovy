@@ -13,16 +13,18 @@ import com.janpix.servidordocumentos.dto.message.ACKMessage.TypeCode
 class RegisterService {
 
 	def clinicalDocumentAssembler
+	def authorAssembler
+	def fileAttributesAssembler
+	def healthEntityAssembler
 
 	public ACKMessage registerDocument(RegisterDocumentRequest registerDocumentRequestMessage) {
 		def clinicalDocDTO = registerDocumentRequestMessage.clinicalDocument
 		try {
-			def clinicalDoc = clinicalDocumentAssembler.fromDTO(clinicalDocDTO)
-			clinicalDoc.author.institution.save()
-			clinicalDoc.author.person.save()
-			clinicalDoc.author.save()
-			clinicalDoc.file.save()
-			clinicalDoc.save()
+			def healthEntity = healthEntityAssembler.fromDTO(clinicalDocDTO.author.healthEntity).save()
+			def person = authorAssembler.personFromDTO(clinicalDocDTO.author).save()
+			def author = authorAssembler.fromDTO(clinicalDocDTO.author, healthEntity, person).save()
+			def fileAttr = fileAttributesAssembler.fromDTO(clinicalDocDTO.fileAttributes).save()  
+			def clinicalDoc = clinicalDocumentAssembler.fromDTO(clinicalDocDTO, author, fileAttr).save()
 			validateClinicalDocument(clinicalDoc, clinicalDocDTO)
 			return new ACKMessage(typeCode: TypeCode.SuccededRegistration, clinicalDocument: clinicalDocDTO)
 		}

@@ -1,6 +1,7 @@
 package com.janpix.regdoc.infrastructure
 
 import com.janpix.regdoc.domain.Author
+import com.janpix.regdoc.domain.HealthEntity
 import com.janpix.regdoc.domain.Person
 import com.janpix.servidordocumentos.dto.AuthorDTO
 
@@ -15,15 +16,19 @@ class AuthorAssembler {
 		dto
 	}
 
-	static Author fromDTO(AuthorDTO authorDto) {
+	static Author fromDTO(AuthorDTO authorDto, HealthEntity he, Person person) {
 		def author = new Author()
+		author.person = person
+		author.institution = he
+		author
+	}
+	
+	static Person personFromDTO(AuthorDTO authorDto) {
 		def person = new Person()
 		person.name = authorDto.authorPerson
 		person.specialty = authorDto.authorSpecialty
 		person.role = authorDto.authorRole
-		author.person = person
-		author.institution = HealthEntityAssembler.fromDTO(authorDto.healthEntity)
-		author
+		person
 	}
 
 }
