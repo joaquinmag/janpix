@@ -10,4 +10,6 @@ class UrlMappings {
 		"/"(view:"/index")
 		"500"(view:'/error')
 	}
+	
+	static excludes = ['/services*']
 }

@@ -4,6 +4,7 @@ import javax.jws.WebMethod
 import javax.jws.WebParam
 import javax.jws.soap.SOAPBinding
 import javax.jws.soap.SOAPBinding.ParameterStyle
+import javax.xml.ws.soap.MTOM
 
 import org.apache.commons.lang.NotImplementedException
 import org.apache.cxf.annotations.WSDLDocumentation
@@ -12,9 +13,8 @@ import org.grails.cxf.utils.GrailsCxfEndpoint
 
 import com.janpix.regdoc.domain.ClinicalDocument;
 import com.janpix.servidordocumentos.dto.message.*
-import grails.transaction.Transactional
 
-@Transactional
+@MTOM(enabled = true)
 @SOAPBinding(parameterStyle=ParameterStyle.BARE)
 @GrailsCxfEndpoint(expose = EndpointType.JAX_WS,soap12=true)
 class RegisterJanpixService {
