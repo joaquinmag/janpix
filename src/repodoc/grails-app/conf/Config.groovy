@@ -182,3 +182,52 @@ environments{
 		}
 	}
 }
+
+
+/** CXF Client **/
+service.janpix.repodoc.url = ""
+service.janpix.regdoc.url = ""
+
+// set per-environment service url
+environments {
+	production {
+		grails.serverURL = "http://www.changeme.com/"
+		service.janpix.repodoc.url = "repodoc/${grails.serverURL}/services/repositorioJanpix?wsdl"
+		service.janpix.regdoc.url = "regdoc/${grails.serverURL}/services/registerJanpix?wsdl"
+	}
+	development {
+		grails.serverURL = "http://localhost:9090/"
+		service.janpix.repodoc.url = "repodoc/${grails.serverURL}/services/repositorioJanpix?wsdl"
+		service.janpix.regdoc.url = "regdoc/${grails.serverURL}/services/registerJanpix?wsdl"
+	}
+	test {
+		grails.serverURL = "http://localhost:9090/"
+		service.janpix.repodoc.url = "repodoc/${grails.serverURL}/services/repositorioJanpix?wsdl"
+		service.janpix.regdoc.url = "regdoc/${grails.serverURL}/services/registerJanpix?wsdl"
+		
+	}
+}
+
+cxf {
+	client {
+		janpixRepodocServiceClient {
+			wsdlArgs = "-autoNameResolution"
+			clientInterface = com.janpix.repodoc.porttype.RepositorioJanpixServicePortType
+			serviceEndpointAddress = "${service.janpix.repodoc.url}"
+			namespace = "com.janpix.repodoc"
+			//receiveTimeout = 0 //no timeout
+			//connectionTimeout = 0 //no timeout
+			//httpClientPolicy = 'customHttpClientPolicy'
+		}
+		
+		janpixRegdocServiceClient {
+			wsdlArgs = "-autoNameResolution"
+			clientInterface = com.janpix.repodoc.porttype.RegistroJanpixServicePortType
+			serviceEndpointAddress = "${service.janpix.regdoc.url}"
+			namespace = "com.janpix.regdoc"
+			//receiveTimeout = 0 //no timeout
+			//connectionTimeout = 0 //no timeout
+			//httpClientPolicy = 'customHttpClientPolicy'
+		}
+	}
+}

@@ -5,6 +5,7 @@ package com.janpix.repodoc
 import spock.lang.*
 
 import com.janpix.repodoc.domain.ClinicalDocument
+import com.janpix.repodoc.porttype.RepositorioJanpixServicePortType
 import com.janpix.servidordocumentos.FileUtils
 import com.janpix.servidordocumentos.dto.ClinicalDocumentDTO
 import com.janpix.servidordocumentos.dto.FileAttributesDTO
@@ -19,7 +20,7 @@ class RepositorioServiceTestSpec extends Specification {
 	private static String PATH_RESOURCES = "test/resources/files/"
 	
 	def repositorioService
-	def soapClient
+	RepositorioJanpixServicePortType janpixRepodocServiceClient
 	
     def setup() {
     }
@@ -48,9 +49,11 @@ class RepositorioServiceTestSpec extends Specification {
 			//document.fileAttributes.fileHash == FileUtils.calculateSHA1(document.binaryData);
     }
 	
+	
+	//TODO NO lo puedo testear porque no tengo manera de obtener el UniqueID que asigna MONGO
+	@Ignore
 	void "test provide document and seek"() {
-		//TODO NO lo puedo testear porque no tengo manera de obtener el UniqueID que asigna MONGO
-	/*	when:
+		when:
 			// Creo un documento y lo mando a guardar con el servicio
 			ClinicalDocumentDTO document = this.buildDocumentDTO()
 			ACKMessage ackProvide = repositorioService.provideAndRegisterDocument(document)
@@ -67,7 +70,7 @@ class RepositorioServiceTestSpec extends Specification {
 			retriveDocument.fileAttributes.size == document.fileAttributes.size
 			retriveDocument.binaryData == document.binaryData
 			retriveDocument.fileAttributes.fileHash == document.fileAttributes.fileHash
-			retriveDocument.fileAttributes.mimeType == document.fileAttributes.mimeType*/
+			retriveDocument.fileAttributes.mimeType == document.fileAttributes.mimeType
 	}
 	
 	void "test register document on Document Register"() {
@@ -75,13 +78,16 @@ class RepositorioServiceTestSpec extends Specification {
 	}
 	
 	// Tengo que levantar el WS local para probarlo
+	@Ignore
 	void "test WS comunication with Repositorio Service"() {
 		when:
-			RetrieveDocumentRequest requestMessage = new RetrieveDocumentoRequest(uuid:"5250661e741647681a4b74a7")
-			ACKMessage ack =  soapClient.retrieveDocument(requestMessage)
+			RetrieveDocumentRequest requestMessage = new RetrieveDocumentRequest(uuid:"525c633784ae5e0947b36c7e")
+			ACKMessage ack =  janpixRepodocServiceClient.retrieveDocument(requestMessage)
 		
 		then:
-			ack != null
+			ack.typeCode == ACKMessage.TypeCode.SuccededRetrieve
+			ack.clinicalDocument.name == "Examen de prostata"
+			ack.clinicalDocument.fileAttributes.mimeType == "application/pdf"
 		
 	}
 	
