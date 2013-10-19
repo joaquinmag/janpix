@@ -63,7 +63,7 @@ environments {
 				port = 27017
 				//username = "mongodb"
 				//password = "mongodb"
-				databaseName = "janpix_repodoc"
+				databaseName = "janpix_repodoc_test"
 			}
 		}
 	}

@@ -15,10 +15,10 @@ import com.janpix.servidordocumentos.dto.ClinicalDocumentDTO
 import com.janpix.servidordocumentos.dto.message.*
 import com.janpix.servidordocumentos.dto.message.ACKMessage.TypeCode
 
-@Transactional
 class RepositorioService {
-	//TODO ver transacionalidad de las cosas
-	//static transactional = false;
+	
+	def registroService
+	
 	/**
 	 * Ingresa un documento en el repositorio y lo registra en el registro
 	 * @return
@@ -51,7 +51,7 @@ class RepositorioService {
 			
 			// Registro el documento en el Registro
 			log.debug("Registrando documento...")
-			this.registerDocument(document)
+			registroService.registerDocument(document)
 			
 			log.debug("ProvideAndRegisterDocument finalizada correctamente!")
 			return new ACKMessage(typeCode:TypeCode.SuccededInsertion)
@@ -124,15 +124,7 @@ class RepositorioService {
 			return new ACKMessage(typeCode:TypeCode.InternalError, text: e.message)
 		}
 	}
-	
-	/**
-	 * Registra un documento en el registro de documentos
-	 * @param document
-	 */
-	private def registerDocument(ClinicalDocument document){
-		//throw new Exception("Excepcion de prueba en RepositorioService.registerDocument");
-	}
-	
+		
 	/**
 	 * Valida que el hash enviado sea igual al calculado
 	 * @param calculatedHash

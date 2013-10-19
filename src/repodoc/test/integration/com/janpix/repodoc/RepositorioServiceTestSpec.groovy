@@ -2,6 +2,7 @@ package com.janpix.repodoc
 
 
 
+import grails.test.mixin.TestFor;
 import spock.lang.*
 
 import com.janpix.repodoc.domain.ClinicalDocument
@@ -18,6 +19,7 @@ import com.janpix.servidordocumentos.dto.message.RetrieveDocumentRequest
 class RepositorioServiceTestSpec extends Specification {
 	
 	private static String PATH_RESOURCES = "test/resources/files/"
+	private static String FILE_NAME = "archivo1.txt"
 	
 	def repositorioService
 	RepositorioJanpixServicePortType janpixRepodocServiceClient
@@ -26,6 +28,8 @@ class RepositorioServiceTestSpec extends Specification {
     }
 
     def cleanup() {
+		// Se elimina la coleccion
+		ClinicalDocument.collection.drop()
     }
 
     void "test retrieve document already exists in repository"() {
@@ -40,7 +44,7 @@ class RepositorioServiceTestSpec extends Specification {
 			ClinicalDocumentDTO document = ack.clinicalDocument 
 			
 			document != null
-			document.name == nameFile
+			document.fileAttributes.filename == nameFile
 			document.fileAttributes.uuid == uuid
 			document.fileAttributes.mimeType == mimeType
 			
@@ -49,29 +53,25 @@ class RepositorioServiceTestSpec extends Specification {
 			//document.fileAttributes.fileHash == FileUtils.calculateSHA1(document.binaryData);
     }
 	
-	
-	//TODO NO lo puedo testear porque no tengo manera de obtener el UniqueID que asigna MONGO
-	@Ignore
-	void "test provide document and seek"() {
+	void "test provide document without register"(){
 		when:
 			// Creo un documento y lo mando a guardar con el servicio
 			ClinicalDocumentDTO document = this.buildDocumentDTO()
 			ACKMessage ackProvide = repositorioService.provideAndRegisterDocument(document)
-			
 		then:
-			//Obtengo el documento creado y lo comparo
-			ACKMessage ack = repositorioService.retrieveDocumentByUUID(ackProvide.clinicalDocument.uniqueId)
-			ClinicalDocumentDTO retriveDocument = ack.clinicalDocument
+			// Se obtiene el documento de la base y se compara que este bien guardado
+			ClinicalDocument findedDocument = ClinicalDocument.findByName(FILE_NAME)
+			findedDocument != null
+			findedDocument.mimeType == document.fileAttributes.mimeType
+			findedDocument.size == document.fileAttributes.size
+			findedDocument.uuid == document.fileAttributes.uuid
+			findedDocument.name == document.fileAttributes.filename
+			findedDocument.binaryData == FileUtils.DataHandlerToByteArray(document.binaryData)
+			findedDocument.dateAssigned == document.documentCreationStarted
 			
-			document != null
-			//retriveDocument.uniqueId != null
-			retriveDocument.name == document.name
-			retriveDocument.fileAttributes.uuid == document.fileAttributes.uuid
-			retriveDocument.fileAttributes.size == document.fileAttributes.size
-			retriveDocument.binaryData == document.binaryData
-			retriveDocument.fileAttributes.fileHash == document.fileAttributes.fileHash
-			retriveDocument.fileAttributes.mimeType == document.fileAttributes.mimeType
 	}
+	
+	
 	
 	void "test register document on Document Register"() {
 		// TODO probar un mock del grabado de los datos necesarios en el registro de documentos
@@ -95,12 +95,14 @@ class RepositorioServiceTestSpec extends Specification {
 	private ClinicalDocumentDTO buildDocumentDTO(){
 		ClinicalDocumentDTO dto = new ClinicalDocumentDTO()
 		dto.fileAttributes = new FileAttributesDTO()
-		dto.name = "archivo.odt"
+		dto.name = "Un nombre de titulo"
+		dto.fileAttributes.filename = FILE_NAME 
 		dto.fileAttributes.mimeType = "application/vnd.oasis.opendocument.text"
 		dto.fileAttributes.uuid = UUID.randomUUID().toString()
-		dto.binaryData = FileUtils.ByteArrayToDataHandler(new File(PATH_RESOURCES+dto.name).bytes, "application/octet-stream")
-		dto.fileAttributes.size = new File(PATH_RESOURCES+dto.name).bytes.size()
-		dto.fileAttributes.fileHash = FileUtils.calculateSHA1(new File(PATH_RESOURCES+dto.name).bytes)
+		dto.binaryData = FileUtils.ByteArrayToDataHandler(new File(PATH_RESOURCES+FILE_NAME).bytes, "application/octet-stream")
+		dto.fileAttributes.size = new File(PATH_RESOURCES+FILE_NAME).bytes.size()
+		dto.fileAttributes.fileHash = FileUtils.calculateSHA1(new File(PATH_RESOURCES+FILE_NAME).bytes)
+		dto.documentCreationStarted = new Date()
 		
 		return dto
 	}
@@ -114,7 +116,7 @@ class RepositorioServiceTestSpec extends Specification {
 		clinicalDocument.name = nameFile
 		clinicalDocument.uuid = uniqueId
 		clinicalDocument.binaryData = byteArray
-		clinicalDocument.dateCreated = new Date()
+		clinicalDocument.dateAssigned = new Date()
 		clinicalDocument.mimeType = mimeType
 		clinicalDocument.hash = FileUtils.calculateSHA1(byteArray);
 		clinicalDocument.size = byteArray.size()

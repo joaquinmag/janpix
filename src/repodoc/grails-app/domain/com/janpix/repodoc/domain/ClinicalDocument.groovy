@@ -7,10 +7,11 @@ class ClinicalDocument {
 	ObjectId id //Id asignado por el sistema compatible con mongo 
 	String name
 	byte[] binaryData
+	Date dateCreated
 	
 	String uuid //Identificador asignado por la Entidad Sanitaria
 	String mimeType
-	Date dateCreated
+	Date dateAssigned // Fecha asignada por la Enitdad Sanitaria
 	String hash
 	Long size
 	
@@ -22,7 +23,7 @@ class ClinicalDocument {
 		binaryData(nullable:false)
 		uuid(unique:true,nullable:false)
 		mimeType(nullable:false)
-		dateCreated(nullable:false)
+		dateAssigned(nullable:false)
 		hash(nullable:false)
 		size(nullable:false)
 	}

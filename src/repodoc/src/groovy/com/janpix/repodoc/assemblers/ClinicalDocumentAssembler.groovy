@@ -16,10 +16,10 @@ class ClinicalDocumentAssembler {
 		
 		
 		dto.uniqueId = domain.id.toString()
-		dto.name = domain.name
-		dto.documentCreationStarted = domain.dateCreated
-		dto.documentCreationEnded = domain.dateCreated
+		dto.documentCreationStarted = domain.dateAssigned
+		dto.documentCreationEnded = domain.dateAssigned
 		dto.fileAttributes.repositoryId = "PonerUUIDDelRepositorio"
+		dto.fileAttributes.filename = domain.name
 		dto.fileAttributes.uuid = domain.uuid
 		dto.fileAttributes.mimeType = domain.mimeType
 		dto.fileAttributes.fileHash = domain.hash 
@@ -39,9 +39,9 @@ class ClinicalDocumentAssembler {
 			return null
 		
 		ClinicalDocument document = new ClinicalDocument()
-		document.name = dto.name
+		document.name = dto.fileAttributes.filename
 		document.binaryData = FileUtils.DataHandlerToByteArray(dto.binaryData);
-		document.dateCreated = dto.documentCreationStarted
+		document.dateAssigned = dto.documentCreationStarted
 		document.uuid = dto.fileAttributes?.uuid
 		document.mimeType = dto.fileAttributes?.mimeType
 		document.hash = dto.fileAttributes?.fileHash
