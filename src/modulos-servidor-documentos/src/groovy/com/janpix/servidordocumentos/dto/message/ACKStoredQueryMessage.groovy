@@ -11,4 +11,8 @@ class ACKStoredQueryMessage {
 	@XmlElementWrapper(name = "clinicalDocuments")
 	@XmlElement(name = "clinicalDocument")
 	List<ClinicalDocumentDTO> documents
+	
+	ACKStoredQueryMessage() {
+		documents = new ArrayList<ClinicalDocumentDTO>()
+	}
 }
