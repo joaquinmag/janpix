@@ -27,5 +27,10 @@ class RegisterJanpixService {
 	public ACKMessage registerDocument(@WebParam(name = "registerDocumentRequestMessage") RegisterDocumentRequest registerDocumentRequestMessage) {
 		registerService.registerDocument(registerDocumentRequestMessage)
 	}
+	
+	@WebMethod
+	public ACKMessage queryDocument(@WebParam(name = "queryDocumentRequestMessage") QueryDocumentRequest queryDocumentRequestMessage) {
+		queryService.queryDocument(queryDocumentRequestMessage)
+	}
 
 }
