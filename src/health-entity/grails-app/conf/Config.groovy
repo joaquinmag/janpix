@@ -93,25 +93,94 @@ environments {
     }
 }
 
-// log4j configuration
-log4j = {
-    // Example of changing the log pattern for the default console appender:
-    //
-    //appenders {
-    //    console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
-    //}
+/** log4j configuration **/
+levelsDebug = [
+	'grails.app.controllers.com.janpix.healthentity',
+	'grails.app.domain.com.janpix.healthentity',
+	'grails.app.services.com.janpix.healthentity',
+	'grails.app.taglib.com.janpix.healthentity',
+	'grails.app.conf.com.janpix.healthentity',
+	'grails.app.filters.com.janpix.healthentity'
+	]
 
-    error  'org.codehaus.groovy.grails.web.servlet',        // controllers
-           'org.codehaus.groovy.grails.web.pages',          // GSP
-           'org.codehaus.groovy.grails.web.sitemesh',       // layouts
-           'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
-           'org.codehaus.groovy.grails.web.mapping',        // URL mapping
-           'org.codehaus.groovy.grails.commons',            // core / classloading
-           'org.codehaus.groovy.grails.plugins',            // plugins
-           'org.codehaus.groovy.grails.orm.hibernate',      // hibernate integration
-           'org.springframework',
-           'org.hibernate',
-           'net.sf.ehcache.hibernate'
+log4j = {
+	appenders {
+		console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
+					
+		rollingFile name: 'applicationLog',
+					maxFileSize: 1024,
+					file: "/tmp/logs/janpix/healthentity/application.log"
+	}
+
+	environments {
+		production {
+			root {
+				error 'applicationLog'
+			}
+		}
+		test{
+			root {
+				error 'applicationLog','stdout'
+			}
+			//Usa los appenders 'stdout' y 'applicationLog' para el nivel debug
+			debug stdout: [
+	'grails.app.controllers.com.janpix.healthentity',
+	'grails.app.domain.com.janpix.healthentity',
+	'grails.app.services.com.janpix.healthentity',
+	'grails.app.taglib.com.janpix.healthentity',
+	'grails.app.conf.com.janpix.healthentity',
+	'grails.app.filters.com.janpix.healthentity'
+	] ,additivity:false
+		
+			debug applicationLog: [
+	'grails.app.controllers.com.janpix.healthentity',
+	'grails.app.domain.com.janpix.healthentity',
+	'grails.app.services.com.janpix.healthentity',
+	'grails.app.taglib.com.janpix.healthentity',
+	'grails.app.conf.com.janpix.healthentity',
+	'grails.app.filters.com.janpix.healthentity'
+	],additivity:false
+
+		}
+		development{
+			root {
+				error 'applicationLog','stdout'
+			}
+			//Usa los appenders 'stdout' y 'applicationLog' para el nivel debug
+			debug stdout: [
+	'grails.app.controllers.com.janpix.healthentity',
+	'grails.app.domain.com.janpix.healthentity',
+	'grails.app.services.com.janpix.healthentity',
+	'grails.app.taglib.com.janpix.healthentity',
+	'grails.app.conf.com.janpix.healthentity',
+	'grails.app.filters.com.janpix.healthentity'
+	],additivity:false
+		
+			debug applicationLog: [
+	'grails.app.controllers.com.janpix.healthentity',
+	'grails.app.domain.com.janpix.healthentity',
+	'grails.app.services.com.janpix.healthentity',
+	'grails.app.taglib.com.janpix.healthentity',
+	'grails.app.conf.com.janpix.healthentity',
+	'grails.app.filters.com.janpix.healthentity'
+	],additivity:false
+
+		}
+	}
+	
+	//###Configuraciones ajenas a los entornos
+	//#Grails
+	error  'org.codehaus.groovy.grails.web.servlet',        // controllers
+		   'org.codehaus.groovy.grails.web.pages',          // GSP
+		   'org.codehaus.groovy.grails.web.sitemesh',       // layouts
+		   'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
+		   'org.codehaus.groovy.grails.web.mapping',        // URL mapping
+		   'org.codehaus.groovy.grails.commons',            // core / classloading
+		   'org.codehaus.groovy.grails.plugins',            // plugins
+		   'org.codehaus.groovy.grails.orm.hibernate',      // hibernate integration
+		   'org.springframework',
+		   'org.hibernate',
+		   'net.sf.ehcache.hibernate'
 }
 
 
