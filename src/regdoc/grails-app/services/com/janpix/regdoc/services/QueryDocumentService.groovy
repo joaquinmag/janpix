@@ -11,11 +11,11 @@ class QueryDocumentService {
 
     ACKStoredQueryMessage queryDocument(QueryDocumentRequest queryDocumentRequestMessage) {
 		final def results = ClinicalDocument.createCriteria().list {
-			if (queryDocumentRequestMessage.titleCriteria != null && queryDocumentRequestMessage.titleCriteria.size())
-				eq("title", queryDocumentRequestMessage.titleCriteria)
-			if (queryDocumentRequestMessage.dateCreationCriteria != null)
+			if (queryDocumentRequestMessage.titleCriteria?.valueLookup != null)
+				eq("title", queryDocumentRequestMessage.titleCriteria.valueLookup)
+			if (queryDocumentRequestMessage.dateCreationCriteria?.searchDate != null)
 				file {
-					eq("creationTime", queryDocumentRequestMessage.dateCreationCriteria)
+					eq("creationTime", queryDocumentRequestMessage.dateCreationCriteria.searchDate)
 				}
 		}
 		new ACKStoredQueryMessage(documents: results)
