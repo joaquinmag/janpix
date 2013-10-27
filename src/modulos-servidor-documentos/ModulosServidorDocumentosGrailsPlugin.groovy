@@ -1,6 +1,6 @@
 class ModulosServidorDocumentosGrailsPlugin {
     // the plugin version
-    def version = "0.12"
+    def version = "0.14"
     // the version or versions of Grails the plugin is designed for
     def grailsVersion = "2.3 > *"
     // resources that are excluded from plugin packaging

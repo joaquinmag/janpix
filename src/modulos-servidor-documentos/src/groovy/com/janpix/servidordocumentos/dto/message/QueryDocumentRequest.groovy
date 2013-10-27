@@ -5,8 +5,9 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.janpix.servidordocumentos.dto.ClinicalDocumentDTO;
+import com.janpix.servidordocumentos.dto.DateCreationCriteriaDTO;
 import com.janpix.servidordocumentos.dto.HealthEntityDTO;
-import com.janpix.servidordocumentos.dto.SearchCriteriaDTO;
+import com.janpix.servidordocumentos.dto.TitleCriteriaDTO;
 
 @XmlRootElement
 class QueryDocumentRequest {
@@ -14,12 +15,10 @@ class QueryDocumentRequest {
 	@XmlElement(required=true)
 	HealthEntityDTO healthEntityFinder // entidad que busca el documento
 	
-	@XmlElementWrapper(name="criterias")
-	@XmlElement(name="criteria", required=true)
-	List<SearchCriteriaDTO> criterias
+	@XmlElement(required=false)
+	TitleCriteriaDTO titleCriteria
 	
-	QueryDocumentRequest() {
-		criterias = new ArrayList<SearchCriteriaDTO>()
-	}
+	@XmlElement(required=false)
+	DateCreationCriteriaDTO dateCreationCriteria
 	
 }
