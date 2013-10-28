@@ -21,4 +21,7 @@ class QueryDocumentRequest {
 	@XmlElement(required=false)
 	DateCreationCriteriaDTO dateCreationCriteria
 	
+	@XmlElement(required=true)
+	Long patientId
+	
 }

@@ -17,6 +17,8 @@ class QueryDocumentService {
 				file {
 					eq("creationTime", queryDocumentRequestMessage.dateCreationCriteria.searchDate)
 				}
+			if (queryDocumentRequestMessage.patientId != null)
+				eq("patientId", queryDocumentRequestMessage.patientId)
 		}
 		new ACKStoredQueryMessage(documents: results)
     }

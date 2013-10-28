@@ -87,4 +87,20 @@ class DocumentJanpixServiceSpec extends Specification {
 			result.documents.size() == 1
 			result.documents[0].title == "Titulo doc"
 	}
+	
+	void "query a registered document by idpatient and title"() {
+		setup:
+			def titleCriteria = new TitleCriteriaDTO(valueLookup: "Titulo doc")
+			def patientId = 2
+			def queryMsg = new QueryDocumentRequest(
+				titleCriteria: titleCriteria
+				patientId: patientId
+			)
+		when:
+			def ack = documentJanpixService.registerDocument(registerRequestMsg)
+			def result = documentJanpixService.queryDocument(queryMsg)
+		then:
+			result.documents.size() == 1
+			result.documents[0].title == "Titulo doc"
+	}
 }
