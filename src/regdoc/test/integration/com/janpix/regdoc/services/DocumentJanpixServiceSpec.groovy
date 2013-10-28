@@ -91,9 +91,9 @@ class DocumentJanpixServiceSpec extends Specification {
 	void "query a registered document by idpatient and title"() {
 		setup:
 			def titleCriteria = new TitleCriteriaDTO(valueLookup: "Titulo doc")
-			def patientId = 2
+			def patientId = "2"
 			def queryMsg = new QueryDocumentRequest(
-				titleCriteria: titleCriteria
+				titleCriteria: titleCriteria,
 				patientId: patientId
 			)
 		when:
