@@ -231,3 +231,9 @@ cxf {
 		}*/
 	}
 }
+
+/** Resources **/
+// Elimina el pre-procesamiento
+// No genera errores al no encontrar los archivos
+//grails.resources.debug = false
+grails.resources.processing.enabled = false 

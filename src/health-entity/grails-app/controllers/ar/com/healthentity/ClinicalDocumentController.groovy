@@ -17,23 +17,24 @@ class ClinicalDocumentController {
 	
 	def downloadDocument(String uuid){
 		try{
-			if(!uuid)
-				return;
-				
-			ClinicalDocumentDTO document = janpixService.getDocumentByUUID(uuid)
-			if(document){
-				OutputStream out = response.getOutputStream()
-				byte[] bytes = IOUtils.toByteArray(document.binaryData.getInputStream());
-				
-				String nameDocument = document.fileAttributes.filename
-				String mimeType = document.fileAttributes.mimeType
-				response.setContentLength((int)document.fileAttributes.size)
-				response.addHeader("Content-disposition", "attachment; filename=${nameDocument}")
-				response.addHeader("Content-type", "${mimeType}")
-				
-				out.write(bytes)
-				out.close()
+			if(uuid != null){
+				ClinicalDocumentDTO document = janpixService.getDocumentByUUID(uuid)
+				if(document){
+					OutputStream out = response.getOutputStream()
+					byte[] bytes = IOUtils.toByteArray(document.binaryData.getInputStream());
+					
+					String nameDocument = document.fileAttributes.filename
+					String mimeType = document.fileAttributes.mimeType
+					response.setContentLength((int)document.fileAttributes.size)
+					response.addHeader("Content-disposition", "attachment; filename=${nameDocument}")
+					response.addHeader("Content-type", "${mimeType}")
+					
+					out.write(bytes)
+					out.close()
+				}
 			}
+			
+			// TODO enviar a una pagina de error
 		}
 		catch(JanpixException e){
 			render "Error de conexión"
