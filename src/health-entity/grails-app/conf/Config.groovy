@@ -191,19 +191,19 @@ service.janpix.regdoc.url = ""
 // set per-environment service url
 environments {
 	production {
-		grails.serverURL = "http://www.changeme.com"
-		service.janpix.repodoc.url = "${grails.serverURL}/repodoc/services/repositorioJanpix?wsdl"
-		service.janpix.regdoc.url = "${grails.serverURL}/regdoc/services/registerJanpix?wsdl"
+		service.janpix.serverURL = "http://www.changeme.com"
+		service.janpix.repodoc.url = "${service.janpix.serverURL}/repodoc/services/repositorioJanpix?wsdl"
+		service.janpix.regdoc.url = "${service.janpix.serverURL}/regdoc/services/registerJanpix?wsdl"
 	}
 	development {
-		grails.serverURL = "http://localhost:9090"
-		service.janpix.repodoc.url = "${grails.serverURL}/repodoc/services/repositorioJanpix?wsdl"
-		service.janpix.regdoc.url = "${grails.serverURL}/regdoc/services/registerJanpix?wsdl"
+		service.janpix.serverURL = "http://localhost:9090"
+		service.janpix.repodoc.url = "${service.janpix.serverURL}/repodoc/services/repositorioJanpix?wsdl"
+		service.janpix.regdoc.url = "${service.janpix.serverURL}/regdoc/services/registerJanpix?wsdl"
 	}
 	test {
-		grails.serverURL = "http://localhost:9090"
-		service.janpix.repodoc.url = "${grails.serverURL}/repodoc/services/repositorioJanpix?wsdl"
-		service.janpix.regdoc.url = "${grails.serverURL}/regdoc/services/registerJanpix?wsdl"
+		service.janpix.serverURL = "http://localhost:9090"
+		service.janpix.repodoc.url = "${service.janpix.serverURL}/repodoc/services/repositorioJanpix?wsdl"
+		service.janpix.regdoc.url = "${service.janpix.serverURL}/regdoc/services/registerJanpix?wsdl"
 		
 	}
 }

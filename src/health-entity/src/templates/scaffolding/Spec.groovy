@@ -1,13 +1,11 @@
-package ar.com.healthentity
-
-
+<%=packageName ? "package ${packageName}\n\n" : ''%>
 
 import grails.test.mixin.*
 import spock.lang.*
 
-@TestFor(PatientController)
-@Mock(Patient)
-class PatientControllerSpec extends Specification {
+@TestFor(${className}Controller)
+@Mock(${className})
+class ${className}ControllerSpec extends Specification {
 
     def populateValidParams(params) {
         assert params != null
@@ -21,8 +19,8 @@ class PatientControllerSpec extends Specification {
             controller.index()
 
         then:"The model is correct"
-            !model.patientInstanceList
-            model.patientInstanceCount == 0
+            !model.${modelName}List
+            model.${modelName}Count == 0
     }
 
     void "Test the create action returns the correct model"() {
@@ -30,31 +28,31 @@ class PatientControllerSpec extends Specification {
             controller.create()
 
         then:"The model is correctly created"
-            model.patientInstance!= null
+            model.${modelName}!= null
     }
 
     void "Test the save action correctly persists an instance"() {
 
         when:"The save action is executed with an invalid instance"
-            def patient = new Patient()
-            patient.validate()
-            controller.save(patient)
+            def ${propertyName} = new ${className}()
+            ${propertyName}.validate()
+            controller.save(${propertyName})
 
         then:"The create view is rendered again with the correct model"
-            model.patientInstance!= null
+            model.${modelName}!= null
             view == 'create'
 
         when:"The save action is executed with a valid instance"
             response.reset()
             populateValidParams(params)
-            patient = new Patient(params)
+            ${propertyName} = new ${className}(params)
 
-            controller.save(patient)
+            controller.save(${propertyName})
 
         then:"A redirect is issued to the show action"
-            response.redirectedUrl == '/patient/show/1'
+            response.redirectedUrl == '/${propertyName}/show/1'
             controller.flash.message != null
-            Patient.count() == 1
+            ${className}.count() == 1
     }
 
     void "Test that the show action returns the correct model"() {
@@ -66,11 +64,11 @@ class PatientControllerSpec extends Specification {
 
         when:"A domain instance is passed to the show action"
             populateValidParams(params)
-            def patient = new Patient(params)
-            controller.show(patient)
+            def ${propertyName} = new ${className}(params)
+            controller.show(${propertyName})
 
         then:"A model is populated containing the domain instance"
-            model.patientInstance == patient
+            model.${modelName} == ${propertyName}
     }
 
     void "Test that the edit action returns the correct model"() {
@@ -82,11 +80,11 @@ class PatientControllerSpec extends Specification {
 
         when:"A domain instance is passed to the edit action"
             populateValidParams(params)
-            def patient = new Patient(params)
-            controller.edit(patient)
+            def ${propertyName} = new ${className}(params)
+            controller.edit(${propertyName})
 
         then:"A model is populated containing the domain instance"
-            model.patientInstance == patient
+            model.${modelName} == ${propertyName}
     }
 
     void "Test the update action performs an update on a valid domain instance"() {
@@ -98,22 +96,22 @@ class PatientControllerSpec extends Specification {
 
         when:"An invalid domain instance is passed to the update action"
             response.reset()
-            def patient = new Patient()
-            patient.validate()
-            controller.update(patient)
+            def ${propertyName} = new ${className}()
+            ${propertyName}.validate()
+            controller.update(${propertyName})
 
         then:"The edit view is rendered again with the invalid instance"
             view == 'edit'
-            model.patientInstance == patient
+            model.${modelName} == ${propertyName}
 
         when:"A valid domain instance is passed to the update action"
             response.reset()
             populateValidParams(params)
-            patient = new Patient(params).save(flush: true)
-            controller.update(patient)
+            ${propertyName} = new ${className}(params).save(flush: true)
+            controller.update(${propertyName})
 
         then:"A redirect is issues to the show action"
-            response.redirectedUrl == "/patient/show/$patient.id"
+            response.redirectedUrl == "/${propertyName}/show/\$${propertyName}.id"
             flash.message != null
     }
 
@@ -127,17 +125,17 @@ class PatientControllerSpec extends Specification {
         when:"A domain instance is created"
             response.reset()
             populateValidParams(params)
-            def patient = new Patient(params).save(flush: true)
+            def ${propertyName} = new ${className}(params).save(flush: true)
 
         then:"It exists"
-            Patient.count() == 1
+            ${className}.count() == 1
 
         when:"The domain instance is passed to the delete action"
-            controller.delete(patient)
+            controller.delete(${propertyName})
 
         then:"The instance is deleted"
-            Patient.count() == 0
-            response.redirectedUrl == '/patient/index'
+            ${className}.count() == 0
+            response.redirectedUrl == '/${propertyName}/index'
             flash.message != null
     }
 }

@@ -19,6 +19,7 @@ modules = {
 		resource url:[dir:"${dir}/css",file:'style.min.css']
 		resource url:[dir:"${dir}/css",file:'style-responsive.min.css']
 		resource url:[dir:"${dir}/css",file:'retina.css']
+		resource url:[dir:"${dir}/css",file:'application.css']
 	}
 }
 
