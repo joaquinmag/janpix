@@ -1,14 +1,11 @@
 package ar.com.healthentity
 
-import grails.plugins.springsecurity.Secured
-
 import org.apache.commons.io.IOUtils
 
 import com.janpix.JanpixException
 import com.janpix.servidordocumentos.dto.ClinicalDocumentDTO
 
 
-@Secured(['HealthWorker'])
 class ClinicalDocumentController {
 	static scaffold = true
 	

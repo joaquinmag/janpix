@@ -1,14 +1,16 @@
-
 import ar.com.healthentity.Role
+import ar.com.healthentity.Person
 import ar.com.healthentity.User
 import ar.com.healthentity.UserRole
 
 class BootStrap {
 
     def init = { servletContext ->
-		def hwRole = new Role('HealthWorker').save(flush: true)
+		def hwRole = new Role(authority: 'HealthWorker').save(flush: true)
   
-		def testUser = new User(username: 'admin', enabled: true, password: 'password')
+		def person = new Person('Juan Carlos', 'Administrador')
+		def testUser = new User('admin', person)
+		testUser.password = 'password'
 		testUser.save(flush: true)
   
 		UserRole.create testUser, hwRole, true

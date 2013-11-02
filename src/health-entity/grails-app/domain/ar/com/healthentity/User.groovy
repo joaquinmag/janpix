@@ -72,6 +72,8 @@ class User {
 	User(String username, Person person) {
 		this.person = person
 		this.username = username
+		this.enabled = true
+		this.validatedEmail = false
 	}
 	
 	Years getYears(LocalDate today) {

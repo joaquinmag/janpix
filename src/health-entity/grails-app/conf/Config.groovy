@@ -242,3 +242,5 @@ grails.resources.processing.enabled = false
 grails.plugins.springsecurity.userLookup.userDomainClassName = 'ar.com.healthentity.User'
 grails.plugins.springsecurity.userLookup.authorityJoinClassName = 'ar.com.healthentity.UserRole'
 grails.plugins.springsecurity.authority.className = 'ar.com.healthentity.Role'
+
+grails.gorm.failOnError=true
