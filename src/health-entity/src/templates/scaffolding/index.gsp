@@ -67,7 +67,7 @@
 								if (p.type == Boolean || p.type == boolean) { %>
 						<td><g:formatBoolean boolean="\${${propertyName}.${p.name}}" /></td>
 					<%          } else if (p.type == Date || p.type == java.sql.Date || p.type == java.sql.Time || p.type == Calendar) { %>
-						<td><g:formatDate date="\${${propertyName}.${p.name}}" /></td>
+						<td><g:formatDate date="\${${propertyName}.${p.name}}" format="yyyy-MM-dd" /></td>
 					<%          } else { %>
 						<td>\${fieldValue(bean: ${propertyName}, field: "${p.name}")}</td>
 					<%  }  } %>

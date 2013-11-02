@@ -57,7 +57,7 @@
 							<%  } else if (p.type == Boolean || p.type == boolean) { %>
 								<g:formatBoolean boolean="\${${propertyName}?.${p.name}}" />
 							<%  } else if (p.type == Date || p.type == java.sql.Date || p.type == java.sql.Time || p.type == Calendar) { %>
-								<g:formatDate date="\${${propertyName}?.${p.name}}" />
+								<g:formatDate date="\${${propertyName}?.${p.name}}" type="date" style="LONG" />
 							<%  } else if (!p.type.isArray()){ %>
 								<g:fieldValue bean="\${${propertyName}}" field="${p.name}"/>
 							<%  } %>

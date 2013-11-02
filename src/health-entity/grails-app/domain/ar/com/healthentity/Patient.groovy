@@ -1,16 +1,40 @@
 package ar.com.healthentity
 
-class Patient {
+enum SexType {
+	Masculino,
+	Femenino
+}
 
-	String name
+class Patient {
+	
+	String firstName
+	String lastName
 	String address
-	String city
-	String sex
+	City city
+	SexType sex
 	
 	Date birthdate
-	Date dateCreated
 	
+	String email
+	String phone
+	
+	Date dateCreated
+	Date lastUpdated
+	
+	static mapping = {
+		sex enumType: "values"
+	}
 	
     static constraints = {
+		firstName(nullable:false,blank:false)
+		lastName(nullable:false,blank:false)
+		birthdate(nullable:false)
+		sex(nullable:false)
+		city(nullable:false)
+		address(nullable:false,blank:false)
+		email(nullable:true)
+		phone(nullable:true)
+		dateCreated(display:false)
+		lastUpdated(display:false)
     }
 }
