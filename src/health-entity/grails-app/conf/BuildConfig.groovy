@@ -58,8 +58,15 @@ grails.project.dependency.resolution = {
         // plugins for the compile step
         compile ":scaffolding:2.0.0"
         compile ':cache:1.1.1'
-		compile ":modulos-servidor-documentos:0.11"
+		compile ":modulos-servidor-documentos:0.16"
 		compile ":cxf-client:1.5.6"
+		compile ":spring-security-core:1.2.7.3"
+
+		// joda time
+		compile ":joda-time:1.4"
+
+		// pretty time formatter
+		compile ":pretty-time:2.1.3.Final-1.0.1"
 
         // plugins needed at runtime but not for compilation
         runtime ":hibernate:3.6.10.1" // or ":hibernate4:4.1.11.1"
