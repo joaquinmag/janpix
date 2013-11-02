@@ -1,6 +1,7 @@
 package com.janpix.healthentity
 
 import grails.transaction.Transactional
+import ar.com.healthentity.Patient
 
 import com.janpix.JanpixException
 import com.janpix.servidordocumentos.dto.ClinicalDocumentDTO
@@ -11,6 +12,22 @@ import com.janpix.servidordocumentos.dto.message.RetrieveDocumentRequest
 class JanpixService {
 	
 	def janpixRepodocServiceClient
+	
+	/**
+	 * Agrega un nuevo paciente en el RUP
+	 * @param patient
+	 * @return
+	 */
+	def addNewPatient(Patient patient){
+		try{
+			throw new JanpixException("Metodo no implementado");
+		}
+		catch(Exception ex){
+			String message ="Error de conexión contra el repositorio: "+ex.message
+			log.error(message)
+			throw new JanpixException(message);
+		}
+	}
 	
 	/**
 	 * Retorna el documento del Repositorio de Documentos
