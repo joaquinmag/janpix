@@ -1,14 +1,15 @@
 package ar.com.healthentity
 
+import groovy.transform.EqualsAndHashCode
+
 import org.apache.commons.lang.builder.EqualsBuilder
 import org.apache.commons.lang.builder.HashCodeBuilder
-import org.joda.time.LocalDate;
-import org.joda.time.LocalDateTime;
-import org.joda.time.Years;
+import org.joda.time.LocalDate
+import org.joda.time.LocalDateTime
+import org.joda.time.Years
 
-import com.janpix.PasswordCantBeTheSameException
-import com.janpix.PasswordDoesntMatchException
-import groovy.transform.EqualsAndHashCode
+import com.janpix.exceptions.PasswordCantBeTheSameException
+import com.janpix.exceptions.PasswordDoesntMatchException
 
 @EqualsAndHashCode
 class Person {

@@ -7,3 +7,12 @@ if (typeof jQuery !== 'undefined') {
 		});
 	})(jQuery);
 }
+
+
+/**
+ * Funcion que muestra la ventana modal
+ */
+function show_modal(){
+	$('#myModal').modal('show');
+}
+

@@ -1,9 +1,12 @@
 package com.janpix.healthentity
 
 import grails.transaction.Transactional
+import ar.com.healthentity.ClinicalDocument
 import ar.com.healthentity.Patient
+import ar.com.healthentity.janpix.JanpixAssembler
 
-import com.janpix.JanpixException
+import com.janpix.exceptions.JanpixConnectionException
+import com.janpix.exceptions.JanpixException
 import com.janpix.servidordocumentos.dto.ClinicalDocumentDTO
 import com.janpix.servidordocumentos.dto.message.ACKMessage
 import com.janpix.servidordocumentos.dto.message.RetrieveDocumentRequest
@@ -16,16 +19,16 @@ class JanpixService {
 	/**
 	 * Agrega un nuevo paciente en el RUP
 	 * @param patient
-	 * @return
+	 * @return String con el CUIS del paciente agregado
 	 */
-	def addNewPatient(Patient patient){
+	String addNewPatient(Patient patient){
 		try{
 			throw new JanpixException("Metodo no implementado");
 		}
 		catch(Exception ex){
-			String message ="Error de conexión contra el repositorio: "+ex.message
+			String message ="Error de conexión contra el RUP: "+ex.message
 			log.error(message)
-			throw new JanpixException(message);
+			throw new JanpixConnectionException(message);
 		}
 	}
 	
@@ -33,7 +36,7 @@ class JanpixService {
 	 * Retorna el documento del Repositorio de Documentos
 	 * que contiene el uuid pasado
 	 */
-	ClinicalDocumentDTO getDocumentByUUID(String uuid){
+	ClinicalDocument getDocumentByUUID(String uuid){
 		try{
 			RetrieveDocumentRequest requestMessage = new RetrieveDocumentRequest(uuid:uuid)
 			
@@ -45,8 +48,8 @@ class JanpixService {
 			}
 			
 			log.info("Documento obtenido correctamente")
-			
-			return ack.clinicalDocument;
+			ClinicalDocument clinicalDocument = JanpixAssembler.fromDocument(ack.clinicalDocument)
+			return clinicalDocument;
 		}
 		catch(Exception ex){
 			String message ="Error de conexión contra el repositorio: "+ex.message 
@@ -60,7 +63,7 @@ class JanpixService {
 	 * @param clinicalDocument
 	 * @return
 	 */
-    ACKMessage UploadDocument(ClinicalDocumentDTO clinicalDocument){
+    Boolean UploadDocument(ClinicalDocumentDTO clinicalDocument){
     
 	}
 }

@@ -1,4 +1,4 @@
-package com.janpix
+package com.janpix.exceptions
 
 class InvalidCodeValidationException extends JanpixException {
 	

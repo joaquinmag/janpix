@@ -88,7 +88,10 @@
 					<td class="center">
 						<g:link class="btn btn-success" action="show" id="${patientInstance.id}"><i class="icon-zoom-in "></i></g:link>
 						<g:link class="btn btn-info" action="edit" id="${patientInstance.id}"><i class="icon-edit "></i>  </g:link>
-						<g:link class="btn btn-warning" action="registerToJanpix" id="${patientInstance.id}"><i class="icon-refresh "></i>  </g:link>
+						<g:remoteLink class="btn btn-warning" action="registerOnJanpix" 
+						id="${patientInstance.id}" onSuccess="show_modal()" update="[success:'modalBody',failure:'modalBody']">
+							<i class="icon-refresh "></i> 
+						</g:remoteLink>
 					</td>
 			  		
 					</tr>

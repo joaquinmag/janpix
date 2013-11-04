@@ -1,9 +1,7 @@
 package ar.com.healthentity
 
-import org.apache.commons.io.IOUtils
+import com.janpix.exceptions.JanpixException
 
-import com.janpix.JanpixException
-import com.janpix.servidordocumentos.dto.ClinicalDocumentDTO
 
 
 class ClinicalDocumentController {
@@ -19,18 +17,16 @@ class ClinicalDocumentController {
 	def downloadDocument(String uuid){
 		try{
 			if(uuid != null){
-				ClinicalDocumentDTO document = janpixService.getDocumentByUUID(uuid)
+				ClinicalDocument document = janpixService.getDocumentByUUID(uuid)
 				if(document){
-					OutputStream out = response.getOutputStream()
-					byte[] bytes = IOUtils.toByteArray(document.binaryData.getInputStream());
-					
-					String nameDocument = document.fileAttributes.filename
-					String mimeType = document.fileAttributes.mimeType
-					response.setContentLength((int)document.fileAttributes.size)
+					String nameDocument = document.name
+					String mimeType = document.mimeType
+					response.setContentLength((int)document.size)
 					response.addHeader("Content-disposition", "attachment; filename=${nameDocument}")
 					response.addHeader("Content-type", "${mimeType}")
 					
-					out.write(bytes)
+					OutputStream out = response.getOutputStream()
+					out.write(document.binaryData)
 					out.close()
 				}
 			}

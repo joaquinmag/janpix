@@ -112,14 +112,14 @@
 		<div class="modal hide fade" id="myModal">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">×</button>
-				<h3>Settings</h3>
+				<h3><g:message code="defailt.modal.notification.message" default="Notification" /></h3>
 			</div>
-			<div class="modal-body">
-				<p>Here settings can be configured...</p>
+			<div class="modal-body" id="modalBody">
+				<p>...</p>
 			</div>
 			<div class="modal-footer">
-				<a href="#" class="btn" data-dismiss="modal">Close</a>
-				<a href="#" class="btn btn-primary">Save changes</a>
+				<a href="#" class="btn" data-dismiss="modal"><g:message code="defailt.modal.close.message" default="Close" /></a>
+				<a href="#" class="btn btn-primary"><g:message code="defailt.modal.accept.message" default="Ok" /></a>
 			</div>
 		</div>
 		

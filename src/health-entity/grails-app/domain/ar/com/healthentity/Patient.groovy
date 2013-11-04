@@ -6,12 +6,12 @@ enum SexType {
 }
 
 class Patient {
-	
 	String firstName
 	String lastName
 	String address
 	City city
 	SexType sex
+	List<Study> studies = []
 	
 	Date birthdate
 	
@@ -20,6 +20,8 @@ class Patient {
 	
 	Date dateCreated
 	Date lastUpdated
+	
+	static hasMany = [studies:Study]
 	
 	static mapping = {
 		sex enumType: "values"

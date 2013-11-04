@@ -1,4 +1,4 @@
-package com.janpix
+package com.janpix.exceptions
 
 class JanpixException extends RuntimeException {
 		public JanpixException() {
@@ -8,9 +8,9 @@ class JanpixException extends RuntimeException {
 		public JanpixException(String message) {
 			super(message)
 		}
-		
-		@Override
+
 		public String getMessage() {
 			return super.getMessage()
 		}
+		
 }

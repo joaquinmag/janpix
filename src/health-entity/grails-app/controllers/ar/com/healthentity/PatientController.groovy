@@ -1,14 +1,15 @@
 package ar.com.healthentity
 
 
-import grails.plugins.springsecurity.Secured
-
 import static org.springframework.http.HttpStatus.*
+import grails.plugins.springsecurity.Secured
 import grails.transaction.Transactional
-import com.janpix.JanpixException
+
+import com.janpix.exceptions.JanpixException
+import com.janpix.exceptions.JanpixPossibleMatchingPatientException
 
 @Secured("isAuthenticated()")
-@Transactional(readOnly = true)
+//@Transactional(readOnly = true,noRollbackFor=[JanpixException]) // TODO ver porque no funciona
 class PatientController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
@@ -21,11 +22,19 @@ class PatientController {
 				return
 			}
 			
-		janpixService.addNewPatient(patientInstance)
+		String cuis = janpixService.addNewPatient(patientInstance)
+		
+		//respond patientInstance
+		// TODO renderizar el mensaje con un formato correcto indicando 
+		// el CUIS del paciente sincronizado
 			
 		}
+		catch(JanpixPossibleMatchingPatientException ex){
+			// TODO renderizar con un template de error
+			// que por ejemplo ofrezca la opcion de forzar el ingreso del paciente
+			render ex.message
+		}
 		catch(JanpixException ex){
-			// TODO devolver error
 			render ex.message
 		}
 
