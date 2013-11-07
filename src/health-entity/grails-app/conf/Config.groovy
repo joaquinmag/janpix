@@ -187,26 +187,30 @@ log4j = {
 /** CXF Client **/
 service.janpix.repodoc.url = ""
 service.janpix.regdoc.url = ""
+service.janpix.pixmanager.serverURL = ""
 
 // set per-environment service url
 environments {
 	production {
-		service.janpix.serverURL = "http://www.changeme.com"
-		service.janpix.repodoc.url = "${service.janpix.serverURL}/repodoc/services/repositorioJanpix?wsdl"
-		service.janpix.regdoc.url = "${service.janpix.serverURL}/regdoc/services/registerJanpix?wsdl"
+		service.janpix.regdoc.serverURL  = "http://www.changeme.com"
+		service.janpix.repodoc.serverURL = "http://www.changeme.com"
+		service.janpix.pixmanager.serverURL = "http://www.changeme.com"
 	}
 	development {
-		service.janpix.serverURL = "http://localhost:9090"
-		service.janpix.repodoc.url = "${service.janpix.serverURL}/repodoc/services/repositorioJanpix?wsdl"
-		service.janpix.regdoc.url = "${service.janpix.serverURL}/regdoc/services/registerJanpix?wsdl"
+		service.janpix.regdoc.serverURL  = "http://localhost:9090"
+		service.janpix.repodoc.serverURL = "http://localhost:9092"
+		service.janpix.pixmanager.serverURL = "http://localhost:9094"
 	}
 	test {
-		service.janpix.serverURL = "http://localhost:9090"
-		service.janpix.repodoc.url = "${service.janpix.serverURL}/repodoc/services/repositorioJanpix?wsdl"
-		service.janpix.regdoc.url = "${service.janpix.serverURL}/regdoc/services/registerJanpix?wsdl"
-		
+		service.janpix.regdoc.serverURL  = "http://localhost:9090"
+		service.janpix.repodoc.serverURL = "http://localhost:9092"
+		service.janpix.pixmanager.serverURL = "http://localhost:9094"
 	}
 }
+
+service.janpix.repodoc.url = "${service.janpix.regdoc.serverURL}/repodoc/services/repositorioJanpix?wsdl"
+service.janpix.regdoc.url = "${service.janpix.repodoc.serverURL}/regdoc/services/registerJanpix?wsdl"
+service.janpix.pixmanager.url = "${service.janpix.pixmanager.serverURL}/rup/services/PIXManagerJanpix?wsdl"
 
 cxf {
 	client {
@@ -220,7 +224,17 @@ cxf {
 			//httpClientPolicy = 'customHttpClientPolicy'
 		}
 		
-	/*	janpixRegdocServiceClient {
+		janpixPixManagerServiceClient {
+			wsdlArgs = "-autoNameResolution"
+			clientInterface = com.janpix.rup.porttype.PIXManagerJanpixServicePortType
+			serviceEndpointAddress = "${service.janpix.pixmanager.url}"
+			namespace = "com.janpix.rup"
+			//receiveTimeout = 0 //no timeout
+			//connectionTimeout = 0 //no timeout
+			//httpClientPolicy = 'customHttpClientPolicy'
+		}
+		
+		/*janpixRegdocServiceClient {
 			wsdlArgs = "-autoNameResolution"
 			clientInterface = com.janpix.repodoc.porttype.RegistroJanpixServicePortType
 			serviceEndpointAddress = "${service.janpix.regdoc.url}"

@@ -24,15 +24,15 @@ class PatientController {
 			
 		String cuis = janpixService.addNewPatient(patientInstance)
 		
-		//respond patientInstance
-		// TODO renderizar el mensaje con un formato correcto indicando 
-		// el CUIS del paciente sincronizado
+		render(view:"register_janpix_ok",model:[patientInstance:patientInstance,cuis:cuis])
 			
 		}
 		catch(JanpixPossibleMatchingPatientException ex){
-			// TODO renderizar con un template de error
-			// que por ejemplo ofrezca la opcion de forzar el ingreso del paciente
-			render ex.message
+			//render(view:"matching_template",model:[it:patientInstance])
+			//TODO el patient no tiene relaciones porque se desatacho al lanzar la exception
+			// Usar solo valores constantes
+			respond patientInstance, view:'matching_patient'
+			return
 		}
 		catch(JanpixException ex){
 			render ex.message

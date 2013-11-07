@@ -7,14 +7,19 @@ import ar.com.healthentity.janpix.JanpixAssembler
 
 import com.janpix.exceptions.JanpixConnectionException
 import com.janpix.exceptions.JanpixException
+import com.janpix.exceptions.JanpixPossibleMatchingPatientException
 import com.janpix.servidordocumentos.dto.ClinicalDocumentDTO
 import com.janpix.servidordocumentos.dto.message.ACKMessage
 import com.janpix.servidordocumentos.dto.message.RetrieveDocumentRequest
+
+import com.janpix.rup.services.contracts.AddPatientRequestMessage
+import com.janpix.rup.services.contracts.ACKMessage
 
 @Transactional
 class JanpixService {
 	
 	def janpixRepodocServiceClient
+	def janpixPixManagerServiceClient
 	
 	/**
 	 * Agrega un nuevo paciente en el RUP
@@ -23,7 +28,17 @@ class JanpixService {
 	 */
 	String addNewPatient(Patient patient){
 		try{
-			throw new JanpixException("Metodo no implementado");
+			//throw new JanpixPossibleMatchingPatientException("Metodo no implementado");
+			AddPatientRequestMessage requestMessage = new AddPatientRequestMessage()
+			
+			log.info("Agregando paciente ["+patient+"] al Registro Unico de Pacientes")
+			ACKMessage ack = janpixPixManagerServiceClient.AddNewPatient(requestMessage)
+			if(ack.typeCode != ACKMessage.TypeCode.SuccededRetrieve){
+				log.error("Error al agregar al paciente. Error:"+ack.typeCode.toString()+". Mensaje:"+ack.text)
+				return null;
+			}
+			
+			//TODO procesar lo que falta
 		}
 		catch(Exception ex){
 			String message ="Error de conexión contra el RUP: "+ex.message
