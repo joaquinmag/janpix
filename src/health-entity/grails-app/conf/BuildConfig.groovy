@@ -59,7 +59,6 @@ grails.project.dependency.resolution = {
         // plugins for the compile step
         compile ":scaffolding:2.0.0"
         compile ':cache:1.1.1'
-		compile ":modulos-servidor-documentos:0.17"
 		compile ":cxf-client:1.5.7"
 		compile ":spring-security-core:1.2.7.3"
 

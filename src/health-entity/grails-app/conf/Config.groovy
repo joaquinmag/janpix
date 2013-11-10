@@ -208,30 +208,34 @@ environments {
 	}
 }
 
-service.janpix.repodoc.url = "${service.janpix.regdoc.serverURL}/repodoc/services/repositorioJanpix?wsdl"
+service.janpix.repodoc.url = "${service.janpix.regdoc.serverURL}/repodoc/services/repositorioJanpix"
 service.janpix.regdoc.url = "${service.janpix.repodoc.serverURL}/regdoc/services/registerJanpix?wsdl"
-service.janpix.pixmanager.url = "${service.janpix.pixmanager.serverURL}/rup/services/PIXManagerJanpix?wsdl"
+service.janpix.pixmanager.url = "${service.janpix.pixmanager.serverURL}/rup/services/PIXManagerJanpix"
 
 cxf {
 	client {
 		janpixRepodocServiceClient {
-			wsdlArgs = "-autoNameResolution"
-			clientInterface = com.janpix.repodoc.porttype.RepositorioJanpixServicePortType
+			// para usar con grails wsdl2java
+			wsdlArgs = [ "-autoNameResolution", "-validate" ]
+			wsdl = "${service.janpix.repodoc.url}?wsdl"
+			namespace = "com.janpix.webclient.repodoc"
+			client = false
+			
+			// conexion con WS
+			clientInterface = com.janpix.webclient.repodoc.RepositorioJanpixService
 			serviceEndpointAddress = "${service.janpix.repodoc.url}"
-			namespace = "com.janpix.repodoc"
-			//receiveTimeout = 0 //no timeout
-			//connectionTimeout = 0 //no timeout
-			//httpClientPolicy = 'customHttpClientPolicy'
 		}
 		
 		janpixPixManagerServiceClient {
-			wsdlArgs = "-autoNameResolution"
-			clientInterface = com.janpix.rup.porttype.PIXManagerJanpixServicePortType
+			// para usar con grails wsdl2java
+			wsdlArgs = [ "-autoNameResolution", "-validate" ]
+			wsdl = "${service.janpix.pixmanager.url}?wsdl"
+			namespace = "com.janpix.webclient.rup"
+			client = false
+
+			// conexion con WS
+			clientInterface = com.janpix.webclient.rup.PIXManagerJanpixService
 			serviceEndpointAddress = "${service.janpix.pixmanager.url}"
-			namespace = "com.janpix.rup"
-			//receiveTimeout = 0 //no timeout
-			//connectionTimeout = 0 //no timeout
-			//httpClientPolicy = 'customHttpClientPolicy'
 		}
 		
 		/*janpixRegdocServiceClient {
