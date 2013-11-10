@@ -21,6 +21,7 @@ import com.janpix.rup.services.contracts.ACKQueryPatientMessage;
 import com.janpix.rup.services.contracts.AddPatientRequestMessage
 import com.janpix.rup.services.contracts.GetAllPossibleMatchedPatientsRequestMessage
 import com.janpix.rup.services.contracts.GetIdentifiersRequestMessage
+import com.janpix.rup.services.contracts.UpdatePatientRequestMessage
 
 class PixManagerJanpixServiceTest {
 
@@ -160,7 +161,7 @@ class PixManagerJanpixServiceTest {
 											identifiers: [ new IdentifierDTO(type: Identifier.TYPE_IDENTIFIER_SS, number: "45676898987", assigningAuthority: new AssigningAuthorityDTO("2.16.32","Argentina")) ],
 										)
 		
-		def ackUpdate = PIXManagerJanpixService.UpdatePatient(patient, assigningAuthDTO)
+		def ackUpdate = PIXManagerJanpixService.UpdatePatient(new UpdatePatientRequestMessage(patient: patient, healthEntity: assigningAuthDTO))
 		ackUpdate.patient.identifiers.each {
 			println "identifiers ${it.type} : ${it.number}"
 		}
