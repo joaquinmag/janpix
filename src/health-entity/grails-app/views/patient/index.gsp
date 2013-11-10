@@ -83,7 +83,7 @@
 					
 
 					
-						<td>${fieldValue(bean: patientInstance, field: "address")}</td>
+						<td>${fieldValue(bean: patientInstance, field: "addressName")}</td>
 
 					<td class="center">
 						<g:link class="btn btn-success" action="show" id="${patientInstance.id}"><i class="icon-zoom-in "></i></g:link>

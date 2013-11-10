@@ -73,6 +73,23 @@
 					<div class="row-fluid">
 						<div class="span3">
 							<span class="view-label">
+								<g:message code="patient.dni.label" default="Dni" />
+							</span>
+						</div>
+						<div class="span9">
+							<g:if test="${patientInstance?.dni}">
+							<span class="view-text">
+							
+								<g:fieldValue bean="${patientInstance}" field="dni"/>
+							
+							</span>
+							</g:if>		
+						</div>
+					</div>
+							
+					<div class="row-fluid">
+						<div class="span3">
+							<span class="view-label">
 								<g:message code="patient.birthdate.label" default="Birthdate" />
 							</span>
 						</div>
@@ -124,14 +141,31 @@
 					<div class="row-fluid">
 						<div class="span3">
 							<span class="view-label">
-								<g:message code="patient.address.label" default="Address" />
+								<g:message code="patient.addressName.label" default="Address Name" />
 							</span>
 						</div>
 						<div class="span9">
-							<g:if test="${patientInstance?.address}">
+							<g:if test="${patientInstance?.addressName}">
 							<span class="view-text">
 							
-								<g:fieldValue bean="${patientInstance}" field="address"/>
+								<g:fieldValue bean="${patientInstance}" field="addressName"/>
+							
+							</span>
+							</g:if>		
+						</div>
+					</div>
+							
+					<div class="row-fluid">
+						<div class="span3">
+							<span class="view-label">
+								<g:message code="patient.addressNumber.label" default="Address Number" />
+							</span>
+						</div>
+						<div class="span9">
+							<g:if test="${patientInstance?.addressNumber}">
+							<span class="view-text">
+							
+								<g:fieldValue bean="${patientInstance}" field="addressNumber"/>
 							
 							</span>
 							</g:if>		
@@ -200,6 +234,26 @@
 							<span class="view-text">
 							
 								<g:formatDate date="${patientInstance?.lastUpdated}" type="date" style="LONG" />
+							
+							</span>
+							</g:if>		
+						</div>
+					</div>
+							
+					<div class="row-fluid">
+						<div class="span3">
+							<span class="view-label">
+								<g:message code="patient.studies.label" default="Studies" />
+							</span>
+						</div>
+						<div class="span9">
+							<g:if test="${patientInstance?.studies}">
+							<span class="view-text">
+							
+								<g:link controller="study" action="index" params="[patientId:patientInstance?.id]"  class="btn btn-info">
+								<g:message code="patient.studies.show.label" default="View One-to-Many" />
+								</g:link>
+
 							
 							</span>
 							</g:if>		

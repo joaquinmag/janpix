@@ -8,6 +8,8 @@ import ar.com.healthentity.janpix.JanpixAssembler
 import com.janpix.exceptions.JanpixConnectionException
 import com.janpix.exceptions.JanpixException
 import com.janpix.exceptions.JanpixPossibleMatchingPatientException
+import com.janpix.exceptions.JanpixDuplicatePatientException
+
 import com.janpix.servidordocumentos.dto.ClinicalDocumentDTO
 import com.janpix.servidordocumentos.dto.message.ACKMessage
 import com.janpix.servidordocumentos.dto.message.RetrieveDocumentRequest
@@ -20,6 +22,7 @@ class JanpixService {
 	
 	def janpixRepodocServiceClient
 	def janpixPixManagerServiceClient
+	def grailsApplication
 	
 	/**
 	 * Agrega un nuevo paciente en el RUP
@@ -27,24 +30,27 @@ class JanpixService {
 	 * @return String con el CUIS del paciente agregado
 	 */
 	String addNewPatient(Patient patient){
+		ACKMessage ack = null
 		try{
-			//throw new JanpixPossibleMatchingPatientException("Metodo no implementado");
 			AddPatientRequestMessage requestMessage = new AddPatientRequestMessage()
+			requestMessage.person = JanpixAssembler.toPerson(patient)
+			requestMessage.healthEntity = JanpixAssembler.toAssigningAuthority(grailsApplication.config.healthEntity)
+			requestMessage.organizationId = patient.id
 			
 			log.info("Agregando paciente ["+patient+"] al Registro Unico de Pacientes")
-			ACKMessage ack = janpixPixManagerServiceClient.AddNewPatient(requestMessage)
-			if(ack.typeCode != ACKMessage.TypeCode.SuccededRetrieve){
-				log.error("Error al agregar al paciente. Error:"+ack.typeCode.toString()+". Mensaje:"+ack.text)
-				return null;
-			}
-			
-			//TODO procesar lo que falta
+			ack = janpixPixManagerServiceClient.addNewPatient(requestMessage)
 		}
 		catch(Exception ex){
 			String message ="Error de conexión contra el RUP: "+ex.message
 			log.error(message)
 			throw new JanpixConnectionException(message);
 		}
+		
+		this.validateACKMessageRUP(ack)
+			
+			
+		return ack.patient.uniqueId
+		
 	}
 	
 	/**
@@ -80,5 +86,31 @@ class JanpixService {
 	 */
     Boolean UploadDocument(ClinicalDocumentDTO clinicalDocument){
     
+	}
+	
+	/**
+	 * Valida los posibles valores que vienen en un ACK del RUP
+	 * @param ack
+	 */
+	private void validateACKMessageRUP(ACKMessage ack){
+		if(ack.typeCode == ACKMessage.TypeCode.SuccededCreation){
+			log.info("Paciente agregado correctamente")
+			return
+		}
+		
+		log.error("Error al agregar al paciente. Error:"+ack.typeCode.toString()+". Mensaje:"+ack.text)
+		switch(ack.typeCode){
+			case ACKMessage.TypeCode.PossibleMatchingPatientsError: 
+				new JanpixPossibleMatchingPatientException("Existen pacientes que se asemejan al paciente que intenta agregar pero no se puede determinar con precisión");
+				break;
+				
+			case ACKMessage.TypeCode.DuplicatePatientError:
+				new JanpixDuplicatePatientException("El paciente ya se encuentra ingresado");
+				break;
+				
+			default :
+				throw new JanpixException(ack.text);
+				break;
+		}
 	}
 }

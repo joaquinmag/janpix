@@ -8,7 +8,9 @@ enum SexType {
 class Patient {
 	String firstName
 	String lastName
-	String address
+	String dni
+	String addressName
+	String addressNumber
 	City city
 	SexType sex
 	List<Study> studies = []
@@ -30,10 +32,12 @@ class Patient {
     static constraints = {
 		firstName(nullable:false,blank:false)
 		lastName(nullable:false,blank:false)
+		dni(nullable:false,blank:false)
 		birthdate(nullable:false)
 		sex(nullable:false)
 		city(nullable:false)
-		address(nullable:false,blank:false)
+		addressName(nullable:false,blank:false)
+		addressNumber(nullable:false,blank:false)
 		email(nullable:true)
 		phone(nullable:true)
 		dateCreated(display:false)

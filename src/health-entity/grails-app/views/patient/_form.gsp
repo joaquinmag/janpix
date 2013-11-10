@@ -22,6 +22,16 @@
 	</div>
 </div>
 
+<div class="control-group ${hasErrors(bean: patientInstance, field: 'dni', 'error')} required">
+	<label class="control-label" for="dni">
+		<g:message code="patient.dni.label" default="Dni" />
+		<span class="required-indicator">*</span>
+	</label>
+	<div class="controls">
+		<g:textField name="dni" required="" value="${patientInstance?.dni}"/>
+	</div>
+</div>
+
 <div class="control-group ${hasErrors(bean: patientInstance, field: 'birthdate', 'error')} required">
 	<label class="control-label" for="birthdate">
 		<g:message code="patient.birthdate.label" default="Birthdate" />
@@ -52,13 +62,23 @@
 	</div>
 </div>
 
-<div class="control-group ${hasErrors(bean: patientInstance, field: 'address', 'error')} required">
-	<label class="control-label" for="address">
-		<g:message code="patient.address.label" default="Address" />
+<div class="control-group ${hasErrors(bean: patientInstance, field: 'addressName', 'error')} required">
+	<label class="control-label" for="addressName">
+		<g:message code="patient.addressName.label" default="Address Name" />
 		<span class="required-indicator">*</span>
 	</label>
 	<div class="controls">
-		<g:textField name="address" required="" value="${patientInstance?.address}"/>
+		<g:textField name="addressName" required="" value="${patientInstance?.addressName}"/>
+	</div>
+</div>
+
+<div class="control-group ${hasErrors(bean: patientInstance, field: 'addressNumber', 'error')} required">
+	<label class="control-label" for="addressNumber">
+		<g:message code="patient.addressNumber.label" default="Address Number" />
+		<span class="required-indicator">*</span>
+	</label>
+	<div class="controls">
+		<g:textField name="addressNumber" required="" value="${patientInstance?.addressNumber}"/>
 	</div>
 </div>
 
@@ -79,6 +99,25 @@
 	</label>
 	<div class="controls">
 		<g:textField name="phone" value="${patientInstance?.phone}"/>
+	</div>
+</div>
+
+<div class="control-group ${hasErrors(bean: patientInstance, field: 'studies', 'error')} ">
+	<label class="control-label" for="studies">
+		<g:message code="patient.studies.label" default="Studies" />
+		
+	</label>
+	<div class="controls">
+		
+<ul class="one-to-many">
+<g:each in="${patientInstance?.studies?}" var="s">
+    <li><g:link controller="study" action="show" id="${s.id}">${s?.encodeAsHTML()}</g:link></li>
+</g:each>
+<li class="add">
+<g:link controller="study" action="create" params="['patient.id': patientInstance?.id]">${message(code: 'default.add.label', args: [message(code: 'study.label', default: 'Study')])}</g:link>
+</li>
+</ul>
+
 	</div>
 </div>
 
