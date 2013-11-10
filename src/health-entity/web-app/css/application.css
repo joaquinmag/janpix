@@ -1,0 +1,11 @@
+/* Spinner */
+.spinner {
+	background: url(../images/cargando.gif) 50% 50% no-repeat black;
+   	position: fixed;
+   	display:block;
+    	right: 0;
+	top: 0;
+	left:0;
+	bottom:0;
+	opacity:0.8
+}

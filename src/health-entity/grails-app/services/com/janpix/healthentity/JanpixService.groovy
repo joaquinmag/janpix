@@ -49,7 +49,7 @@ class JanpixService {
 		this.validateACKMessageRUP(ack)
 			
 			
-		return ack.patient.uniqueId
+		return "No tengo el CUIS"
 		
 	}
 	
@@ -101,11 +101,15 @@ class JanpixService {
 		log.error("Error al agregar al paciente. Error:"+ack.typeCode.toString()+". Mensaje:"+ack.text)
 		switch(ack.typeCode){
 			case ACKMessage.TypeCode.PossibleMatchingPatientsError: 
-				new JanpixPossibleMatchingPatientException("Existen pacientes que se asemejan al paciente que intenta agregar pero no se puede determinar con precisión");
+				throw new JanpixPossibleMatchingPatientException("Existen pacientes que se asemejan al paciente que intenta agregar pero no se puede determinar con precisión");
 				break;
 				
 			case ACKMessage.TypeCode.DuplicatePatientError:
-				new JanpixDuplicatePatientException("El paciente ya se encuentra ingresado");
+				throw new JanpixPossibleMatchingPatientException("Existen pacientes que se asemejan al paciente que intenta agregar pero no se puede determinar con precisión");
+				break;
+			
+			case ACKMessage.TypeCode.IdentifierError:
+				throw new JanpixDuplicatePatientException("El paciente ya se encuentra ingresado");
 				break;
 				
 			default :

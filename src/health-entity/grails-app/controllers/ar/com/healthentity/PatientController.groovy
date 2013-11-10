@@ -36,6 +36,7 @@ class PatientController {
 		}
 		catch(JanpixException ex){
 			render ex.message
+			return
 		}
 
 	}

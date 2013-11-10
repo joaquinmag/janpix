@@ -39,7 +39,7 @@ class JanpixAssembler {
 		person.name.firstName = patient.firstName
 		person.name.lastName = patient.lastName
 		person.birthdate = new ExtendedDateDTO()
-		person.birthdate.precission = "DAY"
+		person.birthdate.precission = "Day"
 		person.birthdate.date = patient.birthdate
 		person.administrativeSex = (patient.sex == SexType.Masculino)?'M':'F'
 		person.birthplace = JanpixAssembler.toCity(patient.city)

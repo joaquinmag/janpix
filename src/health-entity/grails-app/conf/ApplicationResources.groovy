@@ -2,6 +2,7 @@ import org.codehaus.groovy.grails.web.context.ServletContextHolder as SCH
 
 modules = {
     application {
+		dependsOn 'jquery'
         resource url:'js/application.js'
     }
 	
