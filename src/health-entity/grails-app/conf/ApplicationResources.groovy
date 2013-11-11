@@ -18,14 +18,38 @@ modules = {
 
 	bootstrap {
 		dependsOn 'jquerytheme'
-		
-		def dir = "theme";
+		def dir = "theme"
 		resource url:[dir:"${dir}/js",file:'bootstrap.min.js'], exclude: 'minimify'
 		resource url:[dir:"${dir}/css",file:'bootstrap.min.css'], exclude: 'minimify'
 	}
-	
+
+	dropzonecss {
+		def dir = "theme"
+		resource url:[dir:"${dir}/css",file:'dropzone.css']
+	}
+
+	dropzonejs {
+		dependsOn 'dropzonecss'
+		def dir = "theme"
+		resource url:[dir:"${dir}/js",file:'dropzone.min.js'], exclude: 'minimify'
+		resource url:[dir:"${dir}/js",file:'form-dropzone.js']
+	}
+
+	chosencss {
+		def dir = "theme"
+		resource url:[dir: "${dir}/css",file:"chosen.css"]
+	}
+
+	chosenjquery {
+		dependsOn 'chosencss'
+		def dir = "theme"
+		resource url:[dir:"${dir}/js",file:'jquery.chosen.min.js'], exclude: 'minimify'
+	}
+
 	theme {
 		dependsOn 'bootstrap'
+		dependsOn 'dropzonecss'
+		dependsOn 'chosencss'
 		
 		// Load Css
 		def dir = "theme";
