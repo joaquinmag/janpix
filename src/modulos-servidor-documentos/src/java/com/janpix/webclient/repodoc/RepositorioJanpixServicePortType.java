@@ -1,4 +1,4 @@
-package com.janpix.repodoc.porttype;
+package com.janpix.webclient.repodoc;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;

@@ -192,18 +192,18 @@ service.janpix.regdoc.url = ""
 environments {
 	production {
 		grails.serverURL = "http://www.changeme.com"
-		service.janpix.repodoc.url = "${grails.serverURL}/repodoc/services/repositorioJanpix?wsdl"
-		service.janpix.regdoc.url = "${grails.serverURL}/regdoc/services/registerJanpix?wsdl"
+		service.janpix.repodoc.url = "${grails.serverURL}/repodoc/services/repositorioJanpix"
+		service.janpix.regdoc.url = "${grails.serverURL}/regdoc/services/registerJanpix"
 	}
 	development {
 		grails.serverURL = "http://localhost:9090"
-		service.janpix.repodoc.url = "${grails.serverURL}/repodoc/services/repositorioJanpix?wsdl"
-		service.janpix.regdoc.url = "${grails.serverURL}/regdoc/services/registerJanpix?wsdl"
+		service.janpix.repodoc.url = "${grails.serverURL}/repodoc/services/repositorioJanpix"
+		service.janpix.regdoc.url = "${grails.serverURL}/regdoc/services/registerJanpix"
 	}
 	test {
 		grails.serverURL = "http://localhost:9090"
-		service.janpix.repodoc.url = "${grails.serverURL}/repodoc/services/repositorioJanpix?wsdl"
-		service.janpix.regdoc.url = "${grails.serverURL}/regdoc/services/registerJanpix?wsdl"
+		service.janpix.repodoc.url = "${grails.serverURL}/repodoc/services/repositorioJanpix"
+		service.janpix.regdoc.url = "${grails.serverURL}/regdoc/services/registerJanpix"
 		
 	}
 }
@@ -211,13 +211,8 @@ environments {
 cxf {
 	client {
 		janpixRepodocServiceClient {
-			wsdlArgs = "-autoNameResolution"
-			clientInterface = com.janpix.repodoc.porttype.RepositorioJanpixServicePortType
+			clientInterface = com.janpix.webclient.repodoc.RepositorioJanpixServicePortType
 			serviceEndpointAddress = "${service.janpix.repodoc.url}"
-			namespace = "com.janpix.repodoc"
-			//receiveTimeout = 0 //no timeout
-			//connectionTimeout = 0 //no timeout
-			//httpClientPolicy = 'customHttpClientPolicy'
 		}
 		
 	/*	janpixRegdocServiceClient {

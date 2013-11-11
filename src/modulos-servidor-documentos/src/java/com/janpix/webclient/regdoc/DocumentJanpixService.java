@@ -1,4 +1,4 @@
-package com.janpix.servidordocumentos.clients;
+package com.janpix.webclient.regdoc;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;

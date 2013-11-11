@@ -1,4 +1,4 @@
-package com.janpix.servidordocumentos.clients;
+package com.janpix.webclient.regdoc;
 
 import java.net.MalformedURLException;
 import java.net.URL;

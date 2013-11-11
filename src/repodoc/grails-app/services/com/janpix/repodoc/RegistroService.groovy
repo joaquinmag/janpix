@@ -10,7 +10,7 @@ import com.janpix.repodoc.domain.ClinicalDocument
 import com.janpix.repodoc.exceptions.BussinessRuleException
 import com.janpix.repodoc.exceptions.MetadataException
 import com.janpix.repodoc.exceptions.RegistrationServiceException
-import com.janpix.repodoc.porttype.RepositorioJanpixServicePortType;
+import com.janpix.webclient.repodoc.RepositorioJanpixServicePortType;
 import com.janpix.servidordocumentos.FileUtils
 import com.janpix.servidordocumentos.dto.ClinicalDocumentDTO
 import com.janpix.servidordocumentos.dto.message.*

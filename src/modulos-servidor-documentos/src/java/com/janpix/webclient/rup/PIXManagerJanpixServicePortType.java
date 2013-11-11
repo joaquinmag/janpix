@@ -1,4 +1,4 @@
-package com.janpix.rup.porttype;
+package com.janpix.webclient.rup;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
