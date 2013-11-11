@@ -27,8 +27,7 @@ modules = {
 		def dir = "theme"
 		resource url:[dir:"${dir}/css",file:'dropzone.css']
 	}
-
-	dropzonejs {
+	dropzone {
 		dependsOn 'dropzonecss'
 		def dir = "theme"
 		resource url:[dir:"${dir}/js",file:'dropzone.min.js'], exclude: 'minimify'
@@ -39,17 +38,27 @@ modules = {
 		def dir = "theme"
 		resource url:[dir: "${dir}/css",file:"chosen.css"]
 	}
-
 	chosenjquery {
 		dependsOn 'chosencss'
 		def dir = "theme"
 		resource url:[dir:"${dir}/js",file:'jquery.chosen.min.js'], exclude: 'minimify'
 	}
 
+	xchartscss {
+		def dir = "theme"
+		resource url:[dir: "${dir}/css",file:"xcharts.min.css"], exclude: 'minimify'
+	}
+	xcharts {
+		dependsOn 'xchartscss'
+		def dir = "theme"
+		resource url:[dir:"${dir}/js",file:'xcharts.min.js'], exclude: 'minimify'
+	}
+
 	theme {
 		dependsOn 'bootstrap'
 		dependsOn 'dropzonecss'
 		dependsOn 'chosencss'
+		dependsOn 'xchartscss'
 		
 		// Load Css
 		def dir = "theme";
