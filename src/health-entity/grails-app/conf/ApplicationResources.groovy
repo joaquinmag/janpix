@@ -54,11 +54,22 @@ modules = {
 		resource url:[dir:"${dir}/js",file:'xcharts.min.js'], exclude: 'minimify'
 	}
 
+	jqueryeasypiechartcss {
+		def dir = "theme"
+		resource url:[dir: "${dir}/css",file:"jquery.easy-pie-chart.css"]
+	}
+	jqueryeasypiechart {
+		dependsOn 'jqueryeasypiechartcss'
+		def dir = "theme"
+		resource url:[dir:"${dir}/js",file:'jquery.easy-pie-chart.min.js'], exclude: 'minimify'
+	}
+
 	theme {
 		dependsOn 'bootstrap'
 		dependsOn 'dropzonecss'
 		dependsOn 'chosencss'
 		dependsOn 'xchartscss'
+		dependsOn 'jqueryeasypiechartcss'
 		
 		// Load Css
 		def dir = "theme";
