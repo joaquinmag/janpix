@@ -105,7 +105,7 @@
 							</li>	
                         	<li>
                                 <a href="index.html#">
-									<span class="avatar"><img src="assets/img/avatar.jpg" alt="Avatar"></span>
+									<span class="avatar"><img src="${resource(dir: 'theme/img', file: 'avatar.jpg')}" alt="Avatar"></span>
 									<span class="header">
 										<span class="from">
 									    	Łukasz Holeczek
@@ -121,7 +121,7 @@
                             </li>
                             <li>
                                 <a href="index.html#">
-									<span class="avatar"><img src="assets/img/avatar2.jpg" alt="Avatar"></span>
+									<span class="avatar"><img src="${resource(dir: 'theme/img', file: 'avatar2.jpg')}" alt="Avatar"></span>
 									<span class="header">
 										<span class="from">
 									    	Megan Abott
@@ -137,7 +137,7 @@
                             </li>
                             <li>
                                 <a href="index.html#">
-									<span class="avatar"><img src="assets/img/avatar3.jpg" alt="Avatar"></span>
+									<span class="avatar"><img src="${resource(dir: 'theme/img', file: 'avatar3.jpg')}" alt="Avatar"></span>
 									<span class="header">
 										<span class="from">
 									    	Kate Ross
@@ -153,7 +153,7 @@
                             </li>
 							<li>
                                 <a href="index.html#">
-									<span class="avatar"><img src="assets/img/avatar4.jpg" alt="Avatar"></span>
+									<span class="avatar"><img src="${resource(dir: 'theme/img', file: 'avatar4.jpg')}" alt="Avatar"></span>
 									<span class="header">
 										<span class="from">
 									    	Julie Blank
@@ -169,7 +169,7 @@
                             </li>
                             <li>
                                 <a href="index.html#">
-									<span class="avatar"><img src="assets/img/avatar5.jpg" alt="Avatar"></span>
+									<span class="avatar"><img src="${resource(dir: 'theme/img', file: 'avatar5.jpg')}" alt="Avatar"></span>
 									<span class="header">
 										<span class="from">
 									    	Jane Sanders
@@ -197,7 +197,7 @@
 					<!-- start: User Dropdown -->
 					<li class="dropdown">
 						<a class="btn account dropdown-toggle" data-toggle="dropdown" href="index.html#">
-							<div class="avatar"><img src="assets/img/avatar.jpg" alt="Avatar"></div>
+							<div class="avatar"><img src="${resource(dir: 'theme/img', file: 'avatar.jpg')}" alt="Avatar"></div>
 							<div class="user">
 								<span class="hello"><g:message code="main.welcome.message" /></span>
 								<span class="name">Dr. Favaloro</span>
