@@ -1,19 +1,12 @@
 import org.codehaus.groovy.grails.web.context.ServletContextHolder as SCH
 
 modules = {
-    application {
-		dependsOn 'jquery'
-        resource url:'js/application.js'
-    }
-	
 	bootstrap {
 		dependsOn 'jquery'
 		
 		def dir = "theme";
 		resource url:[dir:"${dir}/js",file:'bootstrap.min.js'], exclude: 'minimify'
-		
 		resource url:[dir:"${dir}/css",file:'bootstrap.min.css'], exclude: 'minimify'
-		resource url:[dir:"${dir}/css",file:'bootstrap-responsive.min.css'], exclude: 'minimify'
 	}
 	
 	theme {
@@ -21,23 +14,29 @@ modules = {
 		
 		// Load Css
 		def dir = "theme";
-		resource url:[dir:"${dir}/js",file:'custom.min.js'], exclude: 'minimify'
-		resource url:[dir:"${dir}/js",file:'core.min.js'], exclude: 'minimify'
 		
-		resource url:[dir:"${dir}/css",file:'style.min.css']
-		resource url:[dir:"${dir}/css",file:'style-responsive.min.css']
-		resource url:[dir:"${dir}/css",file:'retina.css']
-		resource url:[dir:"${dir}/css",file:'application.css']
+		resource url:[dir:"${dir}/css",file:'style.min.css'], exclude: 'minimify'
+		resource url:[dir:"${dir}/css",file:'retina.min.css'], exclude: 'minimify'
 		resource url:'http://html5shim.googlecode.com/svn/trunk/html5.js',
 				 disposition: 'head',
 				 wrapper: { s -> "<!--[if lt IE 9]>$s<![endif]-->" }
-		//resource url:[ dir: "${dir}/js", file:'respond.min.js' ], //FIXME falta archivo
-		//		 disposition: 'head',
-		//		 wrapper: { s -> "<!--[if lt IE 9]>$s<![endif]-->" }
-		resource url: [dir:"${dir}/css",file:'ie.css'], //FIXME el nombre del archivo es ie6-8.css y no está
+		resource url:[ dir: "${dir}/js", file:'respond.min.js' ],
+				 exclude: 'minimify',
 				 disposition: 'head',
 				 wrapper: { s -> "<!--[if lt IE 9]>$s<![endif]-->" }
+		resource url: [dir:"${dir}/css",file:'ie6-8.css'],
+				 disposition: 'head',
+				 wrapper: { s -> "<!--[if lt IE 9]>$s<![endif]-->" }
+				 
+		resource url:[dir:"${dir}/js",file:'custom.min.js'], exclude: 'minimify'
+		resource url:[dir:"${dir}/js",file:'core.min.js'], exclude: 'minimify'
 
+	}
+
+	application {
+		dependsOn 'jquery'
+		resource url:'js/application.js'
+		resource url:'css/application.css'
 	}
 }
 
