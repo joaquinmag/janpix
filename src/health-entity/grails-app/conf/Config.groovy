@@ -255,7 +255,6 @@ cxf {
 // No genera errores al no encontrar los archivos
 //grails.resources.debug = false
 grails.resources.processing.enabled = false 
-
 // Added by the Spring Security Core plugin:
 grails.plugins.springsecurity.userLookup.userDomainClassName = 'ar.com.healthentity.User'
 grails.plugins.springsecurity.userLookup.authorityJoinClassName = 'ar.com.healthentity.UserRole'

@@ -1,8 +1,23 @@
 import org.codehaus.groovy.grails.web.context.ServletContextHolder as SCH
 
 modules = {
+	jquerytheme {
+		def dir = "theme"
+		resource url:[dir:"${dir}/js", file:'jquery-1.10.2.min.js'],
+			exclude: 'minimify',
+			wrapper: { s -> "<!--[if IE]>$s<![endif]-->" }
+		resource url:[dir:"${dir}/js", file:'jquery-2.0.3.min.js'],
+			exclude: 'minimify',
+			wrapper: { s -> "<!--[if !IE]>-->$s<!--<![endif]-->" }
+		resource url:[dir:'js', file:'theme-jquery.js'],
+			wrapper: { s -> "<!--[if !IE]>-->$s<!--<![endif]-->" }
+		resource url:[dir:'js', file:'theme-jquery-ie.js'],
+			wrapper: { s -> "<!--[if IE]>$s<![endif]-->" }
+		resource url:[dir:"${dir}/js",file:'jquery-migrate-1.2.1.min.js'], exclude: 'minimify'
+	}
+
 	bootstrap {
-		dependsOn 'jquery'
+		dependsOn 'jquerytheme'
 		
 		def dir = "theme";
 		resource url:[dir:"${dir}/js",file:'bootstrap.min.js'], exclude: 'minimify'
@@ -34,7 +49,7 @@ modules = {
 	}
 
 	application {
-		dependsOn 'jquery'
+		dependsOn 'jquerytheme'
 		resource url:'js/application.js'
 		resource url:'css/application.css'
 	}
