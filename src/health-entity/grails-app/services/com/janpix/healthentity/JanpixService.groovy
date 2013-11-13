@@ -16,6 +16,7 @@ import com.janpix.servidordocumentos.dto.message.RetrieveDocumentRequest
 
 import com.janpix.rup.services.contracts.AddPatientRequestMessage
 import com.janpix.rup.services.contracts.ACKMessage
+import com.janpix.rup.services.contracts.GetAllPossibleMatchedPatientsRequestMessage;
 
 @Transactional
 class JanpixService {
@@ -27,9 +28,8 @@ class JanpixService {
 	/**
 	 * Agrega un nuevo paciente en el RUP
 	 * @param patient
-	 * @return String con el CUIS del paciente agregado
 	 */
-	String addNewPatient(Patient patient){
+	void addNewPatient(Patient patient){
 		ACKMessage ack = null
 		try{
 			AddPatientRequestMessage requestMessage = new AddPatientRequestMessage()
@@ -47,10 +47,24 @@ class JanpixService {
 		}
 		
 		this.validateACKMessageRUP(ack)
-			
-			
-		return "No tengo el CUIS"
+	}
+	
+	/**
+	 * Agrega un nuevo paciente en el RUP sin validar posibles matcheos
+	 * @param patient
+	 */
+	void addNewPatientWithoutValidation(Patient patient){
 		
+	}
+	
+	/**
+	 * Retorna todos los pacientes que matchean con el paciente pasado por parametro
+	 * @param patient
+	 * @return
+	 */
+	List<Patient> getAllPossibleMatchedPatients(Patient patient){
+		GetAllPossibleMatchedPatientsRequestMessage requestMessage = new GetAllPossibleMatchedPatientsRequestMessage()
+		//TODO hacer
 	}
 	
 	/**

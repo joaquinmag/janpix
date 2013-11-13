@@ -13,8 +13,15 @@ import com.janpix.exceptions.JanpixPossibleMatchingPatientException
 class PatientController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+	
+	def grailsApplication
 	def janpixService
-
+	
+	/**
+	 * Registra un paciente en Janpix
+	 * @param patientInstance
+	 * @return
+	 */
 	def registerOnJanpix(Patient patientInstance){
 		try{
 			if (patientInstance == null) {
@@ -22,13 +29,13 @@ class PatientController {
 				return
 			}
 			
-		String cuis = janpixService.addNewPatient(patientInstance)
-		
-		render(view:"register_janpix_ok",model:[patientInstance:patientInstance,cuis:cuis])
+			janpixService.addNewPatient(patientInstance)
+			
+			String healthEntity = grailsApplication.config.healthEntity.name
+			render(view:"register_janpix_ok",model:[patientInstance:patientInstance,healthEntity:healthEntity])
 			
 		}
 		catch(JanpixPossibleMatchingPatientException ex){
-			//render(view:"matching_template",model:[it:patientInstance])
 			//TODO el patient no tiene relaciones porque se desatacho al lanzar la exception
 			// Usar solo valores constantes
 			respond patientInstance, view:'matching_patient'
@@ -38,8 +45,56 @@ class PatientController {
 			render ex.message
 			return
 		}
-
 	}
+	
+	/**
+	 * Fuerza el registro de un paciente que matchea con otros
+	 * en el Pix Manager
+	 * @param patientInstance
+	 * @return
+	 */
+	def forceRegister(Patient patientInstance){
+		try{
+			if (patientInstance == null) {
+				notFound()
+				return
+			}
+			
+			// TODO implementar!!!
+			janpixService.addNewPatientWithoutValidation(patientInstance)
+			
+			
+		}
+		catch(JanpixException ex){
+			render ex.message
+			return
+		}
+	}
+	
+	/**
+	 * Lista todos los pacientes que matchean con el paciente pasado por parametro
+	 * @param patientInstance
+	 * @return
+	 */
+	def listMatching(Patient patientInstance){
+		try{
+			if (patientInstance == null) {
+				notFound()
+				return
+			}
+			
+			// TODO implementar!!!
+			janpixService.getAllPossibleMatchedPatients(patientInstance)
+			
+			
+		}
+		catch(JanpixException ex){
+			render ex.message
+			return
+		}
+	}
+	
+	
 	
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)

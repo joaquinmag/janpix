@@ -50,7 +50,7 @@ class JanpixAssemblerTestCaseSpec extends Specification {
 		then:
 			person.name.firstName 							== patient.firstName
 			person.name.lastName 							== patient.lastName
-			person.birthdate.precission						== "DAY"
+			person.birthdate.precission						== "Day"
 			person.birthdate.date							== patient.birthdate.toString()
 			person.administrativeSex						== "M"
 			person.birthplace.nameCity						== patient.city.name

@@ -11,14 +11,27 @@
 				<div class="row-fluid">
 						<div class="span3">
 							<span class="view-label">
-								<g:message code="patient.cuis.label" default="CUIS" />
+								<g:message code="patient.id.label" default="Id" />
+							</span>
+						</div>
+						<div class="span9">
+							<g:if test="${patientInstance?.id}">
+							<span class="view-text">
+								${patientInstance?.id}
+							</span>
+							</g:if>
+						</div>
+					</div>
+					
+					<div class="row-fluid">
+						<div class="span3">
+							<span class="view-label">
+								<g:message code="patient.healthentity.label" default="Health Entity" />
 							</span>
 						</div>
 						<div class="span9">
 							<span class="view-text">
-							
-								${cuis}
-							
+								${healthEntity}
 							</span>
 						</div>
 					</div>
