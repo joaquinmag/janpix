@@ -8,7 +8,7 @@ import grails.transaction.Transactional
 import com.janpix.exceptions.JanpixException
 import com.janpix.exceptions.JanpixPossibleMatchingPatientException
 
-@Secured("isAuthenticated()")
+@Secured("hasRole('HealthWorker')")
 //@Transactional(readOnly = true,noRollbackFor=[JanpixException]) // TODO ver porque no funciona
 class PatientController {
 
