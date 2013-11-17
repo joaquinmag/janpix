@@ -7,7 +7,11 @@
 		<ul class="nav nav-tabs nav-stacked main-menu">
 			<li><g:link mapping="dashboard"><i class="icon-bar-chart"></i><span class="hidden-sm"> Dashboard</span></g:link></li>	
 			<li>
-				<g:link mapping="patients"><i class="icon-group"></i><span class="hidden-sm"> Pacientes</span></g:link>
+				<a class="dropmenu" href="#"><i class="icon-user"></i> Pacientes</a>
+				<ul>
+					<li><g:link mapping="patients"><i class="icon-table"></i><span class="hidden-sm"> Ver pacientes</span></g:link></li>
+					<li><g:link class="btn-settings" action="create"><i class="icon-plus "></i> Crear nuevo paciente</g:link></li>
+				</ul>
 			</li>
 		</ul>
 	</div>
