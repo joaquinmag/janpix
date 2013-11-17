@@ -8,22 +8,22 @@
 		<title><g:message code="default.show.label" args="[entityName]" /></title>
 	</head>
 	<body>
-	<div class="row-fluid">
-			<div class="span12">
+	<div class="row">
+			<div class="col-sm-12">
 				<g:link class="btn btn-small btn-success" action="create"><i class="icon-plus "></i><g:message code="default.new.label" args="[entityName]" /></g:link>
 				<g:link class="btn btn-small" action="index"><i class="icon-reorder"></i><g:message code="default.list.label" args="[entityName]" /></g:link>
 			</div>
 		</div>
 
-		<div class="row-fluid">		
-			<div class="box span12">
+		<div class="row">		
+			<div class="box col-sm-12">
 				<h1><g:message code="default.show.label" args="[entityName]" /></h1>
 			</div>
 		</div>
 
 		<g:if test="${flash.message}">
-			<div class="row-fluid">
-				<div class="span12">
+			<div class="row">
+				<div class="col-sm-12">
 					<div class="alert alert-info">
 							<button type="button" class="close" data-dismiss="alert">×</button>
 							${flash.message}
@@ -33,16 +33,16 @@
 		</g:if>
 
 		<!--Contenido-->
-		<div class="row-fluid">	
-			<div class="box span7 show-view">
+		<div class="row">	
+			<div class="box col-sm-7 show-view">
 							
-					<div class="row-fluid">
-						<div class="span3">
+					<div class="row">
+						<div class="col-sm-3">
 							<span class="view-label">
 								<g:message code="patient.firstName.label" default="First Name" />
 							</span>
 						</div>
-						<div class="span9">
+						<div class="col-sm-9">
 							<g:if test="${patientInstance?.firstName}">
 							<span class="view-text">
 							
@@ -53,13 +53,13 @@
 						</div>
 					</div>
 							
-					<div class="row-fluid">
-						<div class="span3">
+					<div class="row">
+						<div class="col-sm-3">
 							<span class="view-label">
 								<g:message code="patient.lastName.label" default="Last Name" />
 							</span>
 						</div>
-						<div class="span9">
+						<div class="col-sm-9">
 							<g:if test="${patientInstance?.lastName}">
 							<span class="view-text">
 							
@@ -70,13 +70,13 @@
 						</div>
 					</div>
 							
-					<div class="row-fluid">
-						<div class="span3">
+					<div class="row">
+						<div class="col-sm-3">
 							<span class="view-label">
 								<g:message code="patient.dni.label" default="Dni" />
 							</span>
 						</div>
-						<div class="span9">
+						<div class="col-sm-9">
 							<g:if test="${patientInstance?.dni}">
 							<span class="view-text">
 							
@@ -87,13 +87,13 @@
 						</div>
 					</div>
 							
-					<div class="row-fluid">
-						<div class="span3">
+					<div class="row">
+						<div class="col-sm-3">
 							<span class="view-label">
 								<g:message code="patient.birthdate.label" default="Birthdate" />
 							</span>
 						</div>
-						<div class="span9">
+						<div class="col-sm-9">
 							<g:if test="${patientInstance?.birthdate}">
 							<span class="view-text">
 							
@@ -104,13 +104,13 @@
 						</div>
 					</div>
 							
-					<div class="row-fluid">
-						<div class="span3">
+					<div class="row">
+						<div class="col-sm-3">
 							<span class="view-label">
 								<g:message code="patient.sex.label" default="Sex" />
 							</span>
 						</div>
-						<div class="span9">
+						<div class="col-sm-9">
 							<g:if test="${patientInstance?.sex}">
 							<span class="view-text">
 							
@@ -121,13 +121,13 @@
 						</div>
 					</div>
 							
-					<div class="row-fluid">
-						<div class="span3">
+					<div class="row">
+						<div class="col-sm-3">
 							<span class="view-label">
 								<g:message code="patient.city.label" default="City" />
 							</span>
 						</div>
-						<div class="span9">
+						<div class="col-sm-9">
 							<g:if test="${patientInstance?.city}">
 							<span class="view-text">
 							
@@ -138,13 +138,13 @@
 						</div>
 					</div>
 							
-					<div class="row-fluid">
-						<div class="span3">
+					<div class="row">
+						<div class="col-sm-3">
 							<span class="view-label">
 								<g:message code="patient.addressName.label" default="Address Name" />
 							</span>
 						</div>
-						<div class="span9">
+						<div class="col-sm-9">
 							<g:if test="${patientInstance?.addressName}">
 							<span class="view-text">
 							
@@ -155,13 +155,13 @@
 						</div>
 					</div>
 							
-					<div class="row-fluid">
-						<div class="span3">
+					<div class="row">
+						<div class="col-sm-3">
 							<span class="view-label">
 								<g:message code="patient.addressNumber.label" default="Address Number" />
 							</span>
 						</div>
-						<div class="span9">
+						<div class="col-sm-9">
 							<g:if test="${patientInstance?.addressNumber}">
 							<span class="view-text">
 							
@@ -172,13 +172,13 @@
 						</div>
 					</div>
 							
-					<div class="row-fluid">
-						<div class="span3">
+					<div class="row">
+						<div class="col-sm-3">
 							<span class="view-label">
 								<g:message code="patient.email.label" default="Email" />
 							</span>
 						</div>
-						<div class="span9">
+						<div class="col-sm-9">
 							<g:if test="${patientInstance?.email}">
 							<span class="view-text">
 							
@@ -189,13 +189,13 @@
 						</div>
 					</div>
 							
-					<div class="row-fluid">
-						<div class="span3">
+					<div class="row">
+						<div class="col-sm-3">
 							<span class="view-label">
 								<g:message code="patient.phone.label" default="Phone" />
 							</span>
 						</div>
-						<div class="span9">
+						<div class="col-sm-9">
 							<g:if test="${patientInstance?.phone}">
 							<span class="view-text">
 							
@@ -206,13 +206,13 @@
 						</div>
 					</div>
 							
-					<div class="row-fluid">
-						<div class="span3">
+					<div class="row">
+						<div class="col-sm-3">
 							<span class="view-label">
 								<g:message code="patient.dateCreated.label" default="Date Created" />
 							</span>
 						</div>
-						<div class="span9">
+						<div class="col-sm-9">
 							<g:if test="${patientInstance?.dateCreated}">
 							<span class="view-text">
 							
@@ -223,13 +223,13 @@
 						</div>
 					</div>
 							
-					<div class="row-fluid">
-						<div class="span3">
+					<div class="row">
+						<div class="col-sm-3">
 							<span class="view-label">
 								<g:message code="patient.lastUpdated.label" default="Last Updated" />
 							</span>
 						</div>
-						<div class="span9">
+						<div class="col-sm-9">
 							<g:if test="${patientInstance?.lastUpdated}">
 							<span class="view-text">
 							
@@ -240,13 +240,13 @@
 						</div>
 					</div>
 							
-					<div class="row-fluid">
-						<div class="span3">
+					<div class="row">
+						<div class="col-sm-3">
 							<span class="view-label">
 								<g:message code="patient.studies.label" default="Studies" />
 							</span>
 						</div>
-						<div class="span9">
+						<div class="col-sm-9">
 							<g:if test="${patientInstance?.studies}">
 							<span class="view-text">
 							
@@ -262,7 +262,7 @@
 			
 			</div>
 			<!-- Menu -->
-			<div class="box span5 show-menu">
+			<div class="box col-sm-5 show-menu">
 				<h3><g:message code="default.actions.label" default="Actions"/></h3>
 				<g:form url="[resource:patientInstance, action:'delete']" method="DELETE">
 					<g:hiddenField name="id" value="${patientInstance?.id}" />

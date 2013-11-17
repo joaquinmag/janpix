@@ -9,3 +9,19 @@
 	bottom:0;
 	opacity:0.8
 }
+
+/**Show**/
+.show-view {
+	padding-left:30px;
+	font-size:16px;
+}
+.show-view .view-label {
+	font-weight: bold;
+}
+.show-view .view-text{
+	
+	
+}
+.show-menu p{
+	padding-left:30px;
+}

@@ -7,23 +7,23 @@
 	</head>
 	<body>
 	<!--Boton Superior-->
-	<div class="row-fluid">
-		<div class="span12">
+	<div class="row">
+		<div class="col-sm-12">
 			<g:link class="btn btn-small" action="index"><i class="icon-reorder"></i><g:message code="default.list.label" args="[entityName]" /></g:link>
 		</div>
 	</div>
 
 	<!-- Titulo -->
-	<div class="row-fluid">		
-		<div class="box span12">
+	<div class="row">		
+		<div class="box col-sm-12">
 			<h1><g:message code="default.create.label" args="[entityName]" /></h1>
 		</div>
 	</div>
 
 	<!-- FlashMessage -->
 	<g:if test="\${flash.message}">
-		<div class="row-fluid">
-			<div class="span12">
+		<div class="row">
+			<div class="col-sm-12">
 				<div class="alert alert-info">
 						<button type="button" class="close" data-dismiss="alert">×</button>
 						\${flash.message}
@@ -34,8 +34,8 @@
 
 	<!--Errores -->
 	<g:hasErrors bean="\${${propertyName}}">
-		<div class="row-fluid">		
-			<div class="span12">
+		<div class="row">		
+			<div class="col-sm-12">
 				<div class="alert alert-danger">
 				<ul class="errors" role="alert">
 					<g:eachError bean="\${${propertyName}}" var="error">
@@ -48,8 +48,8 @@
 	</g:hasErrors>
 
 	<!-- Formulario -->
-	<div class="row-fluid">		
-		<div class="box span12">
+	<div class="row">		
+		<div class="box col-sm-12">
 			<div class="box-header" data-original-title>
 				<h2><i class="icon-user"></i><span class="break"></span><g:message code="default.boxheader.label" args="[entityName]" /></h2>
 				<div class="box-icon">
@@ -58,7 +58,7 @@
 			</div>
 			<div class="box-content">
 				<g:form url="[resource:${propertyName}, action:'save']" <%= multiPart ? ' enctype="multipart/form-data"' : '' %>>
-					<fieldset class="form-horizontal">
+					<fieldset class="col-sm-12">
 						<g:render template="form"/>
 						<div class="form-actions">								
 							<g:submitButton name="create" class="btn btn-large btn-success" value="\${message(code: 'default.button.create.label', default: 'Create')}" />

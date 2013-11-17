@@ -15,6 +15,10 @@
 		
 		<r:require modules="theme"/>
 		
+		<r:require modules="application"/>
+		
+		<g:setProvider library="jquery"/>
+		
 		<g:layoutHead/>
 		<r:layoutResources />
 	</head>

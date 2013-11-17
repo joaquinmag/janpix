@@ -10,7 +10,7 @@
 	<div class="row-fluid">
 			<div class="span12">
 				<g:link class="btn btn-small btn-success" action="create"><i class="icon-plus "></i><g:message code="default.new.label" args="[entityName]" /></g:link>
-				<g:link class="btn btn-small" action="list"><i class="icon-reorder"></i><g:message code="default.list.label" args="[entityName]" /></g:link>
+				<g:link class="btn btn-small" action="index"><i class="icon-reorder"></i><g:message code="default.list.label" args="[entityName]" /></g:link>
 			</div>
 		</div>
 
@@ -21,8 +21,8 @@
 		</div>
 
 		<g:if test="\${flash.message}">
-			<div class="row-fluid">
-				<div class="span12">
+			<div class="row">
+				<div class="col-sm-12">
 					<div class="alert alert-info">
 							<button type="button" class="close" data-dismiss="alert">×</button>
 							\${flash.message}
@@ -32,8 +32,8 @@
 		</g:if>
 
 		<g:hasErrors bean="\${${propertyName}}">
-		<div class="row-fluid">		
-			<div class="box span12">
+		<div class="row">		
+			<div class="box col-sm-12">
 				<div class="alert alert-info">
 				<ul class="errors" role="alert">
 					<g:eachError bean="\${${propertyName}}" var="error">
@@ -45,8 +45,8 @@
 		</div>
 		</g:hasErrors>
 
-		<div class="row-fluid">		
-			<div class="box span12">
+		<div class="row">		
+			<div class="box col-sm-12">
 				<div class="box-header" data-original-title>
 					<h2><i class="icon-user"></i><span class="break"></span><g:message code="default.boxheader.label" args="[entityName]" /></h2>
 					<div class="box-icon">
@@ -57,7 +57,7 @@
 					<g:form url="[resource:${propertyName}, action:'update']" method="PUT" <%= multiPart ? ' enctype="multipart/form-data"' : '' %>>
 						<g:hiddenField name="id" value="\${${propertyName}?.id}" />
 						<g:hiddenField name="version" value="\${${propertyName}?.version}" />
-						<fieldset class="form-horizontal">
+						<fieldset class="col-sm-12">
 							<g:render template="form"/>
 						</fieldset>
 						<div class="form-actions">

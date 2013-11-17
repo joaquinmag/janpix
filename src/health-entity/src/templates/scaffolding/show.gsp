@@ -8,22 +8,22 @@
 		<title><g:message code="default.show.label" args="[entityName]" /></title>
 	</head>
 	<body>
-	<div class="row-fluid">
-			<div class="span12">
+	<div class="row">
+			<div class="col-sm-12">
 				<g:link class="btn btn-small btn-success" action="create"><i class="icon-plus "></i><g:message code="default.new.label" args="[entityName]" /></g:link>
 				<g:link class="btn btn-small" action="index"><i class="icon-reorder"></i><g:message code="default.list.label" args="[entityName]" /></g:link>
 			</div>
 		</div>
 
-		<div class="row-fluid">		
-			<div class="box span12">
+		<div class="row">		
+			<div class="box col-sm-12">
 				<h1><g:message code="default.show.label" args="[entityName]" /></h1>
 			</div>
 		</div>
 
 		<g:if test="\${flash.message}">
-			<div class="row-fluid">
-				<div class="span12">
+			<div class="row">
+				<div class="col-sm-12">
 					<div class="alert alert-info">
 							<button type="button" class="close" data-dismiss="alert">×</button>
 							\${flash.message}
@@ -33,20 +33,20 @@
 		</g:if>
 
 		<!--Contenido-->
-		<div class="row-fluid">	
-			<div class="box span7 show-view">
+		<div class="row">	
+			<div class="box col-sm-7 show-view">
 			<%  excludedProps = Event.allEvents.toList() << 'id' << 'version'
 					allowedNames = domainClass.persistentProperties*.name << 'dateCreated' << 'lastUpdated'
 					props = domainClass.properties.findAll { allowedNames.contains(it.name) && !excludedProps.contains(it.name) }
 					Collections.sort(props, comparator.constructors[0].newInstance([domainClass] as Object[]))
 					props.each { p -> %>				
-					<div class="row-fluid">
-						<div class="span3">
+					<div class="row">
+						<div class="col-sm-3">
 							<span class="view-label">
 								<g:message code="${domainClass.propertyName}.${p.name}.label" default="${p.naturalName}" />
 							</span>
 						</div>
-						<div class="span9">
+						<div class="col-sm-9">
 							<g:if test="\${${propertyName}?.${p.name}}">
 							<span class="view-text">
 							<%  if (p.oneToMany || p.manyToMany) { %>
@@ -68,7 +68,7 @@
 			<%  } %>
 			</div>
 			<!-- Menu -->
-			<div class="box span5 show-menu">
+			<div class="box col-sm-5 show-menu">
 				<h3><g:message code="default.actions.label" default="Actions"/></h3>
 				<g:form url="[resource:${propertyName}, action:'delete']" method="DELETE">
 					<g:hiddenField name="id" value="\${${propertyName}?.id}" />

@@ -8,15 +8,15 @@
 		<title><g:message code="default.list.label" args="[entityName]" /></title>
 	</head>
 	<body>
-		<div class="row-fluid">		
-			<div class="box span12">
+		<div class="row">		
+			<div class="box col-sm-12">
 				<h1><g:message code="default.list.label" args="[entityName]" /></h1>
 			</div>
 		</div>
 
 		<g:if test="${flash.message}">
-			<div class="row-fluid">
-				<div class="span12">
+			<div class="row">
+				<div class="col-sm-12">
 					<div class="alert alert-info">
 							<button type="button" class="close" data-dismiss="alert">×</button>
 							${flash.message}
@@ -25,14 +25,14 @@
 			</div>
 		</g:if>
 
-		<div class="row-fluid">
-			<div class="span12">
+		<div class="row">
+			<div class="col-sm-12">
 				<g:link class="btn btn-success" action="create"><i class="icon-plus "></i><g:message code="default.new.label" args="[entityName]" /></g:link>
 			</div>
 		</div>
 		<br>
-		<div class="row-fluid">		
-			<div class="box span12">
+		<div class="row">		
+			<div class="box col-sm-12">
 				<div class="box-header" data-original-title>
 					<h2><i class="icon-user"></i><span class="break"></span><g:message code="default.boxheader.label" args="[entityName]" /></h2>
 					<div class="box-icon">
