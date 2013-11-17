@@ -12,23 +12,13 @@
 			<div class="nav-no-collapse header-nav">
 				<ul class="nav navbar-nav pull-right">
 					<!-- start: User Dropdown -->
-					<li class="dropdown">
-						<a class="btn account dropdown-toggle" data-toggle="dropdown" href="index.html#">
-							<div class="avatar"><img src="${resource(dir: 'theme/img', file: 'avatar.jpg')}" alt="Avatar"></div>
-							<div class="user">
+					<li>
+						<a class="btn">
 								<span class="hello"><g:message code="main.welcome.message" /></span>
 								<span class="name">${ ctx.user.name }</span>
-							</div>
 						</a>
-						<ul class="dropdown-menu">
-							<li class="dropdown-menu-title">
-								
-							</li>
-							<li><a href="index.html#"><i class="icon-user"></i> <g:message code="main.profile.label" /></a></li>
-							<li><a href="index.html#"><i class="icon-cog"></i> <g:message code="main.settings.label" /></a></li>
-							<li><a href="login.html"><i class="icon-off"></i> <g:message code="main.logout.label" /></a></li>
-						</ul>
 					</li>
+					<li><g:link controller="logout" class="btn"><i class="icon-off"></i> <g:message code="main.logout.label" /></g:link></li>
 					<!-- end: User Dropdown -->
 				</ul>
 			</div>
