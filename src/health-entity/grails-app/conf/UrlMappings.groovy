@@ -6,8 +6,8 @@ class UrlMappings {
                 // apply constraints here
             }
         }
-
-        "/"(controller:'patient', action: 'index')
+		
+		name dashboard:"/"(controller:'patient', action: 'index')
         "500"(view:'/error')
 	}
 }

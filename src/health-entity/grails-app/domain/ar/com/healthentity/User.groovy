@@ -77,6 +77,10 @@ class User {
 		this.validatedEmail = false
 	}
 	
+	String getName() {
+		return person.firstName + " " + person.lastName
+	}
+	
 	Years getYears(LocalDate today) {
 		if (birthDate) {
 			Years.yearsBetween(birthDate, today)
