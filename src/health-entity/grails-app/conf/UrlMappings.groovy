@@ -8,6 +8,7 @@ class UrlMappings {
         }
 		
 		name dashboard:"/"(controller:'patient', action: 'index')
+		name patients:"/patients"(controller:'patient', action: 'index')
         "500"(view:'/error')
 	}
 }
