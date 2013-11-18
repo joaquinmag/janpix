@@ -47,4 +47,8 @@ class Patient {
 	String getFullName() {
 		"${lastName}, ${firstName}"
 	}
+	
+	String getFullAddress() {
+		"${addressName} ${addressNumber}, ${city.name}, ${city.province.name}, ${city.province.country}"
+	}
 }
