@@ -43,4 +43,8 @@ class Patient {
 		dateCreated(display:false)
 		lastUpdated(display:false)
     }
+	
+	String getFullName() {
+		"${lastName}, ${firstName}"
+	}
 }

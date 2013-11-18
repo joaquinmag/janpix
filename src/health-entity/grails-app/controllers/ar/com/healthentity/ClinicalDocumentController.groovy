@@ -5,14 +5,8 @@ import grails.plugins.springsecurity.Secured
 
 @Secured("hasRole('HealthWorker')")
 class ClinicalDocumentController {
-	static scaffold = true
-	
 	def janpixService
 	
-    def index() {
-		render(text: "<xml>some xml</xml>", contentType: "text/xml", encoding: "UTF-8") 
-		return 
-		}
 	
 	def downloadDocument(String uuid){
 		try{

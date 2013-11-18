@@ -2,21 +2,13 @@
 <html>
 	<head>
 		<meta name="layout" content="main">
-		<g:set var="entityName" value="${message(code: 'patient.label', default: 'Patient')}" />
-		<title><g:message code="default.create.label" args="[entityName]" /></title>
+		<title>Crear paciente</title>
 	</head>
 	<body>
-	<!--Boton Superior-->
-	<div class="row">
-		<div class="col-sm-12">
-			<g:link class="btn btn-small" action="index"><i class="icon-reorder"></i><g:message code="default.list.label" args="[entityName]" /></g:link>
-		</div>
-	</div>
-
 	<!-- Titulo -->
 	<div class="row">		
 		<div class="box col-sm-12">
-			<h1><g:message code="default.create.label" args="[entityName]" /></h1>
+			<h1>Crear paciente</h1>
 		</div>
 	</div>
 
@@ -48,21 +40,14 @@
 	</g:hasErrors>
 
 	<!-- Formulario -->
-	<div class="row">		
+	<div class="row">
 		<div class="box col-sm-12">
-			<div class="box-header" data-original-title>
-				<h2><i class="icon-user"></i><span class="break"></span><g:message code="default.boxheader.label" args="[entityName]" /></h2>
-				<div class="box-icon">
-					<a href="#" class="btn-minimize"><i class="icon-chevron-up"></i></a>
-				</div>
-			</div>
 			<div class="box-content">
 				<g:form url="[resource:patientInstance, action:'save']" >
 					<fieldset class="col-sm-12">
 						<g:render template="form"/>
 						<div class="form-actions">								
 							<g:submitButton name="create" class="btn btn-large btn-success" value="${message(code: 'default.button.create.label', default: 'Create')}" />
-								
 						</div>
 					</fieldset>
 				</g:form>

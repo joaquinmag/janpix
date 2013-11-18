@@ -4,20 +4,27 @@
 <html>
 	<head>
 		<meta name="layout" content="main">
-		<g:set var="entityName" value="${message(code: 'patient.label', default: 'Patient')}" />
-		<title><g:message code="default.show.label" args="[entityName]" /></title>
+		<title>${patientInstance.fullName}</title>
 	</head>
 	<body>
-	<div class="row">
-			<div class="col-sm-12">
-				<g:link class="btn btn-small btn-success" action="create"><i class="icon-plus "></i><g:message code="default.new.label" args="[entityName]" /></g:link>
-				<g:link class="btn btn-small" action="index"><i class="icon-reorder"></i><g:message code="default.list.label" args="[entityName]" /></g:link>
-			</div>
-		</div>
-
 		<div class="row">		
 			<div class="box col-sm-12">
-				<h1><g:message code="default.show.label" args="[entityName]" /></h1>
+				<h1>
+					${patientInstance.fullName}
+					<span class="pull-right">
+						<g:form url="[resource:patientInstance, action:'delete']" method="DELETE">
+							<g:hiddenField name="id" value="${patientInstance?.id}" />
+							<p>
+								<button type="submit" onclick="return confirm('¿Estás seguro que deseas eliminar el paciente?');" class="btn btn-danger" >
+									<i class="icon-remove"></i>
+								</button>
+							</p>
+						</g:form>
+					</span>
+					<span class="pull-right">
+						<g:link action="edit" resource="${patientInstance}" class="btn btn-info"><i class="icon-pencil"></i></g:link>
+					</span>
+				</h1>
 			</div>
 		</div>
 
@@ -260,19 +267,6 @@
 						</div>
 					</div>
 			
-			</div>
-			<!-- Menu -->
-			<div class="box col-sm-5 show-menu">
-				<h3><g:message code="default.actions.label" default="Actions"/></h3>
-				<g:form url="[resource:patientInstance, action:'delete']" method="DELETE">
-					<g:hiddenField name="id" value="${patientInstance?.id}" />
-					<p>
-						<g:link class="btn btn-info" action="edit" resource="${patientInstance}"><g:message code="default.button.edit.label" default="Edit" /></g:link>
-					</p>
-					<p>
-						<g:actionSubmit class="btn btn-danger" action="delete" value="${message(code: 'default.button.delete.label', default: 'Delete')}" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
-					</p>
-				</g:form>
 			</div>
 		</div>
 	</body>
