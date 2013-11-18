@@ -1,6 +1,6 @@
 <div class="timeline">
-	<% def i = 0 %>
-	<g:each in="${model}" var="study">
+	<% def i = 1 %>
+	<g:each in="${studies}" var="study">
 		<div class="timeslot ${ ((i % 2) == 0) ? "alt" : "" }">
 			<div class="task">
 				<span>

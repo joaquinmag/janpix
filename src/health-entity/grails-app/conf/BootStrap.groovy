@@ -1,5 +1,12 @@
+import java.util.Date;
+import java.util.List;
+
+import ar.com.healthentity.ClinicalDocument;
+import ar.com.healthentity.Patient
 import ar.com.healthentity.Role
 import ar.com.healthentity.Person
+import ar.com.healthentity.SexType;
+import ar.com.healthentity.Study;
 import ar.com.healthentity.User
 import ar.com.healthentity.UserRole
 
@@ -35,7 +42,33 @@ class BootStrap {
 			
 			// C.A.B.A
 			province = Province.findOrCreateWhere(country: country, name: "C.A.B.A").save(failOnError: true, flush: true)
-			City.findOrCreateWhere(province: province, name: "C.A.B.A").save(failOnError: true, flush: true)
+			def city = City.findOrCreateWhere(province: province, name: "C.A.B.A").save(failOnError: true, flush: true)
+			
+			ClinicalDocument cd = new ClinicalDocument(
+										name: "test",
+										mimeType: "text/xml",
+										size: 123,				
+										binaryData: [ 12, 12 ]
+									)
+			cd.save(flush: true, failOnError: true)
+			
+			def patient = new Patient(firstName: "Juan Carlos",
+										  lastName: "Pérez",
+										  dni: "20535122",
+										  addressName: "Cabildo",
+										  addressNumber: "123",
+										  city: city,
+										  sex: SexType.Masculino,
+										  birthdate: new Date(2000, 1, 5) 
+							)
+			patient.save(flush:true, failOnError: true)
+			def study = new Study(
+				date: new Date(),
+				observation: "Todo normal",
+				documents: [ cd ]
+			)
+			patient.addToStudies(study)
+			study.save(flush: true, failOnError: true)
 		}
 		
     }

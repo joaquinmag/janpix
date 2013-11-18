@@ -41,83 +41,100 @@
 
 		<!--Contenido-->
 		<div class="row">	
-			<div class="box col-md-6">
-				<div class="box-header">
-					<h2>
-						<i class="icon-asterisk"></i>
-						Información del paciente
-					</h2>
-				</div>
-				<div class="box-content">
-					<div class="row">
-						<div class="col-md-4">
-							<img class="img-thumbnail" src="<g:resource dir="uploads" file="default-avatar-male.png"/>" alt="Avatar de ${patientInstance.fullName }">
+			<div class="col-md-6">
+				<div class="row">
+					<div class="box">
+						<div class="box-header">
+							<h2>
+								<i class="icon-asterisk"></i>
+								Información del paciente
+							</h2>
 						</div>
-						<div class="col-md-8">
-							<table class="table table-bordered table-striped">
-								<tbody>
-									<tr>
-										<td>DNI</td>
-										<td>
-											<g:if test="${patientInstance?.dni}">
-												<span class="view-text">
-													<g:fieldValue bean="${patientInstance}" field="dni"/>
-												</span>
-											</g:if>											
-										</td>
-									</tr>
-									<tr>
-										<td>Fecha de nacimiento</td>
-										<td>
-											<g:if test="${patientInstance?.birthdate}">
-											<span class="view-text">
-											
-												<g:formatDate date="${patientInstance?.birthdate}" type="date" style="LONG" />
-											
-											</span>
-											</g:if>	
-										</td>
-									</tr>
-									<tr>
-										<td>Género</td>
-										<td>
-											<g:if test="${patientInstance?.sex}">
-											<span class="view-text">
-											
-												<g:fieldValue bean="${patientInstance}" field="sex"/>
-											
-											</span>
-											</g:if>	
-										</td>
-									</tr>
-									<tr>
-										<td>Dirección</td>
-										<td>
-											${ patientInstance.fullAddress }	
-										</td>
-									</tr>
-									<tr>
-										<td>Email</td>
-										<td>
-											${patientInstance.email}
-										</td>
-									</tr>
-									<tr>
-										<td>Teléfono</td>
-										<td>
-											${patientInstance.phone}
-										</td>
-									</tr>
-								</tbody>
-							</table>
+						<div class="box-content">
+							<div class="row">
+								<div class="col-md-4">
+									<img class="img-thumbnail" src="<g:resource dir="uploads" file="default-avatar-male.png"/>" alt="Avatar de ${patientInstance.fullName }">
+								</div>
+								<div class="col-md-8">
+									<table class="table table-bordered table-striped">
+										<tbody>
+											<tr>
+												<td>DNI</td>
+												<td>
+													<g:if test="${patientInstance?.dni}">
+														<span class="view-text">
+															<g:fieldValue bean="${patientInstance}" field="dni"/>
+														</span>
+													</g:if>											
+												</td>
+											</tr>
+											<tr>
+												<td>Fecha de nacimiento</td>
+												<td>
+													<g:if test="${patientInstance?.birthdate}">
+													<span class="view-text">
+													
+														<g:formatDate date="${patientInstance?.birthdate}" type="date" style="LONG" />
+													
+													</span>
+													</g:if>	
+												</td>
+											</tr>
+											<tr>
+												<td>Género</td>
+												<td>
+													<g:if test="${patientInstance?.sex}">
+													<span class="view-text">
+													
+														<g:fieldValue bean="${patientInstance}" field="sex"/>
+													
+													</span>
+													</g:if>	
+												</td>
+											</tr>
+											<tr>
+												<td>Dirección</td>
+												<td>
+													${ patientInstance.fullAddress }	
+												</td>
+											</tr>
+											<tr>
+												<td>Email</td>
+												<td>
+													${patientInstance.email}
+												</td>
+											</tr>
+											<tr>
+												<td>Teléfono</td>
+												<td>
+													${patientInstance.phone}
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
 						</div>
-					</div>
-				</div>
+					</div> <!-- /box -->
+				</div><!-- /row -->
+				<div class="row">
+					<div class="box">
+						<div class="box-header">
+							<h2>
+								<i class="icon-stethoscope"></i>
+								Agregar nuevo estudio
+							</h2>
+						</div>
+						<div class="box-content">
+							<g:render template="/study/add_new_study" model="${patientInstance.id}" />
+						</div>
+					</div><!-- /box -->
+				</div><!-- /row -->
 			</div>
 			<div class="box col-md-6">
 				<div class="box-header">
 					<h2>
-						<i class="icon-asterisk"></i>
+						<i class="icon-book"></i>
 						Historial
 					</h2>
 				</div>
@@ -125,12 +142,13 @@
 					<div class="row">
 						<div class="col-md-12">
 							<div class="graph">
-								<g:render template="/studies/timeline" model="${patientInstance.studies }"/>
+								<g:render template="/study/timeline" model="['studies':patientInstance.studies]" />
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
+			
 	</body>
 </html>

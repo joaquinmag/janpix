@@ -7,7 +7,7 @@ import grails.plugins.springsecurity.Secured
 class ClinicalDocumentController {
 	def janpixService
 	
-	
+
 	def downloadDocument(String uuid){
 		try{
 			if(uuid != null){
