@@ -11,12 +11,10 @@ $(document).ready(function() {
 	});
 });
 </r:script>
-<g:form mapping="study" method="POST" class="form-horizontal">
+<g:form mapping="study" method="POST" useToken="true" enctype="multipart/form-data" role="form">
 	<div class="form-group">
-		<label class="control-label">Archivos</label>
-		<div class="controls">
-			<input type="file" multiple />
-		</div>
+		<label>Archivos</label>
+		<input name="studyFiles" type="file" class="form-control" multiple />
 	</div>
 	<g:actionSubmit value="Crear estudio" class="btn-success"/>
 </g:form>
