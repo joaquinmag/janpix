@@ -10,7 +10,7 @@
 	<body>
 		<div class="row">		
 			<div class="box col-sm-12">
-				<h1><g:message code="default.list.label" args="[entityName]" /></h1>
+				<h1>Pacientes</h1>
 			</div>
 		</div>
 
@@ -24,17 +24,10 @@
 				</div>
 			</div>
 		</g:if>
-
-		<div class="row">
-			<div class="col-sm-12">
-				<g:link class="btn btn-success" action="create"><i class="icon-plus "></i><g:message code="default.new.label" args="[entityName]" /></g:link>
-			</div>
-		</div>
-		<br>
 		<div class="row">		
 			<div class="box col-sm-12">
 				<div class="box-header" data-original-title>
-					<h2><i class="icon-user"></i><span class="break"></span><g:message code="default.boxheader.label" args="[entityName]" /></h2>
+					<h2><i class="icon-user"></i><span class="break"></span>Tabla de pacientes</h2>
 					<div class="box-icon">
 						<a href="#" class="btn-minimize"><i class="icon-chevron-up"></i></a>
 					</div>

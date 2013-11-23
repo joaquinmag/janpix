@@ -22,9 +22,9 @@
 					</g:if>
 					<form action='${postUrl}' method='POST' id='loginForm' class="form-horizontal" autocomplete='off'>
 						<fieldset>
-							<input class="input-large col-xs-12" name="j_username" id="username" type="text" placeholder="type username"/>
+							<input class="input-large col-xs-12" name="j_username" id="username" type="text" placeholder="type username" style="color: black !important"/>
 
-							<input class="input-large col-xs-12" name="j_password" id="password" type="password" placeholder="type password"/>
+							<input class="input-large col-xs-12" name="j_password" id="password" type="password" placeholder="type password" style="color: black !important"/>
 
 							<div class="clearfix"></div>
 							

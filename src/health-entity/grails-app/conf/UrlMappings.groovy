@@ -6,8 +6,14 @@ class UrlMappings {
                 // apply constraints here
             }
         }
-
-        "/"(view:"/index")
+		
+		name dashboard:"/"(controller:'patient', action: 'index')
+		name patients:"/patients"(controller:'patient', action: 'index')
+		
+		name study:"/study/$id(.${format})?"(controller:'study') {
+			action = [GET: "show", POST: "save"]
+		}
+		
         "500"(view:'/error')
 	}
 }

@@ -31,7 +31,6 @@ modules = {
 		dependsOn 'dropzonecss'
 		def dir = "theme"
 		resource url:[dir:"${dir}/js",file:'dropzone.min.js'], exclude: 'minimify'
-		resource url:[dir:"${dir}/js",file:'form-dropzone.js']
 	}
 
 	chosencss {

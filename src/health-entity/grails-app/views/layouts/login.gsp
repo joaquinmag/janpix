@@ -15,9 +15,9 @@
 	<!-- end: Mobile Specific -->
 	
 	<r:require modules="theme"/>
-		
+	<r:layoutResources />		
 	<g:layoutHead/>
-	<r:layoutResources />
+
 	
 	<!-- start: Favicon and Touch Icons -->
 	<link rel="shortcut icon" href="${resource(dir: 'images', file: 'favicon.ico')}" type="image/x-icon">
