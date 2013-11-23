@@ -32,6 +32,12 @@ modules = {
 		def dir = "theme"
 		resource url:[dir:"${dir}/js",file:'dropzone.min.js'], exclude: 'minimify'
 	}
+	
+	multiplefileinput {
+		dependsOn 'jquerytheme'
+		resource url:[dir:'css', file: 'multiplefileinput.css']
+		resource url:[dir:'js', file: 'multiplefileinput.js']
+	}
 
 	chosencss {
 		def dir = "theme"
