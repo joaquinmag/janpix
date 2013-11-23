@@ -25,4 +25,7 @@ class City {
 		return mapper.convert(this)
 	}
 	
+	String toString(){
+		return "${name} (${province})"
+	}
 }

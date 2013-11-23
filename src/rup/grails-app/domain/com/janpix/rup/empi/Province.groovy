@@ -12,4 +12,8 @@ class Province {
 	boolean equals(other){
 		return (this.country == other.country && this.name == other.name)
 	}
+	
+	String toString(){
+		return "${name}"
+	}
 }
