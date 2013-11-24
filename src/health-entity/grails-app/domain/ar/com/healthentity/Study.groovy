@@ -14,7 +14,8 @@ class Study {
 	Patient patient
 	
 	ClinicalDocument document
-	//StudyType type
+	
+	StudyType type
 	
 	//HealthWorker author
 	
@@ -25,5 +26,6 @@ class Study {
 		patient nullable: false
 		document nullable: false
 		date nullable: false
+		type nullable: false
     }
 }

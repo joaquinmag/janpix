@@ -7,6 +7,7 @@ import ar.com.healthentity.Role
 import ar.com.healthentity.Person
 import ar.com.healthentity.SexType;
 import ar.com.healthentity.Study;
+import ar.com.healthentity.StudyType
 import ar.com.healthentity.User
 import ar.com.healthentity.UserRole
 
@@ -34,7 +35,7 @@ class BootStrap {
 		assert Role.count() == 1
 		assert UserRole.count() == 1
 
-		if(Environment.current == Environment.TEST || Environment.current == Environment.DEVELOPMENT){
+		if(Environment.current == Environment.TEST || Environment.current == Environment.DEVELOPMENT) {
 			String country = "Argentina"
 			// Buenos Aires
 			def province = Province.findOrCreateWhere(country: country, name: "Buenos Aires").save(failOnError: true, flush: true)
@@ -43,6 +44,26 @@ class BootStrap {
 			// C.A.B.A
 			province = Province.findOrCreateWhere(country: country, name: "C.A.B.A").save(failOnError: true, flush: true)
 			def city = City.findOrCreateWhere(province: province, name: "C.A.B.A").save(failOnError: true, flush: true)
+			
+			// inicializo tipos de documentos
+			def pediatric = new StudyType("Pediatría", null, 1).save(flush: true, failOnError: true)
+			new StudyType("Radiografía", pediatric, 5).save(flush: true, failOnError: true)
+			new StudyType("Tomografía", pediatric, 6).save(flush: true, failOnError: true)
+			new StudyType("Resonancia magnética", pediatric, 7).save(flush: true, failOnError: true)
+			def laboratoryPed = new StudyType("Laboratorio", pediatric, 3).save(flush: true, failOnError: true)
+			new StudyType("HDL", laboratoryPed, 8).save(flush: true, failOnError: true)
+			new StudyType("LDL", laboratoryPed, 9).save(flush: true, failOnError: true)
+			new StudyType("Glóbulos blancos", laboratoryPed, 10).save(flush: true, failOnError: true)
+			new StudyType("CD4", laboratoryPed, 11).save(flush: true, failOnError: true)
+			def adults = new StudyType("Adultos", null, 2).save(flush: true, failOnError: true)
+			new StudyType("Radiografía", adults, 12).save(flush: true, failOnError: true)
+			new StudyType("Tomografía", adults, 13).save(flush: true, failOnError: true)
+			new StudyType("Resonancia magnética", adults, 14).save(flush: true, failOnError: true)
+			def laboratoryAdults = new StudyType("Laboratorio", adults, 4).save(flush: true, failOnError: true)
+			new StudyType("HDL", laboratoryAdults, 15).save(flush: true, failOnError: true)
+			new StudyType("LDL", laboratoryAdults, 16).save(flush: true, failOnError: true)
+			new StudyType("Glóbulos blancos", laboratoryAdults, 17).save(flush: true, failOnError: true)
+			new StudyType("CD4", laboratoryAdults, 18).save(flush: true, failOnError: true)
 			
 			ClinicalDocument cd = new ClinicalDocument(
 										filename: "test",
@@ -55,7 +76,8 @@ class BootStrap {
 				date: new Date(),
 				title: "test",
 				observation: "Todo normal",
-				document: cd
+				document: cd,
+				type: laboratoryAdults
 			)
 			def patient = new Patient(firstName: "Juan Carlos",
 										  lastName: "Pérez",
