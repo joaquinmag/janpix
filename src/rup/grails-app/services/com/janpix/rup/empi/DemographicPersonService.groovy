@@ -27,8 +27,7 @@ class DemographicPersonService {
 		
 		//Hago un primer filtro en base a datos excluyentes como ser rango de edades
 		def candidates = blockIndexing(p)
-		
-		
+
 		log.info("Verificando matcheos de "+p+" entre "+candidates.size()+" candidatos ...")
 		candidates.each{
 			def percentage = identityComparatorService.calculatePercentageOfMatch(p,it)
@@ -41,6 +40,15 @@ class DemographicPersonService {
 			}
 		}
 		log.info("Verificación de matcheos finalizada.")
+		
+		// Una vez finalizado el proceso si no existen matcheos
+		// Se verifica que ningun paciente tenga el mismo documento. 
+		// Si lo tiene se agrega un PossibleMatchingException
+		if(this.matchedPersons.empty && this.possibleMatchedPersons.empty) { 
+			if(existsSameDocument(candidates,p)) {
+				possibleMatchedPersons.add(factoryMatchRecord.buildWithPersonAndPercentage(p,0.75))
+			}
+		}
 		
 		return matchedPersons
 	}
@@ -92,5 +100,9 @@ class DemographicPersonService {
 		def candidates = Person.list()
 		candidates.remove(p)
 		return candidates
+	}
+	
+	private Boolean existsSameDocument(List<Person>candidates,Person person) { 
+		return candidates.any{p -> p.identityDocument == person.identityDocument}
 	}
 }

@@ -53,7 +53,7 @@
 					</div>
 					<div class="modal-footer">
 						<a href="#" class="btn" data-dismiss="modal"><g:message code="defailt.modal.close.message" default="Close" /></a>
-						<a href="#" class="btn btn-primary"><g:message code="defailt.modal.accept.message" default="Ok" /></a>
+						<a href="#" class="btn btn-primary" data-dismiss="modal"><g:message code="defailt.modal.accept.message" default="Ok" /></a>
 					</div>
 				</div>
 			</div>

@@ -45,22 +45,30 @@ class PixManagerService {
 				Person patientRequestMessage = patientDTO.convert(mapperDtoDomain);
 				AssigningAuthority healthEntity = healthEntityDTO.convert(mapperDtoDomain)
 				
+				log.info("Obteniendo matcheos del paciente "+patientRequestMessage+"...")
 				def matchedPatients = EMPIService.getAllMatchedPatients(patientRequestMessage, true)
 				//Es un paciente nuevo
 				if (matchedPatients.empty) {
+					log.info("Nuevo paciente")
+					log.info("Agregando paciente...")
 					def patient = EMPIService.createPatient(patientRequestMessage)
 					EMPIService.addEntityIdentifierToPatient(patient, healthEntity, organizationId)
+					log.info("Paciente agregado correctamente")
 					return new ACKMessage(typeCode: TypeCode.SuccededCreation, text:i18nMessage("pixmanager.ackmessage.creation.succeded"))	
 				}
 				
 				//El paciente tiene un alto matcheo
 				MatchRecord record = matchedPatients.find { it.matchLevel == MatchRecord.LevelMatchRecord.High }
 				if (record) {
+					log.info("El paciente tiene un alto matcheo con otro paciente ya agregado")
+					log.info("Agregando identificador al paciente ya registrado...")
 					EMPIService.addEntityIdentifierToPatient(record.person, healthEntity, organizationId)
+					log.info("Identificador agregado correctamente")
 					return new ACKMessage(typeCode: TypeCode.SuccededInsertion, text: i18nMessage("pixmanager.ackmessage.insertion.succeded"))
 				}
 				
 				// Si llega hasta acá quedan pacientes con matcheo medio. Se debe retornar un response message con error.
+				log.info("El paciente que se intenta ingresar tiene un nivel medio de matcheo con uno o mas pacientes ya existentes")
 				return new ACKMessage(typeCode:TypeCode.PossibleMatchingPatientsError,text:i18nMessage("pixmanager.ackmessage.possiblematching.error"))
 			
 			}

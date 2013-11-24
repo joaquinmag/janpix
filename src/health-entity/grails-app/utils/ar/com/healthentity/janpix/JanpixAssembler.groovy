@@ -7,16 +7,17 @@ import ar.com.healthentity.ClinicalDocument
 import ar.com.healthentity.Patient
 import ar.com.healthentity.SexType
 
-import com.janpix.rup.infrastructure.dto.AddressDTO
-import com.janpix.rup.infrastructure.dto.AssigningAuthorityDTO
-import com.janpix.rup.infrastructure.dto.CityDTO
-import com.janpix.rup.infrastructure.dto.ExtendedDateDTO
-import com.janpix.rup.infrastructure.dto.IdentifierDTO
-import com.janpix.rup.infrastructure.dto.PersonDTO
-import com.janpix.rup.infrastructure.dto.PersonNameDTO
-import com.janpix.rup.infrastructure.dto.PhoneNumberDTO
-import com.janpix.servidordocumentos.dto.ClinicalDocumentDTO
-import com.janpix.servidordocumentos.dto.HealthEntityDTO
+import com.janpix.webclient.repodoc.ClinicalDocumentDTO
+import com.janpix.webclient.rup.AddressDTO
+import com.janpix.webclient.rup.AssigningAuthorityDTO
+import com.janpix.webclient.rup.CityDTO
+import com.janpix.webclient.rup.ExtendedDateDTO
+import com.janpix.webclient.rup.IdentifierDTO
+import com.janpix.webclient.rup.PersonDTO
+import com.janpix.webclient.rup.PersonNameDTO
+import com.janpix.webclient.rup.PhoneNumberDTO
+
+
 
 /**
  * Clase encargada de transformar entidades de Janpix
@@ -44,13 +45,17 @@ class JanpixAssembler {
 		person.administrativeSex = (patient.sex == SexType.Masculino)?'M':'F'
 		person.birthplace = JanpixAssembler.toCity(patient.city)
 		
-		person.address.add(JanpixAssembler.toAddress(patient.addressName,patient.addressNumber,person.birthplace))
+		person.addresses = new PersonDTO.Addresses()
+		person.addresses.address.add(JanpixAssembler.toAddress(patient.addressName,patient.addressNumber,person.birthplace))
 		
 		PhoneNumberDTO phone = JanpixAssembler.toPhoneNumber(patient.phone)
-		if(phone != null)
-			person.phoneNumbers.add(phone)
-			
-		person.identifiers.add(JanpixAssembler.toIdentifier(patient.dni))
+		if(phone != null){
+			person.phoneNumbers = new PersonDTO.PhoneNumbers()
+			person.phoneNumbers.phoneNumber.add(phone)
+		}
+		
+		person.identifiers = new PersonDTO.Identifiers()	
+		person.identifiers.identifier.add(JanpixAssembler.toIdentifier(patient.dni))
 
 		return person
 	}

@@ -1,6 +1,6 @@
 package ar.com.healthentity.janpix
 
-import grails.test.mixin.TestMixin
+import grails.test.mixin.*
 import grails.test.mixin.support.GrailsUnitTestMixin
 import spock.lang.Specification
 import ar.com.healthentity.City
@@ -8,8 +8,10 @@ import ar.com.healthentity.Patient
 import ar.com.healthentity.Province
 import ar.com.healthentity.SexType
 
-import com.janpix.rup.infrastructure.dto.AssigningAuthorityDTO
-import com.janpix.rup.infrastructure.dto.PersonDTO
+import com.janpix.webclient.rup.AssigningAuthorityDTO
+import com.janpix.webclient.rup.PersonDTO
+
+
 
 /**
  * See the API for {@link grails.test.mixin.support.GrailsUnitTestMixin} for usage instructions
@@ -56,14 +58,14 @@ class JanpixAssemblerTestCaseSpec extends Specification {
 			person.birthplace.nameCity						== patient.city.name
 			person.birthplace.nameProvince					== patient.city.province.name
 			person.birthplace.nameCountry					== patient.city.province.country
-			person.address[0].street						== patient.addressName
-			person.address[0].number						== patient.addressNumber
-			person.address[0].city.nameCity					== patient.city.name
-			person.identifiers[0].type						== "DNI"
-			person.identifiers[0].number					== patient.dni
-			person.identifiers[0].assigningAuthority.name	== "Argentina"
-			person.identifiers[0].assigningAuthority.oid	== "2.16.32"
-			person.phoneNumbers[0].number					== patient.phone
+			person.addresses.address[0].street				== patient.addressName
+			person.addresses.address[0].number				== patient.addressNumber
+			person.addresses.address[0].city.nameCity		== patient.city.name
+			person.identifiers.identifier[0].type			== "DNI"
+			person.identifiers.identifier[0].number			== patient.dni
+			person.identifiers.identifier[0].assigningAuthority.name== "Argentina"
+			person.identifiers.identifier[0].assigningAuthority.oid	== "2.16.32"
+			person.phoneNumbers.phoneNumber[0].number		== patient.phone
     }
 	
 	void "test convert Config Health Entity to HealthEntityDTO"() {

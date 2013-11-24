@@ -6,17 +6,17 @@ import ar.com.healthentity.Patient
 import ar.com.healthentity.janpix.JanpixAssembler
 
 import com.janpix.exceptions.JanpixConnectionException
+import com.janpix.exceptions.JanpixDuplicatePatientException
 import com.janpix.exceptions.JanpixException
 import com.janpix.exceptions.JanpixPossibleMatchingPatientException
-import com.janpix.exceptions.JanpixDuplicatePatientException
-
 import com.janpix.servidordocumentos.dto.ClinicalDocumentDTO
-import com.janpix.servidordocumentos.dto.message.ACKMessage
 import com.janpix.servidordocumentos.dto.message.RetrieveDocumentRequest
+import com.janpix.webclient.rup.AckMessage
+import com.janpix.webclient.rup.AddPatientRequestMessage
+import com.janpix.webclient.rup.GetAllPossibleMatchedPatientsRequestMessage
+import com.janpix.webclient.rup.TypeCode
 
-import com.janpix.rup.services.contracts.AddPatientRequestMessage
-import com.janpix.rup.services.contracts.ACKMessage
-import com.janpix.rup.services.contracts.GetAllPossibleMatchedPatientsRequestMessage;
+
 
 @Transactional
 class JanpixService {
@@ -30,7 +30,7 @@ class JanpixService {
 	 * @param patient
 	 */
 	void addNewPatient(Patient patient){
-		ACKMessage ack = null
+		AckMessage ack = null
 		try{
 			AddPatientRequestMessage requestMessage = new AddPatientRequestMessage()
 			requestMessage.person = JanpixAssembler.toPerson(patient)
@@ -76,8 +76,8 @@ class JanpixService {
 			RetrieveDocumentRequest requestMessage = new RetrieveDocumentRequest(uuid:uuid)
 			
 			log.info("Consultando Repositorio de documentos por el uuid:"+uuid)
-			ACKMessage ack =  janpixRepodocServiceClient.retrieveDocument(requestMessage)
-			if(ack.typeCode != ACKMessage.TypeCode.SuccededRetrieve){
+			AckMessage ack =  janpixRepodocServiceClient.retrieveDocument(requestMessage)
+			if(ack.typeCode != AckMessage.TypeCode.SuccededRetrieve){
 				log.error("Error al obtener el documento. Error:"+ack.typeCode.toString()+". Mensaje:"+ack.text)
 				return null;
 			}
@@ -106,23 +106,23 @@ class JanpixService {
 	 * Valida los posibles valores que vienen en un ACK del RUP
 	 * @param ack
 	 */
-	private void validateACKMessageRUP(ACKMessage ack){
-		if(ack.typeCode == ACKMessage.TypeCode.SuccededCreation){
+	private void validateACKMessageRUP(AckMessage ack){
+		if(ack.typeCode == TypeCode.SUCCEDED_CREATION){
 			log.info("Paciente agregado correctamente")
 			return
 		}
 		
 		log.error("Error al agregar al paciente. Error:"+ack.typeCode.toString()+". Mensaje:"+ack.text)
 		switch(ack.typeCode){
-			case ACKMessage.TypeCode.PossibleMatchingPatientsError: 
+			case TypeCode.POSSIBLE_MATCHING_PATIENTS_ERROR: 
 				throw new JanpixPossibleMatchingPatientException("Existen pacientes que se asemejan al paciente que intenta agregar pero no se puede determinar con precisión");
 				break;
 				
-			case ACKMessage.TypeCode.DuplicatePatientError:
+			case TypeCode.DUPLICATE_PATIENT_ERROR:
 				throw new JanpixPossibleMatchingPatientException("Existen pacientes que se asemejan al paciente que intenta agregar pero no se puede determinar con precisión");
 				break;
 			
-			case ACKMessage.TypeCode.IdentifierError:
+			case TypeCode.IDENTIFIER_ERROR:
 				throw new JanpixDuplicatePatientException("El paciente ya se encuentra ingresado");
 				break;
 				

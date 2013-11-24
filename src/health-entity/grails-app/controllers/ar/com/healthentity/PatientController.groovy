@@ -28,11 +28,11 @@ class PatientController {
 				notFound()
 				return
 			}
-			
 			janpixService.addNewPatient(patientInstance)
 			
 			String healthEntity = grailsApplication.config.healthEntity.name
-			render(view:"register_janpix_ok",model:[patientInstance:patientInstance,healthEntity:healthEntity])
+			respond patientInstance,[view:"register_janpix_ok",model:[healthEntity:healthEntity]]
+			return
 			
 		}
 		catch(JanpixPossibleMatchingPatientException ex){
@@ -43,6 +43,10 @@ class PatientController {
 		}
 		catch(JanpixException ex){
 			render ex.message
+			return
+		}
+		catch(Exception ex){
+			render "Ocurrio un error inesperado"
 			return
 		}
 	}
