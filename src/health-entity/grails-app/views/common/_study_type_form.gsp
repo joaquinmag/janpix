@@ -2,11 +2,10 @@
 <r:script>
 	$(document).ready(function() {
 		$('#study-nestable-${inputname}').nestable();
-		$('#study-nestable-${inputname} .dd-item').click(function(e) {
+		$('#study-nestable-${inputname} .dd3-content').click(function(e) {
 			$('#study-nestable-${inputname} .dd-item .dd3-content').removeClass('selected');
-			$(e.currentTarget).children('.dd3-content').addClass('selected');
-			$('#${inputname}').val($(e.currentTarget).data('id'));
-			e.stopPropagation();
+			$(e.currentTarget).addClass('selected');
+			$('#${inputname}').val($(e.currentTarget).closest('.dd-item').data('id'));
 		});		
 	});
 </r:script>
