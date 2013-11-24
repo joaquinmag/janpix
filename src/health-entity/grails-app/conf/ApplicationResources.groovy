@@ -84,6 +84,7 @@ modules = {
 	jquerynestable {
 		dependsOn 'jquerytheme'
 		resource url:[dir:"js",file:'jquery.nestable.js']
+		resource url:[dir:"css",file:'nestable.css']
 	}
 	theme {
 		dependsOn 'bootstrap'
