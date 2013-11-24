@@ -81,6 +81,10 @@ modules = {
 		resource url:[dir:"css",file:'select2.css']
 		resource url:[dir:"css",file:'select2-bootstrap.css']
 	}
+	jquerynestable {
+		dependsOn 'jquerytheme'
+		resource url:[dir:"js",file:'jquery.nestable.js']
+	}
 	theme {
 		dependsOn 'bootstrap'
 		dependsOn 'dropzonecss'
