@@ -45,13 +45,18 @@ class BootStrap {
 			def city = City.findOrCreateWhere(province: province, name: "C.A.B.A").save(failOnError: true, flush: true)
 			
 			ClinicalDocument cd = new ClinicalDocument(
-										name: "test",
+										filename: "test",
 										mimeType: "text/xml",
 										size: 123,				
 										binaryData: [ 12, 12 ]
 									)
 			cd.save(flush: true, failOnError: true)
-			
+			def study = new Study(
+				date: new Date(),
+				title: "test",
+				observation: "Todo normal",
+				document: cd
+			)
 			def patient = new Patient(firstName: "Juan Carlos",
 										  lastName: "Pérez",
 										  dni: "20535122",
@@ -62,11 +67,6 @@ class BootStrap {
 										  birthdate: new Date(2000, 1, 5) 
 							)
 			patient.save(flush:true, failOnError: true)
-			def study = new Study(
-				date: new Date(),
-				observation: "Todo normal",
-				documents: [ cd ]
-			)
 			patient.addToStudies(study)
 			study.save(flush: true, failOnError: true)
 		}

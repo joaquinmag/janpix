@@ -68,6 +68,12 @@ modules = {
 		def dir = "theme"
 		resource url:[dir:"${dir}/js",file:'jquery.easy-pie-chart.min.js'], exclude: 'minimify'
 	}
+	
+	bootstrapdatepicker {
+		dependsOn 'bootstrap'
+		def dir = "theme"
+		resource url:[dir:"${dir}/js",file:'bootstrap-datepicker.min.js'], exclude: 'minimify' 
+	}
 
 	theme {
 		dependsOn 'bootstrap'

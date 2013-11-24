@@ -7,9 +7,7 @@
 					<span class="type">Tipo de estudio</span>
 					<span class="details">Diagnóstico</span>
 					<span>Documentos</span>
-					<g:each in="${study.documents}" var="document">
-						<span class="details">${document.name}</span>
-					</g:each>
+					<span class="details">${study.document.filename}</span>
 				</span>
 				<div class="arrow"></div>
 			</div>

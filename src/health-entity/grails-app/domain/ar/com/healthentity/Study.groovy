@@ -7,21 +7,23 @@ package ar.com.healthentity
  */
 class Study {
 	
+	String title
+	
 	Date date
 	
-	//Patient patient
-	List<ClinicalDocument> documents = []
+	Patient patient
+	
+	ClinicalDocument document
 	//StudyType type
 	
 	//HealthWorker author
 	
 	String observation
 	
-	static belongsTo = [patient:Patient]
-	
-	static hasMany = [documents:ClinicalDocument]
-	
     static constraints = {
-		
+		title nullable: false, blank: false
+		patient nullable: false
+		document nullable: false
+		date nullable: false
     }
 }

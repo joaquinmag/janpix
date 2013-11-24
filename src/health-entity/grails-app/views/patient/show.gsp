@@ -126,7 +126,7 @@
 							</h2>
 						</div>
 						<div class="box-content">
-							<g:render template="/study/add_new_study" model="${patientInstance.id}" />
+							<g:render template="/study/add_new_study" model="['patientId': patientInstance.id]" />
 						</div>
 					</div><!-- /box -->
 				</div><!-- /row -->
