@@ -32,6 +32,12 @@ modules = {
 		def dir = "theme"
 		resource url:[dir:"${dir}/js",file:'dropzone.min.js'], exclude: 'minimify'
 	}
+	
+	multiplefileinput {
+		dependsOn 'jquerytheme'
+		resource url:[dir:'css', file: 'multiplefileinput.css']
+		resource url:[dir:'js', file: 'multiplefileinput.js']
+	}
 
 	chosencss {
 		def dir = "theme"
@@ -62,11 +68,28 @@ modules = {
 		def dir = "theme"
 		resource url:[dir:"${dir}/js",file:'jquery.easy-pie-chart.min.js'], exclude: 'minimify'
 	}
-
+	
+	bootstrapdatepicker {
+		dependsOn 'bootstrap'
+		def dir = "theme"
+		resource url:[dir:"${dir}/js",file:'bootstrap-datepicker.min.js'], exclude: 'minimify' 
+	}
+	select2 {
+		dependsOn 'bootstrap'
+		resource url:[dir:"js",file:'select2.min.js'], exclude: 'minimify'
+		resource url:[dir:"js",file:'select2_locale_es.js']
+		resource url:[dir:"css",file:'select2.css']
+		resource url:[dir:"css",file:'select2-bootstrap.css']
+	}
+	jquerynestable {
+		dependsOn 'jquerytheme'
+		resource url:[dir:"js",file:'jquery.nestable.js']
+		resource url:[dir:"css",file:'nestable.css']
+	}
 	theme {
 		dependsOn 'bootstrap'
 		dependsOn 'dropzonecss'
-		dependsOn 'chosencss'
+		dependsOn 'select2'
 		dependsOn 'xchartscss'
 		dependsOn 'jqueryeasypiechartcss'
 		

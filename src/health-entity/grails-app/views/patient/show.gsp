@@ -124,9 +124,14 @@
 								<i class="icon-stethoscope"></i>
 								Agregar nuevo estudio
 							</h2>
+							<div class="box-icon">
+								<a href="#" class="btn-minimize">
+									<i class="icon-chevron-up"></i>
+								</a>
+							</div>
 						</div>
 						<div class="box-content">
-							<g:render template="/study/add_new_study" model="${patientInstance.id}" />
+							<g:render template="/study/add_new_study" model="['patientId': patientInstance.id, 'studyTypeRoots': studyTypeRoots]" />
 						</div>
 					</div><!-- /box -->
 				</div><!-- /row -->

@@ -1,0 +1,11 @@
+@CHARSET "UTF-8";
+
+.dd-item {
+	cursor: pointer;
+}
+
+.dd-item .selected {
+	color: white;
+	border: 1px solid #c7cbd5;
+	background: #c7cbd5;
+}

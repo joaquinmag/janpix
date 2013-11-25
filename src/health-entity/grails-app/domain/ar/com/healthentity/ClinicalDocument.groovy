@@ -2,18 +2,20 @@ package ar.com.healthentity
 
 class ClinicalDocument {
 	
-	String name
+	String filename
 	Date dateCreated
 	Date lastUpdated
 	
 	String mimeType
 	long size
 	
+	//FormatType formatType
+	
 	byte[] binaryData
 	
 	
     static constraints = {
-		name(nullable:false,blank:false)
+		filename(nullable:false,blank:false)
 		mimeType(nullable:false,blank:false)
 		size(nullable:false)
 		binaryData(nullable:false,blank:false)
