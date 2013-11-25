@@ -44,9 +44,14 @@ class DemographicPersonService {
 		// Una vez finalizado el proceso si no existen matcheos
 		// Se verifica que ningun paciente tenga el mismo documento. 
 		// Si lo tiene se agrega un PossibleMatchingException
-		if(this.matchedPersons.empty && this.possibleMatchedPersons.empty) { 
+		if(this.matchedPersons.empty && this.possibleMatchedPersons.empty) {
+			log.info("Verificando si existen pacientes que contengan el mismo documento")
 			if(existsSameDocument(candidates,p)) {
-				possibleMatchedPersons.add(factoryMatchRecord.buildWithPersonAndPercentage(p,0.75))
+				log.info("Existen pacientes con el mismo documento que el paciente "+p)
+				candidates.findAll{c -> c.identityDocument() == p.identityDocument()}.each {
+					possibleMatchedPersons.add(factoryMatchRecord.buildWithPersonAndPercentage(it,0.75))
+				}
+				
 			}
 		}
 		
@@ -103,6 +108,6 @@ class DemographicPersonService {
 	}
 	
 	private Boolean existsSameDocument(List<Person>candidates,Person person) { 
-		return candidates.any{p -> p.identityDocument == person.identityDocument}
+		return candidates.any{p -> p.identityDocument() == person.identityDocument()}
 	}
 }

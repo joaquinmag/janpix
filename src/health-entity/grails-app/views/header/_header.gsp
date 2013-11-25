@@ -15,7 +15,7 @@
 					<li>
 						<a class="btn">
 								<span class="hello"><g:message code="main.welcome.message" /></span>
-								<span class="name">${ ctx.user.name }</span>
+								<span class="name">${ ctx?.user?.name }</span>
 						</a>
 					</li>
 					<li><g:link controller="logout" class="btn"><i class="icon-off"></i> <g:message code="main.logout.label" /></g:link></li>

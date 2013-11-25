@@ -87,13 +87,15 @@ class PatientController {
 				return
 			}
 			
-			// TODO implementar!!!
-			janpixService.getAllPossibleMatchedPatients(patientInstance)
+			List<Patient> patients = janpixService.getAllPossibleMatchedPatients(patientInstance)
 			
+			respond patientInstance,[view:"list_matched_patients",
+									model:[patientInstanceList:patients,patientInstanceCount: patients.size()]]
 			
 		}
 		catch(JanpixException ex){
-			render ex.message
+			flash.message = ex.message
+			redirect action:"index",id:patientInstance.id
 			return
 		}
 	}

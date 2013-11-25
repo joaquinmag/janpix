@@ -4,15 +4,25 @@
 <html>
 	<head>
 		<meta name="layout" content="main">
-		<g:set var="entityName" value="${message(code: 'patient.label', default: 'Patient')}" />
-		<title><g:message code="default.list.label" args="[entityName]" /></title>
+		<g:set var="entity" value="${patientInstance}" />
+		<title><g:message code="patient.matching.list.label" args="[entity]" /></title>
 	</head>
 	<body>
 		<div class="row">		
 			<div class="box col-sm-12">
-				<h1>Pacientes</h1>
+				<h1><g:message code="patient.matching.list.label" args="[entity]" /></h1>
 			</div>
 		</div>
+		<div class="row">
+			<div class="col-sm-12">
+				<g:form url="[resource:patientInstance, action:'forceRegister']">
+					<g:hiddenField name="id" value="${patientInstance?.id}" />
+					<g:link class="btn btn-small btn-success" action="edit" resource="${patientInstance}"><i class="icon-pencil "></i><g:message code="default.edit.label" args="['Paciente']" /></g:link>
+					<g:actionSubmit class="btn btn-danger" action="forceRegister" value="${message(code: 'patient.matching.force.label', default: 'Force')}" onclick="return confirm('${message(code: 'patient.matching.force.confirm.message', default: 'Are you sure?')}');" />
+				</g:form>
+			</div>
+		</div>
+		<br>
 
 		<g:if test="${flash.message}">
 			<div class="row">
@@ -27,7 +37,7 @@
 		<div class="row">		
 			<div class="box col-sm-12">
 				<div class="box-header" data-original-title>
-					<h2><i class="icon-user"></i><span class="break"></span>Tabla de pacientes</h2>
+					<h2><i class="icon-user"></i><span class="break"></span>Posibles Matcheos</h2>
 					<div class="box-icon">
 						<a href="#" class="btn-minimize"><i class="icon-chevron-up"></i></a>
 					</div>
@@ -51,7 +61,6 @@
 					
 						<g:sortableColumn property="address" title="${message(code: 'patient.address.label', default: 'Address')}" />
 					
-						<th><g:message code="default.actions.label" default="Actions" /></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -60,12 +69,9 @@
 					
 						<td><g:link action="show" id="${patientInstance.id}">${fieldValue(bean: patientInstance, field: "firstName")}</g:link></td>
 					
-
-					
 						<td>${fieldValue(bean: patientInstance, field: "lastName")}</td>
-						
+					
 						<td>${fieldValue(bean: patientInstance, field: "dni")}</td>
-
 					
 						<td><g:formatDate date="${patientInstance.birthdate}" format="yyyy-MM-dd" /></td>
 					
@@ -80,18 +86,12 @@
 
 					
 						<td>
-						${fieldValue(bean: patientInstance, field: "addressName")} 
+						${fieldValue(bean: patientInstance, field: "addressName")}
 						${fieldValue(bean: patientInstance, field: "addressNumber")}
+						
 						</td>
 
-					<td class="center">
-						<g:link class="btn btn-success" action="show" id="${patientInstance.id}"><i class="icon-zoom-in "></i></g:link>
-						<g:link class="btn btn-info" action="edit" id="${patientInstance.id}"><i class="icon-edit "></i>  </g:link>
-						<g:remoteLink class="btn btn-warning" action="registerOnJanpix" 
-						id="${patientInstance.id}" onSuccess="show_modal()" update="[success:'modalBody',failure:'modalBody']">
-							<i class="icon-refresh "></i> 
-						</g:remoteLink>
-					</td>
+					
 			  		
 					</tr>
 				</g:each>

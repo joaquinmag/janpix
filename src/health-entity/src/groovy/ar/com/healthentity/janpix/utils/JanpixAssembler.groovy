@@ -1,4 +1,4 @@
-package ar.com.healthentity.janpix
+package ar.com.healthentity.janpix.utils
 
 import org.apache.commons.io.IOUtils
 
@@ -17,6 +17,9 @@ import com.janpix.webclient.rup.PersonDTO
 import com.janpix.webclient.rup.PersonNameDTO
 import com.janpix.webclient.rup.PhoneNumberDTO
 
+import org.codehaus.groovy.grails.web.context.ServletContextHolder as SCH
+import org.codehaus.groovy.grails.web.servlet.GrailsApplicationAttributes as GA
+
 
 
 /**
@@ -26,6 +29,13 @@ import com.janpix.webclient.rup.PhoneNumberDTO
  *
  */
 class JanpixAssembler {
+
+	static final String DNI = 'DNI'
+	static final String DAY = "Day"
+	static final String MALE = 'M'
+	static final String FEMALE = 'F'
+	static final String LEGAL = 'LEGAL'
+	static final String HOME = 'HOME'
 	
 	/**
 	 * Transforma Paciente de la Entidad Sanitaria en un PersonDTO de Janpix
@@ -40,9 +50,9 @@ class JanpixAssembler {
 		person.name.firstName = patient.firstName
 		person.name.lastName = patient.lastName
 		person.birthdate = new ExtendedDateDTO()
-		person.birthdate.precission = "Day"
+		person.birthdate.precission = DAY
 		person.birthdate.date = patient.birthdate
-		person.administrativeSex = (patient.sex == SexType.Masculino)?'M':'F'
+		person.administrativeSex = (patient.sex == SexType.Masculino)?MALE:FEMALE
 		person.birthplace = JanpixAssembler.toCity(patient.city)
 		
 		person.addresses = new PersonDTO.Addresses()
@@ -85,7 +95,7 @@ class JanpixAssembler {
 			return null
 		
 		AddressDTO dto = new AddressDTO()
-		dto.type = 'LEGAL'
+		dto.type = LEGAL
 		dto.street = addressName
 		dto.number = addressNumber
 		dto.city = city
@@ -102,7 +112,7 @@ class JanpixAssembler {
 			return null
 			
 		PhoneNumberDTO dto = new PhoneNumberDTO()
-		dto.type = 'HOME'
+		dto.type = HOME
 		dto.number = phone
 		
 		return dto
@@ -117,7 +127,7 @@ class JanpixAssembler {
 			return null
 			
 		IdentifierDTO dto = new IdentifierDTO()
-		dto.type = 'DNI'
+		dto.type = DNI
 		dto.number = dni
 		dto.assigningAuthority = new AssigningAuthorityDTO()
 		dto.assigningAuthority.oid = "2.16.32" // Hermoso Hardcode
@@ -137,6 +147,8 @@ class JanpixAssembler {
 		return dto
 	}
 	
+	/** FROMS **/
+	
 	/**
 	 * Transforma un Documento de janpix en un Documento de healthentity
 	 * @return
@@ -153,4 +165,122 @@ class JanpixAssembler {
 		
 		return document
 	} 
+	
+	/**
+	 * Transforma PersonDTO de Janpix en un Patient de la Entidad Sanitaria
+	 * @return
+	 */
+	static Patient fromPatient(PersonDTO person){
+		if(!person)
+			return null
+			
+		Patient patient = new Patient()
+		patient.firstName = person.name?.firstName
+		patient.lastName = person.name?.lastName
+		patient.dni = JanpixAssembler.fromIdentifiers(person.identifiers?.identifier)
+		patient.addressName = JanpixAssembler.fromAddresses(person.addresses?.address)[0]
+		patient.addressNumber = JanpixAssembler.fromAddresses(person.addresses?.address)[1]
+		patient.city = JanpixAssembler.fromCity(person.addresses?.address)
+		patient.sex = JanpixAssembler.fromSex(person.administrativeSex)
+		patient.birthdate = JanpixAssembler.fromExtendedDate(person.birthdate)
+		patient.phone = JanpixAssembler.fromPhoneNumbers(person.phoneNumbers.phoneNumber)
+		
+		return patient
+	}
+	
+	static String fromIdentifiers(List<IdentifierDTO> identifiers){
+		if(!identifiers)
+			return null
+			
+		// Se busca el DNI entre todos los identificadores
+		IdentifierDTO dni = identifiers.find{it->it.type == DNI}
+		
+		return ( (dni) ? dni.number : "" )
+	}
+	
+	static String[] fromAddresses(List<AddressDTO> addresses){
+		ArrayList<String> arrayAddress = new ArrayList<String>()
+		arrayAddress[0] = ""
+		arrayAddress[1] = ""
+		
+		if(addresses) {
+			// Se busca la direccion Legal y sino se obtiene la que se encuentre
+			AddressDTO address = JanpixAssembler.getPrincipalAddress(addresses)
+			arrayAddress[0] = address.street
+			arrayAddress[1] = address.number
+		}
+		
+		return arrayAddress
+	}
+	
+	static City fromCity(List<AddressDTO> addresses) {
+		def ctx = SCH.servletContext.getAttribute(GA.APPLICATION_CONTEXT)
+		def placeService = ctx.placeService
+		
+		// Se obtiene la city del address
+		AddressDTO address = JanpixAssembler.getPrincipalAddress(addresses)
+		
+		CityDTO city = address?.city
+		if(!city?.nameCity || !city?.nameProvince )
+			return null
+			
+		// Se debe buscar la city
+		return placeService.findByPlace(city.nameCity,city.nameProvince)
+	}
+	
+	static SexType fromSex(String sex){
+		if(!sex)
+			return null
+		
+		switch(sex){
+			case MALE :
+				return SexType.Masculino
+				break;
+			case FEMALE :
+				return SexType.Femenino
+				break;
+				
+			default:
+				return null;
+				break;
+		}
+	}
+	
+	static Date fromExtendedDate(ExtendedDateDTO extendedDate){
+		if(!extendedDate)
+			return null
+			
+		return Date.parse("yyyy-M-d",extendedDate.date)
+	}
+	
+	static String fromPhoneNumbers(List<PhoneNumberDTO> phoneNumbers){
+		if(!phoneNumbers)
+			return null
+			
+		// Se busca el telefono de la casa (sino lo tiene se devuelve el primero agregado)
+		PhoneNumberDTO phone = phoneNumbers.find{it->it.type == HOME}
+		if(!phone)
+			phone = phoneNumbers[0]
+			
+		return phone.number
+		
+	}
+	
+	/**
+	 * Devuelve la direccion principal de una lista de direcciones
+	 * @param addresses
+	 * @return
+	 */
+	private static AddressDTO getPrincipalAddress(List<AddressDTO> addresses){
+		if(!addresses)
+			return null;
+			
+		// Se busca la direccion Legal y sino se obtiene la que se encuentre
+		AddressDTO address = addresses.find{it->it.type == LEGAL}
+		if(!address){
+			address = addresses[0]
+		}
+		
+		return address
+	}
 }

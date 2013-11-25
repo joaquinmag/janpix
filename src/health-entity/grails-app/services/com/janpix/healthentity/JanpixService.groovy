@@ -1,9 +1,11 @@
 package com.janpix.healthentity
 
+import java.util.List;
+
 import grails.transaction.Transactional
 import ar.com.healthentity.ClinicalDocument
 import ar.com.healthentity.Patient
-import ar.com.healthentity.janpix.JanpixAssembler
+import ar.com.healthentity.janpix.utils.JanpixAssembler;
 
 import com.janpix.exceptions.JanpixConnectionException
 import com.janpix.exceptions.JanpixDuplicatePatientException
@@ -12,8 +14,10 @@ import com.janpix.exceptions.JanpixPossibleMatchingPatientException
 import com.janpix.servidordocumentos.dto.ClinicalDocumentDTO
 import com.janpix.servidordocumentos.dto.message.RetrieveDocumentRequest
 import com.janpix.webclient.rup.AckMessage
+import com.janpix.webclient.rup.AckQueryPatientMessage
 import com.janpix.webclient.rup.AddPatientRequestMessage
 import com.janpix.webclient.rup.GetAllPossibleMatchedPatientsRequestMessage
+import com.janpix.webclient.rup.PatientDTO;
 import com.janpix.webclient.rup.TypeCode
 
 
@@ -63,8 +67,36 @@ class JanpixService {
 	 * @return
 	 */
 	List<Patient> getAllPossibleMatchedPatients(Patient patient){
-		GetAllPossibleMatchedPatientsRequestMessage requestMessage = new GetAllPossibleMatchedPatientsRequestMessage()
-		//TODO hacer
+		AckQueryPatientMessage ack = null
+		try{
+			// Se genera el mensaje
+			GetAllPossibleMatchedPatientsRequestMessage requestMessage = new GetAllPossibleMatchedPatientsRequestMessage()
+			requestMessage.person = JanpixAssembler.toPerson(patient)
+			
+			// Se realiza la consulta
+			log.info("Consultando por posibles matcheos del paciente "+patient)
+			ack = janpixPixManagerServiceClient.getAllPossibleMatchedPatients(requestMessage)
+						
+		}
+		catch(Exception ex){
+			String message ="Error de conexión contra el RUP: "+ex.message
+			log.error(message)
+			throw new JanpixConnectionException(message);
+		}
+		
+		// Se valida el ACK
+		this.validateACKQueryMessageRUP(ack)
+		
+		// Se genera la respuesta
+		List<PatientDTO> matchedPatients = ack.patients.patient
+		log.info("Se obtuvieron "+matchedPatients.size()+" matcheos")
+		
+		List<Patient> patients = new ArrayList<Patient>();
+		matchedPatients.each { PatientDTO it->
+			patients.add(JanpixAssembler.fromPatient(it))
+		}
+
+		return patients
 	}
 	
 	/**
@@ -130,5 +162,19 @@ class JanpixService {
 				throw new JanpixException(ack.text);
 				break;
 		}
+	}
+	
+	/**
+	 * Valida los posibles valores que vienen en un ACK del RUP
+	 * @param ack
+	 */
+	private void validateACKQueryMessageRUP(AckQueryPatientMessage ack){
+		if(ack.typeCode == TypeCode.SUCCEDED_QUERY){
+			log.info("Query realizada correctamente")
+			return
+		}
+		
+		log.error("Error al realizar la query. Error:"+ack.typeCode.toString()+". Mensaje:"+ack.text)
+		throw new JanpixException(ack.text);
 	}
 }
