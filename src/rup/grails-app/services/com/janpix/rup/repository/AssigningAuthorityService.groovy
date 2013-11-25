@@ -19,4 +19,5 @@ class AssigningAuthorityService {
 	HealthEntity findHealtEntityByOid(String oid){
 		return HealthEntity.findByOid(oid);
 	}
+	
 }

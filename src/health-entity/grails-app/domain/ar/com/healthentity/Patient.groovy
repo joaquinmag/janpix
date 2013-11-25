@@ -51,4 +51,8 @@ class Patient {
 	String getFullAddress() {
 		"${addressName} ${addressNumber}, ${city.name}, ${city.province.name}, ${city.province.country}"
 	}
+	
+	String toString(){
+		return "${fullName}, DNI:${dni}"
+	}
 }

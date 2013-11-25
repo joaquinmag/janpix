@@ -65,13 +65,15 @@ class PatientController {
 				return
 			}
 			
-			// TODO implementar!!!
 			janpixService.addNewPatientWithoutValidation(patientInstance)
 			
-			
+			flash.message = "El paciente "+patientInstance+" se registro correctamente"
+			redirect action:"index",id:patientInstance.id
+			return
 		}
 		catch(JanpixException ex){
-			render ex.message
+			flash.message = "Error: "+ex.message
+			redirect action:"index",id:patientInstance.id
 			return
 		}
 	}

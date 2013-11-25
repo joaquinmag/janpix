@@ -5,6 +5,7 @@ import com.janpix.rup.empi.Address
 import com.janpix.rup.empi.AssigningAuthority
 import com.janpix.rup.empi.City
 import com.janpix.rup.empi.ExtendedDate
+import com.janpix.rup.empi.HealthEntity
 import com.janpix.rup.empi.Identifier
 import com.janpix.rup.empi.Patient
 import com.janpix.rup.empi.PatientIdentifier
@@ -112,12 +113,20 @@ class MapperDtoDomain extends Mapper {
 		return identifier
 	}
 	
-	
+	/**
+	 * Convierte el DTO en la Autoridad de Asignacion
+	 * Primero la busca. Sino existe la crea
+	 * @param dto
+	 * @return
+	 */
 	public AssigningAuthority convert(AssigningAuthorityDTO dto){
 		AssigningAuthority entity = assigningAuthorityService.findAssigningAuthorityByOid(dto.oid)
-		if(entity == null)
-			entity = new AssigningAuthority(dto.oid,dto.name) 
-		
+		if(entity == null){
+			// Solo puedo crear healthEntity
+			entity = new HealthEntity(dto.oid,dto.name)
+			if(!entity.save(flush:true,failOnError:false))
+				return null;
+		}
 		return entity 
 	}
 	

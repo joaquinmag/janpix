@@ -36,14 +36,11 @@ class BootStrap {
 		assert UserRole.count() == 1
 
 		if(Environment.current == Environment.TEST || Environment.current == Environment.DEVELOPMENT) {
-			String country = "Argentina"
-			// Buenos Aires
-			def province = Province.findOrCreateWhere(country: country, name: "Buenos Aires").save(failOnError: true, flush: true)
-			City.findOrCreateWhere(province: province, name: "Luján").save(failOnError: true, flush: true)
 			
-			// C.A.B.A
-			province = Province.findOrCreateWhere(country: country, name: "C.A.B.A").save(failOnError: true, flush: true)
-			def city = City.findOrCreateWhere(province: province, name: "C.A.B.A").save(failOnError: true, flush: true)
+			this.buildMockCities()
+			
+			def province = Province.findByName("Capital Federal")
+			def city = City.findByProvinceAndName(province,"Capital Federal")
 			
 			// inicializo tipos de documentos
 			def pediatric = new StudyType("Pediatría", null, 1).save(flush: true, failOnError: true)
@@ -96,4 +93,28 @@ class BootStrap {
     }
     def destroy = {
     }
+	
+	private void buildMockCities(){
+		String country = "Argentina"
+		// Buenos Aires
+		def province = Province.findOrCreateWhere(country: country, name: "Buenos Aires").save(failOnError: true, flush: true)
+		City.findOrCreateWhere(province: province, name: "Luján").save(failOnError: true, flush: true)
+		City.findOrCreateWhere(province: province, name: "Castelar").save(failOnError: true, flush: true)
+		City.findOrCreateWhere(province: province, name: "Campana").save(failOnError: true, flush: true)
+		City.findOrCreateWhere(province: province, name: "Gerli").save(failOnError: true, flush: true)
+		City.findOrCreateWhere(province: province, name: "Glew").save(failOnError: true, flush: true)
+		City.findOrCreateWhere(province: province, name: "Moreno").save(failOnError: true, flush: true)
+		City.findOrCreateWhere(province: province, name: "Moron").save(failOnError: true, flush: true)
+
+		// C.A.B.A
+		province = Province.findOrCreateWhere(country: country, name: "Capital Federal").save(failOnError: true, flush: true)
+		def city = City.findOrCreateWhere(province: province, name: "Capital Federal").save(failOnError: true, flush: true)
+		
+		// Mendoza
+		province = Province.findOrCreateWhere(country: country, name: "Mendoza").save(failOnError: true, flush: true)
+		City.findOrCreateWhere(province: province, name: "Capital").save(failOnError: true, flush: true)
+		City.findOrCreateWhere(province: province, name: "Godoy Cruz").save(failOnError: true, flush: true)
+		City.findOrCreateWhere(province: province, name: "San Rafael").save(failOnError: true, flush: true)
+	}
+	
 }

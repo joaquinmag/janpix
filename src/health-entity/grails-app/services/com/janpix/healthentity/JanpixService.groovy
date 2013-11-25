@@ -58,7 +58,23 @@ class JanpixService {
 	 * @param patient
 	 */
 	void addNewPatientWithoutValidation(Patient patient){
+		AckMessage ack = null
+		try{
+			AddPatientRequestMessage requestMessage = new AddPatientRequestMessage()
+			requestMessage.person = JanpixAssembler.toPerson(patient)
+			requestMessage.healthEntity = JanpixAssembler.toAssigningAuthority(grailsApplication.config.healthEntity)
+			requestMessage.organizationId = patient.id
+			
+			log.info("Forzando el registro del paciente ["+patient+"] al Registro Unico de Pacientes")
+			ack = janpixPixManagerServiceClient.addNewPatientWithoutValidation(requestMessage)
+		}
+		catch(Exception ex){
+			String message ="Error de conexión contra el RUP: "+ex.message
+			log.error(message)
+			throw new JanpixConnectionException(message);
+		}
 		
+		this.validateACKMessageRUP(ack)
 	}
 	
 	/**
@@ -155,7 +171,7 @@ class JanpixService {
 				break;
 			
 			case TypeCode.IDENTIFIER_ERROR:
-				throw new JanpixDuplicatePatientException("El paciente ya se encuentra ingresado");
+				throw new JanpixDuplicatePatientException("Existe otro paciente con el mismo ID registrado por usted");
 				break;
 				
 			default :
