@@ -115,7 +115,7 @@ class PatientController {
     }
 
     def create() {
-        respond new Patient(params)
+        respond new Patient()
     }
 
     @Transactional

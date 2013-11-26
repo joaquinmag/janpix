@@ -4,7 +4,7 @@
 $(document).ready(function() {
 	$('#studyFile').ace_file_input({
 	   style: 'well',
-	   btn_choose:'Suelte archivos aquí o haga click para elegir',
+	   btn_choose:'Suelte el archivo aquí o haga click aquí para elegir uno',
 	   btn_change:null,
 	   no_icon:'icon-cloud-upload',
 	   droppable:true,
@@ -14,7 +14,7 @@ $(document).ready(function() {
 
 });
 </r:script>
-<g:form mapping="study" method="POST" useToken="true" enctype="multipart/form-data" role="form" class="form-horizontal">
+<g:form controller="study" action="crear" method="POST" class="form-horizontal">
 	<fieldset class="col-md-12">
 		<input type="hidden" name="patientId" value="${patientId}" />
 		<div class="row">
@@ -44,8 +44,8 @@ $(document).ready(function() {
 		</div>
 		<div class="row">
 			<div class="form-group col-sm-6 col-md-12">
-				<label class="control-label" for="studyFile">Archivos</label>
-				<input id="studyFile" name="studyFile" type="file" class="form-control" />
+				<label class="control-label" for="studyFile">Archivo</label>
+				<!-- <input id="studyFile" name="studyFile" type="file" class="form-control" /> -->
 			</div>
 		</div>
 		<div class="row">

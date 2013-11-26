@@ -8,17 +8,11 @@ package ar.com.healthentity
 class Study {
 	
 	String title
-	
 	Date date
-	
-	Patient patient
-	
+	Patient patient	
 	ClinicalDocument document
-	
 	StudyType type
-	
-	//HealthWorker author
-	
+	User author
 	String observation
 	
     static constraints = {
@@ -27,5 +21,6 @@ class Study {
 		document nullable: false
 		date nullable: false
 		type nullable: false
+		author nullable: false
     }
 }

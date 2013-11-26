@@ -32,6 +32,7 @@
 
 			<!-- start: Content -->
 			<div id="content" class="col-lg-10 col-sm-11">
+					${flash.error}
 		
 					<g:layoutBody/>
 			</div>
