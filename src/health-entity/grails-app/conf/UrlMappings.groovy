@@ -9,9 +9,10 @@ class UrlMappings {
 		
 		name dashboard:"/"(controller:'patient', action: 'index')
 		name patients:"/patients"(controller:'patient', action: 'index')
-		
-		name showPatient: "/patient/$id" (controller: 'patient', action: 'show')
-		//name createDocument: "/documentcreate" (controller: 'study', action: 'create')
+		name showPatient: "/patient/show/$id" (controller: 'patient', action: 'show') {
+			constraints { id(matches:/\d+/) }
+		}
+		name createDocument: "/study/create" (controller: 'study', action: 'create')
 		
         "500"(view:'/error')
 	}

@@ -74,8 +74,7 @@ class BootStrap {
 				title: "test",
 				observation: "Todo normal",
 				document: cd,
-				type: laboratoryAdults,
-				author: testUser
+				type: laboratoryAdults
 			)
 			def patient = new Patient(firstName: "Juan Carlos",
 										  lastName: "Pérez",

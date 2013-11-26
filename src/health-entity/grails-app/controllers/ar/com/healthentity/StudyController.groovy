@@ -27,14 +27,13 @@ class CreateStudyCommand {
 @Secured("hasRole('HealthWorker')")
 class StudyController {
 	
-	//static allowedMethods = [
-	//	"create":"POST"
-	//]
+	static allowedMethods = [
+		create:"POST"
+	]
 
 	//def create(CreateStudyCommand createStudyCommand) {
-	def crear() {
-		render "hola"
-		//withForm {
+	def create(CreateStudyCommand createStudyCommand) {
+		withForm {
 		//	createStudyCommand.validate()
 		//	if (!createStudyCommand.hasErrors()) {
 		//		redirect controller: 'patient', action:'show', id: createStudyCommand.patientId
@@ -42,9 +41,10 @@ class StudyController {
 		//		flash.error = "ocurrió un error"
 		//		redirect mapping:"patients"//controller: 'patient', action: 'list'
 		//	}
-		//}.invalidToken {
-		//	flash.error = "submit duplicado"
-		//	redirect controller: 'patient', action: 'list'
-		//}
+			render "hola"
+		}.invalidToken {
+			flash.error = "submit duplicado"
+			redirect mapping: 'showPatient', id: createStudyCommand.patientId
+		}
 	}
 }

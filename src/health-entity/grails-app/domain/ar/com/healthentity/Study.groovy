@@ -12,7 +12,7 @@ class Study {
 	Patient patient	
 	ClinicalDocument document
 	StudyType type
-	User author
+	//User author
 	String observation
 	
     static constraints = {
@@ -21,6 +21,6 @@ class Study {
 		document nullable: false
 		date nullable: false
 		type nullable: false
-		author nullable: false
+		//author nullable: false
     }
 }

@@ -14,7 +14,7 @@ $(document).ready(function() {
 
 });
 </r:script>
-<g:form controller="study" action="crear" method="POST" class="form-horizontal">
+<g:form mapping="createDocument" method="POST" useToken="true" class="form-horizontal" enctype="multipart/form-data">
 	<fieldset class="col-md-12">
 		<input type="hidden" name="patientId" value="${patientId}" />
 		<div class="row">
@@ -45,7 +45,7 @@ $(document).ready(function() {
 		<div class="row">
 			<div class="form-group col-sm-6 col-md-12">
 				<label class="control-label" for="studyFile">Archivo</label>
-				<!-- <input id="studyFile" name="studyFile" type="file" class="form-control" /> -->
+				<input id="studyFile" name="studyFile" type="file" class="form-control" />
 			</div>
 		</div>
 		<div class="row">
@@ -56,8 +56,8 @@ $(document).ready(function() {
 		</div>
 		<div class="row">
 			<div class="form-actions">
-				<g:actionSubmit value="Crear estudio" class="btn btn-success"/>
-			</div>
+				<button type="submit" class="btn btn-success">Crear estudio</button>
+			</div> 
 		</div>
 	</fieldset>
 </g:form>
