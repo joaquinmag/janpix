@@ -31,8 +31,14 @@
 			<g:render template="/sidebar/sidebar" />	
 
 			<!-- start: Content -->
-			<div id="content" class="col-lg-10 col-sm-11">
-					${flash.error}
+			<div id="content" class="col-lg-10 col-sm-11" style="min-height:768px">
+					<g:if test="${flash.warning}">
+						<div class="alert alert-danger">
+						 	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+						 	<strong>¡Oops!</strong>
+							${flash.warning}
+						</div>
+					</g:if>
 		
 					<g:layoutBody/>
 			</div>

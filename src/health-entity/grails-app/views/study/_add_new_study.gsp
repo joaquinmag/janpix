@@ -14,6 +14,7 @@ $(document).ready(function() {
 
 });
 </r:script>
+<g:render template="/common/errors" model="['model': createStudyModel]" />
 <g:form mapping="createDocument" method="POST" useToken="true" class="form-horizontal" enctype="multipart/form-data">
 	<fieldset class="col-md-12">
 		<input type="hidden" name="patientId" value="${patientId}" />

@@ -31,19 +31,18 @@ class StudyController {
 		create:"POST"
 	]
 
-	//def create(CreateStudyCommand createStudyCommand) {
 	def create(CreateStudyCommand createStudyCommand) {
 		withForm {
-		//	createStudyCommand.validate()
-		//	if (!createStudyCommand.hasErrors()) {
+			createStudyCommand.validate()
+			if (!createStudyCommand.hasErrors()) {
 		//		redirect controller: 'patient', action:'show', id: createStudyCommand.patientId
-		//	} else {
+			} else {
 		//		flash.error = "ocurrió un error"
 		//		redirect mapping:"patients"//controller: 'patient', action: 'list'
-		//	}
-			render "hola"
+				render view:"/patient/show", model:[patientInstance: Patient.findById(createStudyCommand.patientId), createStudyModel: createStudyCommand]
+			}
 		}.invalidToken {
-			flash.error = "submit duplicado"
+			flash.warning = "Ha intentado enviar información que ya ha enviado anteriormente. Si realmente desea ingresar datos nuevos, recargue la página."
 			redirect mapping: 'showPatient', id: createStudyCommand.patientId
 		}
 	}
