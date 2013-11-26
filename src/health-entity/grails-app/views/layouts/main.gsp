@@ -39,6 +39,13 @@
 							${flash.warning}
 						</div>
 					</g:if>
+					<g:if test="${flash.success}">
+						<div class="alert alert-success">
+						 	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+						 	<strong>¡Excelente!</strong>
+							${flash.success}
+						</div>
+					</g:if>
 		
 					<g:layoutBody/>
 			</div>

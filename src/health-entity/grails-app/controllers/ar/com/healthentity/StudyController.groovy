@@ -4,6 +4,7 @@ import grails.plugins.springsecurity.Secured
 
 import org.codehaus.groovy.grails.validation.Validateable
 import org.joda.time.LocalDate;
+import org.springframework.web.multipart.MultipartFile;
 
 @Validateable
 class CreateStudyCommand {
@@ -12,10 +13,9 @@ class CreateStudyCommand {
 	LocalDate creationDate
 	Long studyType
 	String observations
-	//byte[] file
+	MultipartFile file
 	
 	static constraints = {
-		//file maxSize: 1024 * 1024 * 20, nullable: false, blank: false
 		observations  nullable: true, blank: false
 		studyType nullable: false
 		creationDate nullable: false
@@ -27,6 +27,8 @@ class CreateStudyCommand {
 @Secured("hasRole('HealthWorker')")
 class StudyController {
 	
+	def studyTypeService
+	
 	static allowedMethods = [
 		create:"POST"
 	]
@@ -35,11 +37,10 @@ class StudyController {
 		withForm {
 			createStudyCommand.validate()
 			if (!createStudyCommand.hasErrors()) {
-		//		redirect controller: 'patient', action:'show', id: createStudyCommand.patientId
+				flash.success = "Estudio creado correctamente"
+				redirect mapping:'showPatient', id: createStudyCommand.patientId
 			} else {
-		//		flash.error = "ocurrió un error"
-		//		redirect mapping:"patients"//controller: 'patient', action: 'list'
-				render view:"/patient/show", model:[patientInstance: Patient.findById(createStudyCommand.patientId), createStudyModel: createStudyCommand]
+				render view:"/patient/show", model:[patientInstance: Patient.findById(createStudyCommand.patientId), studyTypeRoots: studyTypeService.listStudyTypeRoots(), createStudyModel: createStudyCommand]
 			}
 		}.invalidToken {
 			flash.warning = "Ha intentado enviar información que ya ha enviado anteriormente. Si realmente desea ingresar datos nuevos, recargue la página."
