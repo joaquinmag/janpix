@@ -21,6 +21,7 @@ class Study {
 		document nullable: false
 		date nullable: false
 		type nullable: false
+		observation nullable: true
 		//author nullable: false
     }
 }

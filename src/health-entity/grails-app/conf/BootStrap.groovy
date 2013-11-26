@@ -66,7 +66,7 @@ class BootStrap {
 										filename: "test",
 										mimeType: "text/xml",
 										size: 123,				
-										binaryData: [ 12, 12 ]
+										fileLocation: "test"
 									)
 			cd.save(flush: true, failOnError: true)
 			def study = new Study(
