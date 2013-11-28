@@ -113,6 +113,10 @@ class PatientController {
     def show(Patient patientInstance) {
         respond patientInstance, model:[studyTypeRoots: studyTypeService.listStudyTypeRoots(), createStudyModel: new CreateStudyCommand()]
     }
+	
+	def showDocuments(Patient patientInstance) {
+		respond patientInstance, [view: "show_documents"]
+	}
 
     def create() {
         respond new Patient(params)

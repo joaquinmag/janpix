@@ -1,3 +1,13 @@
+/**Common Styles**/
+
+a .top-link, a .top-link:hover {
+	text-decoration: none;
+}
+
+td {
+	vertical-align: middle !important;
+}
+
 /* Spinner */
 .spinner {
 	background: url(../images/cargando.gif) 50% 50% no-repeat black;

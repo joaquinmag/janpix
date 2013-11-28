@@ -14,9 +14,7 @@
 		<link rel="apple-touch-icon" sizes="114x114" href="${resource(dir: 'images', file: 'apple-touch-icon-retina.png')}">
 		
 		<r:require modules="theme"/>
-		
 		<r:require modules="application"/>
-		
 		<g:setProvider library="jquery"/>
 		
 		<g:layoutHead/>

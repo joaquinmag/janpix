@@ -10,19 +10,23 @@
 		<div class="row">		
 			<div class="box col-sm-12">
 				<h1>
+					<g:link mapping="patients" title="Volver al listado de pacientes"><i class="icon-circle-arrow-left blue top-link"></i></g:link>
 					${patientInstance.fullName}
 					<span class="pull-right">
 						<g:form url="[resource:patientInstance, action:'delete']" method="DELETE">
-							<g:hiddenField name="id" value="${patientInstance?.id}" />
+							<g:hiddenField name="id" value="${patientInstance.id}" />
 							<p>
 								<button type="submit" onclick="return confirm('¿Estás seguro que deseas eliminar el paciente?');" class="btn btn-danger" >
-									<i class="icon-remove"></i>
+									<i class="icon-trash"></i>
 								</button>
 							</p>
 						</g:form>
 					</span>
 					<span class="pull-right">
-						<g:link action="edit" resource="${patientInstance}" class="btn btn-info"><i class="icon-pencil"></i></g:link>
+						<g:link action="edit" resource="${patientInstance}" class="btn btn-info"><i class="icon-pencil"></i> Editar</g:link>
+					</span>
+					<span class="pull-right">
+						<g:link mapping="showDocuments" resource="${patientInstance}" class="btn btn-success" title="Ver documentos"><i class="icon-book"></i> Ver documentos</g:link>
 					</span>
 				</h1>
 			</div>
