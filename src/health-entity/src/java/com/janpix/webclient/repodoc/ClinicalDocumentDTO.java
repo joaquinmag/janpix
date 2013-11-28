@@ -173,7 +173,7 @@ public class ClinicalDocumentDTO {
      *     {@link XMLGregorianCalendar }
      *     
      */
-    public XMLGregorianCalendar getDocumentCreationStarted() {
+    public Date getDocumentCreationStarted() {
         return documentCreationStarted;
     }
 
@@ -185,7 +185,7 @@ public class ClinicalDocumentDTO {
      *     {@link XMLGregorianCalendar }
      *     
      */
-    public void setDocumentCreationStarted(XMLGregorianCalendar value) {
+    public void setDocumentCreationStarted(Date value) {
         this.documentCreationStarted = value;
     }
 
@@ -197,7 +197,7 @@ public class ClinicalDocumentDTO {
      *     {@link XMLGregorianCalendar }
      *     
      */
-    public XMLGregorianCalendar getDocumentCreationEnded() {
+    public Date getDocumentCreationEnded() {
         return documentCreationEnded;
     }
 
@@ -209,7 +209,7 @@ public class ClinicalDocumentDTO {
      *     {@link XMLGregorianCalendar }
      *     
      */
-    public void setDocumentCreationEnded(XMLGregorianCalendar value) {
+    public void setDocumentCreationEnded(Date value) {
         this.documentCreationEnded = value;
     }
 

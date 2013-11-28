@@ -27,7 +27,7 @@ class CreateStudyCommand {
 
 @Validateable
 class UploadStudyCommand {
-	Long studyId
+	Long id
 }
 
 @Secured("hasRole('HealthWorker')")

@@ -1,25 +1,23 @@
 package com.janpix.healthentity
 
-import java.util.List;
-
 import grails.transaction.Transactional
 import ar.com.healthentity.ClinicalDocument
 import ar.com.healthentity.Patient
-import ar.com.healthentity.janpix.utils.JanpixAssembler;
+import ar.com.healthentity.janpix.utils.JanpixAssembler
 
 import com.janpix.exceptions.ErrorUploadingDocumentException
 import com.janpix.exceptions.JanpixConnectionException
 import com.janpix.exceptions.JanpixDuplicatePatientException
 import com.janpix.exceptions.JanpixException
 import com.janpix.exceptions.JanpixPossibleMatchingPatientException
-import com.janpix.servidordocumentos.dto.ClinicalDocumentDTO
-import com.janpix.servidordocumentos.dto.message.RetrieveDocumentRequest
+import com.janpix.webclient.repodoc.ClinicalDocumentDTO
 import com.janpix.webclient.repodoc.ProvideAndRegisterDocumentRequest
+import com.janpix.webclient.repodoc.RetrieveDocumentRequest
 import com.janpix.webclient.rup.AckMessage
 import com.janpix.webclient.rup.AckQueryPatientMessage
 import com.janpix.webclient.rup.AddPatientRequestMessage
 import com.janpix.webclient.rup.GetAllPossibleMatchedPatientsRequestMessage
-import com.janpix.webclient.rup.PatientDTO;
+import com.janpix.webclient.rup.PatientDTO
 import com.janpix.webclient.rup.TypeCode
 
 
@@ -150,7 +148,8 @@ class JanpixService {
 	 */
     Boolean uploadDocument(ClinicalDocumentDTO clinicalDocument){
     	try {
-			def msg = new ProvideAndRegisterDocumentRequest(clinicalDocument)
+			def msg = new ProvideAndRegisterDocumentRequest()
+			msg.clinicalDocument = clinicalDocument
 			def ack = janpixRepodocServiceClient.provideAndRegisterDocument(msg)
 		}
 		catch(Exception ex) {

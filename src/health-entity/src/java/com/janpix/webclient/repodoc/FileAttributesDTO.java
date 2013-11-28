@@ -163,7 +163,7 @@ public class FileAttributesDTO {
      *     {@link XMLGregorianCalendar }
      *     
      */
-    public XMLGregorianCalendar getCreationTime() {
+    public Date getCreationTime() {
         return creationTime;
     }
 
@@ -175,7 +175,7 @@ public class FileAttributesDTO {
      *     {@link XMLGregorianCalendar }
      *     
      */
-    public void setCreationTime(XMLGregorianCalendar value) {
+    public void setCreationTime(Date value) {
         this.creationTime = value;
     }
 

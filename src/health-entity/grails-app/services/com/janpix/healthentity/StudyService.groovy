@@ -44,7 +44,7 @@ class StudyService {
     }
 
 	def uploadStudy(def cmd) {
-		def study = Study.get(cmd.studyId)
+		def study = Study.get(cmd.id)
 		if (!study)
 			throw new StudyDoesNotExistsException()
 		def documentDTO = JanpixAssembler.fromStudy(study, grailsApplication.mainContext.servletContext.getRealPath("/uploads"))
