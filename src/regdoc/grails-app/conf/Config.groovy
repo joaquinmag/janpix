@@ -71,25 +71,84 @@ environments {
     }
 }
 
-// log4j configuration
+/** log4j configuration **/
 log4j = {
-    // Example of changing the log pattern for the default console appender:
-    //
-    //appenders {
-    //    console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
-    //}
+	appenders {
+		console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
+					
+		rollingFile name: 'applicationLog',
+					maxFileSize: 1024,
+					file: "/tmp/logs/janpix/regdoc/application.log"
+	}
 
-    error  'org.codehaus.groovy.grails.web.servlet',        // controllers
-           'org.codehaus.groovy.grails.web.pages',          // GSP
-           'org.codehaus.groovy.grails.web.sitemesh',       // layouts
-           'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
-           'org.codehaus.groovy.grails.web.mapping',        // URL mapping
-           'org.codehaus.groovy.grails.commons',            // core / classloading
-           'org.codehaus.groovy.grails.plugins',            // plugins
-           'org.codehaus.groovy.grails.orm.hibernate',      // hibernate integration
-           'org.springframework',
-           'org.hibernate',
-           'net.sf.ehcache.hibernate'
+	environments {
+		production {
+			root {
+				error 'applicationLog'
+			}
+		}
+		test{
+			root {
+				error 'applicationLog','stdout'
+			}
+			//Usa los appenders 'stdout' y 'applicationLog' para el nivel debug
+			debug stdout: [
+				'grails.app.controllers.com.janpix.regdoc',
+				'grails.app.domain.com.janpix.regdoc',
+				'grails.app.services.com.janpix.regdoc.services',
+				'grails.app.taglib.com.janpix.regdoc',
+				'grails.app.conf.com.janpix.regdoc',
+				'grails.app.filters.com.janpix.regdoc'
+			] ,additivity:false
+		
+			debug applicationLog: [
+				'grails.app.controllers.com.janpix.regdoc',
+				'grails.app.domain.com.janpix.regdoc',
+				'grails.app.services.com.janpix.regdoc.services',
+				'grails.app.taglib.com.janpix.regdoc',
+				'grails.app.conf.com.janpix.regdoc',
+				'grails.app.filters.com.janpix.regdoc'
+			],additivity:false
+
+		}
+		development{
+			root {
+				error 'applicationLog','stdout'
+			}
+			//Usa los appenders 'stdout' y 'applicationLog' para el nivel debug
+			debug stdout: [
+				'grails.app.controllers.com.janpix.regdoc',
+				'grails.app.domain.com.janpix.regdoc',
+				'grails.app.services.com.janpix.regdoc',
+				'grails.app.taglib.com.janpix.regdoc',
+				'grails.app.conf.com.janpix.regdoc',
+				'grails.app.filters.com.janpix.regdoc'
+			],additivity:false
+		
+			debug applicationLog: [
+				'grails.app.controllers.com.janpix.regdoc',
+				'grails.app.domain.com.janpix.regdoc',
+				'grails.app.services.com.janpix.regdoc',
+				'grails.app.taglib.com.janpix.regdoc',
+				'grails.app.conf.com.janpix.regdoc',
+				'grails.app.filters.com.janpix.regdoc'
+			],additivity:false
+		}
+	}
+	
+	//###Configuraciones ajenas a los entornos
+	//#Grails
+	error  'org.codehaus.groovy.grails.web.servlet',        // controllers
+		   'org.codehaus.groovy.grails.web.pages',          // GSP
+		   'org.codehaus.groovy.grails.web.sitemesh',       // layouts
+		   'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
+		   'org.codehaus.groovy.grails.web.mapping',        // URL mapping
+		   'org.codehaus.groovy.grails.commons',            // core / classloading
+		   'org.codehaus.groovy.grails.plugins',            // plugins
+		   'org.codehaus.groovy.grails.orm.hibernate',      // hibernate integration
+		   'org.springframework',
+		   'org.hibernate',
+		   'net.sf.ehcache.hibernate'
 }
 
 // Uncomment and edit the following lines to start using Grails encoding & escaping improvements

@@ -5,7 +5,8 @@ import com.janpix.regdoc.exceptions.*
 
 enum FormatType {
 	PDF,
-	ScannedLab
+	ScannedLab,
+	ODT
 }
 
 class ClinicalDocument {

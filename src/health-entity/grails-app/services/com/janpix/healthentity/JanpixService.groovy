@@ -146,9 +146,12 @@ class JanpixService {
 	 * @param clinicalDocument
 	 * @return
 	 */
-    Boolean UploadDocument(ClinicalDocumentDTO clinicalDocument){
+    Boolean uploadDocument(ClinicalDocumentDTO clinicalDocument){
     
 	}
+	
+	
+	/*** Metodos Privados ***/
 	
 	/**
 	 * Valida los posibles valores que vienen en un ACK del RUP

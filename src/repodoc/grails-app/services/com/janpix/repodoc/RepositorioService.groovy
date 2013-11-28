@@ -51,7 +51,8 @@ class RepositorioService {
 			
 			// Registro el documento en el Registro
 			log.debug("Registrando documento...")
-			registroService.registerDocument(document)
+			this.updateDocumentDTO(documentDTO,document)
+			registroService.registerDocument(documentDTO)
 			
 			log.debug("ProvideAndRegisterDocument finalizada correctamente!")
 			return new ACKMessage(typeCode:TypeCode.SuccededInsertion)
@@ -146,6 +147,24 @@ class RepositorioService {
 		if(sizeDTO != null)
 			if(sizeDTO != sizeDomain)
 				throw new MetadataException("El tamaño enviado del archivo no coincide con el tamaño original")
+	}
+	
+	/**
+	 * Actualiza el dto en base a los parametros calculados para el documento
+	 * @param dto
+	 * @param document
+	 */
+	private void updateDocumentDTO(ClinicalDocumentDTO dto,ClinicalDocument document) {
+		dto.uniqueId = document.id.toString()
+		dto.documentCreationStarted = document.dateAssigned
+		dto.documentCreationEnded = document.dateAssigned
+		
+		dto.fileAttributes.repositoryId = "PonerUUIDDelRepositorio"
+		dto.fileAttributes.filename = document.name
+		dto.fileAttributes.uuid = document.uuid
+		dto.fileAttributes.mimeType = document.mimeType
+		dto.fileAttributes.fileHash = document.hash 
+		dto.fileAttributes.size  = document.size
 	}
 }
 

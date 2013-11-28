@@ -1,6 +1,6 @@
 package com.janpix.rup.infrastructure
 
-import com.google.protobuf.TextFormat.ParseException
+import java.text.ParseException
 import com.janpix.rup.empi.Address
 import com.janpix.rup.empi.AssigningAuthority
 import com.janpix.rup.empi.City

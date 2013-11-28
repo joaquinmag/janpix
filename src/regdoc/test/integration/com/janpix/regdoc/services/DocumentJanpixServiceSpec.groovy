@@ -11,14 +11,14 @@ import com.janpix.servidordocumentos.dto.message.RegisterDocumentRequest;
 
 import spock.lang.*
 
-import org.apache.commons.logging.LogFactory
+
 
 /**
  *
  */
 class DocumentJanpixServiceSpec extends Specification {
 	
-	private static final log = LogFactory.getLog(this)
+	//private static final log = LogFactory.getLog(this)
 	
 	def documentJanpixService
 	
@@ -26,6 +26,7 @@ class DocumentJanpixServiceSpec extends Specification {
 	def registerRequestMsg
 	
 	def setup() {
+		
 		actualDate = new Date()
 		registerRequestMsg = new RegisterDocumentRequest()
 		def fileAttr = new FileAttributesDTO(
