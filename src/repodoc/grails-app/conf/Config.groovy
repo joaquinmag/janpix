@@ -185,44 +185,36 @@ environments{
 
 
 /** CXF Client **/
-service.janpix.repodoc.url = ""
 service.janpix.regdoc.url = ""
 
 // set per-environment service url
 environments {
 	production {
-		grails.serverURL = "http://www.changeme.com"
-		service.janpix.repodoc.url = "${grails.serverURL}/repodoc/services/repositorioJanpix"
-		service.janpix.regdoc.url = "${grails.serverURL}/regdoc/services/registerJanpix"
+		service.janpix.regdoc.serverURL  = "http://www.changeme.com"
 	}
 	development {
-		grails.serverURL = "http://localhost:9090"
-		service.janpix.repodoc.url = "${grails.serverURL}/repodoc/services/repositorioJanpix"
-		service.janpix.regdoc.url = "${grails.serverURL}/regdoc/services/registerJanpix"
+		service.janpix.regdoc.serverURL  = "http://localhost:9092"
 	}
 	test {
-		grails.serverURL = "http://localhost:9090"
-		service.janpix.repodoc.url = "${grails.serverURL}/repodoc/services/repositorioJanpix"
-		service.janpix.regdoc.url = "${grails.serverURL}/regdoc/services/registerJanpix"
-		
+		service.janpix.regdoc.serverURL  = "http://localhost:9092"
 	}
 }
 
+service.janpix.regdoc.url = "${service.janpix.regdoc.serverURL}/regdoc/services/documentJanpix"
+
+
 cxf {
 	client {
-		janpixRepodocServiceClient {
-			clientInterface = com.janpix.webclient.repodoc.RepositorioJanpixServicePortType
-			serviceEndpointAddress = "${service.janpix.repodoc.url}"
-		}
-		
-	/*	janpixRegdocServiceClient {
-			wsdlArgs = "-autoNameResolution"
-			clientInterface = com.janpix.repodoc.porttype.RegistroJanpixServicePortType
+		janpixRegdocServiceClient {
+			// para usar con grails wsdl2java
+			wsdlArgs = [ "-autoNameResolution", "-validate" ]
+			wsdl = "${service.janpix.regdoc.url}?wsdl"
+			namespace = "com.janpix.webclient.regdoc"
+			client = false
+			
+			// conexion con WS
+			clientInterface = com.janpix.webclient.regdoc.DocumentJanpixService
 			serviceEndpointAddress = "${service.janpix.regdoc.url}"
-			namespace = "com.janpix.regdoc"
-			//receiveTimeout = 0 //no timeout
-			//connectionTimeout = 0 //no timeout
-			//httpClientPolicy = 'customHttpClientPolicy'
-		}*/
+		}
 	}
 }

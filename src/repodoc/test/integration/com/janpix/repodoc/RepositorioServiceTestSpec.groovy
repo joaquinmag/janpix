@@ -2,16 +2,17 @@ package com.janpix.repodoc
 
 
 
-import grails.test.mixin.TestFor;
 import spock.lang.*
 
 import com.janpix.repodoc.domain.ClinicalDocument
-import com.janpix.repodoc.porttype.RepositorioJanpixServicePortType
 import com.janpix.servidordocumentos.FileUtils
+import com.janpix.servidordocumentos.dto.AuthorDTO;
 import com.janpix.servidordocumentos.dto.ClinicalDocumentDTO
 import com.janpix.servidordocumentos.dto.FileAttributesDTO
+import com.janpix.servidordocumentos.dto.HealthEntityDTO;
 import com.janpix.servidordocumentos.dto.message.ACKMessage
 import com.janpix.servidordocumentos.dto.message.RetrieveDocumentRequest
+import com.janpix.webclient.repodoc.RepositorioJanpixServicePortType
 
 /**
  * Testea el correcto funcionamiento del Servicio que aloja los documentos
@@ -68,14 +69,23 @@ class RepositorioServiceTestSpec extends Specification {
 			findedDocument.name == document.fileAttributes.filename
 			findedDocument.binaryData == FileUtils.DataHandlerToByteArray(document.binaryData)
 			findedDocument.dateAssigned == document.documentCreationStarted
-			
+	}
+	
+	/**
+	 * Testea que se provea y registre correctamente el documento
+	 * Tiene que estar levantado el WS y sacado el mock en resources
+	 */
+	void "test provide document and register"(){
+		given:
+			//Creo un documento y lo mando a guardar con el servicio
+			ClinicalDocumentDTO document = this.buildDocumentDTO()
+		when:
+			ACKMessage ackProvide = repositorioService.provideAndRegisterDocument(document)
+		then:
+			ackProvide.typeCode == ACKMessage.TypeCode.SuccededInsertion
 	}
 	
 	
-	
-	void "test register document on Document Register"() {
-		// TODO probar un mock del grabado de los datos necesarios en el registro de documentos
-	}
 	
 	// Tengo que levantar el WS local para probarlo
 	@Ignore
@@ -98,11 +108,20 @@ class RepositorioServiceTestSpec extends Specification {
 		dto.name = "Un nombre de titulo"
 		dto.fileAttributes.filename = FILE_NAME 
 		dto.fileAttributes.mimeType = "application/vnd.oasis.opendocument.text"
-		dto.fileAttributes.uuid = UUID.randomUUID().toString()
+		dto.fileAttributes.uuid = "EntidadSanitaria_"+UUID.randomUUID().toString()
+		dto.fileAttributes.creationTime = new Date()
 		dto.binaryData = FileUtils.ByteArrayToDataHandler(new File(PATH_RESOURCES+FILE_NAME).bytes, "application/octet-stream")
 		dto.fileAttributes.size = new File(PATH_RESOURCES+FILE_NAME).bytes.size()
 		dto.fileAttributes.fileHash = FileUtils.calculateSHA1(new File(PATH_RESOURCES+FILE_NAME).bytes)
 		dto.documentCreationStarted = new Date()
+		
+		dto.patientId = UUID.randomUUID().toString()
+		dto.author = this.buildAuthorDTO()
+		dto.comments = "Sin comentarios"
+		dto.language = "es-AR"
+		dto.typeId = 2
+		dto.typeName = "Laboratorio"
+		dto.formatName = "ODT"
 		
 		return dto
 	}
@@ -125,5 +144,23 @@ class RepositorioServiceTestSpec extends Specification {
 		return clinicalDocument.id.toString()
 	}
 	
+	private AuthorDTO buildAuthorDTO(){
+		AuthorDTO author = new AuthorDTO()
+		author.healthEntity = this.buildHealthEntityDTO()
+		author.authorPerson = "Ricardo Ruben"
+		author.authorRole = "Ciruja no"
+		author.authorSpecialty = "Neurocirujano"
+		
+		return author
+	}
+	
+	private HealthEntityDTO buildHealthEntityDTO() {
+		HealthEntityDTO healthEntity = new HealthEntityDTO()
+		healthEntity.healthcareFacilityTypeCode = "1"
+		healthEntity.name = "Entidad Sanitaria"
+		healthEntity.oid = "1"
+		
+		return healthEntity
+	}
 	
 }

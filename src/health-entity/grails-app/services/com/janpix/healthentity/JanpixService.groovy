@@ -166,6 +166,9 @@ class JanpixService {
 		return true
 	}
 	
+	
+	/*** Metodos Privados ***/
+	
 	/**
 	 * Valida los posibles valores que vienen en un ACK del RUP
 	 * @param ack

@@ -9,15 +9,21 @@ beans = {
 	
 	if(Environment.current == Environment.TEST)
 	{
-		registroService(StubRegistroService)
+		//registroService(StubRegistroService)
+		registroService(RegistroService) {
+			janpixRegdocServiceClient = ref('janpixRegdocServiceClient')
+		}
 	}
 	else
 	{
-		registroService(RegistroService)
-		janpixRegdocServiceClient = ref('janpixRegdocServiceClient')
+		registroService(RegistroService) {
+			janpixRegdocServiceClient = ref('janpixRegdocServiceClient')
+		}
 	}
 	
-	repositorioService(RepositorioService){
+	
+	
+	repositorioService(RepositorioService) {
 		registroService = ref(registroService)
 	}
 }

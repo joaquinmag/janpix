@@ -18,6 +18,8 @@ class ClinicalDocumentAssembler {
 		dto.uniqueId = domain.id.toString()
 		dto.documentCreationStarted = domain.dateAssigned
 		dto.documentCreationEnded = domain.dateAssigned
+		
+		//dto.fileAttributes = FileAttributesAssembler.toDTO(domain)
 		dto.fileAttributes.repositoryId = "PonerUUIDDelRepositorio"
 		dto.fileAttributes.filename = domain.name
 		dto.fileAttributes.uuid = domain.uuid
