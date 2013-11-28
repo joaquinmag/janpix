@@ -1,6 +1,8 @@
 
 package com.janpix.webclient.repodoc;
 
+import java.util.Date;
+
 import javax.activation.DataHandler;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -73,9 +75,9 @@ public class ClinicalDocumentDTO {
     protected FileAttributesDTO fileAttributes;
     @XmlElement(required = true)
     @XmlSchemaType(name = "dateTime")
-    protected XMLGregorianCalendar documentCreationStarted;
+    protected Date documentCreationStarted;
     @XmlSchemaType(name = "dateTime")
-    protected XMLGregorianCalendar documentCreationEnded;
+    protected Date documentCreationEnded;
     @XmlElement(required = true)
     protected String patientId;
     @XmlElement(required = true)

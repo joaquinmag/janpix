@@ -1,13 +1,19 @@
 package ar.com.healthentity.janpix.utils
 
+import javax.activation.DataHandler;
+import javax.activation.DataSource
+import javax.mail.util.ByteArrayDataSource
+
 import org.apache.commons.io.IOUtils
 
 import ar.com.healthentity.City
 import ar.com.healthentity.ClinicalDocument
 import ar.com.healthentity.Patient
 import ar.com.healthentity.SexType
+import ar.com.healthentity.Study;
 
 import com.janpix.webclient.repodoc.ClinicalDocumentDTO
+import com.janpix.webclient.repodoc.FileAttributesDTO
 import com.janpix.webclient.rup.AddressDTO
 import com.janpix.webclient.rup.AssigningAuthorityDTO
 import com.janpix.webclient.rup.CityDTO
@@ -282,5 +288,37 @@ class JanpixAssembler {
 		}
 		
 		return address
+	}
+	
+	static ClinicalDocumentDTO fromStudy(Study study, String uploadsPath) {
+		def dto = new ClinicalDocumentDTO()
+		def document = study.document
+		def f = new File("${uploadsPath}/${document.fileLocation}")
+		dto.binaryData = byteArrayToDataHandler(f.bytes, document.mimeType)
+		dto.comments = study.observation
+		dto.documentCreationStarted = study.date
+		dto.documentCreationEnded = study.date
+		dto.fileAttributes = fromClinicalDocument(document)
+		dto.language = "es" //FIXME hardcode
+		dto.name = study.title
+		dto.patientId = study.patient.id
+		dto.typeId = study.type.idStudyType
+		dto.typeName = study.type.name
+		return dto
+	}
+	
+	static FileAttributesDTO fromClinicalDocument(ClinicalDocument document) {
+		def fileAttr = new FileAttributesDTO()
+		fileAttr.creationTime = document.dateCreated
+		fileAttr.filename = document.filename
+		fileAttr.mimeType = document.mimeType
+		fileAttr.size = document.size
+		fileAttr.uuid = document.id
+		return fileAttr
+	}
+	
+	private static DataHandler byteArrayToDataHandler(byte[] byteArray,String mimeType){
+		DataSource dataSource = new ByteArrayDataSource(byteArray, mimeType);
+		return new DataHandler(dataSource);
 	}
 }

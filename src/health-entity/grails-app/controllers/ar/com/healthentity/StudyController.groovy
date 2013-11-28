@@ -25,6 +25,11 @@ class CreateStudyCommand {
 	}
 }
 
+@Validateable
+class UploadStudyCommand {
+	Long studyId
+}
+
 @Secured("hasRole('HealthWorker')")
 class StudyController {
 	
@@ -51,4 +56,15 @@ class StudyController {
 			redirect mapping: 'showPatient', id: createStudyCommand.patientId
 		}
 	}
+
+	def uploadToJanpix(UploadStudyCommand uploadStudyCommand) {
+		uploadStudyCommand.validate()
+		if (!uploadStudyCommand.hasErrors()) {
+			studyService.uploadStudy(uploadStudyCommand)
+			respond uploadStudyCommand,[model:[upload_correct: true], view: 'upload_study']
+		} else {
+			respond uploadStudyCommand,[model:[upload_correct: false], view: 'upload_study']
+		}
+	}
+
 }

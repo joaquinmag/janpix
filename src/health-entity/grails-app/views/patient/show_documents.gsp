@@ -5,6 +5,14 @@
 		<meta name="layout" content="main">
 		<g:set var="entity" value="${patientInstance}" />
 		<title>Estudios de ${entity.fullName}</title>
+		<r:script>
+			function uploadCorrect() {
+				alert('subio correctamente');
+			}
+			function uploadIncorrect() {
+				alert('subio incorrectamente');
+			}
+		</r:script>
 	</head>
 	<body>
 		<div class="row">		
@@ -63,10 +71,12 @@
 															</g:else>
 			 											</td>
 														<td class="center">
-															<a class="btn btn-info" href="table.html#">
-																<i class="icon-refresh"></i>
-																Sincronizar
-															</a>
+															<g:if test="${!study.isSynchro}">
+																<g:remoteLink mapping="uploadDocument" id="${study.id}" class="btn btn-info" update="[success: 'modalBody', failure: 'modalBody']"  onSuccess="show_modal()">
+																	<i class="icon-cloud-upload"></i>
+																	Subir archivo
+																</g:remoteLink>
+															</g:if>
 														</td>
 			 										</tr>
 		 										</g:each>
