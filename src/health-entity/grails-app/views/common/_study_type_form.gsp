@@ -6,7 +6,11 @@
 			$('#study-nestable-${inputname} .dd-item .dd3-content').removeClass('selected');
 			$(e.currentTarget).addClass('selected');
 			$('#${inputname}').val($(e.currentTarget).closest('.dd-item').data('id'));
-		});		
+		});
+		<g:if test="${selectedId}">
+		$('#${inputname}').val('${selectedId}');
+		$('li.dd-item[data-id=${selectedId}] .dd3-content:first').addClass('selected');
+		</g:if>		
 	});
 </r:script>
 <input id="${inputname}" type="hidden" name="${inputname}" />

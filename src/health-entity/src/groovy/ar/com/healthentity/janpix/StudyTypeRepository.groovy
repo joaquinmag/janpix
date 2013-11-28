@@ -14,4 +14,8 @@ class StudyTypeRepository {
 		}
 		query.list()
 	}
+	
+	def findById(Long id) {
+		StudyType.findById(id)
+	}
 }

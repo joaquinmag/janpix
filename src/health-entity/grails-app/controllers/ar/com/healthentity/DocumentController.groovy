@@ -2,11 +2,15 @@ package ar.com.healthentity
 
 import com.janpix.exceptions.JanpixException
 import grails.plugins.springsecurity.Secured
+import grails.validation.Validateable;
+
+import org.joda.time.LocalDate
+
 
 @Secured("hasRole('HealthWorker')")
-class ClinicalDocumentController {
-	def janpixService
+class DocumentController {
 	
+	def janpixService
 
 	def downloadDocument(String uuid){
 		try{

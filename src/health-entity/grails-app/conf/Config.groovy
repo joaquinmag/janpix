@@ -263,7 +263,6 @@ grails.plugins.springsecurity.authority.nameField = 'authority'
 
 grails.gorm.failOnError=true
 
-
 /** Health Entity - Config **/
 // Datos de la Entidad Sanitaria
 healthEntity {

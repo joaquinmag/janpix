@@ -11,13 +11,13 @@ class ClinicalDocument {
 	
 	//FormatType formatType
 	
-	byte[] binaryData
+	String fileLocation
 	
 	
     static constraints = {
 		filename(nullable:false,blank:false)
 		mimeType(nullable:false,blank:false)
 		size(nullable:false)
-		binaryData(nullable:false,blank:false)
+		fileLocation(nullable:false,blank:false)
     }
 }

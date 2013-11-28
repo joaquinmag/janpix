@@ -131,7 +131,7 @@
 							</div>
 						</div>
 						<div class="box-content">
-							<g:render template="/study/add_new_study" model="['patientId': patientInstance.id, 'studyTypeRoots': studyTypeRoots]" />
+							<g:render template="/study/add_new_study" model="['patientId': patientInstance.id, 'studyTypeRoots': studyTypeRoots, 'createStudyModel': createStudyModel]" />
 						</div>
 					</div><!-- /box -->
 				</div><!-- /row -->
