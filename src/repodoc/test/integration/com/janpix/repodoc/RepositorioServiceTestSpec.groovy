@@ -75,6 +75,7 @@ class RepositorioServiceTestSpec extends Specification {
 	 * Testea que se provea y registre correctamente el documento
 	 * Tiene que estar levantado el WS y sacado el mock en resources
 	 */
+	@Ignore
 	void "test provide document and register"(){
 		given:
 			//Creo un documento y lo mando a guardar con el servicio

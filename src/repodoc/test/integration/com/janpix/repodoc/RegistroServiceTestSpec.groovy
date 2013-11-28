@@ -35,7 +35,7 @@ class RegistroServiceTestSpec extends Specification {
 	
 	// Tengo que levantar el WS del regDoc para probarlo
 	// y modificar el resources para que no use el mock
-	// @Ignore
+	 @Ignore
 	void "test register document on Document Register"() {
 		given:
 			ClinicalDocumentDTO documentDTO = this.buildDocumentDTO()
