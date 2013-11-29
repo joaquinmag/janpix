@@ -3,6 +3,7 @@ package com.janpix.healthentity
 import grails.transaction.Transactional
 import ar.com.healthentity.ClinicalDocument
 import ar.com.healthentity.Patient
+import ar.com.healthentity.Study
 import ar.com.healthentity.janpix.utils.JanpixAssembler
 
 import com.janpix.exceptions.ErrorUploadingDocumentException
@@ -10,13 +11,15 @@ import com.janpix.exceptions.JanpixConnectionException
 import com.janpix.exceptions.JanpixDuplicatePatientException
 import com.janpix.exceptions.JanpixException
 import com.janpix.exceptions.JanpixPossibleMatchingPatientException
-import com.janpix.webclient.repodoc.ClinicalDocumentDTO
+import com.janpix.exceptions.PatientDoesNotExistsException
 import com.janpix.webclient.repodoc.ProvideAndRegisterDocumentRequest
 import com.janpix.webclient.repodoc.RetrieveDocumentRequest
 import com.janpix.webclient.rup.AckMessage
 import com.janpix.webclient.rup.AckQueryPatientMessage
 import com.janpix.webclient.rup.AddPatientRequestMessage
+import com.janpix.webclient.rup.AssigningAuthorityDTO
 import com.janpix.webclient.rup.GetAllPossibleMatchedPatientsRequestMessage
+import com.janpix.webclient.rup.GetIdentifiersRequestMessage
 import com.janpix.webclient.rup.PatientDTO
 import com.janpix.webclient.rup.TypeCode
 
@@ -146,18 +149,28 @@ class JanpixService {
 	 * @param clinicalDocument
 	 * @return
 	 */
-    Boolean uploadDocument(ClinicalDocumentDTO clinicalDocument){
+    Boolean uploadDocument(Study study){
+		// Se obtiene el CUIS del paciente
+		String cuis = this.getPatientCUIS(study.patient)
+		if(!cuis){
+			throw new PatientDoesNotExistsException("El paciente al cual intenta agregarle un estudio no se encuentra registrado en el RUP")
+		}
+		
+		
+		AckMessage ack
     	try {
+			log.info("Subiendo estudio "+study+" en el Repositorio de Documentos")
 			def msg = new ProvideAndRegisterDocumentRequest()
-			msg.clinicalDocument = clinicalDocument
-			def ack = janpixRepodocServiceClient.provideAndRegisterDocument(msg)
+			msg.clinicalDocument = JanpixAssembler.fromStudy(study)
+			msg.clinicalDocument.patientId = cuis
+			ack = janpixRepodocServiceClient.provideAndRegisterDocument(msg)
 		}
 		catch(Exception ex) {
 			log.error("Excepcion subiendo documento al repo de docs", ex)
 			throw new ErrorUploadingDocumentException(ex)
 		}
 
-		if (ack.typeCode != AckMessage.TypeCode.SUCCEDED_CREATION) {
+		if (ack.typeCode != TypeCode.SUCCEDED_CREATION) {
 			log.error("Error al insertar el documento. Error: ${ack.typeCode}. Mensaje: ${ack.text}")
 			throw new ErrorUploadingDocumentException(ack.typeCode, ack.text)
 		}
@@ -166,9 +179,47 @@ class JanpixService {
 		return true
 	}
 	
+	/**
+	 * Retorna el CUIS del paciente si este se encuentra registrado en el RUP
+	 * Sino esta registrado devuelve null
+	 * @param patient
+	 * @return
+	 */
+	String getPatientCUIS(Patient patient){
+		AckMessage ack
+		try {
+			log.info("Armando Request para consulta CUIS del paciente")
+			GetIdentifiersRequestMessage requestMessage = new GetIdentifiersRequestMessage()
+			requestMessage.patientIdentifier = patient.id
+			requestMessage.assigningAuthority = JanpixAssembler.toAssigningAuthority(grailsApplication.config.healthEntity)
+			requestMessage.othersDomain = new GetIdentifiersRequestMessage.OthersDomain()
+			requestMessage.othersDomain.domain.add(this.getRUP())
+			
+			log.info("Consultando por el CUIS del paciente "+patient)
+			ack = janpixPixManagerServiceClient.getIdentifiersPatient(requestMessage)
+
+			// Como solo pedi el identificador del RUP devuelvo ese
+			if(ack.typeCode == TypeCode.SUCCEDED_QUERY){
+				log.info("Respuesta satisfactoria. Se retornaron "+ack.patient?.identifiers?.identifier.size()+" identificadores")
+				if(ack.patient?.identifiers?.identifier.size() == 1){
+					return ack.patient.identifiers.identifier[0].number
+				} 
+			}
+			
+			log.info("No existe CUIS para el paciente "+patient)
+			return null
+		}
+		catch(Exception ex) {
+			log.error("Excepcion obteniendo CUIS del paciente", ex)
+			throw new JanpixConnectionException("Error al conectarse contra el RUP")
+		}
+	}
 	
 	/*** Metodos Privados ***/
 	
+	private AssigningAuthorityDTO getRUP(){
+		return JanpixAssembler.toAssigningAuthority(grailsApplication.config.rup)
+	}
 	/**
 	 * Valida los posibles valores que vienen en un ACK del RUP
 	 * @param ack

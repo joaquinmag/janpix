@@ -25,4 +25,8 @@ class Study {
 		observation nullable: true
 		//author nullable: false
     }
+	
+	String toString(){
+		return "${title}-${type}"
+	}
 }

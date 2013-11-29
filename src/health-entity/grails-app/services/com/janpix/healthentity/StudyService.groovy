@@ -47,8 +47,8 @@ class StudyService {
 		def study = Study.get(cmd.id)
 		if (!study)
 			throw new StudyDoesNotExistsException()
-		def documentDTO = JanpixAssembler.fromStudy(study, grailsApplication.mainContext.servletContext.getRealPath("/uploads"))
-		janpixService.uploadDocument(documentDTO)
+		
+		janpixService.uploadDocument(study)
 	}
 	
 	private def copy(def file, def fileRandomName) {

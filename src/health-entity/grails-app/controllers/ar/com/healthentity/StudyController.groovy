@@ -58,12 +58,18 @@ class StudyController {
 	}
 
 	def uploadToJanpix(UploadStudyCommand uploadStudyCommand) {
-		uploadStudyCommand.validate()
-		if (!uploadStudyCommand.hasErrors()) {
-			studyService.uploadStudy(uploadStudyCommand)
-			respond uploadStudyCommand,[model:[upload_correct: true], view: 'upload_study']
-		} else {
-			respond uploadStudyCommand,[model:[upload_correct: false], view: 'upload_study']
+		try{
+			uploadStudyCommand.validate()
+			if (!uploadStudyCommand.hasErrors()) {
+				studyService.uploadStudy(uploadStudyCommand)
+				respond uploadStudyCommand,[model:[upload_correct: true], view: 'upload_study']
+			} else {
+				respond uploadStudyCommand,[model:[upload_correct: false], view: 'upload_study']
+			}
+		}catch(Exception e){
+			log.error("error en StudyController: "+e)
+			render "Error inesperado al subir el documento. Error: "+e
+			return
 		}
 	}
 

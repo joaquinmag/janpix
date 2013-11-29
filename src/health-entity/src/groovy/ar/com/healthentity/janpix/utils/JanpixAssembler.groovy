@@ -290,7 +290,10 @@ class JanpixAssembler {
 		return address
 	}
 	
-	static ClinicalDocumentDTO fromStudy(Study study, String uploadsPath) {
+	static ClinicalDocumentDTO fromStudy(Study study) {
+		def ctx = SCH.servletContext.getAttribute(GA.APPLICATION_CONTEXT)
+		String uploadsPath = ctx.servletContext.getRealPath("/uploads")
+		
 		def dto = new ClinicalDocumentDTO()
 		def document = study.document
 		def f = new File("${uploadsPath}/${document.fileLocation}")

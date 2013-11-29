@@ -197,9 +197,9 @@ environments {
 		service.janpix.pixmanager.serverURL = "http://www.changeme.com"
 	}
 	development {
-		service.janpix.regdoc.serverURL  = "http://localhost:9090"
-		service.janpix.repodoc.serverURL = "http://localhost:9092"
-		service.janpix.pixmanager.serverURL = "http://localhost:9094"
+		service.janpix.regdoc.serverURL  = "http://localhost:9094"
+		service.janpix.repodoc.serverURL = "http://localhost:8080"
+		service.janpix.pixmanager.serverURL = "http://localhost:9090"
 	}
 	test {
 		service.janpix.regdoc.serverURL  = "http://localhost:9090"
@@ -208,9 +208,9 @@ environments {
 	}
 }
 
-service.janpix.repodoc.url = "${service.janpix.regdoc.serverURL}/repodoc/services/repositorioJanpix"
-service.janpix.regdoc.url = "${service.janpix.repodoc.serverURL}/regdoc/services/registerJanpix?wsdl"
-service.janpix.pixmanager.url = "${service.janpix.pixmanager.serverURL}/rup/services/PIXManagerJanpix"
+service.janpix.repodoc.url = "${service.janpix.repodoc.serverURL}/repodoc/services/repositorioJanpix"
+service.janpix.regdoc.url = "${service.janpix.regdoc.serverURL}/regdoc/services/registerJanpix?wsdl"
+service.janpix.pixmanager.url = "${service.janpix.pixmanager.serverURL}/rup-0.1/services/PIXManagerJanpix"
 
 cxf {
 	client {
@@ -268,4 +268,10 @@ grails.gorm.failOnError=true
 healthEntity {
 	name = "San Juan de Dios"
 	oid = "2.16.840.1.113883.2.10.100.100"
+}
+
+/** Configuracion de los datos del RUP **/
+rup {
+	oid = "2.16.32.1.256.0"
+	name = "RUP"
 }
