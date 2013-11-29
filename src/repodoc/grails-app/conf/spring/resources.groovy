@@ -1,13 +1,15 @@
 import grails.util.Environment
 
-import com.janpix.repodoc.RegistroService
+import com.janpix.repodoc.RepositorioJanpixService
 import com.janpix.repodoc.RepositorioService
 import com.janpix.repodoc.stubs.StubRegistroService
 
 // Place your Spring DSL code here
 beans = {
 	
-	if(Environment.current == Environment.TEST)
+	// Falla la inyeccion de janpixRegdocServiceClient por eso se comenta todo
+	
+	/*if(Environment.current == Environment.TEST)
 	{
 		registroService(StubRegistroService)
 	}
@@ -21,6 +23,10 @@ beans = {
 	
 	
 	repositorioService(RepositorioService) {
-		registroService = ref(registroService)
+		registroService = ref('registroService')
 	}
+	
+	repositorioJanpixService(RepositorioJanpixService){
+		repositorioService = ref(repositorioService)
+	}*/
 }

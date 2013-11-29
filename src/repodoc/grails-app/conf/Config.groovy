@@ -193,7 +193,7 @@ environments {
 		service.janpix.regdoc.serverURL  = "http://www.changeme.com"
 	}
 	development {
-		service.janpix.regdoc.serverURL  = "http://localhost:9092"
+		service.janpix.regdoc.serverURL  = "http://localhost:8080"
 	}
 	test {
 		service.janpix.regdoc.serverURL  = "http://localhost:9092"

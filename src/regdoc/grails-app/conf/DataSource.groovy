@@ -24,20 +24,14 @@ environments {
         }
     }
     production {
-        dataSource {
-            dbCreate = "update"
-            url = "jdbc:h2:prodDb;MVCC=TRUE;LOCK_TIMEOUT=10000"
-            pooled = true
-            properties {
-               maxActive = -1
-               minEvictableIdleTimeMillis=1800000
-               timeBetweenEvictionRunsMillis=1800000
-               numTestsPerEvictionRun=3
-               testOnBorrow=true
-               testWhileIdle=true
-               testOnReturn=true
-               validationQuery="SELECT 1"
-            }
-        }
+		dataSource {
+			dbCreate = "create"
+			driverClassName = "com.mysql.jdbc.Driver"
+			username = "janpix_rup_prod"
+			password = "janpix_rup_prod"
+			url = "jdbc:mysql://localhost:3306/janpix_regdoc_prod"
+			dialect = 'org.hibernate.dialect.MySQL5InnoDBDialect' //Para que genere tablas InnoDB
+			
+		}
     }
 }

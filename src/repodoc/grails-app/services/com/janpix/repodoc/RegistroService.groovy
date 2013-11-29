@@ -1,16 +1,6 @@
 package com.janpix.repodoc
 
-import grails.transaction.Transactional
-import grails.validation.ValidationException
-
-import org.bson.types.ObjectId
-
-import com.janpix.repodoc.assemblers.ClinicalDocumentAssembler
-import com.janpix.repodoc.domain.ClinicalDocument
 import com.janpix.repodoc.exceptions.BussinessRuleException
-import com.janpix.repodoc.exceptions.MetadataException
-import com.janpix.repodoc.exceptions.RegistrationServiceException
-import com.janpix.servidordocumentos.FileUtils
 import com.janpix.servidordocumentos.dto.ClinicalDocumentDTO
 import com.janpix.servidordocumentos.dto.message.*
 import com.janpix.servidordocumentos.dto.message.ACKMessage.TypeCode
