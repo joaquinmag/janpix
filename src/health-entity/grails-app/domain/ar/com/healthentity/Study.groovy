@@ -6,7 +6,7 @@ package ar.com.healthentity
  * TODO ver si hacemos herencias con diferentes estilos de estudio
  */
 class Study {
-	
+
 	String title
 	Date date
 	Patient patient	
@@ -14,6 +14,7 @@ class Study {
 	StudyType type
 	//User author
 	String observation
+	boolean isSynchro = false
 	
     static constraints = {
 		title nullable: false, blank: false

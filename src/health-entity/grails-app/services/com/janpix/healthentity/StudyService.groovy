@@ -9,12 +9,16 @@ import ar.com.healthentity.StudyType;
 import ar.com.healthentity.User
 import ar.com.healthentity.Patient
 import ar.com.healthentity.janpix.StudyTypeRepository;
+import ar.com.healthentity.janpix.utils.JanpixAssembler;
+
+import com.janpix.exceptions.StudyDoesNotExistsException
 import grails.transaction.Transactional
 
 @Transactional
 class StudyService {
 	
 	def grailsApplication
+	def janpixService
 
     def createStudy(CreateStudyCommand cmd, User author, StudyType type) {
 		def random = new Random().nextInt().abs().toString()
@@ -38,6 +42,14 @@ class StudyService {
 		patient.addToStudies(study)
 		study.save(failOnError: true)
     }
+
+	def uploadStudy(def cmd) {
+		def study = Study.get(cmd.id)
+		if (!study)
+			throw new StudyDoesNotExistsException()
+		def documentDTO = JanpixAssembler.fromStudy(study, grailsApplication.mainContext.servletContext.getRealPath("/uploads"))
+		janpixService.uploadDocument(documentDTO)
+	}
 	
 	private def copy(def file, def fileRandomName) {
 		final def path = grailsApplication.mainContext.servletContext.getRealPath("/uploads")
