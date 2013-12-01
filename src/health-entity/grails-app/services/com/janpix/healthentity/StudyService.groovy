@@ -19,6 +19,7 @@ class StudyService {
 	
 	def grailsApplication
 	def janpixService
+	def springSecurityService
 
     def createStudy(CreateStudyCommand cmd, User author, StudyType type) {
 		def random = new Random().nextInt().abs().toString()
@@ -48,7 +49,9 @@ class StudyService {
 		if (!study)
 			throw new StudyDoesNotExistsException()
 		
-		janpixService.uploadDocument(study)
+		def currentUser = springSecurityService.currentUser
+			
+		janpixService.uploadDocument(study,currentUser)
 	}
 	
 	private def copy(def file, def fileRandomName) {

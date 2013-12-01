@@ -26,6 +26,9 @@ class Person {
 		this.lastName = lastName
 	}
 
+	String toString(){
+		return "${lastName}, ${firstName}"
+	}
 }
 
 class User {

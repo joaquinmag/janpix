@@ -4,6 +4,7 @@ import grails.transaction.Transactional
 import ar.com.healthentity.ClinicalDocument
 import ar.com.healthentity.Patient
 import ar.com.healthentity.Study
+import ar.com.healthentity.User
 import ar.com.healthentity.janpix.utils.JanpixAssembler
 
 import com.janpix.exceptions.ErrorUploadingDocumentException
@@ -149,7 +150,7 @@ class JanpixService {
 	 * @param clinicalDocument
 	 * @return
 	 */
-    Boolean uploadDocument(Study study){
+    Boolean uploadDocument(Study study,User currentUser){
 		// Se obtiene el CUIS del paciente
 		String cuis = this.getPatientCUIS(study.patient)
 		if(!cuis){
@@ -160,9 +161,14 @@ class JanpixService {
 		AckMessage ack
     	try {
 			log.info("Subiendo estudio "+study+" en el Repositorio de Documentos")
+			
+			log.info("Armando Request")
 			def msg = new ProvideAndRegisterDocumentRequest()
-			msg.clinicalDocument = JanpixAssembler.fromStudy(study)
+			msg.clinicalDocument = JanpixAssembler.toClinicalDocument(study)
+			msg.clinicalDocument.author = JanpixAssembler.toAuthor(currentUser,grailsApplication.config.healthEntity)
 			msg.clinicalDocument.patientId = cuis
+			
+			log.info("Enviando request al WS")
 			ack = janpixRepodocServiceClient.provideAndRegisterDocument(msg)
 		}
 		catch(Exception ex) {

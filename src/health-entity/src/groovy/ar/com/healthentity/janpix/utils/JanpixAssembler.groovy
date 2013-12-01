@@ -1,19 +1,24 @@
 package ar.com.healthentity.janpix.utils
 
-import javax.activation.DataHandler;
+import javax.activation.DataHandler
 import javax.activation.DataSource
 import javax.mail.util.ByteArrayDataSource
 
 import org.apache.commons.io.IOUtils
+import org.codehaus.groovy.grails.web.context.ServletContextHolder as SCH
+import org.codehaus.groovy.grails.web.servlet.GrailsApplicationAttributes as GA
 
 import ar.com.healthentity.City
 import ar.com.healthentity.ClinicalDocument
 import ar.com.healthentity.Patient
 import ar.com.healthentity.SexType
-import ar.com.healthentity.Study;
+import ar.com.healthentity.Study
+import ar.com.healthentity.User
 
+import com.janpix.webclient.repodoc.AuthorDTO
 import com.janpix.webclient.repodoc.ClinicalDocumentDTO
 import com.janpix.webclient.repodoc.FileAttributesDTO
+import com.janpix.webclient.repodoc.HealthEntityDTO
 import com.janpix.webclient.rup.AddressDTO
 import com.janpix.webclient.rup.AssigningAuthorityDTO
 import com.janpix.webclient.rup.CityDTO
@@ -22,9 +27,6 @@ import com.janpix.webclient.rup.IdentifierDTO
 import com.janpix.webclient.rup.PersonDTO
 import com.janpix.webclient.rup.PersonNameDTO
 import com.janpix.webclient.rup.PhoneNumberDTO
-
-import org.codehaus.groovy.grails.web.context.ServletContextHolder as SCH
-import org.codehaus.groovy.grails.web.servlet.GrailsApplicationAttributes as GA
 
 
 
@@ -151,6 +153,67 @@ class JanpixAssembler {
 		dto.oid = parameters.oid
 		
 		return dto
+	}
+	
+	static HealthEntityDTO toHealthEntity(ConfigObject parameters){
+		if(!parameters)
+			return null
+			
+		HealthEntityDTO dto = new HealthEntityDTO()
+		dto.name = parameters.name
+		dto.oid = parameters.oid
+		
+		// TODO falta obtenerlo
+		dto.healthcareFacilityTypeCode = "FRUTA"
+		
+		return dto
+	}
+	
+	static ClinicalDocumentDTO toClinicalDocument(Study study) {
+		def ctx = SCH.servletContext.getAttribute(GA.APPLICATION_CONTEXT)
+		String uploadsPath = ctx.servletContext.getRealPath("/uploads")
+		
+		def dto = new ClinicalDocumentDTO()
+		def document = study.document
+		def f = new File("${uploadsPath}/${document.fileLocation}")
+		
+		dto.binaryData = byteArrayToDataHandler(f.bytes, document.mimeType)
+		dto.comments = study.observation
+		dto.documentCreationStarted = study.date
+		dto.documentCreationEnded = study.date
+		dto.fileAttributes = toFileAttributes(document)
+		dto.language = "es" //FIXME hardcode
+		dto.name = study.title
+		dto.patientId = study.patient.id
+		dto.typeId = study.type.idStudyType
+		dto.typeName = study.type.name
+
+		return dto
+	}
+	
+	static FileAttributesDTO toFileAttributes(ClinicalDocument document) {
+		def fileAttr = new FileAttributesDTO()
+		fileAttr.creationTime = document.dateCreated
+		fileAttr.filename = document.filename
+		fileAttr.mimeType = document.mimeType
+		fileAttr.size = document.size
+		fileAttr.uuid = document.id
+		return fileAttr
+	}
+	
+	static AuthorDTO toAuthor(User user,ConfigObject paramHealthEntity){
+		AuthorDTO author = new AuthorDTO();
+		author.authorPerson = user.name
+		// Supongo que el usuario tiene un solo rol
+		author.authorRole = user.authorities[0].authority
+		// TODO falta obtener
+		author.authorSpecialty;
+		
+		// HealthEntity
+		author.healthEntity = toHealthEntity(paramHealthEntity)
+		
+		return author;
+		
 	}
 	
 	/** FROMS **/
@@ -290,36 +353,9 @@ class JanpixAssembler {
 		return address
 	}
 	
-	static ClinicalDocumentDTO fromStudy(Study study) {
-		def ctx = SCH.servletContext.getAttribute(GA.APPLICATION_CONTEXT)
-		String uploadsPath = ctx.servletContext.getRealPath("/uploads")
-		
-		def dto = new ClinicalDocumentDTO()
-		def document = study.document
-		def f = new File("${uploadsPath}/${document.fileLocation}")
-		dto.binaryData = byteArrayToDataHandler(f.bytes, document.mimeType)
-		dto.comments = study.observation
-		dto.documentCreationStarted = study.date
-		dto.documentCreationEnded = study.date
-		dto.fileAttributes = fromClinicalDocument(document)
-		dto.language = "es" //FIXME hardcode
-		dto.name = study.title
-		dto.patientId = study.patient.id
-		dto.typeId = study.type.idStudyType
-		dto.typeName = study.type.name
-		return dto
-	}
 	
-	static FileAttributesDTO fromClinicalDocument(ClinicalDocument document) {
-		def fileAttr = new FileAttributesDTO()
-		fileAttr.creationTime = document.dateCreated
-		fileAttr.filename = document.filename
-		fileAttr.mimeType = document.mimeType
-		fileAttr.size = document.size
-		fileAttr.uuid = document.id
-		return fileAttr
-	}
 	
+	/** Privados **/
 	private static DataHandler byteArrayToDataHandler(byte[] byteArray,String mimeType){
 		DataSource dataSource = new ByteArrayDataSource(byteArray, mimeType);
 		return new DataHandler(dataSource);

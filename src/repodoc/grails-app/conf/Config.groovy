@@ -190,17 +190,17 @@ service.janpix.regdoc.url = ""
 // set per-environment service url
 environments {
 	production {
-		service.janpix.regdoc.serverURL  = "http://www.changeme.com"
+		service.janpix.regdoc.serverURL  = "http://localhost:9090/regdoc-0.1"
 	}
 	development {
-		service.janpix.regdoc.serverURL  = "http://localhost:8080"
+		service.janpix.regdoc.serverURL  = "http://localhost:9090/regdoc-0.1"
 	}
 	test {
-		service.janpix.regdoc.serverURL  = "http://localhost:9092"
+		service.janpix.regdoc.serverURL  = "http://localhost:9092/regdoc"
 	}
 }
 
-service.janpix.regdoc.url = "${service.janpix.regdoc.serverURL}/regdoc/services/documentJanpix"
+service.janpix.regdoc.url = "${service.janpix.regdoc.serverURL}/services/documentJanpix"
 
 
 cxf {
