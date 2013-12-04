@@ -5,6 +5,7 @@ import grails.validation.ValidationException
 
 import com.janpix.regdoc.domain.ClinicalDocument
 import com.janpix.regdoc.domain.ClinicalDocumentType
+import com.janpix.regdoc.exceptions.InvalidDocumentTypeException
 import com.janpix.regdoc.infrastructure.*
 import com.janpix.servidordocumentos.dto.*
 import com.janpix.servidordocumentos.dto.message.*
@@ -19,8 +20,8 @@ class RegisterService {
 	def healthEntityAssembler
 	
 	public ACKMessage registerDocument(RegisterDocumentRequest registerDocumentRequestMessage) {
-		def clinicalDocDTO = registerDocumentRequestMessage.clinicalDocument
 		try {
+			def clinicalDocDTO = registerDocumentRequestMessage.clinicalDocument
 			log.info("Grabando Entidad Sanitaria: ")
 			def healthEntity = healthEntityAssembler.fromDTO(clinicalDocDTO.author.healthEntity).save()
 			
@@ -42,16 +43,19 @@ class RegisterService {
 		}
 		catch(ValidationException ve){
 			log.error("Error de validación en una de las entidades. Error:"+ve.message)
-			return new ACKMessage(typeCode: TypeCode.RegistrationError, text:ve.message, clinicalDocument: clinicalDocDTO)
+			return new ACKMessage(typeCode: TypeCode.RegistrationError, text:ve.message)
 		}
 		catch (Exception e) {
 			log.error("Error inesperado. Error:"+e.message)
-			return new ACKMessage(typeCode: TypeCode.RegistrationError, text:e.message, clinicalDocument: clinicalDocDTO)
+			return new ACKMessage(typeCode: TypeCode.RegistrationError, text:e.message)
 		}
 	}
 
 	private void validateClinicalDocument(ClinicalDocument document, ClinicalDocumentDTO dto) {
-		document.documentType = ClinicalDocumentType.findByIdDocumentType(dto.typeId)
+		def docType = ClinicalDocumentType.findByIdDocumentType(dto.typeId)
+		if (docType == null)
+			throw new InvalidDocumentTypeException("Document Type Id = ${dto.typeId} doesn't exist")
+		document.documentType = docType
 	}
 
 }

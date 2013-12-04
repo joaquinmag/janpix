@@ -58,7 +58,7 @@ class ClinicalDocument {
 		})
 		documentCreationEnded(nullable: true)
 		documentType(nullable: false)
-		format(nullable: false)
+		format(nullable: true)
 		relatedFrom(nullable: true, validator: { val, obj ->
 			( val == null || !obj.relatedTo.contains(val) )
 		})
