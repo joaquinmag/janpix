@@ -190,13 +190,14 @@ service.janpix.regdoc.url = ""
 // set per-environment service url
 environments {
 	production {
-		service.janpix.regdoc.serverURL  = "http://localhost:9090/regdoc-0.1"
+		service.janpix.regdoc.serverURL  = "http://regdoc.janpix.org"
+		grails.app.context = "/"
 	}
 	development {
-		service.janpix.regdoc.serverURL  = "http://localhost:9090/regdoc-0.1"
+		service.janpix.regdoc.serverURL  = "http://regdoc.janpix.org"
 	}
 	test {
-		service.janpix.regdoc.serverURL  = "http://localhost:9092/regdoc"
+		service.janpix.regdoc.serverURL  = "http://regdoc.janpix.org"
 	}
 }
 
