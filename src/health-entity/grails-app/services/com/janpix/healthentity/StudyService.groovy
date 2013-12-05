@@ -4,6 +4,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import ar.com.healthentity.ClinicalDocument
 import ar.com.healthentity.CreateStudyCommand;
+import ar.com.healthentity.FormatType;
 import ar.com.healthentity.Study
 import ar.com.healthentity.StudyType;
 import ar.com.healthentity.User
@@ -33,7 +34,8 @@ class StudyService {
 			filename: cmd.studyFile.originalFilename,
 			mimeType: cmd.studyFile.contentType,
 			size: cmd.studyFile.size,
-			fileLocation: randomName
+			fileLocation: randomName,
+			format: FormatType.PDF
 		)
 		cd.save(failOnError: true)
 		def study = new Study(
@@ -64,6 +66,7 @@ class StudyService {
 		def currentUser = springSecurityService.currentUser
 			
 		janpixService.uploadDocument(study,currentUser)
+		study.isSynchro = true
 	}
 	
 	private def copy(def file, def fileRandomName) {

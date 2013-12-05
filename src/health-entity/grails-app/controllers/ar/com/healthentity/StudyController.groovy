@@ -96,7 +96,7 @@ class StudyController {
 				respond uploadStudyCommand,[model:[upload_correct: false], view: 'upload_study']
 			}
 		}catch(Exception e){
-			log.error("error en StudyController: "+e)
+			log.error("error en StudyController: ",e)
 			render "Error inesperado al subir el documento. Error: "+e
 			return
 		}

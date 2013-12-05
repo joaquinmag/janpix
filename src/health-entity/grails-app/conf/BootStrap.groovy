@@ -2,6 +2,7 @@ import java.util.Date;
 import java.util.List;
 
 import ar.com.healthentity.ClinicalDocument;
+import ar.com.healthentity.FormatType;
 import ar.com.healthentity.Patient
 import ar.com.healthentity.Role
 import ar.com.healthentity.Person
@@ -103,7 +104,8 @@ class BootStrap {
 										filename: "test",
 										mimeType: "text/xml",
 										size: 123,				
-										fileLocation: "test"
+										fileLocation: "test",
+										format: FormatType.PDF
 									)
 			cd.save(flush: true, failOnError: true)
 			def study = new Study(
