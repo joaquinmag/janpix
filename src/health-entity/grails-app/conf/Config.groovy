@@ -197,9 +197,9 @@ environments {
 		service.janpix.pixmanager.serverURL = "http://rup.janpix.org"
 	}
 	development {
-		service.janpix.regdoc.serverURL  = "http://localhost:9094/repodoc"
-		service.janpix.repodoc.serverURL = "http://localhost:8080/regdoc"
-		service.janpix.pixmanager.serverURL = "http://localhost:9090/rup"
+		service.janpix.regdoc.serverURL  = "http://regdoc.janpix.org"
+		service.janpix.repodoc.serverURL = "http://repodoc.janpix.org"
+		service.janpix.pixmanager.serverURL = "http://rup.janpix.org"
 	}
 	test {
 		service.janpix.regdoc.serverURL  = "http://localhost:9090/repodoc"
