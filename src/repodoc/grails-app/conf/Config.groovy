@@ -89,7 +89,7 @@ environments {
     }
     production {
         grails.logging.jul.usebridge = false
-        // TODO: grails.serverURL = "http://www.changeme.com"
+        grails.serverURL = "http://repodoc.janpix.org"
     }
 }
 
@@ -191,7 +191,6 @@ service.janpix.regdoc.url = ""
 environments {
 	production {
 		service.janpix.regdoc.serverURL  = "http://regdoc.janpix.org"
-		grails.app.context = "/"
 	}
 	development {
 		service.janpix.regdoc.serverURL  = "http://regdoc.janpix.org"

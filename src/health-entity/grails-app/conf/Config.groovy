@@ -192,9 +192,9 @@ service.janpix.pixmanager.serverURL = ""
 // set per-environment service url
 environments {
 	production {
-		service.janpix.regdoc.serverURL  = "http://www.changeme.com"
-		service.janpix.repodoc.serverURL = "http://www.changeme.com"
-		service.janpix.pixmanager.serverURL = "http://www.changeme.com"
+		service.janpix.regdoc.serverURL  = "http://regdoc.janpix.org"
+		service.janpix.repodoc.serverURL = "http://repodoc.janpix.org"
+		service.janpix.pixmanager.serverURL = "http://rup.janpix.org"
 	}
 	development {
 		service.janpix.regdoc.serverURL  = "http://localhost:9094"
