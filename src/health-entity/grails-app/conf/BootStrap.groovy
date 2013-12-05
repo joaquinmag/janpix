@@ -21,47 +21,86 @@ class BootStrap {
 	def springSecurityService
 
     def init = { servletContext ->
-		def hwRole = new Role(authority: 'HealthWorker').save(flush: true)
-  
-		def person = new Person('Juan Carlos', 'Administrador')
-		def testUser = new User('admin', person)
-		testUser.password = 'password'
-		testUser.springSecurityService = springSecurityService
-		testUser.save(flush: true)
-  
-		UserRole.create testUser, hwRole, true
+		def hwRole = Role.findOrCreateByAuthority('HealthWorker').save(flush: true)
+
+
+		def testUser = User.findByUsername("admin")
+		if (testUser == null) {
+			def person = new Person('Juan Carlos', 'Administrador')
+			testUser = new User('admin', person)
+			testUser.password = 'password'
+			testUser.springSecurityService = springSecurityService
+			testUser.save(flush: true)
+			UserRole.create testUser, hwRole, true
+		}
   
 		assert User.count() == 1
 		assert Role.count() == 1
 		assert UserRole.count() == 1
 
-		if(Environment.current == Environment.TEST || Environment.current == Environment.DEVELOPMENT) {
-			
-			this.buildMockCities()
-			
-			def province = Province.findByName("Capital Federal")
-			def city = City.findByProvinceAndName(province,"Capital Federal")
-			
-			// inicializo tipos de documentos
-			def pediatric = new StudyType("Pediatría", null, 1).save(flush: true, failOnError: true)
-			new StudyType("Radiografía", pediatric, 5).save(flush: true, failOnError: true)
-			new StudyType("Tomografía", pediatric, 6).save(flush: true, failOnError: true)
-			new StudyType("Resonancia magnética", pediatric, 7).save(flush: true, failOnError: true)
-			def laboratoryPed = new StudyType("Laboratorio", pediatric, 3).save(flush: true, failOnError: true)
-			new StudyType("HDL", laboratoryPed, 8).save(flush: true, failOnError: true)
-			new StudyType("LDL", laboratoryPed, 9).save(flush: true, failOnError: true)
-			new StudyType("Glóbulos blancos", laboratoryPed, 10).save(flush: true, failOnError: true)
-			new StudyType("CD4", laboratoryPed, 11).save(flush: true, failOnError: true)
-			def adults = new StudyType("Adultos", null, 2).save(flush: true, failOnError: true)
-			new StudyType("Radiografía", adults, 12).save(flush: true, failOnError: true)
-			new StudyType("Tomografía", adults, 13).save(flush: true, failOnError: true)
+		// inicializo tipos de documentos
+		def pediatric = StudyType.findOrCreateByIdStudyType(1)
+		pediatric.name = "Pediatría"
+		pediatric.save(flush: true, failOnError: true)
+		def radioped = StudyType.findOrCreateByIdStudyType(5)
+		radioped.name = "Radiografía"
+		radioped.father = pediatric
+		radioped.save(flush: true, failOnError: true)
+		def tomoped =  StudyType.findOrCreateByIdStudyType(6)
+		tomoped.name = "Tomografía"
+		tomoped.father = pediatric
+		tomoped.save(flush: true, failOnError: true)
+		def resoped =  StudyType.findOrCreateByIdStudyType(7)
+		tomoped.name = "Resonancia magnética"
+		tomoped.father = pediatric
+		tomoped.save(flush: true, failOnError: true)
+		def laboratoryPed =  StudyType.findOrCreateByIdStudyType(3)
+		laboratoryPed.name = "Laboratorio"
+		laboratoryPed.father = pediatric
+		laboratoryPed.save(flush: true, failOnError: true)
+		def labpedhdl = StudyType.findOrCreateByIdStudyType(8)
+		labpedhdl.name = "HDL"
+		labpedhdl.father = laboratoryPed
+		labpedhdl.save(flush: true, failOnError: true)
+		def labpedldl = StudyType.findOrCreateByIdStudyType(9)
+		labpedldl.name = "LDL"
+		labpedldl.father = laboratoryPed
+		labpedldl.save(flush: true, failOnError: true)
+		def labpedblancos = StudyType.findOrCreateByIdStudyType(10)
+		labpedblancos.name = "Glóbulos blancos"
+		labpedblancos.father = laboratoryPed
+		labpedblancos.save(flush: true, failOnError: true)
+		def labpedcdcuatro = StudyType.findOrCreateByIdStudyType(11)
+		labpedcdcuatro.name = "CD4"
+		labpedcdcuatro.father = laboratoryPed
+		labpedcdcuatro.save(flush: true, failOnError: true)
+		def adults = StudyType.findOrCreateByIdStudyType(2)
+		adults.name = "Adultos"
+		adults.save(flush: true, failOnError: true)
+		def radioadult = StudyType.findOrCreateByIdStudyType(12)
+		radioadult.name = "Radiografía"
+		radioadult.father = adults
+		radioadult.save(flush: true, failOnError: true)
+		def tomoadult = StudyType.findOrCreateByIdStudyType(13)
+		tomoadult.name = "Tomografía"
+		tomoadult.father = adults
+		tomoadult.save(flush: true, failOnError: true)
+		if(Environment.current != Environment.PRODUCTION) {
 			new StudyType("Resonancia magnética", adults, 14).save(flush: true, failOnError: true)
 			def laboratoryAdults = new StudyType("Laboratorio", adults, 4).save(flush: true, failOnError: true)
 			new StudyType("HDL", laboratoryAdults, 15).save(flush: true, failOnError: true)
 			new StudyType("LDL", laboratoryAdults, 16).save(flush: true, failOnError: true)
 			new StudyType("Glóbulos blancos", laboratoryAdults, 17).save(flush: true, failOnError: true)
 			new StudyType("CD4", laboratoryAdults, 18).save(flush: true, failOnError: true)
+		}
+
+		this.buildMockCities()
+
+		if(Environment.current == Environment.TEST || Environment.current == Environment.DEVELOPMENT) {
 			
+			def province = Province.findByName("Capital Federal")
+			def city = City.findByProvinceAndName(province,"Capital Federal")
+
 			ClinicalDocument cd = new ClinicalDocument(
 										filename: "test",
 										mimeType: "text/xml",
@@ -89,7 +128,7 @@ class BootStrap {
 			patient.addToStudies(study)
 			study.save(flush: true, failOnError: true)
 		}
-		
+
     }
     def destroy = {
     }
