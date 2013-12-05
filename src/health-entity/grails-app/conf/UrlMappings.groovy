@@ -19,7 +19,9 @@ class UrlMappings {
 		name uploadDocument: "/study/upload/$id" (controller: 'study', action: 'uploadToJanpix') {
 			constraints { id(matches:/\d+/) }
 		}
+		//name downloadDocument: "study/download/$id"(controller: 'study', action: 'download')
 
         "500"(view:'/error')
+		"400"(view:'/error')
 	}
 }
