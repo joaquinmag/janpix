@@ -197,20 +197,20 @@ environments {
 		service.janpix.pixmanager.serverURL = "http://rup.janpix.org"
 	}
 	development {
-		service.janpix.regdoc.serverURL  = "http://localhost:9094"
-		service.janpix.repodoc.serverURL = "http://localhost:8080"
-		service.janpix.pixmanager.serverURL = "http://localhost:9090"
+		service.janpix.regdoc.serverURL  = "http://localhost:9094/repodoc"
+		service.janpix.repodoc.serverURL = "http://localhost:8080/regdoc"
+		service.janpix.pixmanager.serverURL = "http://localhost:9090/rup"
 	}
 	test {
-		service.janpix.regdoc.serverURL  = "http://localhost:9090"
-		service.janpix.repodoc.serverURL = "http://localhost:9092"
-		service.janpix.pixmanager.serverURL = "http://localhost:9094"
+		service.janpix.regdoc.serverURL  = "http://localhost:9090/repodoc"
+		service.janpix.repodoc.serverURL = "http://localhost:9092/regdoc"
+		service.janpix.pixmanager.serverURL = "http://localhost:9094/rup"
 	}
 }
 
-service.janpix.repodoc.url = "${service.janpix.repodoc.serverURL}/repodoc/services/repositorioJanpix"
-service.janpix.regdoc.url = "${service.janpix.regdoc.serverURL}/regdoc/services/registerJanpix?wsdl"
-service.janpix.pixmanager.url = "${service.janpix.pixmanager.serverURL}/rup-0.1/services/PIXManagerJanpix"
+service.janpix.repodoc.url = "${service.janpix.repodoc.serverURL}/services/repositorioJanpix"
+service.janpix.regdoc.url = "${service.janpix.regdoc.serverURL}/services/registerJanpix"
+service.janpix.pixmanager.url = "${service.janpix.pixmanager.serverURL}/services/PIXManagerJanpix"
 
 cxf {
 	client {
