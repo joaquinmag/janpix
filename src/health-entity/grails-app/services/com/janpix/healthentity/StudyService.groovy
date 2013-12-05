@@ -20,13 +20,17 @@ class StudyService {
 	def grailsApplication
 	def janpixService
 	def springSecurityService
+	
+	String getUploadsPath() {
+		return grailsApplication.mainContext.servletContext.getRealPath("/uploads")
+	}
 
     def createStudy(CreateStudyCommand cmd, User author, StudyType type) {
 		def random = new Random().nextInt().abs().toString()
-		def randomName = "${random}${cmd.studyFile.name}"
+		def randomName = "${random}${cmd.studyFile.originalFilename}"
 		copy(cmd.studyFile, randomName)
 		def cd = new ClinicalDocument(
-			filename: cmd.studyFile.name,
+			filename: cmd.studyFile.originalFilename,
 			mimeType: cmd.studyFile.contentType,
 			size: cmd.studyFile.size,
 			fileLocation: randomName
@@ -43,6 +47,14 @@ class StudyService {
 		patient.addToStudies(study)
 		study.save(failOnError: true)
     }
+	
+	def getDocumentByStudyId(String studyId) {
+		def study = Study.get(studyId)
+		if (!study)
+			throw new StudyDoesNotExistsException()
+
+		study.document
+	}
 
 	def uploadStudy(def cmd) {
 		def study = Study.get(cmd.id)
@@ -55,7 +67,7 @@ class StudyService {
 	}
 	
 	private def copy(def file, def fileRandomName) {
-		final def path = grailsApplication.mainContext.servletContext.getRealPath("/uploads")
+		final def path = getUploadsPath()
 		final def destination = new File(path, fileRandomName)
 		file.transferTo(destination)
 	}

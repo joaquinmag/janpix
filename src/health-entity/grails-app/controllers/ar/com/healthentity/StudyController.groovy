@@ -6,6 +6,9 @@ import org.codehaus.groovy.grails.validation.Validateable
 import org.joda.time.LocalDate;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.janpix.exceptions.StudyDoesNotExistsException;
+import com.janpix.healthentity.StudyService;
+
 @Validateable
 class CreateStudyCommand {
 	Long patientId
@@ -38,7 +41,9 @@ class StudyController {
 	def springSecurityService
 	
 	static allowedMethods = [
-		create:"POST"
+		create:"POST",
+		uploadToJanpix: "POST",
+		download: "GET"
 	]
 
 	def create(CreateStudyCommand createStudyCommand) {
@@ -55,6 +60,30 @@ class StudyController {
 			flash.warning = "Ha intentado enviar información que ya ha enviado anteriormente. Si realmente desea ingresar datos nuevos, recargue la página."
 			redirect mapping: 'showPatient', id: createStudyCommand.patientId
 		}
+	}
+	
+	def download(String id) {
+		if(id != null){
+			try {
+				ClinicalDocument document = studyService.getDocumentByStudyId(id)
+				String nameDocument = document.filename
+				String mimeType = document.mimeType
+				response.setContentLength((int)document.size)
+				response.addHeader("Content-disposition", "attachment; filename=${nameDocument}")
+				response.addHeader("Content-type", "${mimeType}")
+				
+				OutputStream out = response.getOutputStream()
+				File f = new File("${studyService.uploadsPath}/${document.fileLocation}")
+				out.write(f.readBytes())
+				out.close()
+			}
+			catch (StudyDoesNotExistsException ex) {
+				log.error("No se puede descargar archivo para studyId=${id}", ex)
+			}
+		} else {
+			log.error("id == null")
+		}
+		render status: 404
 	}
 
 	def uploadToJanpix(UploadStudyCommand uploadStudyCommand) {

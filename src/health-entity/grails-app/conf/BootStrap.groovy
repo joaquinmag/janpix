@@ -96,7 +96,7 @@ class BootStrap {
 
 		if(Environment.current == Environment.TEST || Environment.current == Environment.DEVELOPMENT) {
 			
-			def province = Province.findByName("Capital Federal")
+			def province = Province.findByName("AR-C")
 			def city = City.findByProvinceAndName(province,"Capital Federal")
 
 			ClinicalDocument cd = new ClinicalDocument(

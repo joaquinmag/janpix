@@ -152,11 +152,7 @@ class JanpixService {
 	 */
     Boolean uploadDocument(Study study,User currentUser){
 		// Se obtiene el CUIS del paciente
-		String cuis = this.getPatientCUIS(study.patient)
-		if(!cuis){
-			throw new PatientDoesNotExistsException("El paciente al cual intenta agregarle un estudio no se encuentra registrado en el RUP")
-		}
-		
+		String cuis = this.getPatientCUIS(study.patient)		
 		
 		AckMessage ack
     	try {
@@ -192,7 +188,6 @@ class JanpixService {
 	 * @return
 	 */
 	String getPatientCUIS(Patient patient){
-		AckMessage ack
 		try {
 			log.info("Armando Request para consulta CUIS del paciente")
 			GetIdentifiersRequestMessage requestMessage = new GetIdentifiersRequestMessage()
@@ -202,18 +197,18 @@ class JanpixService {
 			requestMessage.othersDomain.domain.add(this.getRUP())
 			
 			log.info("Consultando por el CUIS del paciente "+patient)
-			ack = janpixPixManagerServiceClient.getIdentifiersPatient(requestMessage)
+			AckMessage ack = janpixPixManagerServiceClient.getIdentifiersPatient(requestMessage)
 
 			// Como solo pedi el identificador del RUP devuelvo ese
-			if(ack.typeCode == TypeCode.SUCCEDED_QUERY){
-				log.info("Respuesta satisfactoria. Se retornaron "+ack.patient?.identifiers?.identifier.size()+" identificadores")
-				if(ack.patient?.identifiers?.identifier.size() == 1){
-					return ack.patient.identifiers.identifier[0].number
-				} 
+			if (ack.typeCode != TypeCode.SUCCEDED_QUERY) {
+				log.info("No existe CUIS para el paciente "+patient)
+				throw new PatientDoesNotExistsException("El paciente al cual intenta agregarle un estudio no se encuentra registrado en el RUP")
 			}
 			
-			log.info("No existe CUIS para el paciente "+patient)
-			return null
+			log.info("Respuesta satisfactoria. Se retornaron "+ack.patient?.identifiers?.identifier.size()+" identificadores")
+			if(ack.patient?.identifiers?.identifier.size() == 1){
+				return ack.patient.identifiers.identifier[0].number
+			}
 		}
 		catch(Exception ex) {
 			log.error("Excepcion obteniendo CUIS del paciente", ex)

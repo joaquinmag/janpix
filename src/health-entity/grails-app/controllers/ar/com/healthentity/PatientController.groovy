@@ -17,6 +17,7 @@ class PatientController {
 	def grailsApplication
 	def janpixService
 	def studyTypeService
+	def studyService
 	
 	/**
 	 * Registra un paciente en Janpix
@@ -115,7 +116,7 @@ class PatientController {
     }
 	
 	def showDocuments(Patient patientInstance) {
-		respond patientInstance, [view: "show_documents"]
+		respond patientInstance, [view: "show_documents", model:[urldownload: studyService.uploadsPath]]
 	}
 
     def create() {
