@@ -1,40 +1,32 @@
---
--- Dumping data for tables `country, province, city`
---
+INSERT INTO `janpix_rup_prod`.`country` (`version`, `name`) VALUES (0, 'AR');
 
+INSERT INTO `janpix_rup_prod`.`province` (`name`,`country_id`) VALUES
+('AR-B',1), -- Bs As
+('AR-C',1), -- Cap Fed
+('AR-K',1), -- Catamarca
+('AR-H',1), -- Chaco
+('AR-U',1), -- Chubut
+('AR-X',1), -- Cdba
+('AR-W',1), -- Corrientes
+('AR-E',1), -- Entre Ríos
+('AR-P',1), -- Formosa
+('AR-Y',1), -- Jujuy
+('AR-L',1), -- La Pampa
+('AR-F',1), -- La Rioja
+('AR-M',1), -- Mendoza
+('AR-N',1), -- Misiones
+('AR-Q',1), -- Neuquén
+('AR-R',1), -- Río Negro
+('AR-A',1), -- Salta
+('AR-J',1), -- San Juan
+('AR-D',1), -- San Luis
+('AR-Z',1), -- Santa Cruz
+('AR-S',1), -- Santa Fe
+('AR-G',1), -- Santiago del Estero
+('AR-V',1), -- Tierra del Fuego
+('AR-T',1); -- Tucumán
 
--- Country
-INSERT INTO `country` (`name`) VALUES ('Argentina');
-
--- Province
-INSERT INTO `province` (`name`,`country_id`) VALUES
-('Buenos Aires',1),
-('Capital Federal',1),
-('Catamarca',1),
-('Chaco',1),
-('Chubut',1),
-('Córdoba',1),
-('Corrientes',1),
-('Entre Ríos',1),
-('Formosa',1),
-('Jujuy',1),
-('La Pampa',1),
-('La Rioja',1),
-('Mendoza',1),
-('Misiones',1),
-('Neuquén',1),
-('Río Negro',1),
-('Salta',1),
-('San Juan',1),
-('San Luis',1),
-('Santa Cruz',1),
-('Santa Fe',1),
-('Santiago del Estero',1),
-('Tierra del Fuego',1),
-('Tucumán',1);
-
--- City
-INSERT INTO `city` (`province_id`, `name`) VALUES
+INSERT INTO `janpix_rup_prod`.`city` (`province_id`, `name`) VALUES
 (1,'25 de Mayo'),
 (1,'3 de febrero'),
 (1,'A. Alsina'),
@@ -2370,3 +2362,4 @@ INSERT INTO `city` (`province_id`, `name`) VALUES
 (24,'Yánima'),
 (24,'Yerba Buena'),
 (24,'Yerba Buena (S)');
+

@@ -85,14 +85,12 @@ class BootStrap {
 		tomoadult.name = "Tomografía"
 		tomoadult.father = adults
 		tomoadult.save(flush: true, failOnError: true)
-		if(Environment.current != Environment.PRODUCTION) {
-			new StudyType("Resonancia magnética", adults, 14).save(flush: true, failOnError: true)
-			def laboratoryAdults = new StudyType("Laboratorio", adults, 4).save(flush: true, failOnError: true)
-			new StudyType("HDL", laboratoryAdults, 15).save(flush: true, failOnError: true)
-			new StudyType("LDL", laboratoryAdults, 16).save(flush: true, failOnError: true)
-			new StudyType("Glóbulos blancos", laboratoryAdults, 17).save(flush: true, failOnError: true)
-			new StudyType("CD4", laboratoryAdults, 18).save(flush: true, failOnError: true)
-		}
+		StudyType.findOrCreateWhere(name: "Resonancia magnética", father: adults, idStudyType: 14l).save(failOnError: true, flush: true)
+		def laboratoryAdults = StudyType.findOrCreateWhere(name: "Laboratorio", father: adults, idStudyType: 4l).save(failOnError: true, flush: true)
+		StudyType.findOrCreateWhere(name: "HDL", father: laboratoryAdults, idStudyType: 15l).save(failOnError: true, flush: true)
+		StudyType.findOrCreateWhere(name: "LDL", father: laboratoryAdults, idStudyType: 16l).save(failOnError: true, flush: true)
+		StudyType.findOrCreateWhere(name: "Glóbulos blancos", father: laboratoryAdults, idStudyType: 17l).save(failOnError: true, flush: true)
+		StudyType.findOrCreateWhere(name: "CD4", father: laboratoryAdults, idStudyType: 18l).save(failOnError: true, flush: true)
 
 		this.buildMockCities()
 
@@ -134,9 +132,9 @@ class BootStrap {
     }
 	
 	private void buildMockCities(){
-		String country = "Argentina"
+		String country = "AR"
 		// Buenos Aires
-		def province = Province.findOrCreateWhere(country: country, name: "Buenos Aires").save(failOnError: true, flush: true)
+		def province = Province.findOrCreateWhere(country: country, name: "AR-B", description: "Buenos Aires").save(failOnError: true, flush: true)
 		City.findOrCreateWhere(province: province, name: "Luján").save(failOnError: true, flush: true)
 		City.findOrCreateWhere(province: province, name: "Castelar").save(failOnError: true, flush: true)
 		City.findOrCreateWhere(province: province, name: "Campana").save(failOnError: true, flush: true)
@@ -146,11 +144,11 @@ class BootStrap {
 		City.findOrCreateWhere(province: province, name: "Moron").save(failOnError: true, flush: true)
 
 		// C.A.B.A
-		province = Province.findOrCreateWhere(country: country, name: "Capital Federal").save(failOnError: true, flush: true)
+		province = Province.findOrCreateWhere(country: country, name: "AR-C", description: "Capital Federal").save(failOnError: true, flush: true)
 		def city = City.findOrCreateWhere(province: province, name: "Capital Federal").save(failOnError: true, flush: true)
 		
 		// Mendoza
-		province = Province.findOrCreateWhere(country: country, name: "Mendoza").save(failOnError: true, flush: true)
+		province = Province.findOrCreateWhere(country: country, name: "AR-M", description: "Mendoza").save(failOnError: true, flush: true)
 		City.findOrCreateWhere(province: province, name: "Capital").save(failOnError: true, flush: true)
 		City.findOrCreateWhere(province: province, name: "Godoy Cruz").save(failOnError: true, flush: true)
 		City.findOrCreateWhere(province: province, name: "San Rafael").save(failOnError: true, flush: true)
