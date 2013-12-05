@@ -30,4 +30,10 @@ class StudyType {
 			return father.getRootType()
 	}
 
+	String toString() {
+		if (father)
+			return "${father}/${name}"
+		else
+			return "${name}"
+	}
 }

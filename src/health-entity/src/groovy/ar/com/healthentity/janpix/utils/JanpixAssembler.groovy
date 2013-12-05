@@ -187,6 +187,7 @@ class JanpixAssembler {
 		dto.patientId = study.patient.id
 		dto.typeId = study.type.idStudyType
 		dto.typeName = study.type.name
+		dto.formatName = document.format
 
 		return dto
 	}
@@ -197,7 +198,7 @@ class JanpixAssembler {
 		fileAttr.filename = document.filename
 		fileAttr.mimeType = document.mimeType
 		fileAttr.size = document.size
-		fileAttr.uuid = document.id
+		fileAttr.uuid = "${document.size}${document.id}" //FIXME not a UUID
 		return fileAttr
 	}
 	
@@ -231,6 +232,7 @@ class JanpixAssembler {
 		document.mimeType = janpixDocument.fileAttributes.mimeType
 		document.size = janpixDocument.fileAttributes.size
 		document.binaryData = IOUtils.toByteArray(janpixDocument.binaryData.getInputStream());
+		document.format = janpixDocument.formatName
 		
 		return document
 	} 

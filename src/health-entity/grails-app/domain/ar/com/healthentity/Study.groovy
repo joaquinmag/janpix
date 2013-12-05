@@ -16,6 +16,10 @@ class Study {
 	String observation
 	boolean isSynchro = false
 	
+	static mapping = {
+		sort "date"
+	}
+	
     static constraints = {
 		title nullable: false, blank: false
 		patient nullable: false

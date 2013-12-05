@@ -79,6 +79,9 @@ log4j = {
 		rollingFile name: 'applicationLog',
 					maxFileSize: 1024,
 					file: "/tmp/logs/janpix/regdoc/application.log"
+		rollingFile name: "localApplicationLog",
+					maxFileSize: 1024,
+					file: "application.log"
 	}
 
 	environments {
@@ -113,7 +116,7 @@ log4j = {
 		}
 		development{
 			root {
-				error 'applicationLog','stdout'
+				error 'localApplicationLog','stdout'
 			}
 			//Usa los appenders 'stdout' y 'applicationLog' para el nivel debug
 			debug stdout: [
@@ -125,7 +128,7 @@ log4j = {
 				'grails.app.filters.com.janpix.regdoc'
 			],additivity:false
 		
-			debug applicationLog: [
+			debug localApplicationLog: [
 				'grails.app.controllers.com.janpix.regdoc',
 				'grails.app.domain.com.janpix.regdoc',
 				'grails.app.services.com.janpix.regdoc',

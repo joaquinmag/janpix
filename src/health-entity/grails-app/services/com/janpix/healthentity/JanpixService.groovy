@@ -150,12 +150,11 @@ class JanpixService {
 	 * @param clinicalDocument
 	 * @return
 	 */
-    Boolean uploadDocument(Study study,User currentUser){
-		// Se obtiene el CUIS del paciente
-		String cuis = this.getPatientCUIS(study.patient)		
-		
-		AckMessage ack
+    void uploadDocument(Study study,User currentUser){
     	try {
+			// Se obtiene el CUIS del paciente
+			String cuis = this.getPatientCUIS(study.patient)
+			
 			log.info("Subiendo estudio "+study+" en el Repositorio de Documentos")
 			
 			log.info("Armando Request")
@@ -165,20 +164,18 @@ class JanpixService {
 			msg.clinicalDocument.patientId = cuis
 			
 			log.info("Enviando request al WS")
-			ack = janpixRepodocServiceClient.provideAndRegisterDocument(msg)
+			def ack = janpixRepodocServiceClient.provideAndRegisterDocument(msg)
+			
+			if (ack.typeCode != TypeCode.SUCCEDED_INSERTION) {
+				log.error("Error al insertar el documento. Error: ${ack.typeCode}. Mensaje: ${ack.text}")
+				throw new ErrorUploadingDocumentException(ack.typeCode, ack.text)
+			}
+			log.info("Documento subido correctamente")
 		}
 		catch(Exception ex) {
 			log.error("Excepcion subiendo documento al repo de docs", ex)
 			throw new ErrorUploadingDocumentException(ex)
 		}
-
-		if (ack.typeCode != TypeCode.SUCCEDED_CREATION) {
-			log.error("Error al insertar el documento. Error: ${ack.typeCode}. Mensaje: ${ack.text}")
-			throw new ErrorUploadingDocumentException(ack.typeCode, ack.text)
-		}
-
-		log.info("Documento subido correctamente")
-		return true
 	}
 	
 	/**
