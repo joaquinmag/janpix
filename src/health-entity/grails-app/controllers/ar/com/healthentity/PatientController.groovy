@@ -17,6 +17,7 @@ class PatientController {
 	def grailsApplication
 	def janpixService
 	def studyTypeService
+	def studyService
 	
 	/**
 	 * Registra un paciente en Janpix
@@ -115,7 +116,7 @@ class PatientController {
     }
 	
 	def showDocuments(Patient patientInstance) {
-		respond patientInstance, [view: "show_documents"]
+		respond patientInstance, [view: "show_documents", model:[urldownload: studyService.uploadsPath]]
 	}
 
     def create() {
@@ -138,7 +139,7 @@ class PatientController {
 
         request.withFormat {
             form {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'patientInstance.label', default: 'Patient'), patientInstance.id])
+                flash.message = message(code: 'patient.created.message', args: [patientInstance.firstName, patientInstance.lastName])
                 redirect patientInstance
             }
             '*' { respond patientInstance, [status: CREATED] }

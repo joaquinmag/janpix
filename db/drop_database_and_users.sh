@@ -3,9 +3,10 @@
 
 SQL=$( cat <<EOF
 DROP DATABASE janpix_rup;
-DROP USER 'janpix_rup'@'localhost';
 DROP DATABASE janpix_rup_prod;
+DROP DATABASE janpix_regdoc_prod;
 DROP USER 'janpix_rup_prod'@'localhost';
+DROP USER 'janpix_rup'@'localhost';
 EOF
 )
 

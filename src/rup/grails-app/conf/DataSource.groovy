@@ -29,7 +29,7 @@ environments {
     }
     production {
         dataSource {
-            dbCreate = "validate"
+            dbCreate = "update"
 			driverClassName = "com.mysql.jdbc.Driver"
 			username = "janpix_rup_prod"
 			password = "janpix_rup_prod"

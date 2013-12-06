@@ -1,10 +1,14 @@
 <%@ page import="ar.com.healthentity.Patient" %>
 
-
+<r:script>
+$(document).ready( function() {
+	$(".select2").select2();
+});
+</r:script>
 
 <div class="form-group ${hasErrors(bean: patientInstance, field: 'firstName', 'error')} required">
 	<label class="control-label" for="firstName">
-		<g:message code="patient.firstName.label" default="First Name" />
+		<g:message code="patient.firstName.label" default="Nombre" />
 		<span class="required-indicator">*</span>
 	</label>
 	<div class="controls row">
@@ -61,7 +65,7 @@
 	</label>
 	<div class="controls row">
 		<div class="col-sm-6">
-			<g:select class="form-control" name="sex" from="${ar.com.healthentity.SexType?.values()}" keys="${ar.com.healthentity.SexType.values()*.name()}" required="" value="${patientInstance?.sex?.name()}"/>
+			<g:select class="form-control select2" name="sex" from="${ar.com.healthentity.SexType?.values()}" keys="${ar.com.healthentity.SexType.values()*.name()}" required="" value="${patientInstance?.sex?.name()}"/>
 
 		</div>
 	</div>
@@ -74,7 +78,7 @@
 	</label>
 	<div class="controls row">
 		<div class="col-sm-6">
-			<g:select id="city" name="city.id" from="${ar.com.healthentity.City.list()}" optionKey="id" required="" value="${patientInstance?.city?.id}" class="many-to-one form-control"/>
+			<g:select id="city" name="city.id" from="${ar.com.healthentity.City.list()}" optionKey="id" required="" value="${patientInstance?.city?.id}" class="many-to-one form-control select2"/>
 
 		</div>
 	</div>
@@ -127,28 +131,6 @@
 	<div class="controls row">
 		<div class="col-sm-6">
 			<g:textField name="phone" value="${patientInstance?.phone}" class="form-control"/>
-
-		</div>
-	</div>
-</div>
-
-<div class="form-group ${hasErrors(bean: patientInstance, field: 'studies', 'error')} ">
-	<label class="control-label" for="studies">
-		<g:message code="patient.studies.label" default="Studies" />
-		
-	</label>
-	<div class="controls row">
-		<div class="col-sm-6">
-			
-<ul class="one-to-many">
-<g:each in="${patientInstance?.studies?}" var="s">
-    <li><g:link controller="study" action="show" id="${s.id}">${s?.encodeAsHTML()}</g:link></li>
-</g:each>
-<li class="add">
-<g:link controller="study" action="create" params="['patient.id': patientInstance?.id]">${message(code: 'default.add.label', args: [message(code: 'study.label', default: 'Study')])}</g:link>
-</li>
-</ul>
-
 
 		</div>
 	</div>

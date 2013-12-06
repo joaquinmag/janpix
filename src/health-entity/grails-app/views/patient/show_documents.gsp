@@ -37,55 +37,65 @@
 							</h2>
 						</div>
 						<div class="box-content">
-							<div class="row">
-								<div class="col-sm-12">
-									<g:if test="${!entity.studies.empty}">
-										<table class="table table-striped table-bordered bootstrap-datatable datatable">
-											<thead>
-		 										<tr>
-		 											<th>Fecha de creación</th>
-		 											<th>Título</th>
-		 											<th>Tipo de estudio</th>
-		 											<th>Documento</th>
-		 											<th>Sincronizado</th>
-		 											<th>Acciones</th>
-		 										</tr>
-		 									</thead> 
-		 									<tbody>
-		 										<g:each in="${entity.studies}" var="study">
-			 										<tr>
-			 											<td class="center"><g:formatDate format="dd/MM/yyyy" date="${study.date}"/></td>
-			 											<td class="center">${study.title}</td>
-			 											<td class="center">${study.type.name}</td>
-			 											<td class="center">${study.document.filename}</td>
-			 											<td class="center">
-			 												<g:if test="${!study.isSynchro}">
-			 													<span class="label label-warning">
-				 													Local
-				 												</span>
-															</g:if>
-															<g:else>
-																<span class="label label-success">
-				 													Subido
-				 												</span>
-															</g:else>
-			 											</td>
-														<td class="center">
-															<g:if test="${!study.isSynchro}">
-																<g:remoteLink mapping="uploadDocument" id="${study.id}" class="btn btn-info" update="[success: 'modalBody', failure: 'modalBody']"  onSuccess="show_modal()">
-																	<i class="icon-cloud-upload"></i>
-																	Subir archivo
-																</g:remoteLink>
-															</g:if>
-														</td>
-			 										</tr>
-		 										</g:each>
-		 									</tbody>
-		 								</table>
-	 								</g:if>
+							<ul class="nav tab-menu nav-tabs" id="myTab">
+								<li class="active"><a href="#Local">Local</a></li>
+								<li><a href="#Remoto">Remoto</a></li>
+							</ul>
+							<div class="tab-content">
+								<div class="tab-pane active" id="Local">
+									<div class="row">
+										<div class="col-sm-12">
+											<g:if test="${!entity.studies.empty}">
+												<table class="table table-striped table-bordered bootstrap-datatable datatable">
+													<thead>
+				 										<tr>
+				 											<th>Fecha de creación</th>
+				 											<th>Título</th>
+				 											<th>Tipo de estudio</th>
+				 											<th>Documento</th>
+				 											<th>Sincronizado</th>
+				 											<th>Acciones</th>
+				 										</tr>
+				 									</thead> 
+				 									<tbody>
+				 										<g:each in="${entity.studies}" var="study">
+					 										<tr>
+					 											<td class="center"><g:formatDate format="dd/MM/yyyy" date="${study.date}"/></td>
+					 											<td class="center">${study.title}</td>
+					 											<td class="center">${study.type.name}</td>
+					 											<td class="center"><g:link controller="study" action="download" id="${study.id}">${study.document.filename}</g:link></td>
+					 											<td class="center">
+					 												<g:if test="${!study.isSynchro}">
+					 													<span class="label label-warning">
+						 													Local
+						 												</span>
+																	</g:if>
+																	<g:else>
+																		<span class="label label-success">
+						 													Subido
+						 												</span>
+																	</g:else>
+					 											</td>
+																<td class="center">
+																	<g:if test="${!study.isSynchro}">
+																		<g:remoteLink mapping="uploadDocument" id="${study.id}" class="btn btn-info" update="[success: 'modalBody', failure: 'modalBody']"  onSuccess="show_modal()">
+																			<i class="icon-cloud-upload"></i>
+																			Subir archivo
+																		</g:remoteLink>
+																	</g:if>
+																</td>
+					 										</tr>
+				 										</g:each>
+				 									</tbody>
+				 								</table>
+			 								</g:if>
+			 							</div>
+		 							</div>
 	 							</div>
- 							</div>
-						</div>
+	 							<div class="tab-pane" id="Remoto">
+	 							</div>
+							</div><!-- /.tab-content -->
+						</div><!-- /.box-content -->
 					</div> <!-- /box -->
 				</div><!-- /row -->
 			</div>

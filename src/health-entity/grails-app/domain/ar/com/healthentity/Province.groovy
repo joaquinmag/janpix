@@ -3,6 +3,7 @@ package ar.com.healthentity
 class Province {
 	String name
 	String country
+	String description
 
     static constraints = {
     }
@@ -12,6 +13,6 @@ class Province {
 	}
 	
 	String toString(){
-		return "${name}"
+		return "${description}"
 	}
 }
