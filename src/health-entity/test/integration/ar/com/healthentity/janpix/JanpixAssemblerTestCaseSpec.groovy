@@ -107,8 +107,8 @@ class JanpixAssemblerTestCaseSpec extends Specification {
 			patientJanpix.addresses.address[0].number = "MeSepara"
 			patientJanpix.addresses.address[0].city = new CityDTO()
 			patientJanpix.addresses.address[0].city.nameCity = "Luján"
-			patientJanpix.addresses.address[0].city.nameProvince = "Buenos Aires"
-			patientJanpix.addresses.address[0].city.nameCountry = "Argentina"
+			patientJanpix.addresses.address[0].city.nameProvince = "AR-B"
+			patientJanpix.addresses.address[0].city.nameCountry = "AR"
 			patientJanpix.administrativeSex = "M"
 			patientJanpix.birthdate = new ExtendedDateDTO()
 			patientJanpix.birthdate.date = "2013-10-30"

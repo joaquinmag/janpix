@@ -6,6 +6,7 @@ import org.codehaus.groovy.grails.validation.Validateable
 import org.joda.time.LocalDate;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.janpix.exceptions.ErrorUploadingDocumentException
 import com.janpix.exceptions.StudyDoesNotExistsException;
 import com.janpix.healthentity.StudyService;
 
@@ -95,7 +96,13 @@ class StudyController {
 			} else {
 				respond uploadStudyCommand,[model:[upload_correct: false], view: 'upload_study']
 			}
-		}catch(Exception e){
+		}
+		catch(	ErrorUploadingDocumentException e) {
+			log.error("error en StudyController: ",e)
+			render "Error al subir el documento. Esto puede deberse a un problema de conexion. Error: "+e
+			return
+		}
+		catch(Exception e){
 			log.error("error en StudyController: ",e)
 			render "Error inesperado al subir el documento. Error: "+e
 			return

@@ -151,6 +151,7 @@ class JanpixService {
 	 * @return
 	 */
     void uploadDocument(Study study,User currentUser){
+		com.janpix.webclient.repodoc.AckMessage ack
     	try {
 			// Se obtiene el CUIS del paciente
 			String cuis = this.getPatientCUIS(study.patient)
@@ -164,19 +165,44 @@ class JanpixService {
 			msg.clinicalDocument.patientId = cuis
 			
 			log.info("Enviando request al WS")
-			def ack = janpixRepodocServiceClient.provideAndRegisterDocument(msg)
+			ack = janpixRepodocServiceClient.provideAndRegisterDocument(msg)
 			
-			if (ack.typeCode != TypeCode.SUCCEDED_INSERTION) {
-				log.error("Error al insertar el documento. Error: ${ack.typeCode}. Mensaje: ${ack.text}")
-				throw new ErrorUploadingDocumentException(ack.typeCode, ack.text)
-			}
-			log.info("Documento subido correctamente")
-		}
+    	}
 		catch(Exception ex) {
 			log.error("Excepcion subiendo documento al repo de docs", ex)
 			throw new ErrorUploadingDocumentException(ex)
 		}
+			
+		if (ack.typeCode != com.janpix.webclient.repodoc.TypeCode.SUCCEDED_INSERTION) {
+			log.error("Error al insertar el documento. Error: ${ack.typeCode}. Mensaje: ${ack.text}")
+			throw new ErrorUploadingDocumentException(ack.typeCode, ack.text)
+		}
+		log.info("Documento subido correctamente")
 	}
+	
+	/**
+	 * Retorna todos los documentos asociados a un paciente que puede contener
+	 * otra entidad sanitaria
+	 * @param patient
+	 * @return
+	 */
+	List<Study> queryAllStudies(Patient patient){
+		List<Study> studies = []
+		//ACKStoredQueryMessage ack
+		
+		return studies
+	}
+	
+	/**
+	 * Retorna todos los documentos que cumplen con el filtro inclusivo
+	 * de busqueda
+	 * @param filter
+	 * @return
+	 */
+	/*List<Study> queryStudyByFilter(FilterStudy filter){
+		// TODO implementar!!!
+	}*/
+	
 	
 	/**
 	 * Retorna el CUIS del paciente si este se encuentra registrado en el RUP
