@@ -187,6 +187,9 @@ class JanpixAssembler {
 		dto.patientId = study.patient.id
 		dto.typeId = study.type.idStudyType
 		dto.typeName = study.type.name
+		
+		//FIXME HardCode!!
+		dto.formatName = "ODT"
 
 		return dto
 	}
