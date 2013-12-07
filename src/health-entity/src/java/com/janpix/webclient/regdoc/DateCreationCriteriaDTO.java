@@ -1,6 +1,8 @@
 
 package com.janpix.webclient.regdoc;
 
+import java.util.Date;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -36,7 +38,7 @@ public class DateCreationCriteriaDTO {
 
     @XmlElement(required = true)
     @XmlSchemaType(name = "dateTime")
-    protected XMLGregorianCalendar searchDate;
+    protected Date searchDate;
 
     /**
      * Gets the value of the searchDate property.
@@ -46,7 +48,7 @@ public class DateCreationCriteriaDTO {
      *     {@link XMLGregorianCalendar }
      *     
      */
-    public XMLGregorianCalendar getSearchDate() {
+    public Date getSearchDate() {
         return searchDate;
     }
 
@@ -58,7 +60,7 @@ public class DateCreationCriteriaDTO {
      *     {@link XMLGregorianCalendar }
      *     
      */
-    public void setSearchDate(XMLGregorianCalendar value) {
+    public void setSearchDate(Date value) {
         this.searchDate = value;
     }
 

@@ -26,6 +26,8 @@ class ClinicalDocumentAssembler {
 		dto.typeId = domainDocument.documentType.idDocumentType
 		dto.typeName = domainDocument.documentType.name
 		dto.formatName = domainDocument.format
+		
+		return dto
 	}
 
 	ClinicalDocument fromDTO(ClinicalDocumentDTO dtoDocument, Author author, FileAttributes fileAttr) {
@@ -41,7 +43,8 @@ class ClinicalDocumentAssembler {
 		clinicalDoc.language = dtoDocument.language
 		clinicalDoc.documentType = ClinicalDocumentType.find { idDocumentType == dtoDocument.typeId }
 		clinicalDoc.format = dtoDocument.formatName
-		clinicalDoc
+		
+		return clinicalDoc
 	}
 	
 }

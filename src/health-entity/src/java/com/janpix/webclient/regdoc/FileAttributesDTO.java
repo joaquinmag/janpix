@@ -1,6 +1,8 @@
 
 package com.janpix.webclient.regdoc;
 
+import java.util.Date;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -53,7 +55,7 @@ public class FileAttributesDTO {
     @XmlElement(required = true)
     protected String mimeType;
     @XmlSchemaType(name = "dateTime")
-    protected XMLGregorianCalendar creationTime;
+    protected Date creationTime;
     protected String fileHash;
     protected Long size;
 
@@ -161,7 +163,7 @@ public class FileAttributesDTO {
      *     {@link XMLGregorianCalendar }
      *     
      */
-    public XMLGregorianCalendar getCreationTime() {
+    public Date getCreationTime() {
         return creationTime;
     }
 
@@ -173,7 +175,7 @@ public class FileAttributesDTO {
      *     {@link XMLGregorianCalendar }
      *     
      */
-    public void setCreationTime(XMLGregorianCalendar value) {
+    public void setCreationTime(Date value) {
         this.creationTime = value;
     }
 

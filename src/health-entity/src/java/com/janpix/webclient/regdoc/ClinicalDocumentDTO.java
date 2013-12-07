@@ -1,6 +1,8 @@
 
 package com.janpix.webclient.regdoc;
 
+import java.util.Date;
+
 import javax.activation.DataHandler;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -73,9 +75,9 @@ public class ClinicalDocumentDTO {
     protected FileAttributesDTO fileAttributes;
     @XmlElement(required = true)
     @XmlSchemaType(name = "dateTime")
-    protected XMLGregorianCalendar documentCreationStarted;
+    protected Date documentCreationStarted;
     @XmlSchemaType(name = "dateTime")
-    protected XMLGregorianCalendar documentCreationEnded;
+    protected Date documentCreationEnded;
     @XmlElement(required = true)
     protected String patientId;
     @XmlElement(required = true)
@@ -171,7 +173,7 @@ public class ClinicalDocumentDTO {
      *     {@link XMLGregorianCalendar }
      *     
      */
-    public XMLGregorianCalendar getDocumentCreationStarted() {
+    public Date getDocumentCreationStarted() {
         return documentCreationStarted;
     }
 
@@ -183,7 +185,7 @@ public class ClinicalDocumentDTO {
      *     {@link XMLGregorianCalendar }
      *     
      */
-    public void setDocumentCreationStarted(XMLGregorianCalendar value) {
+    public void setDocumentCreationStarted(Date value) {
         this.documentCreationStarted = value;
     }
 
@@ -195,7 +197,7 @@ public class ClinicalDocumentDTO {
      *     {@link XMLGregorianCalendar }
      *     
      */
-    public XMLGregorianCalendar getDocumentCreationEnded() {
+    public Date getDocumentCreationEnded() {
         return documentCreationEnded;
     }
 
@@ -207,7 +209,7 @@ public class ClinicalDocumentDTO {
      *     {@link XMLGregorianCalendar }
      *     
      */
-    public void setDocumentCreationEnded(XMLGregorianCalendar value) {
+    public void setDocumentCreationEnded(Date value) {
         this.documentCreationEnded = value;
     }
 
