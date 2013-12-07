@@ -4,3 +4,4 @@ target-eclipse/
 .settings/
 .project
 .classpath
+application.log*

@@ -13,6 +13,8 @@ class FileAttributesAssembler {
 		dto.creationTime = domainFileAttr.creationTime
 		dto.fileHash = domainFileAttr.fileHash
 		dto.size = domainFileAttr.size
+		
+		return dto
 	}
 
 	static FileAttributes fromDTO(FileAttributesDTO dto) {
@@ -24,7 +26,8 @@ class FileAttributesAssembler {
 		attr.creationTime = dto.creationTime
 		attr.size = dto.size
 		attr.fileHash = dto.fileHash
-		attr
+		
+		return attr
 	}
 
 }

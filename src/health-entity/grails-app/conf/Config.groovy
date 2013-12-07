@@ -242,15 +242,17 @@ cxf {
 			serviceEndpointAddress = "${service.janpix.pixmanager.url}"
 		}
 		
-		/*janpixRegdocServiceClient {
-			wsdlArgs = "-autoNameResolution"
-			clientInterface = com.janpix.repodoc.porttype.RegistroJanpixServicePortType
+		janpixRegdocServiceClient {
+			// para usar con grails wsdl2java
+			wsdlArgs = [ "-autoNameResolution", "-validate" ]
+			wsdl = "${service.janpix.regdoc.url}?wsdl"
+			namespace = "com.janpix.webclient.regdoc"
+			client = false
+						
+			// conexion con WS
+			clientInterface = com.janpix.webclient.regdoc.DocumentJanpixService
 			serviceEndpointAddress = "${service.janpix.regdoc.url}"
-			namespace = "com.janpix.regdoc"
-			//receiveTimeout = 0 //no timeout
-			//connectionTimeout = 0 //no timeout
-			//httpClientPolicy = 'customHttpClientPolicy'
-		}*/
+		}
 	}
 }
 

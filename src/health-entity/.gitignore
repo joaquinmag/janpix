@@ -3,4 +3,6 @@ target-eclipse/
 .settings/
 .project
 .classpath
-
+application.log*
+*.h2.db
+web-app/uploads

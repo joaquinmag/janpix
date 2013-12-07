@@ -89,6 +89,14 @@ log4j = {
 			root {
 				error 'applicationLog'
 			}
+			debug applicationLog: [
+				'grails.app.controllers.com.janpix.regdoc',
+				'grails.app.domain.com.janpix.regdoc',
+				'grails.app.services.com.janpix.regdoc',
+				'grails.app.taglib.com.janpix.regdoc',
+				'grails.app.conf.com.janpix.regdoc',
+				'grails.app.filters.com.janpix.regdoc'
+			],additivity:false
 		}
 		test{
 			root {

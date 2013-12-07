@@ -1,5 +1,7 @@
 package ar.com.healthentity.janpix.utils
 
+import java.util.Date;
+
 import javax.activation.DataHandler
 import javax.activation.DataSource
 import javax.mail.util.ByteArrayDataSource
@@ -13,6 +15,7 @@ import ar.com.healthentity.ClinicalDocument
 import ar.com.healthentity.Patient
 import ar.com.healthentity.SexType
 import ar.com.healthentity.Study
+import ar.com.healthentity.StudyType;
 import ar.com.healthentity.User
 
 import com.janpix.webclient.repodoc.AuthorDTO
@@ -169,6 +172,20 @@ class JanpixAssembler {
 		return dto
 	}
 	
+	static com.janpix.webclient.regdoc.HealthEntityDTO toHealthEntityRegistro(ConfigObject parameters){
+		if(!parameters)
+			return null
+			
+		com.janpix.webclient.regdoc.HealthEntityDTO dto = new com.janpix.webclient.regdoc.HealthEntityDTO()
+		dto.name = parameters.name
+		dto.oid = parameters.oid
+		
+		// TODO falta obtenerlo
+		dto.healthcareFacilityTypeCode = "FRUTA"
+		
+		return dto
+	}
+	
 	static ClinicalDocumentDTO toClinicalDocument(Study study) {
 		def ctx = SCH.servletContext.getAttribute(GA.APPLICATION_CONTEXT)
 		String uploadsPath = ctx.servletContext.getRealPath("/uploads")
@@ -187,7 +204,9 @@ class JanpixAssembler {
 		dto.patientId = study.patient.id
 		dto.typeId = study.type.idStudyType
 		dto.typeName = study.type.name
+
 		dto.formatName = document.format
+
 
 		return dto
 	}
@@ -236,6 +255,35 @@ class JanpixAssembler {
 		
 		return document
 	} 
+	
+	/**
+	 * Transforma un ClinicalDocument del Registro de documento en un Study de healhentity
+	 * @param janpixDocument
+	 * @return
+	 */
+	static Study fromRegisterDocument(com.janpix.webclient.regdoc.ClinicalDocumentDTO janpixDocument){
+		if(janpixDocument == null)
+			return null;
+		
+		Study study = new Study();
+		study.title = janpixDocument.name
+		study.date = janpixDocument.documentCreationStarted
+		study.type = JanpixAssembler.fromTypeId(janpixDocument.typeId)
+		study.observation = janpixDocument.comments
+		study.isSynchro = true
+		
+		return study
+	}
+	
+	/**
+	 * Retorna un Tipo a partir de su ID
+	 * Sino existen dicho ID retorna null
+	 * @param id
+	 * @return
+	 */
+	static fromTypeId(Long id){
+		return StudyType.findByIdStudyType(id)
+	}
 	
 	/**
 	 * Transforma PersonDTO de Janpix en un Patient de la Entidad Sanitaria

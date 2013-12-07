@@ -44,7 +44,7 @@ class DocumentStateUserType implements UserType {
 			return null
 		}
 
-		switch (state) {
+		switch (state.toLowerCase()) {
 			case toString(DocumentStateTypes.Submitted): return DocumentState.submittedState()
 			case toString(DocumentStateTypes.Approved): return DocumentState.approvedState()
 			case toString(DocumentStateTypes.Deprecated): return DocumentState.deprecatedState()

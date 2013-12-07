@@ -3,11 +3,13 @@ package ar.com.healthentity
 import grails.plugins.springsecurity.Secured
 
 import org.codehaus.groovy.grails.validation.Validateable
-import org.joda.time.LocalDate;
-import org.springframework.web.multipart.MultipartFile;
+import org.joda.time.LocalDate
+import org.springframework.web.multipart.MultipartFile
 
-import com.janpix.exceptions.StudyDoesNotExistsException;
-import com.janpix.healthentity.StudyService;
+import com.janpix.exceptions.ErrorUploadingDocumentException
+import com.janpix.exceptions.PatientDoesNotExistsException
+import com.janpix.exceptions.StudyDoesNotExistsException
+import com.janpix.healthentity.StudyService
 
 @Validateable
 class CreateStudyCommand {
@@ -79,11 +81,12 @@ class StudyController {
 			}
 			catch (StudyDoesNotExistsException ex) {
 				log.error("No se puede descargar archivo para studyId=${id}", ex)
+				render status: 404
 			}
 		} else {
 			log.error("id == null")
+			render status: 404
 		}
-		render status: 404
 	}
 
 	def uploadToJanpix(UploadStudyCommand uploadStudyCommand) {
@@ -95,10 +98,32 @@ class StudyController {
 			} else {
 				respond uploadStudyCommand,[model:[upload_correct: false], view: 'upload_study']
 			}
-		}catch(Exception e){
+		}
+		catch(	ErrorUploadingDocumentException e) {
+			log.error("error en StudyController: ",e)
+			render "Error al subir el documento. Esto puede deberse a un problema de conexion. Error: "+e
+			return
+		}
+		catch(Exception e){
 			log.error("error en StudyController: ",e)
 			render "Error inesperado al subir el documento. Error: "+e
 			return
+		}
+	}
+
+	def refreshRemoteDocuments(Long id) {
+		if (id == null) {
+			log.error("id == null")
+			render status: 400
+		} else {
+			try {
+				def studies = studyService.downloadRemoteStudies(id)
+				respond id,[view: "remote_documents", model:[remoteStudies: studies]]
+			}
+			catch(PatientDoesNotExistsException ex) {
+				log.error("Paciente no existe.", ex)
+				render status: 404
+			}
 		}
 	}
 
