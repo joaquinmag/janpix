@@ -18,4 +18,8 @@ class StudyTypeRepository {
 	def findById(Long id) {
 		StudyType.findById(id)
 	}
+	
+	def findByStudyTypeId(Long id) {
+		StudyType.findByIdStudyType(id)
+	}
 }

@@ -12,6 +12,7 @@ import ar.com.healthentity.Patient
 import ar.com.healthentity.janpix.StudyTypeRepository;
 import ar.com.healthentity.janpix.utils.JanpixAssembler;
 
+import com.janpix.exceptions.PatientDoesNotExistsException
 import com.janpix.exceptions.StudyDoesNotExistsException
 import grails.transaction.Transactional
 
@@ -21,6 +22,7 @@ class StudyService {
 	def grailsApplication
 	def janpixService
 	def springSecurityService
+	def studyTypeService
 	
 	String getUploadsPath() {
 		return grailsApplication.mainContext.servletContext.getRealPath("/uploads")
@@ -67,6 +69,30 @@ class StudyService {
 			
 		janpixService.uploadDocument(study,currentUser)
 		study.isSynchro = true
+	}
+	
+	def downloadRemoteStudies(Long patientId) {
+		def patient = Patient.get(patientId)
+		if (!patient)
+			throw new PatientDoesNotExistsException("No existe el paciente con id=${patientId}")
+		[
+			new Study(
+				title: "que enfermedad",
+				observation: "comentarios",
+				date: new Date(2012, 5, 4),
+				isSynchro: true,
+				type: studyTypeService.findByStudyTypeId(3),
+				patient: patient
+			),
+			new Study(
+				title: "que enfermedad 2",
+				observation: "comentarios 2",
+				date: new Date(2012, 5, 15),
+				isSynchro: false,
+				patient: patient,
+				type: studyTypeService.findByStudyTypeId(3)
+			)
+		]
 	}
 	
 	private def copy(def file, def fileRandomName) {

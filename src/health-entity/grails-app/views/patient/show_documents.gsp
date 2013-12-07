@@ -93,6 +93,18 @@
 		 							</div>
 	 							</div>
 	 							<div class="tab-pane" id="Remoto">
+									<div class="row">
+										<div class="col-sm-12" style="padding-top:10px">
+											<g:remoteLink mapping="refreshRemoteDocuments" id="${patientInstance.id}" class="btn btn-primary pull-right" update="[success: 'remoteDocuments', failure: 'remoteDocuments']">
+												<i class="icon-refresh"></i>
+												Recargar listado de archivos
+											</g:remoteLink>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-sm-12" id="remoteDocuments">
+										</div>
+									</div>
 	 							</div>
 							</div><!-- /.tab-content -->
 						</div><!-- /.box-content -->
