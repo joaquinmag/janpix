@@ -196,25 +196,25 @@ service.janpix.pixmanager.serverURL = ""
 // set per-environment service url
 environments {
 	production {
-		service.janpix.regdoc.serverURL  = "http://www.changeme.com"
+		service.janpix.regdoc.serverURL  = "http://localhost:9090/regdoc-0.1"
 		service.janpix.repodoc.serverURL = "http://www.changeme.com"
 		service.janpix.pixmanager.serverURL = "http://www.changeme.com"
 	}
 	development {
-		service.janpix.regdoc.serverURL  = "http://localhost:9094"
+		service.janpix.regdoc.serverURL  = "http://localhost:9090/regdoc-0.1"
 		service.janpix.repodoc.serverURL = "http://localhost:8080"
-		service.janpix.pixmanager.serverURL = "http://localhost:9090"
+		service.janpix.pixmanager.serverURL = "http://localhost:9090/rup-0.1"
 	}
 	test {
-		service.janpix.regdoc.serverURL  = "http://localhost:9090"
+		service.janpix.regdoc.serverURL  = "http://localhost:9090/regdoc-0.1"
 		service.janpix.repodoc.serverURL = "http://localhost:9092"
-		service.janpix.pixmanager.serverURL = "http://localhost:9094"
+		service.janpix.pixmanager.serverURL = "http://localhost:9090/rup-0.1"
 	}
 }
 
 service.janpix.repodoc.url = "${service.janpix.repodoc.serverURL}/repodoc/services/repositorioJanpix"
-service.janpix.regdoc.url = "${service.janpix.regdoc.serverURL}/regdoc/services/registerJanpix?wsdl"
-service.janpix.pixmanager.url = "${service.janpix.pixmanager.serverURL}/rup-0.1/services/PIXManagerJanpix"
+service.janpix.regdoc.url = "${service.janpix.regdoc.serverURL}/services/documentJanpix"
+service.janpix.pixmanager.url = "${service.janpix.pixmanager.serverURL}/services/PIXManagerJanpix"
 
 cxf {
 	client {
@@ -242,15 +242,17 @@ cxf {
 			serviceEndpointAddress = "${service.janpix.pixmanager.url}"
 		}
 		
-		/*janpixRegdocServiceClient {
-			wsdlArgs = "-autoNameResolution"
-			clientInterface = com.janpix.repodoc.porttype.RegistroJanpixServicePortType
+		janpixRegdocServiceClient {
+			// para usar con grails wsdl2java
+			wsdlArgs = [ "-autoNameResolution", "-validate" ]
+			wsdl = "${service.janpix.regdoc.url}?wsdl"
+			namespace = "com.janpix.webclient.regdoc"
+			client = false
+						
+			// conexion con WS
+			clientInterface = com.janpix.webclient.regdoc.DocumentJanpixService
 			serviceEndpointAddress = "${service.janpix.regdoc.url}"
-			namespace = "com.janpix.regdoc"
-			//receiveTimeout = 0 //no timeout
-			//connectionTimeout = 0 //no timeout
-			//httpClientPolicy = 'customHttpClientPolicy'
-		}*/
+		}
 	}
 }
 

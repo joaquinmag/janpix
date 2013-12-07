@@ -23,6 +23,8 @@ import com.janpix.webclient.rup.GetAllPossibleMatchedPatientsRequestMessage
 import com.janpix.webclient.rup.GetIdentifiersRequestMessage
 import com.janpix.webclient.rup.PatientDTO
 import com.janpix.webclient.rup.TypeCode
+import com.janpix.webclient.regdoc.AckStoredQueryMessage;
+import com.janpix.webclient.regdoc.QueryDocumentRequest;
 
 
 
@@ -31,6 +33,7 @@ class JanpixService {
 	
 	def janpixRepodocServiceClient
 	def janpixPixManagerServiceClient
+	def janpixRegdocServiceClient
 	def grailsApplication
 	
 	/**
@@ -188,7 +191,37 @@ class JanpixService {
 	 */
 	List<Study> queryAllStudies(Patient patient){
 		List<Study> studies = []
-		//ACKStoredQueryMessage ack
+		AckStoredQueryMessage ack
+		
+		// Se obtiene el CUIS del paciente
+		String cuis = this.getPatientCUIS(patient)
+		
+		try {
+			log.info("Consultando por todos los estudios del paciente "+patient)
+			
+			log.info("Armando Request")
+			QueryDocumentRequest request = new QueryDocumentRequest()
+			request.healthEntityFinder = JanpixAssembler.toHealthEntityRegistro(grailsApplication.config.healthEntity)
+			request.patientId = cuis
+			
+			log.info("Enviando request al WS")
+			ack = janpixRegdocServiceClient.queryDocument(request)
+			
+			log.info("Se recibieron "+ack.clinicalDocuments.clinicalDocument.size()+" estudios")
+			// Transformo todos los estudios
+			ack.clinicalDocuments.clinicalDocument.each {com.janpix.webclient.regdoc.ClinicalDocumentDTO document->
+				
+				//TODO filtrar los documentos propios
+				
+				studies.add(JanpixAssembler.fromRegisterDocument(document))
+			}
+			
+		}
+		catch(Exception ex){
+			String message ="Error de conexión contra el Registro de Documentos: "+ex.message
+			log.error(message)
+			throw new JanpixConnectionException(message);
+		}
 		
 		return studies
 	}
