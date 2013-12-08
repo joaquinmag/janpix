@@ -193,31 +193,12 @@ log4j = {
 
 
 /** CXF Client **/
-service.janpix.repodoc.url = ""
-service.janpix.regdoc.url = ""
-service.janpix.pixmanager.serverURL = ""
-
-// set per-environment service url
-environments {
-	production {
-		service.janpix.regdoc.serverURL  = "http://regdoc.janpix.org"
-		service.janpix.repodoc.serverURL = "http://repodoc.janpix.org"
-		service.janpix.pixmanager.serverURL = "http://rup.janpix.org"
-	}
-	development {
-		service.janpix.regdoc.serverURL  = "http://regdoc.janpix.org"
-		service.janpix.repodoc.serverURL = "http://repodoc.janpix.org"
-		service.janpix.pixmanager.serverURL = "http://rup.janpix.org"
-	}
-	test {
-		service.janpix.regdoc.serverURL  = "http://localhost:9090/repodoc"
-		service.janpix.repodoc.serverURL = "http://localhost:9092/regdoc"
-		service.janpix.pixmanager.serverURL = "http://localhost:9094/rup"
-	}
-}
+service.janpix.regdoc.serverURL  = "http://regdoc.janpix.org"
+service.janpix.repodoc.serverURL = "http://repodoc.janpix.org"
+service.janpix.pixmanager.serverURL = "http://rup.janpix.org"
 
 service.janpix.repodoc.url = "${service.janpix.repodoc.serverURL}/services/repositorioJanpix"
-service.janpix.regdoc.url = "${service.janpix.regdoc.serverURL}/services/registerJanpix"
+service.janpix.regdoc.url = "${service.janpix.regdoc.serverURL}/services/documentJanpix"
 service.janpix.pixmanager.url = "${service.janpix.pixmanager.serverURL}/services/PIXManagerJanpix"
 
 cxf {
