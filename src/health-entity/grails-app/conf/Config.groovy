@@ -157,7 +157,9 @@ log4j = {
 	'grails.app.services.com.janpix.healthentity',
 	'grails.app.taglib.com.janpix.healthentity',
 	'grails.app.conf.com.janpix.healthentity',
-	'grails.app.filters.com.janpix.healthentity'
+	'grails.app.filters.com.janpix.healthentity',
+	'groovyx.net.ws',
+	'org.apache.cxf'
 	],additivity:false
 		
 			debug localApplicationLog: [
@@ -166,7 +168,9 @@ log4j = {
 	'grails.app.services.com.janpix.healthentity',
 	'grails.app.taglib.com.janpix.healthentity',
 	'grails.app.conf.com.janpix.healthentity',
-	'grails.app.filters.com.janpix.healthentity'
+	'grails.app.filters.com.janpix.healthentity',
+	'groovyx.net.ws',
+	'org.apache.cxf'
 	],additivity:false
 
 		}
