@@ -75,24 +75,7 @@ class StudyService {
 		def patient = Patient.get(patientId)
 		if (!patient)
 			throw new PatientDoesNotExistsException("No existe el paciente con id=${patientId}")
-		[
-			new Study(
-				title: "que enfermedad",
-				observation: "comentarios",
-				date: new Date(2012, 5, 4),
-				isSynchro: true,
-				type: studyTypeService.findByStudyTypeId(3),
-				patient: patient
-			),
-			new Study(
-				title: "que enfermedad 2",
-				observation: "comentarios 2",
-				date: new Date(2012, 5, 15),
-				isSynchro: false,
-				patient: patient,
-				type: studyTypeService.findByStudyTypeId(3)
-			)
-		]
+		janpixService.queryAllStudies(patient)
 	}
 	
 	private def copy(def file, def fileRandomName) {
