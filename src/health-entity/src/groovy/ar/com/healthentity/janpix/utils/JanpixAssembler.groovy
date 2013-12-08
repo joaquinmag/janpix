@@ -247,11 +247,12 @@ class JanpixAssembler {
 			return null
 			
 		ClinicalDocument document = new ClinicalDocument()
-		document.name = janpixDocument.fileAttributes.filename
+		document.filename = janpixDocument.fileAttributes.filename
 		document.mimeType = janpixDocument.fileAttributes.mimeType
 		document.size = janpixDocument.fileAttributes.size
-		document.binaryData = IOUtils.toByteArray(janpixDocument.binaryData.getInputStream());
+		//document.binaryData = IOUtils.toByteArray(janpixDocument.binaryData.getInputStream());
 		document.format = janpixDocument.formatName
+		
 		
 		return document
 	} 

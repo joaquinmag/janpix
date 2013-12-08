@@ -25,6 +25,8 @@ import com.janpix.webclient.rup.PatientDTO
 import com.janpix.webclient.rup.TypeCode
 import com.janpix.webclient.regdoc.AckStoredQueryMessage;
 import com.janpix.webclient.regdoc.QueryDocumentRequest;
+import com.janpix.webclient.repodoc.AckMessage as AckRepoDoc;
+import com.janpix.webclient.repodoc.TypeCode as TypeCodeRepoDoc;
 
 
 
@@ -126,26 +128,32 @@ class JanpixService {
 	 * Retorna el documento del Repositorio de Documentos
 	 * que contiene el uuid pasado
 	 */
-	ClinicalDocument getDocumentByUUID(String uuid){
+	ClinicalDocument getDocumentByUniqueId(String uniqueId){
+		AckRepoDoc ack
 		try{
-			RetrieveDocumentRequest requestMessage = new RetrieveDocumentRequest(uuid:uuid)
+			RetrieveDocumentRequest requestMessage = new RetrieveDocumentRequest(uuid:uniqueId)
 			
-			log.info("Consultando Repositorio de documentos por el uuid:"+uuid)
-			AckMessage ack =  janpixRepodocServiceClient.retrieveDocument(requestMessage)
-			if(ack.typeCode != AckMessage.TypeCode.SuccededRetrieve){
-				log.error("Error al obtener el documento. Error:"+ack.typeCode.toString()+". Mensaje:"+ack.text)
-				return null;
-			}
-			
-			log.info("Documento obtenido correctamente")
-			ClinicalDocument clinicalDocument = JanpixAssembler.fromDocument(ack.clinicalDocument)
-			return clinicalDocument;
+			log.info("Consultando Repositorio de documentos por el uuid:"+uniqueId)
+			ack =  janpixRepodocServiceClient.retrieveDocument(requestMessage)
 		}
 		catch(Exception ex){
 			String message ="Error de conexión contra el repositorio: "+ex.message 
 			log.error(message)
 			throw new JanpixException(message);
 		}
+		
+		if(ack.typeCode != TypeCodeRepoDoc.SUCCEDED_RETRIEVE){
+			log.error("Error al obtener el documento. Error:"+ack.typeCode.toString()+". Mensaje:"+ack.text)
+			return null;
+		}
+		log.info("Documento obtenido correctamente")
+		
+		log.info("Conviertiendo documento")
+		ClinicalDocument clinicalDocument = JanpixAssembler.fromDocument(ack.clinicalDocument)
+		//TODO escribir binaryData en disco e indicar fileLocation en clinicalDocument
+		
+		log.info("Retornando ClinicalDocument")
+		return clinicalDocument;
 	}
 	
 	/**
