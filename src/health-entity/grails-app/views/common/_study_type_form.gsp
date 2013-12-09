@@ -10,7 +10,10 @@
 		<g:if test="${selectedId}">
 		$('#${inputname}').val('${selectedId}');
 		$('li.dd-item[data-id=${selectedId}] .dd3-content:first').addClass('selected');
-		</g:if>		
+		</g:if>
+		<g:else>
+		$("#study-nestable-${inputname}").nestable("collapseAll");
+		</g:else>
 	});
 </r:script>
 <input id="${inputname}" type="hidden" name="${inputname}" />
