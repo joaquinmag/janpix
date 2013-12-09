@@ -95,7 +95,9 @@ log4j = {
 				'grails.app.services.com.janpix.regdoc',
 				'grails.app.taglib.com.janpix.regdoc',
 				'grails.app.conf.com.janpix.regdoc',
-				'grails.app.filters.com.janpix.regdoc'
+				'grails.app.filters.com.janpix.regdoc',
+				'groovyx.net.ws',
+				'org.apache.cxf'
 			],additivity:false
 		}
 		test{
@@ -133,7 +135,9 @@ log4j = {
 				'grails.app.services.com.janpix.regdoc',
 				'grails.app.taglib.com.janpix.regdoc',
 				'grails.app.conf.com.janpix.regdoc',
-				'grails.app.filters.com.janpix.regdoc'
+				'grails.app.filters.com.janpix.regdoc',
+				'groovyx.net.ws',
+				'org.apache.cxf'
 			],additivity:false
 		
 			debug localApplicationLog: [
@@ -142,7 +146,9 @@ log4j = {
 				'grails.app.services.com.janpix.regdoc',
 				'grails.app.taglib.com.janpix.regdoc',
 				'grails.app.conf.com.janpix.regdoc',
-				'grails.app.filters.com.janpix.regdoc'
+				'grails.app.filters.com.janpix.regdoc',
+				'groovyx.net.ws',
+				'org.apache.cxf'
 			],additivity:false
 		}
 	}

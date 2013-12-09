@@ -17,6 +17,7 @@ class CreateStudyCommand {
 	String studyTitle
 	LocalDate creationDate
 	Long studyType
+	FormatType formatType
 	String observations
 	MultipartFile studyFile
 	
@@ -27,6 +28,7 @@ class CreateStudyCommand {
 		creationDate nullable: false
 		studyTitle nullable: false, blank: false
 		patientId nullable: false
+		formatType nullable: false
 	}
 }
 

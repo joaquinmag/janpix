@@ -108,6 +108,10 @@ log4j = {
 			root {
 				error 'applicationLog'
 			}
+			debug applicationLog: [
+				'groovyx.net.ws',
+				'org.apache.cxf'
+			]
 		}
 		test{
 			root {
@@ -144,7 +148,9 @@ log4j = {
 				'grails.app.services.com.janpix.repodoc',
 				'grails.app.taglib.com.janpix.repodoc',
 				'grails.app.conf.com.janpix.repodoc',
-				'grails.app.filters.com.janpix.repodoc'
+				'grails.app.filters.com.janpix.repodoc',
+				'groovyx.net.ws',
+				'org.apache.cxf'
 			],additivity:false
 		
 			debug applicationLog: [
@@ -153,7 +159,9 @@ log4j = {
 				'grails.app.services.com.janpix.repodoc',
 				'grails.app.taglib.com.janpix.repodoc',
 				'grails.app.conf.com.janpix.repodoc',
-				'grails.app.filters.com.janpix.repodoc'
+				'grails.app.filters.com.janpix.repodoc',
+				'groovyx.net.ws',
+				'org.apache.cxf'
 		   ],additivity:false
 
 		}

@@ -53,16 +53,12 @@ class BootStrap {
 		tomoadult.name = "Tomografía"
 		tomoadult.father = adults
 		tomoadult.save(flush: true, failOnError: true)
-		if(Environment.current != Environment.PRODUCTION) {
-			new ClinicalDocumentType("Resonancia magnética", adults, 14).save(flush: true, failOnError: true)
-			def laboratoryAdults = new ClinicalDocumentType("Laboratorio", adults, 4).save(flush: true, failOnError: true)
-			new ClinicalDocumentType("HDL", laboratoryAdults, 15).save(flush: true, failOnError: true)
-			new ClinicalDocumentType("LDL", laboratoryAdults, 16).save(flush: true, failOnError: true)
-			new ClinicalDocumentType("Glóbulos blancos", laboratoryAdults, 17).save(flush: true, failOnError: true)
-			new ClinicalDocumentType("CD4", laboratoryAdults, 18).save(flush: true, failOnError: true)
-		}
-		
-		
+		ClinicalDocumentType.findOrCreateWhere(name: "Resonancia magnética", father: adults, idDocumentType: 14l).save(failOnError: true, flush: true)
+		def laboratoryAdults = ClinicalDocumentType.findOrCreateWhere(name: "Laboratorio", father: adults, idDocumentType: 4l).save(failOnError: true, flush: true)
+		ClinicalDocumentType.findOrCreateWhere(name: "HDL", father: laboratoryAdults, idDocumentType: 15l).save(failOnError: true, flush: true)
+		ClinicalDocumentType.findOrCreateWhere(name: "LDL", father: laboratoryAdults, idDocumentType: 16l).save(failOnError: true, flush: true)
+		ClinicalDocumentType.findOrCreateWhere(name: "Glóbulos blancos", father: laboratoryAdults, idDocumentType: 17l).save(failOnError: true, flush: true)
+		ClinicalDocumentType.findOrCreateWhere(name: "CD4", father: laboratoryAdults, idDocumentType: 18l).save(failOnError: true, flush: true)
     }
     def destroy = {
     }

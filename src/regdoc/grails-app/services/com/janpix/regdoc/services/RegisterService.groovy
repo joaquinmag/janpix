@@ -33,6 +33,7 @@ class RegisterService {
 			def fileAttr = fileAttributesAssembler.fromDTO(clinicalDocDTO.fileAttributes).save()
 			
 			log.info("Registrando documento ")
+			log.info("clinicalDoc typeId=${clinicalDocDTO.typeId}")
 			def clinicalDoc = clinicalDocumentAssembler.fromDTO(clinicalDocDTO, author, fileAttr).save()
 			
 			log.info("Validando documento ")

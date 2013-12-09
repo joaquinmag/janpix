@@ -14,6 +14,7 @@ import ar.com.healthentity.janpix.utils.JanpixAssembler;
 
 import com.janpix.exceptions.PatientDoesNotExistsException
 import com.janpix.exceptions.StudyDoesNotExistsException
+
 import grails.transaction.Transactional
 
 @Transactional
@@ -37,7 +38,7 @@ class StudyService {
 			mimeType: cmd.studyFile.contentType,
 			size: cmd.studyFile.size,
 			fileLocation: randomName,
-			format: FormatType.PDF
+			format: cmd.formatType
 		)
 		cd.save(failOnError: true)
 		def study = new Study(
