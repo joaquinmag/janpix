@@ -6,11 +6,9 @@
 		<g:set var="entity" value="${patientInstance}" />
 		<title>Estudios de ${entity.fullName}</title>
 		<r:script>
-			function uploadCorrect() {
-				alert('subio correctamente');
-			}
-			function uploadIncorrect() {
-				alert('subio incorrectamente');
+			function uploadFinished() {
+				showModal();
+				updateDocumentState();
 			}
 		</r:script>
 	</head>
@@ -59,12 +57,12 @@
 				 									</thead> 
 				 									<tbody>
 				 										<g:each in="${entity.studies}" var="study">
-					 										<tr>
+					 										<tr id="study${study.id}">
 					 											<td class="center"><g:formatDate format="dd/MM/yyyy" date="${study.date}"/></td>
 					 											<td class="center">${study.title}</td>
 					 											<td class="center">${study.type.name}</td>
 					 											<td class="center"><g:link controller="study" action="download" id="${study.id}">${study.document.filename}</g:link></td>
-					 											<td class="center">
+					 											<td class="center labelSynchro">
 					 												<g:if test="${!study.isSynchro}">
 					 													<span class="label label-warning">
 						 													Local
@@ -77,12 +75,14 @@
 																	</g:else>
 					 											</td>
 																<td class="center">
-																	<g:if test="${!study.isSynchro}">
-																		<g:remoteLink mapping="uploadDocument" id="${study.id}" class="btn btn-info" update="[success: 'modalBody', failure: 'modalBody']"  onSuccess="show_modal()">
-																			<i class="icon-cloud-upload"></i>
-																			Subir archivo
-																		</g:remoteLink>
-																	</g:if>
+																	<div class="actions">
+																		<g:if test="${!study.isSynchro}">
+																			<g:remoteLink mapping="uploadDocument" id="${study.id}" class="btn btn-info" update="[success: 'modalBody', failure: 'modalBody']"  onSuccess="uploadFinished()">
+																				<i class="icon-cloud-upload"></i>
+																				Subir archivo
+																			</g:remoteLink>
+																		</g:if>
+																	</div>
 																</td>
 					 										</tr>
 				 										</g:each>
