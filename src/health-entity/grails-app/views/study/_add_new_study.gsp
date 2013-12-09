@@ -11,7 +11,7 @@ $(document).ready(function() {
 	   thumbnail:'large'
 	});
 	$('.date-picker').datepicker();
-
+	$("#studyFormat").select2();
 });
 </r:script>
 <g:render template="/common/errors" model="['model': createStudyModel]" />
@@ -61,6 +61,17 @@ $(document).ready(function() {
 			<div class="form-group col-sm-6 col-md-12">
 				<label class="control-label" for="studyFile">Archivo</label>
 				<input id="studyFile" name="studyFile" type="file" class="form-control" />
+			</div>
+		</div>
+		<div class="row">
+			<div class="form-group col-sm-6 col-md-12">
+				<label class="control-label" for="studyFormat">Formato de estudio</label>
+				<g:select name="formatType"
+						id="studyFormat"
+						from="${formatTypes}"
+						value="${createStudyModel.formatType}"
+						class="form-control" />
+				<g:fieldErrors bean="${createStudyModel}" field="formatType" />
 			</div>
 		</div>
 		<div class="row">
