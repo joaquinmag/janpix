@@ -7,7 +7,7 @@
 		<title>Estudios de ${entity.fullName}</title>
 		<r:script>
 			function uploadFinished() {
-				showModal();
+				show_modal();
 				updateDocumentState();
 			}
 		</r:script>
@@ -70,7 +70,7 @@
 																	</g:if>
 																	<g:else>
 																		<span class="label label-success">
-						 													Subido
+						 													Remoto
 						 												</span>
 																	</g:else>
 					 											</td>

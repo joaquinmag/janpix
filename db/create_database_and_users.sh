@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo "Creo base de datos mysql";
+
 SQL=$( cat <<EOF
 CREATE DATABASE janpix_regdoc_prod DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 CREATE DATABASE janpix_rup_prod DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
@@ -14,3 +16,11 @@ EOF
 )
 
 echo "$SQL" | mysql -u root -p;
+
+echo "Creo bases de datos mongo";
+JS=$( cat <<EOF
+use janpix_repodoc;
+use janpix_repodoc_test;
+EOF
+)
+echo "$JS" | mongo

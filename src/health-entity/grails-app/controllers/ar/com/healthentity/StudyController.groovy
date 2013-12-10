@@ -96,9 +96,9 @@ class StudyController {
 			uploadStudyCommand.validate()
 			if (!uploadStudyCommand.hasErrors()) {
 				studyService.uploadStudy(uploadStudyCommand)
-				respond uploadStudyCommand,[model:[upload_correct: true], view: 'upload_study']
+				respond uploadStudyCommand,[model:[upload_correct: true, idStudy: uploadStudyCommand.id], view: 'upload_study']
 			} else {
-				respond uploadStudyCommand,[model:[upload_correct: false], view: 'upload_study']
+				respond uploadStudyCommand,[model:[upload_correct: false, idStudy: uploadStudyCommand.id], view: 'upload_study']
 			}
 		}
 		catch(	ErrorUploadingDocumentException e) {
