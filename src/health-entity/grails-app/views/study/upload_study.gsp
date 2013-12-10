@@ -12,11 +12,11 @@
 </g:else>
 <script type="text/javascript">
 	function updateDocumentState() {
-		var actions = $("#study${createStudyCommand.id} .actions");
-		var status = $("#study${createStudyCommand.id} .labelSynchro");
+		var actions = $("#study${idStudy} .actions");
+		var status = $("#study${idStudy} .labelSynchro");
 		<g:if test="${upload_correct}">
 		actions.show();
-		status.html("<span class=\"label label-info\">Remoto</span>")
+		status.html("<span class=\"label label-success\">Remoto</span>")
 		</g:if>
 		<g:else>
 		actions.hide();
