@@ -77,7 +77,7 @@
 																<td class="center">
 																	<div class="actions">
 																		<g:if test="${!study.isSynchro}">
-																			<g:remoteLink mapping="uploadDocument" id="${study.id}" class="btn btn-info" update="[success: 'modalBody', failure: 'modalBody']"  onSuccess="uploadFinished()">
+																			<g:remoteLink mapping="uploadDocument" id="${study.id}" class="btn btn-primary" update="[success: 'modalBody', failure: 'modalBody']"  onSuccess="uploadFinished()">
 																				<i class="icon-cloud-upload"></i>
 																				Subir archivo
 																			</g:remoteLink>

@@ -14,8 +14,11 @@ class Study {
 	StudyType type
 	//User author
 	String observation
+
+	// synchro information
 	boolean isSynchro = false
-	
+	String repositoryId
+
 	static mapping = {
 		sort "date"
 	}
@@ -27,6 +30,7 @@ class Study {
 		date nullable: false
 		type nullable: false
 		observation nullable: true
+		repositoryId nullable: true
 		//author nullable: false
     }
 	

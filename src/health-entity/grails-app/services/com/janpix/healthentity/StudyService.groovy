@@ -78,7 +78,20 @@ class StudyService {
 			throw new PatientDoesNotExistsException("No existe el paciente con id=${patientId}")
 		janpixService.queryAllStudies(patient)
 	}
-	
+
+	def obtainRemoteStudyForPatient(Long idPatient, Long uniqueId, Long filename) {
+		final def patient = Patient.get(idPatient)
+		if (!patient)
+			throw new PatientDoesNotExistsException("No existe el paciente con id=${idPatient}")
+
+		final def random = new Random().nextInt().abs().toString()
+		final def randomName = "${random}${filename}"
+		final def path = getUploadsPath()
+		final def destination = new File(path, fileRandomName)
+		def study = janpixService.getDocumentByUniqueId(uniqueId, destination)
+		study.fileLocation = randomName
+	}
+
 	private def copy(def file, def fileRandomName) {
 		final def path = getUploadsPath()
 		final def destination = new File(path, fileRandomName)
