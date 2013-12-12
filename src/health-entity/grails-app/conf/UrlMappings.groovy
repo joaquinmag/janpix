@@ -23,6 +23,7 @@ class UrlMappings {
 		name refreshRemoteDocuments: "/study/refreshRemotes/$id" (controller:'study', action: 'refreshRemoteDocuments') {
 			constraints { id(matches:/\d+/) }
 		}
+		name downloadRemoteDocument: "/study/downloadRemote" (controller:'study', action: 'downloadRemote')
 
         "500"(view:'/error')
 		"400"(view:'/error')

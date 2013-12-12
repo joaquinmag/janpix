@@ -265,14 +265,20 @@ class JanpixAssembler {
 	static Study fromRegisterDocument(com.janpix.webclient.regdoc.ClinicalDocumentDTO janpixDocument){
 		if(janpixDocument == null)
 			return null;
-		
+
 		Study study = new Study();
 		study.title = janpixDocument.name
 		study.date = janpixDocument.documentCreationStarted
 		study.type = JanpixAssembler.fromTypeId(janpixDocument.typeId)
 		study.observation = janpixDocument.comments
-		study.isSynchro = true
-		
+		study.repositoryId = janpixDocument.uniqueId
+		study.document = new ClinicalDocument()
+		study.document.format = janpixDocument.formatName
+		study.document.filename = janpixDocument.fileAttributes.filename
+		study.document.mimeType = janpixDocument.fileAttributes.mimeType
+		study.document.dateCreated = janpixDocument.fileAttributes.creationTime
+		study.document.size = janpixDocument.fileAttributes.size
+
 		return study
 	}
 	

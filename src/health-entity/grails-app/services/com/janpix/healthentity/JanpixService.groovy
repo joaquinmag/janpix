@@ -1,5 +1,6 @@
 package com.janpix.healthentity
 
+import java.io.FileOutputStream
 import grails.transaction.Transactional
 import ar.com.healthentity.ClinicalDocument
 import ar.com.healthentity.Patient
@@ -128,7 +129,7 @@ class JanpixService {
 	 * Retorna el documento del Repositorio de Documentos
 	 * que contiene el uuid pasado
 	 */
-	ClinicalDocument getDocumentByUniqueId(String uniqueId){
+	ClinicalDocument getDocumentByUniqueId(String uniqueId, def destinationFile) {
 		AckRepoDoc ack
 		try{
 			RetrieveDocumentRequest requestMessage = new RetrieveDocumentRequest(uuid:uniqueId)
@@ -150,8 +151,8 @@ class JanpixService {
 		
 		log.info("Conviertiendo documento")
 		ClinicalDocument clinicalDocument = JanpixAssembler.fromDocument(ack.clinicalDocument)
-		//TODO escribir binaryData en disco e indicar fileLocation en clinicalDocument
-		
+		ack.clinicalDocument.binaryService.writeTo(new FileOutputStream(destinationFile))
+
 		log.info("Retornando ClinicalDocument")
 		return clinicalDocument;
 	}
@@ -227,7 +228,7 @@ class JanpixService {
 		}
 		catch(Exception ex){
 			String message ="Error de conexión contra el Registro de Documentos: "+ex.message
-			log.error(message)
+			log.error(message, ex)
 			throw new JanpixConnectionException(message);
 		}
 		

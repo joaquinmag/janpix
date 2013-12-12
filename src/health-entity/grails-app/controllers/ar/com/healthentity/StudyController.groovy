@@ -33,6 +33,19 @@ class CreateStudyCommand {
 }
 
 @Validateable
+class DownloadRemoteCommand {
+	Long idPatient
+	Long uniqueId
+	String filename
+
+	static constraints = {
+		idPatient nullable: false
+		uniqueId nullable: false
+		filename nullable: false
+	}
+}
+
+@Validateable
 class UploadStudyCommand {
 	Long id
 }
@@ -47,7 +60,8 @@ class StudyController {
 	static allowedMethods = [
 		create:"POST",
 		uploadToJanpix: "POST",
-		download: "GET"
+		download: "GET",
+		downloadRemote: "POST"
 	]
 
 	def create(CreateStudyCommand createStudyCommand) {
@@ -101,7 +115,7 @@ class StudyController {
 				respond uploadStudyCommand,[model:[upload_correct: false, idStudy: uploadStudyCommand.id], view: 'upload_study']
 			}
 		}
-		catch(	ErrorUploadingDocumentException e) {
+		catch(ErrorUploadingDocumentException e) {
 			log.error("error en StudyController: ",e)
 			render "Error al subir el documento. Esto puede deberse a un problema de conexion. Error: "+e
 			return
@@ -120,12 +134,22 @@ class StudyController {
 		} else {
 			try {
 				def studies = studyService.downloadRemoteStudies(id)
-				respond id,[view: "remote_documents", model:[remoteStudies: studies]]
+				respond id,[view: "remote_documents", model:[idPatient: id, remoteStudies: studies]]
 			}
 			catch(PatientDoesNotExistsException ex) {
 				log.error("Paciente no existe.", ex)
 				render status: 404
 			}
+		}
+	}
+
+	def downloadRemote(DownloadRemoteCommand cmd) {
+		cmd.validate()
+		if (!cmd.hasErrors()) {
+			def remoteStudy = studyService.obtainRemoteStudyForPatient(cmd.idPatient, cmd.uniqueId, cmd.filename)
+		} else {
+			log.error("error validating DownloadRemoteCommand")
+			render view:"/patient/show_documents", model:[patientInstance: Patient.findById(cmd.idPatient), urldownload: studyService.uploadsPath]
 		}
 	}
 
