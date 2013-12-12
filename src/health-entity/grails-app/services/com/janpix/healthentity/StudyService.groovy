@@ -1,7 +1,7 @@
 package com.janpix.healthentity
 
 import org.springframework.web.multipart.MultipartFile;
-
+import java.io.File
 import ar.com.healthentity.ClinicalDocument
 import ar.com.healthentity.CreateStudyCommand;
 import ar.com.healthentity.FormatType;
@@ -76,20 +76,36 @@ class StudyService {
 		def patient = Patient.get(patientId)
 		if (!patient)
 			throw new PatientDoesNotExistsException("No existe el paciente con id=${patientId}")
-		janpixService.queryAllStudies(patient)
+		def remoteStudies = janpixService.queryAllStudies(patient)
+		remoteStudies.each { remoteStudy ->
+			if (patient.studies.find { localStudy -> localStudy.repositoryId == remoteStudy.repositoryId })
+				remoteStudy.isSynchro = true
+		}
 	}
 
-	def obtainRemoteStudyForPatient(Long idPatient, Long uniqueId, Long filename) {
-		final def patient = Patient.get(idPatient)
+	def obtainRemoteStudyForPatient(def cmd) {
+		final def patient = Patient.get(cmd.idPatient)
 		if (!patient)
 			throw new PatientDoesNotExistsException("No existe el paciente con id=${idPatient}")
 
 		final def random = new Random().nextInt().abs().toString()
-		final def randomName = "${random}${filename}"
+		final def randomName = "${random}${cmd.filename}"
 		final def path = getUploadsPath()
-		final def destination = new File(path, fileRandomName)
-		def study = janpixService.getDocumentByUniqueId(uniqueId, destination)
-		study.fileLocation = randomName
+		final File destination = new File(path, randomName)
+		def clinicalDocument = janpixService.getDocumentByUniqueId(cmd.uniqueId, destination)
+		clinicalDocument.fileLocation = randomName
+		clinicalDocument.filename = cmd.filename
+		clinicalDocument.save(failOnError: true)
+		Study study = new Study()
+		study.document = clinicalDocument
+		study.date = cmd.creationDate
+		study.type = StudyType.findByIdStudyType(cmd.idStudyType)
+		study.observation = cmd.observation
+		study.isSynchro = true
+		study.repositoryId = cmd.uniqueId
+		study.title = cmd.title
+		patient.addToStudies(study)
+		study.save(failOnError: true)
 	}
 
 	private def copy(def file, def fileRandomName) {

@@ -34,14 +34,22 @@ class CreateStudyCommand {
 
 @Validateable
 class DownloadRemoteCommand {
+	String title
 	Long idPatient
-	Long uniqueId
+	Date creationDate
+	String uniqueId
+	Long idStudyType
+	String observation
 	String filename
 
 	static constraints = {
+		title nullable: false, blank: false
 		idPatient nullable: false
 		uniqueId nullable: false
 		filename nullable: false
+		observation nullable: true, blank: true
+		idStudyType nullable: false
+		creationDate nullable: false
 	}
 }
 
@@ -146,11 +154,14 @@ class StudyController {
 	def downloadRemote(DownloadRemoteCommand cmd) {
 		cmd.validate()
 		if (!cmd.hasErrors()) {
-			def remoteStudy = studyService.obtainRemoteStudyForPatient(cmd.idPatient, cmd.uniqueId, cmd.filename)
+			def remoteStudy = studyService.obtainRemoteStudyForPatient(cmd)
 		} else {
 			log.error("error validating DownloadRemoteCommand")
-			render view:"/patient/show_documents", model:[patientInstance: Patient.findById(cmd.idPatient), urldownload: studyService.uploadsPath]
+			cmd.errors.each {
+				log.error("validation error: ${it}")
+			}
 		}
+		render view:"/patient/show_documents", model:[patientInstance: Patient.findById(cmd.idPatient), urldownload: studyService.uploadsPath]
 	}
 
 }

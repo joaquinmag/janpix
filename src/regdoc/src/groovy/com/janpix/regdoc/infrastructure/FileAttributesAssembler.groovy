@@ -13,6 +13,7 @@ class FileAttributesAssembler {
 		dto.creationTime = domainFileAttr.creationTime
 		dto.fileHash = domainFileAttr.fileHash
 		dto.size = domainFileAttr.size
+		dto.filename = domainFileAttr.filename
 		
 		return dto
 	}
