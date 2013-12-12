@@ -1,5 +1,6 @@
 package com.janpix.healthentity
 
+import java.io.File
 import java.io.FileOutputStream
 import grails.transaction.Transactional
 import ar.com.healthentity.ClinicalDocument
@@ -129,7 +130,7 @@ class JanpixService {
 	 * Retorna el documento del Repositorio de Documentos
 	 * que contiene el uuid pasado
 	 */
-	ClinicalDocument getDocumentByUniqueId(String uniqueId, def destinationFile) {
+	ClinicalDocument getDocumentByUniqueId(String uniqueId, File destinationFile) {
 		AckRepoDoc ack
 		try{
 			RetrieveDocumentRequest requestMessage = new RetrieveDocumentRequest(uuid:uniqueId)
@@ -151,8 +152,9 @@ class JanpixService {
 		
 		log.info("Conviertiendo documento")
 		ClinicalDocument clinicalDocument = JanpixAssembler.fromDocument(ack.clinicalDocument)
-		ack.clinicalDocument.binaryService.writeTo(new FileOutputStream(destinationFile))
-
+		log.info("Escribiendo en destinationFile=${destinationFile}")
+		ack.clinicalDocument.binaryData.writeTo(new FileOutputStream(destinationFile))
+		log.info("Archivo creado correctamente")
 		log.info("Retornando ClinicalDocument")
 		return clinicalDocument;
 	}
@@ -219,12 +221,11 @@ class JanpixService {
 			log.info("Se recibieron "+ack.clinicalDocuments.clinicalDocument.size()+" estudios")
 			// Transformo todos los estudios
 			ack.clinicalDocuments.clinicalDocument.each {com.janpix.webclient.regdoc.ClinicalDocumentDTO document->
-				
-				//TODO filtrar los documentos propios
-				
-				studies.add(JanpixAssembler.fromRegisterDocument(document))
+				log.info("Filename: ${document.fileAttributes.filename}")
+				def study = JanpixAssembler.fromRegisterDocument(document)
+				log.info("Parsed filename: ${study.document.filename}")
+				studies.add(study)
 			}
-			
 		}
 		catch(Exception ex){
 			String message ="Error de conexión contra el Registro de Documentos: "+ex.message

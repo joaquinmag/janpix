@@ -27,18 +27,18 @@ class QueryDocumentService {
 				if (queryDocumentRequestMessage.patientId != null)
 					eq("patientId", queryDocumentRequestMessage.patientId)
 			}
-			 
+
 			log.info("Se obtuvieron "+results.size()+" documentos")
-			
+
 			log.info("Armando respuesta")
 			results.each { ClinicalDocument doc->
 				documents.add(clinicalDocumentAssembler.toDTO(doc))
 			}
-			
+
 		}catch(Exception ex){
 			log.error("Error al consultar los documentos en Registro de Documentos. Error: "+ex.message)
 		}
-		
+
 		return new ACKStoredQueryMessage(documents: documents)
     }
 }
