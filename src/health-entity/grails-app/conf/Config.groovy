@@ -109,7 +109,7 @@ log4j = {
 					
 		rollingFile name: 'applicationLog',
 					maxFileSize: 1024,
-					file: "/tmp/logs/janpix/healthentity/application.log"
+					file: "/var/log/tomcat7/janpix/healthentity/application.log"
 					
 		rollingFile name: 'localApplicationLog',
 					maxFileSize: 1024,
@@ -206,17 +206,17 @@ environments {
 	}
 	development {
 		service.janpix.regdoc.serverURL  = "http://localhost:9090/regdoc-0.1"
-		service.janpix.repodoc.serverURL = "http://localhost:8080"
+		service.janpix.repodoc.serverURL = "http://localhost:9090/repodoc-0.1"
 		service.janpix.pixmanager.serverURL = "http://localhost:9090/rup-0.1"
 	}
 	test {
 		service.janpix.regdoc.serverURL  = "http://localhost:8080/regdoc"
-		service.janpix.repodoc.serverURL = "http://localhost:8080"
+		service.janpix.repodoc.serverURL = "http://localhost:9090/repodoc-0.1"
 		service.janpix.pixmanager.serverURL = "http://localhost:9090/rup-0.1"
 	}
 }
 
-service.janpix.repodoc.url = "${service.janpix.repodoc.serverURL}/repodoc/services/repositorioJanpix"
+service.janpix.repodoc.url = "${service.janpix.repodoc.serverURL}/services/repositorioJanpix"
 service.janpix.regdoc.url = "${service.janpix.regdoc.serverURL}/services/documentJanpix"
 service.janpix.pixmanager.url = "${service.janpix.pixmanager.serverURL}/services/PIXManagerJanpix"
 
@@ -276,8 +276,8 @@ grails.gorm.failOnError=true
 /** Health Entity - Config **/
 // Datos de la Entidad Sanitaria
 healthEntity {
-	name = "San Juan de Dios"
-	oid = "2.16.840.1.113883.2.10.100.100"
+	name = "Clinica Guemes"
+	oid = "2.16.840.1.113883.2.10.100.150"
 }
 
 /** Configuracion de los datos del RUP **/
