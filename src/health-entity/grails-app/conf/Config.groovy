@@ -109,7 +109,7 @@ log4j = {
 					
 		rollingFile name: 'applicationLog',
 					maxFileSize: 1024,
-					file: "/tmp/logs/janpix/healthentity/application.log"
+					file: "/var/log/tomcat7/janpix/healthentity/application.log"
 					
 		rollingFile name: 'localApplicationLog',
 					maxFileSize: 1024,
@@ -257,8 +257,8 @@ grails.gorm.failOnError=true
 /** Health Entity - Config **/
 // Datos de la Entidad Sanitaria
 healthEntity {
-	name = "San Juan de Dios"
-	oid = "2.16.840.1.113883.2.10.100.100"
+	name = "Clinica Guemes"
+	oid = "2.16.840.1.113883.2.10.100.150"
 }
 
 /** Configuracion de los datos del RUP **/

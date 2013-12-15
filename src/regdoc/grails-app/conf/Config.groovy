@@ -76,18 +76,20 @@ log4j = {
 	appenders {
 		console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
 					
-		file name: 'applicationLog',
-					maxFileSize: 1024,
-					file: "/tmp/logs/janpix/regdoc/application.log"
 		file name: "localApplicationLog",
 					maxFileSize: 1024,
 					file: "application.log"
+
+		file name: "applicationLog",
+					maxFileSize: 1024,
+					file: "/var/log/tomcat7/janpix/regdoc/application.log"
 	}
+
 
 	environments {
 		production {
 			root {
-				error 'applicationLog', 'localApplicationLog'
+				error 'applicationLog'
 			}
 			debug applicationLog: [
 				'grails.app.controllers.com.janpix.regdoc',
@@ -96,23 +98,13 @@ log4j = {
 				'grails.app.taglib.com.janpix.regdoc',
 				'grails.app.conf.com.janpix.regdoc',
 				'grails.app.filters.com.janpix.regdoc',
-				'groovyx.net.ws',
-				'org.apache.cxf'
-			],additivity:false
-			debug localApplicationLog: [
-				'grails.app.controllers.com.janpix.regdoc',
-				'grails.app.domain.com.janpix.regdoc',
-				'grails.app.services.com.janpix.regdoc',
-				'grails.app.taglib.com.janpix.regdoc',
-				'grails.app.conf.com.janpix.regdoc',
-				'grails.app.filters.com.janpix.regdoc',
-				'groovyx.net.ws',
-				'org.apache.cxf'
+//				'groovyx.net.ws',
+//				'org.apache.cxf'
 			],additivity:false
 		}
 		test{
 			root {
-				error 'applicationLog','stdout'
+				error 'localApplicationLog','stdout'
 			}
 			//Usa los appenders 'stdout' y 'applicationLog' para el nivel debug
 			debug stdout: [
@@ -124,7 +116,7 @@ log4j = {
 				'grails.app.filters.com.janpix.regdoc'
 			] ,additivity:false
 		
-			debug applicationLog: [
+			debug localApplicationLog: [
 				'grails.app.controllers.com.janpix.regdoc',
 				'grails.app.domain.com.janpix.regdoc',
 				'grails.app.services.com.janpix.regdoc.services',
@@ -177,6 +169,7 @@ log4j = {
 		   'org.hibernate',
 		   'net.sf.ehcache.hibernate'
 }
+
 
 // Uncomment and edit the following lines to start using Grails encoding & escaping improvements
 

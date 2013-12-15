@@ -75,12 +75,12 @@ log4j = {
 		console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
 		
 		file name: "demographicLog",
-					maxFileSize: 1024,
-					file: "/tmp/logs/janpix/rup/demographicPersonsService.log"
+					maxFileSize: 2048,
+					file: "/var/log/tomcat7/janpix/rup/demographicPersonsService.log"
 					
 		file name: 'applicationLog',
-					maxFileSize: 1024,
-					file: "/tmp/logs/janpix/rup/application.log"
+					maxFileSize: 2048,
+					file: "/var/log/tomcat7/janpix/rup/application.log"
 	}
 
 	environments {
@@ -170,6 +170,7 @@ log4j = {
 }
 
 
+
 /**
  * Configuración CXF: plugin WS-SOAP 
  */
@@ -194,7 +195,7 @@ identityMethods{
 			document		= 0.25
 			name 			= 0.25
 			birthdate		= 0.15
-			sex				= 0.05
+			sex			= 0.05
 			livingplace		= 0.2
 			address			= 0.1
 		}

@@ -6,4 +6,4 @@ then
 	exit 1
 fi
 
-mysql -u janpix_rup_prod -p janpix_regdoc_prod < $1
+mysql -u janpix_rup_prod -p janpix_rup_prod < $1

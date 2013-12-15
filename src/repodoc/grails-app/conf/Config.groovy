@@ -100,7 +100,11 @@ log4j = {
 					
 		file name: 'applicationLog',
 					maxFileSize: 1024,
-					file: "/tmp/logs/janpix/repodoc/application.log"
+					file: "/var/log/tomcat7/janpix/repodoc/application.log"
+
+		file name: 'cxfLog',
+					maxFileSize: 1024,
+					file: "/var/log/tomcat7/janpix/repodoc/cxf.log"
 	}
 
 	environments {
@@ -108,10 +112,18 @@ log4j = {
 			root {
 				error 'applicationLog'
 			}
-			debug applicationLog: [
+			debug cxfLog: [
 				'groovyx.net.ws',
 				'org.apache.cxf'
 			]
+			debug applicationLog: [
+				'grails.app.controllers.com.janpix.repodoc',
+				'grails.app.domain.com.janpix.repodoc',
+				'grails.app.services.com.janpix.repodoc',
+				'grails.app.taglib.com.janpix.repodoc',
+				'grails.app.conf.com.janpix.repodoc',
+				'grails.app.filters.com.janpix.repodoc'
+			   ],additivity:false
 		}
 		test{
 			root {

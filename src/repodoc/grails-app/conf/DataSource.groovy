@@ -45,6 +45,17 @@ hibernate {
 }*/
 
 environments {
+	production {
+		grails{
+			mongo {
+				host = "localhost"
+				port = 27017
+				//username = "mongodb"
+				//password = "mongodb"
+				databaseName = "janpix_repodoc_prod"
+			}
+		}
+	}
 	development {
 		grails{
 			mongo {
