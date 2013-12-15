@@ -78,7 +78,7 @@ class StudyService {
 			throw new PatientDoesNotExistsException("No existe el paciente con id=${patientId}")
 		def remoteStudies = janpixService.queryAllStudies(patient)
 		remoteStudies.each { remoteStudy ->
-			if (patient.studies.find { localStudy -> localStudy.repositoryId == remoteStudy.repositoryId })
+			if (patient.studies.find { localStudy -> "${localStudy.document.size}${localStudy.document.id}" == remoteStudy.repositoryId })
 				remoteStudy.isSynchro = true
 		}
 	}
@@ -102,7 +102,6 @@ class StudyService {
 		study.type = StudyType.findByIdStudyType(cmd.idStudyType)
 		study.observation = cmd.observation
 		study.isSynchro = true
-		study.repositoryId = cmd.uniqueId
 		study.title = cmd.title
 		patient.addToStudies(study)
 		study.save(failOnError: true)
