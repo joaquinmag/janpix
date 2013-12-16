@@ -38,6 +38,7 @@ class DownloadRemoteCommand {
 	Long idPatient
 	Date creationDate
 	String uniqueId
+	String localDocId
 	Long idStudyType
 	String observation
 	String filename
@@ -46,6 +47,7 @@ class DownloadRemoteCommand {
 		title nullable: false, blank: false
 		idPatient nullable: false
 		uniqueId nullable: false
+		localDocId nullable: false
 		filename nullable: false
 		observation nullable: true, blank: true
 		idStudyType nullable: false
