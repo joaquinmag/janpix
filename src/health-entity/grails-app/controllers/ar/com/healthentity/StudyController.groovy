@@ -122,7 +122,7 @@ class StudyController {
 				studyService.uploadStudy(uploadStudyCommand)
 				respond uploadStudyCommand,[model:[upload_correct: true, idStudy: uploadStudyCommand.id], view: 'upload_study']
 			} else {
-				respond uploadStudyCommand,[model:[upload_correct: false, idStudy: uploadStudyCommand.id], view: 'upload_study']
+				respond uploadStudyCommand,[model:[upload_correct: false, idStudy: uploadStudyCommand.id], view: 'upload_study', status: 500]
 			}
 		}
 		catch(ErrorUploadingDocumentException e) {
@@ -157,11 +157,13 @@ class StudyController {
 		cmd.validate()
 		if (!cmd.hasErrors()) {
 			def remoteStudy = studyService.obtainRemoteStudyForPatient(cmd)
+			flash.success = "El estudio \"${remoteStudy.title}\" se pudo descargar correctamente"
 		} else {
 			log.error("error validating DownloadRemoteCommand")
 			cmd.errors.each {
 				log.error("validation error: ${it}")
 			}
+			flash.warning = "El archivo no se pudo descargar"
 		}
 		render view:"/patient/show_documents", model:[patientInstance: Patient.findById(cmd.idPatient), urldownload: studyService.uploadsPath]
 	}

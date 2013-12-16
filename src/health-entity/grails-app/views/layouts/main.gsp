@@ -30,20 +30,16 @@
 
 			<!-- start: Content -->
 			<div id="content" class="col-lg-10 col-sm-11" style="min-height:768px">
-					<g:if test="${flash.warning}">
-						<div class="alert alert-danger">
-						 	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-						 	<strong>¡Oops!</strong>
-							${flash.warning}
-						</div>
-					</g:if>
-					<g:if test="${flash.success}">
-						<div class="alert alert-success">
-						 	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-						 	<strong>¡Excelente!</strong>
-							${flash.success}
-						</div>
-					</g:if>
+					<div id="warning-msg" class="alert alert-danger" style="<%= (flash.warning) ? "" : "display:none;" %>">
+					 	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+					 	<strong>¡Oops!</strong>
+						<span id="warning-msg-txt">${flash.warning}</span>
+					</div>
+					<div id="success-msg" class="alert alert-success" style="<%= (flash.success) ? "" : "display:none;" %>">
+					 	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+					 	<strong>¡Excelente!</strong>
+						<span id="success-msg-txt">${flash.success}</span>
+					</div>
 		
 					<g:layoutBody/>
 			</div>
