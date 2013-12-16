@@ -78,7 +78,7 @@ class StudyController {
 		withForm {
 			createStudyCommand.validate()
 			if (!createStudyCommand.hasErrors()) {
-				studyService.createStudy(createStudyCommand, springSecurityService.currentUser, studyTypeService.findById(createStudyCommand.studyType))
+				studyService.createStudy(createStudyCommand, springSecurityService.currentUser, studyTypeService.findByStudyTypeId(createStudyCommand.studyType))
 				flash.success = "Estudio creado correctamente"
 				redirect mapping:'showPatient', id: createStudyCommand.patientId
 			} else {
