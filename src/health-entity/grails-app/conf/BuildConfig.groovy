@@ -61,7 +61,7 @@ grails.project.dependency.resolution = {
         compile ':cache:1.1.1'
 		compile ":cxf-client:1.5.7"
 		compile ":spring-security-core:1.2.7.3"
-		compile ":modulos-servidor-documentos:1.0"
+		compile ":modulos-servidor-documentos:1.1"
 
 		// joda time
 		compile ":joda-time:1.4"

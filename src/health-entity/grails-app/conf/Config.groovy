@@ -257,8 +257,8 @@ grails.gorm.failOnError=true
 /** Health Entity - Config **/
 // Datos de la Entidad Sanitaria
 healthEntity {
-	name = "Clinica Guemes"
-	oid = "2.16.840.1.113883.2.10.100.150"
+	name = "Hospital Gutierrez"
+	oid = "2.16.840.1.113883.2.10.100.190"
 }
 
 /** Configuracion de los datos del RUP **/
