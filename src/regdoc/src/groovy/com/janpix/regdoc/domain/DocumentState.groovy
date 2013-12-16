@@ -39,6 +39,13 @@ class DocumentState {
 			throw new CantChangeDocumentState()
 	}
 	
+	def submit() {
+		if (this.name == DocumentStateTypes.Approved.toString())
+			this.name = DocumentStateTypes.Submitted.toString()
+		else
+			throw new CantChangeDocumentState()
+	}
+	
 	def isDeleted() {
 		return this.name == DocumentStateTypes.Deleted.toString()
 	}

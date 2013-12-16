@@ -35,4 +35,9 @@ class DocumentJanpixService {
 	public ACKStoredQueryMessage queryDocument(@WebParam(name = "queryDocumentRequestMessage") QueryDocumentRequest queryDocumentRequestMessage) {
 		queryDocumentService.queryDocument(queryDocumentRequestMessage)
 	}
+	
+	@WebMethod
+	public ACKMessage updateStateDocument(@WebParam(name = "updateStateDocumentRequestMessage") UpdateStateDocumentRequest updateStateDocumentRequestMessage) {
+		registerService.updateStateDocument(updateStateDocumentRequestMessage)
+	}
 }

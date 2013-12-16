@@ -3,7 +3,7 @@ package com.janpix.regdoc.services
 import grails.transaction.Transactional
 
 import com.janpix.regdoc.domain.ClinicalDocument
-import com.janpix.regdoc.infrastructure.ClinicalDocumentAssembler
+import com.janpix.regdoc.domain.DocumentStateTypes
 import com.janpix.servidordocumentos.dto.ClinicalDocumentDTO
 import com.janpix.servidordocumentos.dto.message.ACKStoredQueryMessage
 import com.janpix.servidordocumentos.dto.message.QueryDocumentRequest
@@ -26,6 +26,8 @@ class QueryDocumentService {
 					}
 				if (queryDocumentRequestMessage.patientId != null)
 					eq("patientId", queryDocumentRequestMessage.patientId)
+					
+				eq("state",DocumentStateTypes.Approved)
 			}
 
 			log.info("Se obtuvieron "+results.size()+" documentos")
