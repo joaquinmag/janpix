@@ -6,10 +6,15 @@
 		<g:set var="entity" value="${patientInstance}" />
 		<title>Estudios de ${entity.fullName}</title>
 		<r:script>
-			function uploadFinished() {
-				show_modal();
+			function uploadFinished(idMsg) {
+				$("#"+idMsg).show();
 				updateDocumentState();
 			}
+			<g:if test="${(flash.success || flash.warning)}">
+			$(document).ready( function() {
+				$("#refresh-docs #${patientInstance.id}").click();
+			});
+			</g:if>
 		</r:script>
 	</head>
 	<body>
@@ -77,7 +82,7 @@
 																<td class="center">
 																	<div class="actions">
 																		<g:if test="${!study.isSynchro}">
-																			<g:remoteLink mapping="uploadDocument" id="${study.id}" class="btn btn-primary" update="[success: 'modalBody', failure: 'modalBody']"  onSuccess="uploadFinished()">
+																			<g:remoteLink mapping="uploadDocument" id="${study.id}" class="btn btn-primary" update="[success: 'success-msg-txt', failure: 'warning-msg-txt']"  onSuccess="uploadFinished('success-msg')" onFailure="uploadFinished('warning-msg')">
 																				<i class="icon-cloud-upload"></i>
 																				Subir archivo
 																			</g:remoteLink>
@@ -94,7 +99,7 @@
 	 							</div>
 	 							<div class="tab-pane" id="Remoto">
 									<div class="row">
-										<div class="col-sm-12" style="padding-top:10px">
+										<div id="refresh-docs" class="col-sm-12" style="padding-top:10px">
 											<g:remoteLink mapping="refreshRemoteDocuments" id="${patientInstance.id}" class="btn btn-primary pull-right" update="[success: 'remoteDocuments', failure: 'remoteDocuments']">
 												<i class="icon-refresh"></i>
 												Recargar listado de archivos
