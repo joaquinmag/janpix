@@ -76,7 +76,6 @@ class RegisterService {
 			// Se modifica el estado
 			log.info("Actualizando estado del documento...")
 			this.updateDocumentStateFromString(document,updateRequest.stateDescription)
-			document.state.save(failOnError:true,flush:true)
 			document.save(failOnError:true,flush:true)
 
 			log.info("Documento actualizado correctamente")
@@ -113,19 +112,19 @@ class RegisterService {
 		log.info("Cambiando del estado "+document.state.name+" al estado "+state)
 		switch(state){
 			case DocumentStateTypes.Submitted.toString() :
-				document.state.submit() 
+				document.submit() 
 				break;
 				
 			case DocumentStateTypes.Approved.toString() :
-				document.state.approve()
+				document.approve()
 				break;
 			
 			case DocumentStateTypes.Deleted.toString() :
-				document.state.erase()
+				document.erase()
 				break;
 				
 			case DocumentStateTypes.Deprecated.toString() :
-				document.state.deprecate()
+				document.deprecate()
 				break;
 				
 			default:

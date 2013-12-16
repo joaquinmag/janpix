@@ -129,4 +129,30 @@ class ClinicalDocument {
 		hash = hash*31 + patientId.hashCode()
 		return hash
 	}
+	
+	/** Cambios de estado **/
+	def approve() {
+		if (this.state.isSubmitted())
+			this.state = DocumentState.approvedState()
+		else
+			throw new CantChangeDocumentState()
+	}
+	
+	def deprecate() {
+		if (this.state.isApproved())
+			this.state = DocumentState.deprecatedState()
+		else
+			throw new CantChangeDocumentState()
+	}
+	
+	def erase() {
+		// TODO hacer
+	}
+	
+	def submit() {
+		if (this.state.isApproved())
+			this.state = DocumentState.submittedState()
+		else
+			throw new CantChangeDocumentState()
+	}
 }
