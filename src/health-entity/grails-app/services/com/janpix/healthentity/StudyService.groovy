@@ -32,6 +32,7 @@ class StudyService {
     def createStudy(CreateStudyCommand cmd, User author, StudyType type) {
 		def random = new Random().nextInt().abs().toString()
 		def randomName = "${random}${cmd.studyFile.originalFilename}"
+		log.info("se creará un estudio con el type=${type}")
 		copy(cmd.studyFile, randomName)
 		def cd = new ClinicalDocument(
 			filename: cmd.studyFile.originalFilename,

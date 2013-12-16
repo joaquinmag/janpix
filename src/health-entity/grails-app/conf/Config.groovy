@@ -95,7 +95,7 @@ environments {
 
 /** log4j configuration **/
 levelsDebug = [
-	'grails.app.controllers.com.janpix.healthentity',
+	'grails.app.controllers.ar.com.janpix.healthentity',
 	'grails.app.domain.com.janpix.healthentity',
 	'grails.app.services.com.janpix.healthentity',
 	'grails.app.taglib.com.janpix.healthentity',
@@ -128,7 +128,7 @@ log4j = {
 			}
 			//Usa los appenders 'stdout' y 'applicationLog' para el nivel debug
 			debug stdout: [
-	'grails.app.controllers.com.janpix.healthentity',
+	'grails.app.controllers.ar.com.janpix.healthentity',
 	'grails.app.domain.com.janpix.healthentity',
 	'grails.app.services.com.janpix.healthentity',
 	'grails.app.taglib.com.janpix.healthentity',
@@ -137,7 +137,7 @@ log4j = {
 	] ,additivity:false
 		
 			debug applicationLog: [
-	'grails.app.controllers.com.janpix.healthentity',
+	'grails.app.controllers.ar.com.janpix.healthentity',
 	'grails.app.domain.com.janpix.healthentity',
 	'grails.app.services.com.janpix.healthentity',
 	'grails.app.taglib.com.janpix.healthentity',
@@ -152,7 +152,7 @@ log4j = {
 			}
 			//Usa los appenders 'stdout' y 'applicationLog' para el nivel debug
 			debug stdout: [
-	'grails.app.controllers.com.janpix.healthentity',
+	'grails.app.controllers.ar.com.janpix.healthentity',
 	'grails.app.domain.com.janpix.healthentity',
 	'grails.app.services.com.janpix.healthentity',
 	'grails.app.taglib.com.janpix.healthentity',
@@ -163,7 +163,7 @@ log4j = {
 	],additivity:false
 		
 			debug localApplicationLog: [
-	'grails.app.controllers.com.janpix.healthentity',
+	'grails.app.controllers.ar.com.janpix.healthentity',
 	'grails.app.domain.com.janpix.healthentity',
 	'grails.app.services.com.janpix.healthentity',
 	'grails.app.taglib.com.janpix.healthentity',
