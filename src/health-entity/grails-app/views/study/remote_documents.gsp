@@ -33,6 +33,7 @@
 								<g:hiddenField name="idStudyType" value="${study.type.idStudyType}" />
 								<g:hiddenField name="observation" value="${study.observation}" />
 								<g:hiddenField name="uniqueId" value="${study.repositoryId}" />
+								<g:hiddenField name="localDocId" value="${study.localDocId}" />
 								<g:hiddenField name="filename" value="${study.document.filename}" />
 								<button type="submit" class="btn btn-primary" >
 									<i class="icon-cloud-download"></i>

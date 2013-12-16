@@ -199,6 +199,7 @@ class JanpixAssembler {
 		dto.documentCreationStarted = study.date
 		dto.documentCreationEnded = study.date
 		dto.fileAttributes = toFileAttributes(document)
+		dto.fileAttributes.uuid = study.localDocId
 		dto.language = "es" //FIXME hardcode
 		dto.name = study.title
 		dto.patientId = study.patient.id
@@ -217,7 +218,6 @@ class JanpixAssembler {
 		fileAttr.filename = document.filename
 		fileAttr.mimeType = document.mimeType
 		fileAttr.size = document.size
-		fileAttr.uuid = "${document.size}${document.id}" //FIXME not a UUID
 		return fileAttr
 	}
 	
@@ -255,7 +255,7 @@ class JanpixAssembler {
 		
 		
 		return document
-	} 
+	}
 	
 	/**
 	 * Transforma un ClinicalDocument del Registro de documento en un Study de healhentity
@@ -272,6 +272,7 @@ class JanpixAssembler {
 		study.type = JanpixAssembler.fromTypeId(janpixDocument.typeId)
 		study.observation = janpixDocument.comments
 		study.repositoryId = janpixDocument.uniqueId
+		study.localDocId = janpixDocument.fileAttributes.uuid
 		study.document = new ClinicalDocument()
 		study.document.format = janpixDocument.formatName
 		study.document.filename = janpixDocument.fileAttributes.filename

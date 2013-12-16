@@ -18,6 +18,7 @@ class Study {
 	// synchro information
 	boolean isSynchro = false
 	String repositoryId
+	String localDocId
 
 	static mapping = {
 		sort "date"
@@ -31,6 +32,7 @@ class Study {
 		type nullable: false
 		observation nullable: true
 		repositoryId nullable: true
+		localDocId nullable: true
 		//author nullable: false
     }
 	

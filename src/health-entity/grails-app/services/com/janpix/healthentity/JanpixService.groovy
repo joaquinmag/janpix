@@ -137,6 +137,9 @@ class JanpixService {
 			
 			log.info("Consultando Repositorio de documentos por el uuid:"+uniqueId)
 			ack =  janpixRepodocServiceClient.retrieveDocument(requestMessage)
+			if (ack.clinicalDocument == null) {
+				throw new IllegalArgumentException("clinicalDocument nulo");
+			}
 		}
 		catch(Exception ex){
 			String message ="Error de conexión contra el repositorio: "+ex.message 
@@ -151,12 +154,12 @@ class JanpixService {
 		log.info("Documento obtenido correctamente")
 		
 		log.info("Conviertiendo documento")
-		ClinicalDocument clinicalDocument = JanpixAssembler.fromDocument(ack.clinicalDocument)
+		ClinicalDocument document = JanpixAssembler.fromDocument(ack.clinicalDocument)
 		log.info("Escribiendo en destinationFile=${destinationFile}")
 		ack.clinicalDocument.binaryData.writeTo(new FileOutputStream(destinationFile))
 		log.info("Archivo creado correctamente")
 		log.info("Retornando ClinicalDocument")
-		return clinicalDocument;
+		return document;
 	}
 	
 	/**

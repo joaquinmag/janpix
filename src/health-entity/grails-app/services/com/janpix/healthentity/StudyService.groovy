@@ -46,6 +46,7 @@ class StudyService {
 			title: cmd.studyTitle,
 			observation: cmd.observations,
 			document: cd,
+			localDocId: UUID.randomUUID().toString(),
 			type: type
 		)
 		def patient = Patient.findById(cmd.patientId)
@@ -78,8 +79,11 @@ class StudyService {
 			throw new PatientDoesNotExistsException("No existe el paciente con id=${patientId}")
 		def remoteStudies = janpixService.queryAllStudies(patient)
 		remoteStudies.each { remoteStudy ->
-			if (patient.studies.find { localStudy -> "${localStudy.document.size}${localStudy.document.id}" == remoteStudy.repositoryId })
-				remoteStudy.isSynchro = true
+			patient.studies.each { localStudy -> 
+				log.info("Local UUID: ${localStudy.localDocId} and RemoteUUID: ${remoteStudy.localDocId}")
+				if (localStudy.localDocId == remoteStudy.localDocId)
+					remoteStudy.isSynchro = true
+			}
 		}
 	}
 
@@ -92,17 +96,19 @@ class StudyService {
 		final def randomName = "${random}${cmd.filename}"
 		final def path = getUploadsPath()
 		final File destination = new File(path, randomName)
-		def clinicalDocument = janpixService.getDocumentByUniqueId(cmd.uniqueId, destination)
-		clinicalDocument.fileLocation = randomName
-		clinicalDocument.filename = cmd.filename
-		clinicalDocument.save(failOnError: true)
-		Study study = new Study()
-		study.document = clinicalDocument
-		study.date = cmd.creationDate
-		study.type = StudyType.findByIdStudyType(cmd.idStudyType)
-		study.observation = cmd.observation
-		study.isSynchro = true
+		def document = janpixService.getDocumentByUniqueId(cmd.uniqueId, destination)
+		def study = new Study()
 		study.title = cmd.title
+		study.date = cmd.creationDate
+		study.type = JanpixAssembler.fromTypeId(cmd.idStudyType)
+		study.observation = cmd.observation
+		study.repositoryId = cmd.uniqueId
+		study.localDocId = cmd.localDocId
+		study.document = document
+		study.document.fileLocation = randomName
+		study.document.filename = cmd.filename
+		study.isSynchro = true
+		study.document.save(failOnError: true)
 		patient.addToStudies(study)
 		study.save(failOnError: true)
 	}
