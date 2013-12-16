@@ -97,9 +97,44 @@ environments {
 log4j = {
     // Example of changing the log pattern for the default console appender:
     //
-    //appenders {
-    //    console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
-    //}
+    appenders {
+        console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
+		
+		rollingFile name: 'localApplicationLog',
+					maxFileSize: 2048,
+					file: "application.log"
+    }
+	
+	environments {
+		development{
+			root {
+				error 'localApplicationLog','stdout'
+			}
+			//Usa los appenders 'stdout' y 'applicationLog' para el nivel debug
+			debug stdout: [
+				'grails.app.controllers.ar.com.janpix.patient',
+				'grails.app.domain.ar.com.janpix.patient',
+				'grails.app.services.ar.com.janpix.patient',
+				'grails.app.taglib.ar.com.janpix.patient',
+				'grails.app.conf.ar.com.janpix.patient',
+				'grails.app.filters.ar.com.janpix.patient',
+				//'groovyx.net.ws',
+				//'org.apache.cxf'
+			],additivity:false
+		
+			debug localApplicationLog: [
+				'grails.app.controllers.ar.com.janpix.patient',
+				'grails.app.domain.ar.com.janpix.patient',
+				'grails.app.services.ar.com.janpix.patient',
+				'grails.app.taglib.ar.com.janpix.patient',
+				'grails.app.conf.ar.com.janpix.patient',
+				'grails.app.filters.ar.com.janpix.patient',
+				//'groovyx.net.ws',
+				//'org.apache.cxf'
+			],additivity:false
+
+		}
+	}
 
     error  'org.codehaus.groovy.grails.web.servlet',        // controllers
            'org.codehaus.groovy.grails.web.pages',          // GSP
