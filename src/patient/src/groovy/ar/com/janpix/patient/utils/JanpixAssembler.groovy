@@ -11,8 +11,8 @@ import com.janpix.webclient.regdoc.HealthEntityDTO
 
 class JanpixAssembler {
 	
-	private static String DOCUMENT_STATE_SUBMITTED = "Submitted"
-	private static String DOCUMENT_STATE_APPROVED = "Approved"
+	public static String DOCUMENT_STATE_SUBMITTED = "Submitted"
+	public static String DOCUMENT_STATE_APPROVED = "Approved"
 	static HealthEntityDTO toHealthEntity(ConfigObject parameters){
 		if(!parameters)
 			return null

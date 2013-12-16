@@ -27,17 +27,20 @@ public class ObjectFactory {
     private final static QName _AuthorDTO_QNAME = new QName("jpx:ar.com.janpix", "authorDTO");
     private final static QName _QueryDocumentRequestMessage_QNAME = new QName("http://services.regdoc.janpix.com/", "queryDocumentRequestMessage");
     private final static QName _HealthEntityDTO_QNAME = new QName("jpx:ar.com.janpix", "healthEntityDTO");
+    private final static QName _RegisterDocumentRequestMessage_QNAME = new QName("http://services.regdoc.janpix.com/", "registerDocumentRequestMessage");
     private final static QName _TitleCriteriaDTO_QNAME = new QName("jpx:ar.com.janpix", "titleCriteriaDTO");
     private final static QName _AckMessage_QNAME = new QName("jpx:ar.com.janpix", "ackMessage");
-    private final static QName _RegisterDocumentRequestMessage_QNAME = new QName("http://services.regdoc.janpix.com/", "registerDocumentRequestMessage");
+    private final static QName _UpdateStateDocumentRequestMessage_QNAME = new QName("http://services.regdoc.janpix.com/", "updateStateDocumentRequestMessage");
     private final static QName _FileAttributesDTO_QNAME = new QName("jpx:ar.com.janpix", "fileAttributesDTO");
     private final static QName _RegisterDocumentRequest_QNAME = new QName("jpx:ar.com.janpix", "registerDocumentRequest");
     private final static QName _TypeCode_QNAME = new QName("jpx:ar.com.janpix", "typeCode");
     private final static QName _QueryDocumentRequest_QNAME = new QName("jpx:ar.com.janpix", "queryDocumentRequest");
     private final static QName _ClinicalDocumentDTO_QNAME = new QName("jpx:ar.com.janpix", "clinicalDocumentDTO");
     private final static QName _QueryDocumentResponse_QNAME = new QName("http://services.regdoc.janpix.com/", "queryDocumentResponse");
+    private final static QName _UpdateStateDocumentResponse_QNAME = new QName("http://services.regdoc.janpix.com/", "updateStateDocumentResponse");
     private final static QName _AckStoredQueryMessage_QNAME = new QName("jpx:ar.com.janpix", "ackStoredQueryMessage");
     private final static QName _DateCreationCriteriaDTO_QNAME = new QName("jpx:ar.com.janpix", "dateCreationCriteriaDTO");
+    private final static QName _UpdateStateDocumentRequest_QNAME = new QName("jpx:ar.com.janpix", "updateStateDocumentRequest");
     private final static QName _RegisterDocumentResponse_QNAME = new QName("http://services.regdoc.janpix.com/", "registerDocumentResponse");
 
     /**
@@ -45,46 +48,6 @@ public class ObjectFactory {
      * 
      */
     public ObjectFactory() {
-    }
-
-    /**
-     * Create an instance of {@link RegisterDocumentRequest }
-     * 
-     */
-    public RegisterDocumentRequest createRegisterDocumentRequest() {
-        return new RegisterDocumentRequest();
-    }
-
-    /**
-     * Create an instance of {@link ClinicalDocumentDTO }
-     * 
-     */
-    public ClinicalDocumentDTO createClinicalDocumentDTO() {
-        return new ClinicalDocumentDTO();
-    }
-
-    /**
-     * Create an instance of {@link QueryDocumentRequest }
-     * 
-     */
-    public QueryDocumentRequest createQueryDocumentRequest() {
-        return new QueryDocumentRequest();
-    }
-
-    /**
-     * Create an instance of {@link HealthEntityDTO }
-     * 
-     */
-    public HealthEntityDTO createHealthEntityDTO() {
-        return new HealthEntityDTO();
-    }
-
-    /**
-     * Create an instance of {@link AuthorDTO }
-     * 
-     */
-    public AuthorDTO createAuthorDTO() {
-        return new AuthorDTO();
     }
 
     /**
@@ -96,27 +59,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link AckStoredQueryMessage }
-     * 
-     */
-    public AckStoredQueryMessage createAckStoredQueryMessage() {
-        return new AckStoredQueryMessage();
-    }
-
-    /**
-     * Create an instance of {@link AckStoredQueryMessage.ClinicalDocuments }
-     * 
-     */
-    public AckStoredQueryMessage.ClinicalDocuments createAckStoredQueryMessageClinicalDocuments() {
-        return new AckStoredQueryMessage.ClinicalDocuments();
-    }
-
-    /**
      * Create an instance of {@link FileAttributesDTO }
      * 
      */
     public FileAttributesDTO createFileAttributesDTO() {
         return new FileAttributesDTO();
+    }
+
+    /**
+     * Create an instance of {@link AckStoredQueryMessage }
+     * 
+     */
+    public AckStoredQueryMessage createAckStoredQueryMessage() {
+        return new AckStoredQueryMessage();
     }
 
     /**
@@ -133,6 +88,62 @@ public class ObjectFactory {
      */
     public AckMessage createAckMessage() {
         return new AckMessage();
+    }
+
+    /**
+     * Create an instance of {@link UpdateStateDocumentRequest }
+     * 
+     */
+    public UpdateStateDocumentRequest createUpdateStateDocumentRequest() {
+        return new UpdateStateDocumentRequest();
+    }
+
+    /**
+     * Create an instance of {@link ClinicalDocumentDTO }
+     * 
+     */
+    public ClinicalDocumentDTO createClinicalDocumentDTO() {
+        return new ClinicalDocumentDTO();
+    }
+
+    /**
+     * Create an instance of {@link RegisterDocumentRequest }
+     * 
+     */
+    public RegisterDocumentRequest createRegisterDocumentRequest() {
+        return new RegisterDocumentRequest();
+    }
+
+    /**
+     * Create an instance of {@link QueryDocumentRequest }
+     * 
+     */
+    public QueryDocumentRequest createQueryDocumentRequest() {
+        return new QueryDocumentRequest();
+    }
+
+    /**
+     * Create an instance of {@link AuthorDTO }
+     * 
+     */
+    public AuthorDTO createAuthorDTO() {
+        return new AuthorDTO();
+    }
+
+    /**
+     * Create an instance of {@link AckStoredQueryMessage.ClinicalDocuments }
+     * 
+     */
+    public AckStoredQueryMessage.ClinicalDocuments createAckStoredQueryMessageClinicalDocuments() {
+        return new AckStoredQueryMessage.ClinicalDocuments();
+    }
+
+    /**
+     * Create an instance of {@link HealthEntityDTO }
+     * 
+     */
+    public HealthEntityDTO createHealthEntityDTO() {
+        return new HealthEntityDTO();
     }
 
     /**
@@ -163,6 +174,15 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link RegisterDocumentRequest }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://services.regdoc.janpix.com/", name = "registerDocumentRequestMessage")
+    public JAXBElement<RegisterDocumentRequest> createRegisterDocumentRequestMessage(RegisterDocumentRequest value) {
+        return new JAXBElement<RegisterDocumentRequest>(_RegisterDocumentRequestMessage_QNAME, RegisterDocumentRequest.class, null, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link TitleCriteriaDTO }{@code >}}
      * 
      */
@@ -181,12 +201,12 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link RegisterDocumentRequest }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link UpdateStateDocumentRequest }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://services.regdoc.janpix.com/", name = "registerDocumentRequestMessage")
-    public JAXBElement<RegisterDocumentRequest> createRegisterDocumentRequestMessage(RegisterDocumentRequest value) {
-        return new JAXBElement<RegisterDocumentRequest>(_RegisterDocumentRequestMessage_QNAME, RegisterDocumentRequest.class, null, value);
+    @XmlElementDecl(namespace = "http://services.regdoc.janpix.com/", name = "updateStateDocumentRequestMessage")
+    public JAXBElement<UpdateStateDocumentRequest> createUpdateStateDocumentRequestMessage(UpdateStateDocumentRequest value) {
+        return new JAXBElement<UpdateStateDocumentRequest>(_UpdateStateDocumentRequestMessage_QNAME, UpdateStateDocumentRequest.class, null, value);
     }
 
     /**
@@ -244,6 +264,15 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link AckMessage }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://services.regdoc.janpix.com/", name = "updateStateDocumentResponse")
+    public JAXBElement<AckMessage> createUpdateStateDocumentResponse(AckMessage value) {
+        return new JAXBElement<AckMessage>(_UpdateStateDocumentResponse_QNAME, AckMessage.class, null, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link AckStoredQueryMessage }{@code >}}
      * 
      */
@@ -259,6 +288,15 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "jpx:ar.com.janpix", name = "dateCreationCriteriaDTO")
     public JAXBElement<DateCreationCriteriaDTO> createDateCreationCriteriaDTO(DateCreationCriteriaDTO value) {
         return new JAXBElement<DateCreationCriteriaDTO>(_DateCreationCriteriaDTO_QNAME, DateCreationCriteriaDTO.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link UpdateStateDocumentRequest }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "jpx:ar.com.janpix", name = "updateStateDocumentRequest")
+    public JAXBElement<UpdateStateDocumentRequest> createUpdateStateDocumentRequest(UpdateStateDocumentRequest value) {
+        return new JAXBElement<UpdateStateDocumentRequest>(_UpdateStateDocumentRequest_QNAME, UpdateStateDocumentRequest.class, null, value);
     }
 
     /**

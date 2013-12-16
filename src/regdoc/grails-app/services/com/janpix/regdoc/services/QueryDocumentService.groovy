@@ -5,6 +5,7 @@ import grails.transaction.Transactional
 import com.janpix.regdoc.domain.ClinicalDocument
 import com.janpix.regdoc.domain.DocumentStateTypes
 import com.janpix.servidordocumentos.dto.ClinicalDocumentDTO
+import com.janpix.servidordocumentos.dto.HealthEntityDTO
 import com.janpix.servidordocumentos.dto.message.ACKStoredQueryMessage
 import com.janpix.servidordocumentos.dto.message.QueryDocumentRequest
 
@@ -12,6 +13,7 @@ import com.janpix.servidordocumentos.dto.message.QueryDocumentRequest
 class QueryDocumentService {
 	
 	def clinicalDocumentAssembler
+	def grailsApplication
 	
     ACKStoredQueryMessage queryDocument(QueryDocumentRequest queryDocumentRequestMessage) {
 		List<ClinicalDocumentDTO> documents = []
@@ -26,8 +28,9 @@ class QueryDocumentService {
 					}
 				if (queryDocumentRequestMessage.patientId != null)
 					eq("patientId", queryDocumentRequestMessage.patientId)
-					
-				eq("state",DocumentStateTypes.Approved)
+				
+				if(!this.isPatientAuthority(queryDocumentRequestMessage?.healthEntityFinder))
+					eq("state",DocumentStateTypes.Approved.toString())
 			}
 
 			log.info("Se obtuvieron "+results.size()+" documentos")
@@ -43,4 +46,17 @@ class QueryDocumentService {
 
 		return new ACKStoredQueryMessage(documents: documents)
     }
+	
+	private Boolean isPatientAuthority(HealthEntityDTO healthEntity){
+		log.info("Verificando Autoridad. OID:"+healthEntity.oid+", Name:"+healthEntity.name)
+		if(healthEntity == null)
+			return false
+			
+		Boolean isAuthority = (healthEntity.name == grailsApplication.config.patients.name &&
+				healthEntity.oid == grailsApplication.config.patients.oid)
+		
+		log.info("EsAutoridad="+isAuthority)
+		
+		return isAuthority
+	}
 }

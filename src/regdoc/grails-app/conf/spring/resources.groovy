@@ -22,6 +22,7 @@ beans = {
 	
 	queryDocumentService(QueryDocumentService) {
 		clinicalDocumentAssembler = ref(clinicalDocumentAssembler)
+		grailsApplication = ref('grailsApplication')
 	}
 
 }

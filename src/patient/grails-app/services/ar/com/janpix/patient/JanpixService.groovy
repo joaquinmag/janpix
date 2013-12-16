@@ -1,11 +1,14 @@
 package ar.com.janpix.patient
 
+import ar.com.janpix.patient.utils.JanpixAssembler
+
 import com.janpix.exceptions.ErrorOnApproveDocumentJanpixException
 import com.janpix.exceptions.JanpixConnectionException
 import com.janpix.webclient.regdoc.AckMessage
 import com.janpix.webclient.regdoc.AckStoredQueryMessage
 import com.janpix.webclient.regdoc.QueryDocumentRequest
-import ar.com.janpix.patient.utils.JanpixAssembler
+import com.janpix.webclient.regdoc.TypeCode
+import com.janpix.webclient.regdoc.UpdateStateDocumentRequest
 
 class JanpixService {
 	
@@ -76,13 +79,25 @@ class JanpixService {
 			
 		AckMessage ack
 		try{
+			log.info("Enviado Request para aprobar el documento con id "+study.uniqueId)
+			UpdateStateDocumentRequest requestMessage = new UpdateStateDocumentRequest()
+			requestMessage.documentUniqueId = study.uniqueId
+			requestMessage.stateDescription = JanpixAssembler.DOCUMENT_STATE_APPROVED
+			requestMessage.authority = JanpixAssembler.toHealthEntity(grailsApplication.config.patients)
 			
+			ack = janpixRegdocServiceClient.updateStateDocument(requestMessage)
 		}catch(Exception ex){
 			String message ="Error de conexión contra el Registro de Documentos: "+ex.message
 			log.error(message, ex)
 			throw new JanpixConnectionException(message);
 		}
 		
-		// TODO validar ack message
+		if(ack.typeCode != TypeCode.SUCCEDED_INSERTION){
+			String msg = "No se pudo Aprobar el documento "+ack.text
+			log.error(msg)
+			throw new ErrorOnApproveDocumentJanpixException(msg)
+		}
+		
+		log.info("Documento Aprobado correctamente")
 	}
 }

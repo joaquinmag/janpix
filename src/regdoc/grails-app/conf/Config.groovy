@@ -170,6 +170,13 @@ log4j = {
 		   'net.sf.ehcache.hibernate'
 }
 
+/** Configuracion de los datos  de la aplicacion Paciente
+ * La misma es tomada como una Entidad Sanitaria
+ **/
+patients {
+	oid = "2.16.32.1.256.1"
+	name = "Patients"
+}
 
 // Uncomment and edit the following lines to start using Grails encoding & escaping improvements
 

@@ -57,6 +57,7 @@ class RegisterService {
 	public ACKMessage updateStateDocument(UpdateStateDocumentRequest updateRequest) {
 		try{
 			// Se valida que sea la autoridad habilitada la que realice la peticion
+			log.info("Validando Autoridad...")
 			if(!validateAuthority(updateRequest.authority)){
 				String message = "La autoridad "+updateRequest?.authority?.name+" enviada es incorrecta"
 				log.error(message)
@@ -64,6 +65,7 @@ class RegisterService {
 			}
 			
 			// Se obtiene el documento
+			log.info("Obteniendo documento...")
 			ClinicalDocument document = ClinicalDocument.findByUniqueId(updateRequest.documentUniqueId)
 			if(!document){
 				String message = "El documento solicitado NO existe"
@@ -72,8 +74,12 @@ class RegisterService {
 			}
 			
 			// Se modifica el estado
+			log.info("Actualizando estado del documento...")
 			this.updateDocumentStateFromString(document,updateRequest.stateDescription)
+			document.state.save(failOnError:true,flush:true)
+			document.save(failOnError:true,flush:true)
 
+			log.info("Documento actualizado correctamente")
 			return new ACKMessage(typeCode: TypeCode.SuccededInsertion, clinicalDocument: null)
 			
 		}
@@ -103,7 +109,8 @@ class RegisterService {
 		return true
 	}
 	
-	private updateDocumentStateFromString(ClinicalDocument document,String state){
+	private void updateDocumentStateFromString(ClinicalDocument document,String state){
+		log.info("Cambiando del estado "+document.state.name+" al estado "+state)
 		switch(state){
 			case DocumentStateTypes.Submitted.toString() :
 				document.state.submit() 
@@ -124,9 +131,8 @@ class RegisterService {
 			default:
 				throw new Exception("Estado "+state+" inexistente")
 				break;
-				
 		}
-			
+		log.info("Estado modificado correctamente. Nuevo estado: "+document.state.name)	
 	}
 
 }
