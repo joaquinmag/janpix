@@ -1,4 +1,5 @@
 <%@ page import="ar.com.janpix.patient.PatientCommand" %>
+<%@ page import="ar.com.janpix.patient.StudyState" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -47,8 +48,34 @@
 			 											<td class="center">${study.name}</td>
 			 											<td class="center">${study.type}</td>
 			 											<td class="center">${study.author}</td>
-			 											<td class="center">${study.state}</td>
-			 											<td class="center">Aprobar</td>
+			 											<td class="center">
+			 												<g:if test="${study.state == StudyState.Aprobado}">
+			 													<span class="label label-success">
+			 														${study.state}
+			 													</span>
+			 												</g:if>
+			 												<g:else>
+			 													<span class="label label-warning">
+			 														${study.state}
+			 													</span>
+			 												</g:else>
+			 											</td>
+			 											<td class="center">
+			 												<g:if test="${study.state == StudyState.Pendiente}">
+				 												<g:link class="btn btn-xs btn-success" action="approbePatientStudy" 
+				 												controller="patient" params="[uniqueId:study.uniqueId]">
+																	<span class="glyphicon glyphicon-ok"></span>
+																	Aprobar
+																</g:link>
+															</g:if>
+															<g:else>
+																<g:link class="btn btn-xs btn-danger" action="desapprobePatientStudy" 
+				 												controller="patient" params="[uniqueId:study.uniqueId]">
+																	<span class="glyphicon glyphicon-remove"></span>
+																	Desaprobar
+																</g:link>
+															</g:else>
+			 											</td>
 			 										</tr>
 		 										</g:each>
 		 									</tbody>

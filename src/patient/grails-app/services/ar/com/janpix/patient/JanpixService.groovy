@@ -1,15 +1,56 @@
 package ar.com.janpix.patient
 
-import grails.transaction.Transactional
+import com.janpix.exceptions.ErrorOnApproveDocumentJanpixException
+import com.janpix.exceptions.JanpixConnectionException
+import com.janpix.webclient.regdoc.AckMessage
+import com.janpix.webclient.regdoc.AckStoredQueryMessage
+import com.janpix.webclient.regdoc.QueryDocumentRequest
+import ar.com.janpix.patient.utils.JanpixAssembler
 
-@Transactional
 class JanpixService {
-
-	// TODO por ahora HardCode
-    List<StudyCommand> queryAllStudies(String cuis) {
+	
+	static transactional = false
+	
+	def grailsApplication
+	def janpixRegdocServiceClient
+	
+    List<StudyCommand> queryAllStudies(PatientCommand patient) {
 		List<StudyCommand> studies = []
+		AckStoredQueryMessage ack
+		String cuis = patient.cuis
 		
-		AuthorCommand author = new AuthorCommand()
+		try {
+			log.info("Consultando por todos los estudios del paciente "+patient)
+			
+			log.info("Armando Request")
+			QueryDocumentRequest request = new QueryDocumentRequest()
+			request.healthEntityFinder = JanpixAssembler.toHealthEntity(grailsApplication.config.patients)
+			request.patientId = cuis
+			
+			log.info("Enviando request al WS")
+			ack = janpixRegdocServiceClient.queryDocument(request)
+		}
+		catch(Exception ex){
+			String message ="Error de conexión contra el Registro de Documentos: "+ex.message
+			log.error(message, ex)
+			throw new JanpixConnectionException(message);
+		}
+		
+		// TODO validar el tipo del ACK
+		
+		log.info("Se recibieron "+ack.clinicalDocuments.clinicalDocument.size()+" estudios")
+		
+		// Transformo todos los estudios
+		log.info("Transformando estudios...")
+		ack.clinicalDocuments.clinicalDocument.each {com.janpix.webclient.regdoc.ClinicalDocumentDTO document->
+			def study = JanpixAssembler.fromDocument(document)
+			studies.add(study)
+		}
+		log.info("Estudios transformados correctamente")
+		
+		return studies
+		
+		/*AuthorCommand author = new AuthorCommand()
 		HealthEntityCommand healthEntity = new HealthEntityCommand()
 		healthEntity.oid = "HE_OID_0001"
 		healthEntity.name = "HE_NAME_MOCK"
@@ -26,6 +67,22 @@ class JanpixService {
 		studies.add(study1)
 		studies.add(study1)
 		
-		return studies;
+		return studies;*/
     }
+	
+	def approveStudy(StudyCommand study){
+		if(!study || !study.uniqueId)
+			throw new ErrorOnApproveDocumentJanpixException("No se envio ningun estudio para ser aprobado")
+			
+		AckMessage ack
+		try{
+			
+		}catch(Exception ex){
+			String message ="Error de conexión contra el Registro de Documentos: "+ex.message
+			log.error(message, ex)
+			throw new JanpixConnectionException(message);
+		}
+		
+		// TODO validar ack message
+	}
 }
