@@ -15,11 +15,11 @@
 		var actions = $("#study${idStudy} .actions");
 		var status = $("#study${idStudy} .labelSynchro");
 		<g:if test="${upload_correct}">
-		actions.show();
+		actions.hide();
 		status.html("<span class=\"label label-success\">Remoto</span>")
 		</g:if>
 		<g:else>
-		actions.hide();
+		actions.show();
 		status.html("<span class=\"label label-warning\">Local</span>");
 		</g:else>
 	}
