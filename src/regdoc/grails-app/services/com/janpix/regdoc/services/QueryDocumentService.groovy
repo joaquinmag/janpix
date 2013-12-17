@@ -2,8 +2,10 @@ package com.janpix.regdoc.services
 
 import grails.transaction.Transactional
 
+import org.hibernate.criterion.Example
+
 import com.janpix.regdoc.domain.ClinicalDocument
-import com.janpix.regdoc.domain.DocumentStateTypes
+import com.janpix.regdoc.domain.DocumentState
 import com.janpix.servidordocumentos.dto.ClinicalDocumentDTO
 import com.janpix.servidordocumentos.dto.HealthEntityDTO
 import com.janpix.servidordocumentos.dto.message.ACKStoredQueryMessage
@@ -30,7 +32,8 @@ class QueryDocumentService {
 					eq("patientId", queryDocumentRequestMessage.patientId)
 				
 				if(!this.isPatientAuthority(queryDocumentRequestMessage?.healthEntityFinder))
-					eq("state",DocumentStateTypes.Approved.toString())
+					eq("state",DocumentState.approvedState())
+					
 			}
 
 			log.info("Se obtuvieron "+results.size()+" documentos")

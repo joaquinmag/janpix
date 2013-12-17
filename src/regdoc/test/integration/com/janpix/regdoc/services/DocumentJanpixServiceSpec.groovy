@@ -79,7 +79,7 @@ class DocumentJanpixServiceSpec extends Specification {
 			println ack.text
 			ack.typeCode == ACKMessage.TypeCode.SuccededRegistration
     }
-	@Ignore
+	
 	void "query a registered document"() {
 		setup:
 			def titleCriteria = new TitleCriteriaDTO(valueLookup: "Titulo doc")
@@ -91,7 +91,7 @@ class DocumentJanpixServiceSpec extends Specification {
 			def result = documentJanpixService.queryDocument(queryMsg)
 		then:
 			result.documents.size() == 1
-			result.documents[0].title == "Titulo doc"
+			result.documents[0].name == "Titulo doc"
 	}
 	@Ignore
 	void "query a registered document by idpatient and title"() {

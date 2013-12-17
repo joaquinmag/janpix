@@ -62,14 +62,14 @@
 			 											</td>
 			 											<td class="center">
 			 												<g:if test="${study.state == StudyState.Pendiente}">
-				 												<g:link class="btn btn-xs btn-success" action="approbePatientStudy" 
+				 												<g:link class="btn btn-xs btn-success" action="approvePatientStudy" 
 				 												controller="patient" params="[uniqueId:study.uniqueId]">
 																	<span class="glyphicon glyphicon-ok"></span>
 																	Aprobar
 																</g:link>
 															</g:if>
 															<g:else>
-																<g:link class="btn btn-xs btn-danger" action="desapprobePatientStudy" 
+																<g:link class="btn btn-xs btn-danger" action="desapprovePatientStudy" 
 				 												controller="patient" params="[uniqueId:study.uniqueId]">
 																	<span class="glyphicon glyphicon-remove"></span>
 																	Desaprobar

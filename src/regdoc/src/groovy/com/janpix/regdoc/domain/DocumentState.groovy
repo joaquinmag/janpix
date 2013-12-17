@@ -77,4 +77,8 @@ class DocumentState {
 	static DocumentState deletedState() {
 		return new DocumentState(DocumentStateTypes.Deleted.toString())
 	}
+	
+	boolean equals(other){
+		return this.name == other.name
+	}
 }
