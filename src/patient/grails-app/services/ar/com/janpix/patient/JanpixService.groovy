@@ -100,4 +100,32 @@ class JanpixService {
 		
 		log.info("Documento Aprobado correctamente")
 	}
+	
+	def desapproveStudy(StudyCommand study){
+		if(!study || !study.uniqueId)
+			throw new ErrorOnApproveDocumentJanpixException("No se envio ningun estudio para ser desaprobado")
+			
+		AckMessage ack
+		try{
+			log.info("Enviado Request para desaprobar el documento con id "+study.uniqueId)
+			UpdateStateDocumentRequest requestMessage = new UpdateStateDocumentRequest()
+			requestMessage.documentUniqueId = study.uniqueId
+			requestMessage.stateDescription = JanpixAssembler.DOCUMENT_STATE_SUBMITTED
+			requestMessage.authority = JanpixAssembler.toHealthEntity(grailsApplication.config.patients)
+			
+			ack = janpixRegdocServiceClient.updateStateDocument(requestMessage)
+		}catch(Exception ex){
+			String message ="Error de conexión contra el Registro de Documentos: "+ex.message
+			log.error(message, ex)
+			throw new JanpixConnectionException(message);
+		}
+		
+		if(ack.typeCode != TypeCode.SUCCEDED_INSERTION){
+			String msg = "No se pudo Desaprobar el documento "+ack.text
+			log.error(msg)
+			throw new ErrorOnApproveDocumentJanpixException(msg)
+		}
+		
+		log.info("Documento Desaprobado correctamente")
+	}
 }
