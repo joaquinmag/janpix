@@ -87,6 +87,9 @@ environments {
     development {
         grails.logging.jul.usebridge = true
     }
+    demo {
+        grails.logging.jul.usebridge = true
+    }
     production {
         grails.logging.jul.usebridge = false
         // TODO: grails.serverURL = "http://www.changeme.com"
@@ -174,6 +177,34 @@ log4j = {
 	],additivity:false
 
 		}
+		demo{
+			root {
+				error 'localApplicationLog','stdout'
+			}
+			//Usa los appenders 'stdout' y 'applicationLog' para el nivel debug
+			debug stdout: [
+	'grails.app.controllers.ar.com.janpix.healthentity',
+	'grails.app.domain.com.janpix.healthentity',
+	'grails.app.services.com.janpix.healthentity',
+	'grails.app.taglib.com.janpix.healthentity',
+	'grails.app.conf.com.janpix.healthentity',
+	'grails.app.filters.com.janpix.healthentity',
+	'groovyx.net.ws',
+	'org.apache.cxf'
+	],additivity:false
+		
+			debug localApplicationLog: [
+	'grails.app.controllers.ar.com.janpix.healthentity',
+	'grails.app.domain.com.janpix.healthentity',
+	'grails.app.services.com.janpix.healthentity',
+	'grails.app.taglib.com.janpix.healthentity',
+	'grails.app.conf.com.janpix.healthentity',
+	'grails.app.filters.com.janpix.healthentity',
+	'groovyx.net.ws',
+	'org.apache.cxf'
+	],additivity:false
+
+		}
 	}
 	
 	//###Configuraciones ajenas a los entornos
@@ -199,6 +230,11 @@ service.janpix.pixmanager.serverURL = ""
 
 // set per-environment service url
 environments {
+	demo {
+		service.janpix.regdoc.serverURL  = "http://192.168.2.2:9090/regdoc-0.1"
+		service.janpix.repodoc.serverURL = "http://192.168.2.2:9090/repodoc-0.1"
+		service.janpix.pixmanager.serverURL = "http://192.168.2.2:9090/rup-0.1"
+	}
 	production {
 		service.janpix.regdoc.serverURL  = "http://localhost:9090/regdoc-0.1"
 		service.janpix.repodoc.serverURL = "http://www.changeme.com"
@@ -275,9 +311,18 @@ grails.gorm.failOnError=true
 
 /** Health Entity - Config **/
 // Datos de la Entidad Sanitaria
-healthEntity {
-	name = "Hospital Gutierrez"
-	oid = "2.16.840.1.113883.2.10.100.190"
+final def nameHE = (System.getProperty('janpix.he')?:"").length() > 0
+if (nameHE) {
+	healthEntity {
+		name = "Clínica San Carlo"
+		oid = "2.16.840.1.113883.2.10.100.203"
+	}
+}
+else {
+	healthEntity {
+		name = "Clínica Santa Carla"
+		oid = "2.16.840.1.113883.2.10.100.202"
+	}
 }
 
 /** Configuracion de los datos del RUP **/

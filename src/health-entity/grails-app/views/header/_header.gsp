@@ -7,7 +7,7 @@
 			      <span class="icon-bar"></span>
 			</button>
 			<a id="main-menu-toggle" class="hidden-xs open"><i class="icon-reorder"></i></a>		
-				<g:link mapping="dashboard" class="navbar-brand col-lg-2 col-sm-1 col-xs-12"><span>Consultorio</span></g:link>
+				<g:link mapping="dashboard" class="navbar-brand col-lg-2 col-sm-1 col-xs-12"><span>${ctx?.healthentityname}</span></g:link>
 			<!-- start: Header Menu -->
 			<div class="nav-no-collapse header-nav">
 				<ul class="nav navbar-nav pull-right">

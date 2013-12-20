@@ -3,6 +3,7 @@ package ar.com.healthentity
 class ModelAppenderFilters {
 	
 	def springSecurityService
+	def grailsApplication
 	
 	def filters = {
 		
@@ -15,6 +16,7 @@ class ModelAppenderFilters {
 					if (!model.ctx) model.ctx = [:]
 					final User user = springSecurityService.currentUser
 					model.ctx.user = user
+					model.ctx.healthentityname = grailsApplication.config.healthEntity.name
 				}
 			}
 		}
