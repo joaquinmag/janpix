@@ -17,6 +17,10 @@ class PatientController {
 	def listPatientStudies() {
 		log.info("Obteniendo usuario logueado..")
 		PatientCommand patient = securityService.currentUser
+		
+		//TODO provisorio
+		patient.cuis = params.cuis;
+
 		if(patient) {
 			try {
 				// Busco todos los estudios del paciente consultando el Registro Documentos
