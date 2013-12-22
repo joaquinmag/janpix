@@ -152,7 +152,7 @@ a:focus {
 */
 .impress-enabled .step {
     margin: 0;
-    opacity: 0.3;
+    opacity: 0.2;
 
     -webkit-transition: opacity 1s;
     -moz-transition:    opacity 1s;
@@ -161,7 +161,14 @@ a:focus {
     transition:         opacity 1s;
 }
 
+.impress-enabled .step.future { opacity: 0.9 }
+
 .impress-enabled .step.active { opacity: 1 }
+
+.impress-enabled .step.cylinder { opacity: 0 }
+
+.impress-enabled .step.cylinder.active { opacity: 1 }
+.impress-enabled .step.cylinder.past { opacity: 0.10 }
 
 /*
     These 'slide' step styles were heavily inspired by HTML5 Slides:
