@@ -210,17 +210,6 @@ a:focus {
     white-space: nowrap;
 }
 
-#ruta ul {
-list-style: none;
-}
-
-#ruta li:before {
-font-family: 'FontAwesome';
-content: '\f0f9';
-margin:0 5px 0 -15px;
-color: #1b926c;
-}
-
 .transition {
     display: inline-block;
     -webkit-transition: 0.5s;
@@ -454,9 +443,38 @@ color: #1b926c;
 }
 
 .no-slide h1 {
-		text-align: center;
+	text-align: center;
 	font-size:100px;
 	white-space: nowrap;
+}
+
+#ruta ul {
+list-style: none;
+}
+
+#ruta li:before {
+font-family: 'FontAwesome';
+content: '\f0f9';
+margin:0 5px 0 -15px;
+color: #1b926c;
+}
+
+#situacion-actual h1 {
+	text-align: center;
+	font-size:60px;
+	font-weight: 700;
+	white-space: nowrap;
+	color: black;
+	position: relative;
+	top: 45%;
+	color: white;
+}
+#situacion-actual {
+	background-color: #1b926c;
+	z-index: 5000;
+	width: 550px;
+	height: 550px;
+	border-radius: 300px;
 }
 
 .cylinder {
