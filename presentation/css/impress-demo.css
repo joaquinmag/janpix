@@ -161,7 +161,7 @@ a:focus {
     transition:         opacity 1s;
 }
 
-.impress-enabled .step.future { opacity: 0.9 }
+.impress-enabled .step.future { opacity: 0.6 }
 
 .impress-enabled .step.active { opacity: 1 }
 
@@ -169,7 +169,6 @@ a:focus {
 
 .impress-enabled .step.cylinder.active { opacity: 1 }
 .impress-enabled .step.cylinder.past { opacity: 0.10 }
-
 /*
     These 'slide' step styles were heavily inspired by HTML5 Slides:
     http://html5slides.googlecode.com/svn/trunk/styles.css
@@ -458,4 +457,8 @@ color: #1b926c;
 		text-align: center;
 	font-size:100px;
 	white-space: nowrap;
+}
+
+.cylinder {
+vertical-align: middle;
 }
