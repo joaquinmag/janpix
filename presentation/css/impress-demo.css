@@ -448,6 +448,60 @@ a:focus {
 	white-space: nowrap;
 }
 
+
+#inicio {
+	color: black;
+}
+
+.slide .footer {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 94%;
+	margin-left: 30px;
+	margin-right: 30px;
+	margin-bottom: 30px;
+}
+#top-inicio {
+	margin-bottom: 35px;
+}
+
+#top-inicio h2 {
+	font-size: 45px;
+	line-height: 55px;
+}
+#top-inicio h3 {
+	font-size: 35px;
+}
+
+#title-inicio {
+	color: rgb(11, 97, 164);
+	font-weight: bold;
+}
+
+#title-inicio h1 {
+	font-size: 50px;
+}
+
+#title-inicio h2 {
+	font-weight: normal;
+	font-size: 35px;
+	margin-top: 10px;
+}
+
+#integrantes {
+	float: left;
+	text-align: left;
+	font-size: 20px;
+}
+
+#fecha-realizacion {
+	float: right;
+	text-align: right;
+	margin-top: 75px;
+	font-size: 20px;
+}
+
 #ruta ul {
 list-style: none;
 }
@@ -517,7 +571,7 @@ color: #1b926c;
 }
 
 #protocolos-actual ul {
-	padding-top: 100px;
+	padding-top: 80px;
 	list-style: none;
 	margin-left: 35px;
 }
