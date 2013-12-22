@@ -459,7 +459,19 @@ margin:0 5px 0 -15px;
 color: #1b926c;
 }
 
-#situacion-actual h1 {
+.actual img {
+	position: relative;
+	text-align: center;
+	top: 15%;
+}
+#actual-1 img {
+	top: 35%;
+}
+.actual {
+	text-align: center;
+}
+
+.etapa-nueva h1{
 	text-align: center;
 	font-size:60px;
 	font-weight: 700;
@@ -469,12 +481,57 @@ color: #1b926c;
 	top: 45%;
 	color: white;
 }
-#situacion-actual {
+.etapa-nueva {
 	background-color: #1b926c;
 	z-index: 5000;
 	width: 550px;
 	height: 550px;
 	border-radius: 300px;
+}
+
+#propuesta-actual h1{
+	top: 25%;
+}
+
+#propuesta-actual {
+	z-index: initial;
+}
+
+#logos-protocolos {
+  height: 190px;
+  text-align: justify;
+  font-size: 0.1px; /* IE 9/10 don't like font-size: 0; */
+  min-width: 600px;
+}
+
+#logos-protocolos img {
+  height: 190px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+#logos-protocolos:after {
+  content: '';
+  width: 100%; /* Ensures there are at least 2 lines of text, so justification works */
+  display: inline-block;
+}
+
+#protocolos-actual ul {
+	padding-top: 100px;
+	list-style: none;
+	margin-left: 35px;
+}
+
+#protocolos-actual li {
+	color: black;
+	padding-top: 50px;
+}
+
+#protocolos-actual li:before {
+font-family: 'FontAwesome';
+content: '\f0f9';
+margin:0 15px 0 0;
+color: #1b926c;
 }
 
 .cylinder {
