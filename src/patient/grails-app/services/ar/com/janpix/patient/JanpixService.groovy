@@ -16,6 +16,7 @@ class JanpixService {
 	
 	def grailsApplication
 	def janpixRegdocServiceClient
+	def janpixPixManagerServiceClient
 	
     List<StudyCommand> queryAllStudies(PatientCommand patient) {
 		List<StudyCommand> studies = []
@@ -127,5 +128,37 @@ class JanpixService {
 		}
 		
 		log.info("Documento Desaprobado correctamente")
+	}
+	/**
+	 * Valida la existencia del user
+	 * Devuelve el patient con los datos cargados del user
+	 * @param user
+	 * @return
+	 */
+	PatientCommand validateUser(UserCommand user){
+		PatientCommand patient = new PatientCommand()
+		patient.user = user.user
+		patient.pass = user.pass
+		
+		return patient
+		
+		/*AckMessage ack //TODO poner el ack del rup
+		try{
+			log.info("Enviado Request para validar paciente con cuis "+user.user)
+			ValidatePatientRequest requestMessage = new ValidatePatientRequest()
+			requestMessage.cuis = user.user
+			requestMessage.pass = user.pass
+			requestMessage.authority = JanpixAssembler.toHealthEntity(grailsApplication.config.patients)
+			
+			ack = janpixPixManagerServiceClient.validatePatient(requestMessage)
+		}catch(Exception ex){
+			String message ="Error de conexión contra el Registro Unico de pacientes: "+ex.message
+			log.error(message, ex)
+			throw new JanpixConnectionException(message);
+		}
+		
+		//TODO validar ack
+		
+		return JanpixAssembler.fromPatient(ack.patient)*/
 	}
 }

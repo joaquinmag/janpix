@@ -3,19 +3,19 @@ package ar.com.janpix.patient
 import org.codehaus.groovy.grails.validation.Validateable;
 
 @Validateable
-class PatientCommand {
+class PatientCommand extends UserCommand {
 	// TODO ver de inyectar janpixPixManager para obtener datos de usuario
-	
-	String cuis
-	String user
-	String pass
-	
+		
 	String firstname
 	String lastname
 	
 	String mail
 	
 	static constraints = {
+	}
+	
+	String getCuis(){
+		return this.user
 	}
 	
 	String toString(){

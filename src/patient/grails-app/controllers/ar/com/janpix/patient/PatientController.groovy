@@ -14,17 +14,21 @@ class PatientController {
 	 * Lista todos los documentos del paciente actualmente logueado
 	 * @return
 	 */
-	def listPatientStudies() {
+	def listPatientStudies() {		
+		log.info("Verificando permisos..")
+		if(!securityService.isLoggedIn()){
+			log.info("Usuario NO logueado")
+			redirect controller:"login", action:"auth"
+			return
+		}
+			
 		log.info("Obteniendo usuario logueado..")
 		PatientCommand patient = securityService.currentUser
 		
-		//TODO provisorio
-		patient.cuis = params.cuis;
-
 		if(patient) {
 			try {
 				// Busco todos los estudios del paciente consultando el Registro Documentos
-				log.info("Consultando documentos del paciente "+patient)
+				log.info("Consultando documentos del paciente "+patient+" con cuis "+patient.cuis)
 				List<StudyCommand> studies =  janpixService.queryAllStudies(patient)
 				
 				log.info("Documentos obtenidos correctamente. Se obtuvieron "+studies.size()+" documentos")
