@@ -17,7 +17,7 @@
 						<div class="col-sm-9">
 							<g:if test="${patientInstance?.id}">
 							<span class="view-text">
-								${patientInstance?.id}
+								${cuis}
 							</span>
 							</g:if>
 						</div>

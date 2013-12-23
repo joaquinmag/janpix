@@ -18,7 +18,10 @@
 		<r:layoutResources />
 	</head>
 	<body>
-		<div id="grailsLogo" role="banner"><a href="http://grails.org"><img src="${resource(dir: 'images', file: 'grails_logo.png')}" alt="Grails"/></a></div>
+		<div id="grailsLogo" role="banner" style="min-height: 80px;padding: 10px;">
+			<img src="${resource(dir: 'images', file: 'isologo-janpix-small.png')}" alt="Janpix" style="float:left;margin-right: 10px;" height="72"/>
+			<div style="font-size:40px;font-weight:bold;min-height:72px;margin-top:15px;">Registro Único de Pacientes</div>
+		</div>
 		<g:layoutBody/>
 		<div class="footer" role="contentinfo"></div>
 		<div id="spinner" class="spinner" style="display:none;"><g:message code="spinner.alt" default="Loading&hellip;"/></div>

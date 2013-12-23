@@ -54,7 +54,9 @@ class PixManagerService {
 					def patient = EMPIService.createPatient(patientRequestMessage)
 					EMPIService.addEntityIdentifierToPatient(patient, healthEntity, organizationId)
 					log.info("Paciente agregado correctamente")
-					return new ACKMessage(typeCode: TypeCode.SuccededCreation, text:i18nMessage("pixmanager.ackmessage.creation.succeded"))	
+					
+					def createdPatientDTO = patient.convert(mapperDomainDto)
+					return new ACKMessage(patient:createdPatientDTO,typeCode: TypeCode.SuccededCreation, text:i18nMessage("pixmanager.ackmessage.creation.succeded"))	
 				}
 				
 				//El paciente tiene un alto matcheo

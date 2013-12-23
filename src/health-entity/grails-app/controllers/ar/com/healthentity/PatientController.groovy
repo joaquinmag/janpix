@@ -30,10 +30,10 @@ class PatientController {
 				notFound()
 				return
 			}
-			janpixService.addNewPatient(patientInstance)
+			String cuis = janpixService.addNewPatient(patientInstance)
 			
 			String healthEntity = grailsApplication.config.healthEntity.name
-			respond patientInstance,[view:"register_janpix_ok",model:[healthEntity:healthEntity]]
+			respond patientInstance,[view:"register_janpix_ok",model:[cuis:cuis,healthEntity:healthEntity]]
 			return
 			
 		}

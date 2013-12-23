@@ -44,7 +44,7 @@ class JanpixService {
 	 * Agrega un nuevo paciente en el RUP
 	 * @param patient
 	 */
-	void addNewPatient(Patient patient){
+	String addNewPatient(Patient patient){
 		AckMessage ack = null
 		try{
 			AddPatientRequestMessage requestMessage = new AddPatientRequestMessage()
@@ -62,6 +62,10 @@ class JanpixService {
 		}
 		
 		this.validateACKMessageRUP(ack)
+		
+		log.info("Paciente agregado correctamente. CUIS="+ack.patient?.uniqueId)
+		
+		return ack.patient?.uniqueId
 	}
 	
 	/**

@@ -4,7 +4,7 @@ import static java.util.UUID.randomUUID
 
 class UUIDGenerator {
 	static def getUUID() {
-		return { randomUUID() as String }
+		return { randomUUID().toString().substring(0,13)}
 	}
 }
 
