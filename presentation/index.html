@@ -228,9 +228,13 @@
     </div>
         
     <div id="patient" class="step slide" data-x="7400" data-y="-6400" data-z="2000" data-scale="0.3" data-rotate-z="180">
-		<h1>Paciente</h1>
-		<p>Aplicacion para que el paciente pueda ver los estudios que se le realizaron</p>
-		<p>Permite aprobar dichos estudios</p>
+		<h1 class="title">Paciente</h1>
+		<ul>
+			<li>Entidad principal del sistema</li>
+			<li>La información clínica cargada es dominio de este</li>
+			<li>Puede aprobar o desaprobar estudios</li>
+			<!-- Existe una aplicación donde el paciente puede ingresar y ver los estudios que le realizaron-->
+		</ul>
     </div>
     
     <div id="arquitectura-4" class="step" data-x="11000" data-y="-5500" data-z="2000" style="z-index: -1000;" data-scale="5" data-rotate-z="180">
@@ -238,9 +242,12 @@
     </div>
     
     <div id="health-entity" class="step slide" data-x="12600" data-y="-7050" data-z="2000" data-scale="0.3" data-rotate-z="180">
-		<h1>Entidades Sanitarias</h1>
-		<p>Pueden ser Hospitales, Centro de atención primaria, consultorios de médicos</p>
-		<p>Cualquier entidad que genere información sobre pacientes y la comparta</p>
+		<h1 class="title">Entidades Sanitarias</h1>
+		<ul>
+			<li>Cualquier entidad que genere información sobre pacientes y la comparta.</li>
+			<li>Pueden ser Hospitales, Centro de atención primaria, consultorios de médicos, etc..</li>
+			<li>Estas aplicaciones ya existen. Deben implementar los Web Services de Janpix.</li>
+		</ul>
     </div>
     
     <div id="arquitectura-5" class="step" data-x="11000" data-y="-5500" data-z="2000" style="z-index: -1000;" data-scale="5" data-rotate-z="180">
@@ -248,11 +255,47 @@
     </div>
     
     <div id="seguridad" class="step slide" data-x="11800" data-y="-4700" data-z="2000" data-scale="0.3" data-rotate-z="180">
-		<h1>Seguridad</h1>
-		<p>Como lo implementamos. Hablar de los certificados. Entidad certificante existente</p>
-		<p>Cuestiones legales. Ley proteccion datos (habeas data)</p>
-		<p>Contrasenia del usuario. Como se obtiene y zaraza</p>
-		<p>Carga de datos. Cualquier entidad sanitaria puede cargarlos</p>
+		<h1 class="title">Seguridad</h1>
+		<h3 class="title">¿Puedo asegurar la integridad de la información y la identidad del autor?</h3>
+		<ul>
+			<li>
+				Certificados
+				<!--<ul>
+					<li>¿Qué son?, ¿Para que sirven? </li>
+					
+					//Seguridad en las comunicaciones, Integridad, No repudio, Autoria
+					<li>Autoridad Certificante. A.C.A.P</li>
+				</ul>-->
+			</li>
+			<li>
+				Firma de documentos
+			</li>
+		</ul>
+		<br>
+		<h3 class="title">¿Quién protege mi información?</h3>
+		<ul>
+			<li>Ley Nº 25.326 - Protección de Datos Personales</li>
+			<!-- 
+				- Dicha ley crea Dirección Nacional de Protección de Datos Personales (DNPDP)
+				- El estado deberia de ser el encargado de implementar RUP, RegDoc, RepoDoc
+				
+				
+			-->
+			<li>Medidas de seguridad en los sistemas</li>
+			<!--Encriptacion, respaldo y mas-->
+		</ul>
+		<br>
+		<h3 class="title">¿Cada vez que una Entidad Sanitaria quiere agregar información debo autorizarla?</h3>
+		<!-- Explicar que la entidad sanitaria puede cargar lo que quiera. Lo que hace el paciente es validar dicha informacion.
+			La unica informacion que se puede descargar sin validar es la marcada como "De emergencia"-->
+		<br>
+		<h3 class="title">¿Cómo obtiene un paciente su usuario y contraseña?</h3>
+		
+
+    </div>
+
+	<div id="arquitectura-6" class="step" data-x="11000" data-y="-5500" data-z="2000" style="z-index: -1000;" data-scale="5" data-rotate-z="180">
+	<!--No pasa directamente al siguiente pero se queda mostrando la imagen general de la arquitectura-->
     </div>
     
     <div id="caso-uso" class="step" data-x="5000" data-y="-5200" data-z="2000" data-scale="5" data-rotate="180">
