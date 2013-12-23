@@ -651,6 +651,15 @@ vertical-align: middle;
 	font-weight: 400;
 }
 
+.step h1.title-no-slide {
+	display: inline;
+	background-color: #1b926c;
+	color: white;
+	padding-left: 15px;
+	padding-right: 15px;
+	border-radius: 20px;
+}
+
 ul {
 	padding-left:50px;
 	padding-top:5px;
@@ -676,5 +685,13 @@ ul {
 
 .img-circle{
 	border-radius:50%
+}
+
+#gracias.active {
+	opacity: 1;
+}
+
+#gracias {
+	opacity: 0;
 }
 

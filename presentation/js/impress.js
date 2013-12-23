@@ -278,11 +278,7 @@
         // last entered step.
         var onStepEnter = function (step) {
             if (lastEntered !== step) {
-		if(step === byId("arquitectura-1")) {
-			next();
-		} else if(step === byId("arquitectura-2")) {
-			next();
-		} else if(step === byId("arquitectura-3")) {
+		if(step === byId("arquitectura-1") || step === byId("arquitectura-2") || step === byId("arquitectura-3") || step === byId("arquitectura-4") || step === byId("arquitectura-5")) {
 			next();
 		} else {
                 	triggerEvent(step, "impress:stepenter");
