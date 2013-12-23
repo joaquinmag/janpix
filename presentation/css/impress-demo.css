@@ -525,6 +525,7 @@ content: "\f0fe";
 	position: relative;
 	text-align: center;
 	top: 15%;
+	width: 100%;
 }
 #actual-1 img {
 	top: 35%;
@@ -612,6 +613,16 @@ vertical-align: middle;
 	font-size: 50px;
 	font-weight: 700;
 	padding:20px 0px 30px 0px;
+	line-height: 55px;
+}
+
+.step small h1.title {
+	font-size: 30px;
+	margin-bottom: 0px;
+	margin-top: 0px;
+	padding-top: 0px;
+	padding-bottom: 15px;
+	line-height: 38px;
 }
 
 .step h2.title {
