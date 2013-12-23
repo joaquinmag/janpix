@@ -448,6 +448,60 @@ a:focus {
 	white-space: nowrap;
 }
 
+
+#inicio {
+	color: black;
+}
+
+.slide .footer {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 94%;
+	margin-left: 30px;
+	margin-right: 30px;
+	margin-bottom: 30px;
+}
+#top-inicio {
+	margin-bottom: 35px;
+}
+
+#top-inicio h2 {
+	font-size: 45px;
+	line-height: 55px;
+}
+#top-inicio h3 {
+	font-size: 35px;
+}
+
+#title-inicio {
+	color: rgb(11, 97, 164);
+	font-weight: bold;
+}
+
+#title-inicio h1 {
+	font-size: 50px;
+}
+
+#title-inicio h2 {
+	font-weight: normal;
+	font-size: 35px;
+	margin-top: 10px;
+}
+
+#integrantes {
+	float: left;
+	text-align: left;
+	font-size: 20px;
+}
+
+#fecha-realizacion {
+	float: right;
+	text-align: right;
+	margin-top: 75px;
+	font-size: 20px;
+}
+
 #ruta ul {
 list-style: none;
 }
@@ -459,14 +513,19 @@ margin:0 5px 0 -15px;
 color: #1b926c;
 }
 
+#ruta li li:before {
+content: "\f0fe";
+}
+
+#ruta li {
+	padding-bottom: 2px;
+}
+
 .actual img {
-	position: relative;
 	text-align: center;
-	top: 15%;
+	width: 100%;
 }
-#actual-1 img {
-	top: 35%;
-}
+
 .actual {
 	text-align: center;
 }
@@ -517,14 +576,13 @@ color: #1b926c;
 }
 
 #protocolos-actual ul {
-	padding-top: 100px;
+	padding-top: 50px;
 	list-style: none;
-	margin-left: 35px;
 }
 
 #protocolos-actual li {
 	color: black;
-	padding-top: 50px;
+	padding-top: 30px;
 }
 
 #protocolos-actual li:before {
@@ -550,6 +608,16 @@ vertical-align: middle;
 	font-size: 50px;
 	font-weight: 700;
 	padding:20px 0px 30px 0px;
+	line-height: 55px;
+}
+
+.step small h1.title {
+	font-size: 30px;
+	margin-bottom: 0px;
+	margin-top: 0px;
+	padding-top: 0px;
+	padding-bottom: 15px;
+	line-height: 38px;
 }
 
 .step h2.title {

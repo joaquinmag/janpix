@@ -13,7 +13,7 @@
     <meta name="author" content="Joaquín Mageneres - Martín Barnech" />
 
     <link href="fonts/fontface.css" rel="stylesheet" />
-	<link href="css/font-awesome.min.css" rel="stylesheet" />
+	<link href="css/font-awesome.css" rel="stylesheet" />
     <link href="css/impress-demo.css" rel="stylesheet" />
     
     <link rel="shortcut icon" href="favicon.png" />
@@ -21,28 +21,42 @@
 </head>
 <body>
 	<div id="impress">
-		<div id="inicio" class="step slide" data-x="15000" data-y="15000" data-z="0">
-			<q><strong>JANPIX</strong></q>
-			<q>Historia Clínica Electrónica Centralizada</q>
-			<br />
-			<p>Barnech, Martín Gonzalo</p>
-			<p>Magneres Joaquín Ignacio</p>
-			<p>Diciembre 2013</p>
+		<div id="inicio" class="step slide" data-x="15000" data-y="15000" data-z="0" style="text-align: center">
+			<div id="top-inicio">
+				<h2>Universidad de Buenos Aires</h2>
+				<h3>Facultad de Ingeniería</h2>
+			</div>
+			<div id="title-inicio">
+				<br />
+				<img src="img/isologo-janpix-small.png" />
+				<h1><strong>JANPIX</strong></h1>
+				<h2>Historia Clínica Electrónica Centralizada</h2>
+			</div>
+			<div class="footer">
+					<div id="integrantes">
+						<p><strong>Tutor: Lic. Pablo Gustavo Cosso</strong></p>
+						<p>Barnech, Martín Gonzalo. 87091</p>
+						<p>Magneres, Joaquín Ignacio. 87462</p>
+					</div>
+					<div id="fecha-realizacion">
+						<p>Diciembre 2013</p>
+					</div>
+				</small>
+			</div>
 		</div>
 
 		<div id="ruta" class="step slide" data-x="16500" data-y="15000" data-z="500">
-			<q>Indice</q>
-			<br />
+			<h1 class="title">Indice</h1>
 			<ul>
 				<li>Situación actual</li>
 				<li>Propuestas actuales</li>
 				<li>Janpix
-					<div>
-						- Idea<br>
-						- Protocolo base<br>
-						- Arquitectura<br>
-						- Seguridad<br>
-					</div>
+					<ul>
+						<li>Idea</li>
+						<li>Protocolo base</li>
+						<li>Arquitectura</li>
+						<li>Seguridad</li>
+					</ul>
 				</li>
 				<li>Demostración</li>
 				<li>Tecnologías utilizadas</li>
@@ -55,18 +69,22 @@
 		</div>
 
 		<div id="situacion-actual" class="step no-slide etapa-nueva" data-x="19000" data-y="15000" data-z="1000" data-scale="3">
-			<h1>Situación Actual<br /><br /><span style="font-weight: normal" class="fa-hospital-o"></span></h1>
+			<h1>Situación Actual<br /><span style="font-weight: normal" class="fa-hospital-o"></span></h1>
 		</div>
 		<div id="actual-1" class="step slide actual" data-x="20300" data-y="15000" data-z="800" data-rotate-z="90">
+			<h1 class="title">La información no es compartida entre hospitales</h1>
 			<img src="img/img001.png"  />
 		</div>
 		<div id="actual-2" class="step slide actual" data-x="19000" data-y="16300" data-z="600" data-rotate-z="180">
+			<h1 class="title">Cada hospital implementa su protocolo</h1>
 			<img src="img/img002.png" />
 		</div>
 		<div id="actual-3" class="step slide actual" data-x="17700" data-y="15000" data-z="400" data-rotate-z="270">
+			<small><h1 class="title">Por cada nuevo hospital a conectar, habría que implementar nuevos protocolos</h1></small>
 			<img src="img/img003.png" />
 		</div>
 		<div id="actual-4" class="step slide actual" data-x="19000" data-y="13700" data-z="200" data-rotate-z="360">
+			<h1 class="title">Se vuelve inmantenible</h1>
 			<img src="img/img004.png" />
 		</div>
 		<!--<div id="actual-5" class="step no-slide" data-x="19402" data-y="13764" data-z="0" data-rotate-z="378">
@@ -92,7 +110,7 @@
 		</div> -->
 
 	<div id="propuesta-actual" class="step etapa-nueva" data-x="23000" data-y="15000"  data-scale="3" data-rotate-z="360">
-		<h1>Solución actual<br /><br /><span class="fa-h-square"></span></h1>
+		<h1>Solución actual<br /><i class="fa fa-h-square"></i></h1>
 	</div>
 	<div id="protocolos-actual" class="step slide" data-x="23000" data-y="15400" data-scale="0.5" data-rotate-z="360">
 		<div id="logos-protocolos" >
@@ -101,9 +119,11 @@
 			<img src="img/logo-hosp-italiano.jpg"/>
 		</div>
 		<div style="text-align: center; width: 100%">
-			<ul style="text-align: left; width: 100%; display: inline-block;" >
-				<li>Los hospitales implementan soluciones de forma interna.</li>
-				<li>Registro Nacional de pacientes. C.U.I.S.</li>
+			<ul style="text-align: left; display: inline-block;" >
+				<li>Los hospitales importantes implementan soluciones de forma interna.</li>
+				<li>Registro Nacional de pacientes.</li>
+				<li>Algunos diagnósticos se entregan vía web.</li>
+				<li>Soluciones aisladas.</li>
 			</ul>
 		</div>
     </div>
