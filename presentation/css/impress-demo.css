@@ -592,6 +592,24 @@ margin:0 15px 0 0;
 color: #1b926c;
 }
 
+#que-es-janpix {
+	color: black;
+}
+
+#que-es-janpix ul {
+	list-style: none;
+}
+#que-es-janpix li {
+	list-style: none;
+	padding-top: 20px;
+}
+#que-es-janpix li:before {
+font-family: 'FontAwesome';
+content: '\f0f0';
+margin:0 15px 0 0;
+color: #1b926c;
+}
+
 .cylinder {
 vertical-align: middle;
 }
