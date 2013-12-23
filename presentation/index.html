@@ -106,7 +106,7 @@
 		</div> -->
 
 	<div id="propuesta-actual" class="step etapa-nueva" data-x="8000" data-y="0"  data-scale="3" data-rotate-z="360">
-		<h1>Solución actual<br /><i class="fa fa-h-square"></i></h1>
+		<h1>Propuestas actuales<br /><i class="fa fa-h-square"></i></h1>
 	</div>
 	<div id="protocolos-actual" class="step slide" data-x="8000" data-y="400" data-scale="0.5" data-rotate-z="360">
 		<div id="logos-protocolos" >
@@ -164,8 +164,15 @@
     </div>
     
     <div id="rup" class="step slide" data-x="10300" data-y="-4900" data-z="2000" data-scale="0.3" data-rotate-z="180">
-		<h1>RUP</h1>
-		<p>TODO foto arquitectura martin</p>
+		<h1 class="title">Registro Único de Pacientes</h1>
+		<ul>
+			<li>Es un Indice Maestro de Pacientes</li>
+			<li>Resuelve referencias cruzadas para un mismo paciente</li>
+			<li>Verifica la identidad de una persona dado un conjunto de datos demograficos</li>
+			<!-- Algoritmo utilizado AVI-b. Mejoras Felligi-Sunter. Sistema preparado para agregarlo como un plugin-->
+			<li>Comunicación con HL7</li>
+			<!-- Indicar problemas que tuvimos-->
+		</ul>
     </div>
 
     <div id="arquitectura-1" class="step" data-x="11000" data-y="-5500" data-z="2000" style="z-index: -1000;" data-scale="5" data-rotate-z="180">
@@ -173,9 +180,20 @@
     </div>
     
     <div id="regdoc" class="step slide" data-x="9500" data-y="-6000"  data-z="2000" data-scale="0.3" data-rotate-z="180">
-		<h1>Registro de Documentos</h1>
-		<p>TODO foto </p>
-		<p>Cualquier entidad sanitaria puede registrar un documento. EL paciente luego le da validez </p>
+		<h1 class="title">Registro de Documentos</h1>
+
+		<h3 class="title">Documento</h3>
+		<img class="img-circle" src="img/clinical_document.gif" style="width:200px;float:left;margin-right:30px"/>
+		<ul>
+			<li>Conjunto de información clinica (estructurada o no) con una minima metadata.</li>
+			<li>Janpix es neutral en cuanto al contenido y tipo de documento.</li>
+		</ul>
+		<div style="clear:both"></div><br>
+		<h3 class="title">Registro</h3>
+		<img class="img-circle" src="img/registro_documentos.jpg" style="width:250px;float:left;margin-right:30px"/>
+		<ul>
+			<li>Almacena los metadatos del documento y la referencia a la ubicación física del mismo.</li>
+		</ul>
     </div>
 
     <div id="arquitectura-2" class="step" data-x="11000" data-y="-5500" data-z="2000" style="z-index: -1000;" data-scale="5" data-rotate-z="180">
@@ -183,8 +201,26 @@
     </div>
     
     <div id="repositorio" class="step slide" data-x="9400" data-y="-6800"  data-z="2000" data-scale="0.3" data-rotate-z="180">
-		<h1>Repositorio de Documentos</h1>
-		<p>TODO foto</p>
+		<h1 class="title">Repositorio de Documentos</h1>
+		<img src="img/repositorio.png" style="height:200px;float:right;margin-left:30px"/>
+		<ul>
+			<li>
+				Almacena los documentos enviados por las Entidades Sanitarias.	
+			</li>
+		
+		</ul>
+
+<div style="clear:both"></div><br><br>
+	<img src="img/logo-mongodb.png" style="width:400px;float:right;margin-left:30px"/>
+		<ul>
+			
+			<li>
+			Mongo
+			<ul>
+				<li>¿Qué es?</li>
+				<li>¿Por qué?</li>
+			</li>
+		<ul>
     </div>
 
     <div id="arquitectura-3" class="step" data-x="11000" data-y="-5500" data-z="2000" style="z-index: -1000;" data-scale="5" data-rotate-z="180">
@@ -216,6 +252,7 @@
 		<p>Como lo implementamos. Hablar de los certificados. Entidad certificante existente</p>
 		<p>Cuestiones legales. Ley proteccion datos (habeas data)</p>
 		<p>Contrasenia del usuario. Como se obtiene y zaraza</p>
+		<p>Carga de datos. Cualquier entidad sanitaria puede cargarlos</p>
     </div>
     
     <div id="caso-uso" class="step" data-x="5000" data-y="-5200" data-z="2000" data-scale="5" data-rotate="180">
