@@ -591,29 +591,45 @@ margin-left: -15px;
 	padding-top: 30px;
 }
 
-#protocolos-actual li:before {
+#protocolos-actual li:before, #repositorio li:before, #seguridad li:before {
 font-family: 'FontAwesome';
 content: '\f0f9';
 margin:0 15px 0 0;
 color: #1b926c;
 }
 
-#que-es-janpix {
+#que-es-janpix, #rup, #regdoc ul, #repositorio, #patient, #health-entity, #seguridad, #beneficios, #mejoras, #lecciones {
 	color: black;
 }
 
-#que-es-janpix ul {
+#que-es-janpix ul, #regdoc ul, #rup ul, #repositorio ul, #patient ul, #health-entity ul, #seguridad ul, #beneficios ul {
 	list-style: none;
 }
+
 #que-es-janpix li {
 	list-style: none;
 	padding-top: 20px;
 }
-#que-es-janpix li:before {
+#que-es-janpix li:before, #regdoc li:before, #patient li:before {
 font-family: 'FontAwesome';
 content: '\f0f0';
 margin:0 15px 0 0;
 color: #1b926c;
+}
+
+#rup li:before, #health-entity li:before, #beneficios li:before {
+font-family: 'FontAwesome';
+content: '\f0f1';
+margin:0 15px 0 0;
+color: #1b926c;
+}
+
+#rup li, #patient li, #health-entity li {
+	margin-top: 20px;
+}
+
+#repositorio ul {
+	margin-left: -40px;
 }
 
 .cylinder {
