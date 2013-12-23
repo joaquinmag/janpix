@@ -522,14 +522,10 @@ content: "\f0fe";
 }
 
 .actual img {
-	position: relative;
 	text-align: center;
-	top: 15%;
 	width: 100%;
 }
-#actual-1 img {
-	top: 35%;
-}
+
 .actual {
 	text-align: center;
 }
