@@ -513,6 +513,14 @@ margin:0 5px 0 -15px;
 color: #1b926c;
 }
 
+#ruta li li:before {
+content: "\f0fe";
+}
+
+#ruta li {
+	padding-bottom: 2px;
+}
+
 .actual img {
 	position: relative;
 	text-align: center;
