@@ -549,7 +549,9 @@ content: "\f0fe";
 }
 
 #propuesta-actual h1{
-	top: 25%;
+top: 37%;
+font-size: 50px;
+margin-left: -15px;
 }
 
 #propuesta-actual {
