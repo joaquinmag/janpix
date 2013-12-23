@@ -689,9 +689,11 @@ ul {
 
 #gracias.active {
 	opacity: 1;
+	display: initial;
 }
 
 #gracias {
 	opacity: 0;
+	display: none;
 }
 
