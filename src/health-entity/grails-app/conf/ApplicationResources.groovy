@@ -48,7 +48,14 @@ modules = {
 		def dir = "theme"
 		resource url:[dir:"${dir}/js",file:'jquery.chosen.min.js'], exclude: 'minimify'
 	}
-
+	
+	fullcalendar {
+		dependsOn 'theme'
+		def dir = "theme"
+		resource url:[dir:"${dir}/js",file:'jquery-ui-1.10.3.custom.min.js'], exclude: 'minimify'
+		resource url:[dir:"${dir}/js",file:'fullcalendar.min.js'], exclude: 'minimify'
+	}
+	
 	xchartscss {
 		def dir = "theme"
 		resource url:[dir: "${dir}/css",file:"xcharts.min.css"], exclude: 'minimify'

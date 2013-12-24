@@ -7,7 +7,7 @@ class UrlMappings {
             }
         }
 		
-		name dashboard:"/"(controller:'patient', action: 'index')
+		name dashboard:"/"(controller:'dashboard', action: 'index')
 		name patients:"/patients"(controller:'patient', action: 'index')
 		name showPatient: "/patient/show/$id" (controller: 'patient', action: 'show') {
 			constraints { id(matches:/\d+/) }
