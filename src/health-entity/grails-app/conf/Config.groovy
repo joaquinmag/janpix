@@ -87,8 +87,11 @@ environments {
     development {
         grails.logging.jul.usebridge = true
     }
-    demo {
-        grails.logging.jul.usebridge = true
+    democonsultorio {
+        grails.logging.jul.usebridge = false
+    }
+    demohospital {
+        grails.logging.jul.usebridge = false
     }
     production {
         grails.logging.jul.usebridge = false
@@ -110,11 +113,11 @@ log4j = {
 	appenders {
 		console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
 					
-		rollingFile name: 'applicationLog',
+		file name: 'applicationLog',
 					maxFileSize: 1024,
 					file: "/var/log/tomcat7/janpix/healthentity/application.log"
 					
-		rollingFile name: 'localApplicationLog',
+		file name: 'localApplicationLog',
 					maxFileSize: 1024,
 					file: "application.log"
 	}
@@ -177,7 +180,35 @@ log4j = {
 	],additivity:false
 
 		}
-		demo{
+		demohospital {
+			root {
+				error 'localApplicationLog','stdout'
+			}
+			//Usa los appenders 'stdout' y 'applicationLog' para el nivel debug
+			debug stdout: [
+	'grails.app.controllers.ar.com.janpix.healthentity',
+	'grails.app.domain.com.janpix.healthentity',
+	'grails.app.services.com.janpix.healthentity',
+	'grails.app.taglib.com.janpix.healthentity',
+	'grails.app.conf.com.janpix.healthentity',
+	'grails.app.filters.com.janpix.healthentity',
+	'groovyx.net.ws',
+	'org.apache.cxf'
+	],additivity:false
+		
+			debug localApplicationLog: [
+	'grails.app.controllers.ar.com.janpix.healthentity',
+	'grails.app.domain.com.janpix.healthentity',
+	'grails.app.services.com.janpix.healthentity',
+	'grails.app.taglib.com.janpix.healthentity',
+	'grails.app.conf.com.janpix.healthentity',
+	'grails.app.filters.com.janpix.healthentity',
+	'groovyx.net.ws',
+	'org.apache.cxf'
+	],additivity:false
+
+		}
+		democonsultorio {
 			root {
 				error 'localApplicationLog','stdout'
 			}
@@ -230,10 +261,23 @@ service.janpix.pixmanager.serverURL = ""
 
 // set per-environment service url
 environments {
-	demo {
+	democonsultorio {
 		service.janpix.regdoc.serverURL  = "http://192.168.2.2:9090/regdoc-0.1"
 		service.janpix.repodoc.serverURL = "http://192.168.2.2:9090/repodoc-0.1"
 		service.janpix.pixmanager.serverURL = "http://192.168.2.2:9090/rup-0.1"
+		healthEntity {
+			name = "Consultorio"
+			oid = "2.16.840.1.113883.2.10.100.221"
+		}
+	}
+	demohospital {
+		service.janpix.regdoc.serverURL  = "http://192.168.2.2:9090/regdoc-0.1"
+		service.janpix.repodoc.serverURL = "http://192.168.2.2:9090/repodoc-0.1"
+		service.janpix.pixmanager.serverURL = "http://192.168.2.2:9090/rup-0.1"
+		healthEntity {
+			name = "Clínica San Carlos"
+			oid = "2.16.840.1.113883.2.10.100.220"
+		}
 	}
 	production {
 		service.janpix.regdoc.serverURL  = "http://localhost:9090/regdoc-0.1"
@@ -308,22 +352,6 @@ grails.plugins.springsecurity.authority.className = 'ar.com.healthentity.Role'
 grails.plugins.springsecurity.authority.nameField = 'authority'
 
 grails.gorm.failOnError=true
-
-/** Health Entity - Config **/
-// Datos de la Entidad Sanitaria
-final def nameHE = (System.getProperty('janpix.he')?:"").length() > 0
-if (nameHE) {
-	healthEntity {
-		name = "Clínica San Carlo"
-		oid = "2.16.840.1.113883.2.10.100.203"
-	}
-}
-else {
-	healthEntity {
-		name = "Clínica Santa Carla"
-		oid = "2.16.840.1.113883.2.10.100.202"
-	}
-}
 
 /** Configuracion de los datos del RUP **/
 rup {
