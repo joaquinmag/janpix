@@ -31,25 +31,37 @@ class SecurityService {
 	
 	
 	ACKMessage validatePatient(PatientDTO patientDTO, AssigningAuthorityDTO authorityDTO){
-		try{
-			// Se valida la autoridad
-			// TODO hacer
+		Patient.withTransaction { tx ->
+			try{
+				// Se valida la autoridad
+				// TODO hacer
+				
+				// Se obtiene el paciente y se valida que exista
+				//Patient patient = EMPIService.findPatientByUUID(new PatientIdentifier(mainId:patientDTO.uniqueId))
+				log.info("Obteniendo datos del paciente con ID "+patientDTO.uniqueId)
+				Patient patient = EMPIService.findPatientByUUID(patientDTO.uniqueId)
+				if(!patient){
+					String message = "No existe el paciente con ID "+patientDTO.uniqueId
+					log.error(message)
+					return new ACKMessage(typeCode:TypeCode.DontExistingPatientError,text:message)
+				}
+					
+				log.info("Validando contraseña")
+				// Validar que la contraseña sea correcta
+				String pass = patientDTO.identifiers.find{it->it.type == Identifier.TYPE_IDENTIFIER_PW}
+				this.validatePass(pass,patient)
+				
+				log.info("Paciente validado correctamente")
+				
+				return new ACKMessage(typeCode:TypeCode.SuccededQuery,patient:patient.convert(mapperDomainDto))
 			
-			// Se obtiene el paciente y se valida que exista
-			Patient patient = EMPIService.findPatientByUUID(new PatientIdentifier(mainId:patientDTO.uniqueId))
-			if(!patient)
-				return new ACKMessage(typeCode:TypeCode.DontExistingPatientError,text:"No existe el paciente con ID "+patientDTO.uniqueId)
-			
-			// Validar que la contraseña sea correcta
-			String pass = patientDTO.identifiers.find{it->it.type == Identifier.TYPE_IDENTIFIER_PW}
-			this.validatePass(pass,patient)
-			
-			
-			return new ACKMessage(typeCode:TypeCode.SuccededQuery,patient:patient.convert(mapperDomainDto))
-		
-		}
-		catch(Exception e){
-			
+			}
+			catch(Exception e){
+				tx.setRollbackOnly()
+				String message = e.message
+				log.error(message)
+				return new ACKMessage(typeCode:TypeCode.InternalError,text:message)
+			}
 		}
 	}
 	

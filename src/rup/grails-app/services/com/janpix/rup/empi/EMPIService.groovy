@@ -227,6 +227,16 @@ class EMPIService {
 
 	}
 	
+	def findPatientByUUID(String uuid){
+		def c = Patient.createCriteria()
+		def result = c.get{
+			uniqueId{
+				eq("mainId",uuid)
+			}
+		}
+		return result
+	}
+	
 	/**
 	 * Devuelve un paciente a partir del identificador que usa una entidad sanitaria para referenciarlo
 	 * @param String peId: Id que utiliza la Entidad Sanitaria para el paciente

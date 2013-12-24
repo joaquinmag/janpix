@@ -285,8 +285,6 @@ class PixManagerService {
 		}
 	}
 	
-	ACKMessage validatePatient(PatientDTO patientDTO, AssigningAuthorityDTO authorityDTO){
-		
-	}
+
 
 }
