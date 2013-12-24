@@ -159,7 +159,7 @@ environments {
 	production {
 		service.janpix.regdoc.serverURL  = "http://localhost:9090/regdoc-0.1"
 		service.janpix.repodoc.serverURL = "http://www.changeme.com"
-		service.janpix.pixmanager.serverURL = "http://www.changeme.com"
+		service.janpix.pixmanager.serverURL = "http://localhost:9090/rup-0.1"
 	}
 	development {
 		service.janpix.regdoc.serverURL  = "http://localhost:9090/regdoc-0.1"

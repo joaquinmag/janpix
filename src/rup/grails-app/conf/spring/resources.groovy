@@ -10,6 +10,7 @@ import com.janpix.rup.empi.FactoryMatchRecord
 import com.janpix.rup.infrastructure.MapperDtoDomain
 import com.janpix.rup.infrastructure.MapperDomainDto
 import com.janpix.rup.pixmanager.PixManagerService
+import com.janpix.rup.pixmanager.SecurityService
 import com.janpix.rup.infrastructure.dto.factory.RUPDTOFactory
 
 
@@ -70,6 +71,11 @@ beans = {
 		EMPIService = ref('EMPIService')
 		assigningAuthorityService = ref(assigningAuthorityService)
 		i18nMessage = ref(i18nMessage)
+	}
+	
+	securityService(SecurityService){
+		mapperDomainDto = ref(mapperDomainDto)
+		EMPIService = ref('EMPIService')
 	}
 	
 	

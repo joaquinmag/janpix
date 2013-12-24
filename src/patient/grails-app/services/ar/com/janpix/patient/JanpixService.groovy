@@ -148,7 +148,7 @@ class JanpixService {
 			ValidatePatientRequest requestMessage = new ValidatePatientRequest()
 			requestMessage.cuis = user.user
 			requestMessage.pass = user.pass
-			requestMessage.authority = JanpixAssembler.toHealthEntity(grailsApplication.config.patients)
+			requestMessage.authority = JanpixAssembler.toAssigningAuthority(grailsApplication.config.patients)
 			
 			ack = janpixPixManagerServiceClient.validatePatient(requestMessage)
 		}catch(Exception ex){

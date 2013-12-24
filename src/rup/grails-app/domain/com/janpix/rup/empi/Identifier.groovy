@@ -16,6 +16,8 @@ class Identifier {
 	static final String TYPE_IDENTIFIER_LC 	= 'LC'
 	static final String TYPE_IDENTIFIER_LE 	= 'LE'
 	
+	static final String TYPE_IDENTIFIER_PW 	= 'PW' //Pasword
+	
 	String type
 	String number
 	AssigningAuthority assigningAuthority 

@@ -16,6 +16,7 @@ import com.janpix.rup.infrastructure.dto.IdentifierDTO
 import com.janpix.rup.infrastructure.dto.PatientDTO
 import com.janpix.rup.infrastructure.dto.PersonDTO
 import com.janpix.rup.services.contracts.ACKMessage
+import com.janpix.rup.services.contracts.ValidatePatientRequestMessage;
 import com.janpix.rup.services.contracts.ACKMessage.TypeCode
 
 
@@ -282,6 +283,10 @@ class PixManagerService {
 				return matchedPatients
 			}
 		}
+	}
+	
+	ACKMessage validatePatient(PatientDTO patientDTO, AssigningAuthorityDTO authorityDTO){
+		
 	}
 
 }
