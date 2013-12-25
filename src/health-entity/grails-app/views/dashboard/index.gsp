@@ -176,7 +176,7 @@
 						//count li elements
 						
 						if ( $('.calendar-details ul li').length == 0 ) {
-							$('.calendar-details > .events').html('<li>no events :)</li>');
+							$('.calendar-details > .events').html('<li>no hay eventos :)</li>');
 						}
 
 					}
