@@ -103,9 +103,26 @@ log4j = {
 		rollingFile name: 'localApplicationLog',
 					maxFileSize: 2048,
 					file: "application.log"
+		
+		file 	name:'applicationLog',
+				maxFileSize: 2048,
+				file: "/var/log/tomcat7/janpix/patient/application.log"
     }
 	
 	environments {
+		production{
+			root {
+				error 'applicationLog'
+			}
+			debug applicationLog: [
+				'grails.app.controllers.ar.com.janpix.patient',
+				'grails.app.domain.ar.com.janpix.patient',
+				'grails.app.services.ar.com.janpix.patient',
+				'grails.app.taglib.ar.com.janpix.patient',
+				'grails.app.conf.ar.com.janpix.patient',
+				'grails.app.filters.ar.com.janpix.patient',
+			],additivity:false
+		}
 		development{
 			root {
 				error 'localApplicationLog','stdout'
@@ -191,7 +208,7 @@ cxf {
 			serviceEndpointAddress = "${service.janpix.repodoc.url}"
 		}*/
 		
-		/*janpixPixManagerServiceClient {
+		janpixPixManagerServiceClient {
 			// para usar con grails wsdl2java
 			wsdlArgs = [ "-autoNameResolution", "-validate" ]
 			wsdl = "${service.janpix.pixmanager.url}?wsdl"
@@ -201,7 +218,7 @@ cxf {
 			// conexion con WS
 			clientInterface = com.janpix.webclient.rup.PIXManagerJanpixService
 			serviceEndpointAddress = "${service.janpix.pixmanager.url}"
-		}*/
+		}
 		
 		janpixRegdocServiceClient {
 			// para usar con grails wsdl2java

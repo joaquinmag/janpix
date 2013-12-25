@@ -4,11 +4,15 @@ import ar.com.janpix.patient.utils.JanpixAssembler
 
 import com.janpix.exceptions.ErrorOnApproveDocumentJanpixException
 import com.janpix.exceptions.JanpixConnectionException
+import com.janpix.exceptions.LoginException
 import com.janpix.webclient.regdoc.AckMessage
 import com.janpix.webclient.regdoc.AckStoredQueryMessage
 import com.janpix.webclient.regdoc.QueryDocumentRequest
 import com.janpix.webclient.regdoc.TypeCode
 import com.janpix.webclient.regdoc.UpdateStateDocumentRequest
+import com.janpix.webclient.rup.AckMessage as AckMessageRUP
+import com.janpix.webclient.rup.TypeCode as TypeCodeRUP
+import com.janpix.webclient.rup.ValidatePatientRequestMessage
 
 class JanpixService {
 	
@@ -136,17 +140,11 @@ class JanpixService {
 	 * @return
 	 */
 	PatientCommand validateUser(UserCommand user){
-		PatientCommand patient = new PatientCommand()
-		patient.user = user.user
-		patient.pass = user.pass
-		
-		return patient
-		
-		/*AckMessage ack //TODO poner el ack del rup
+		AckMessageRUP ack 
 		try{
 			log.info("Enviado Request para validar paciente con cuis "+user.user)
-			ValidatePatientRequest requestMessage = new ValidatePatientRequest()
-			requestMessage.cuis = user.user
+			ValidatePatientRequestMessage requestMessage = new ValidatePatientRequestMessage()
+			requestMessage.user = user.user
 			requestMessage.pass = user.pass
 			requestMessage.authority = JanpixAssembler.toAssigningAuthority(grailsApplication.config.patients)
 			
@@ -157,8 +155,14 @@ class JanpixService {
 			throw new JanpixConnectionException(message);
 		}
 		
-		//TODO validar ack
+		log.info("Validando respuesta del servidor")
+		if(ack.typeCode != TypeCodeRUP.SUCCEDED_QUERY){
+			log.info("Error al obtener permisos del usuario Error:"+ack.text)
+			return null
+		}
 		
-		return JanpixAssembler.fromPatient(ack.patient)*/
+		log.info("Respuesta correcta")
+		
+		return JanpixAssembler.fromPatient(ack.patient)
 	}
 }

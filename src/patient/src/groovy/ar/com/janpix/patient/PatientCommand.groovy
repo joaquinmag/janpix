@@ -4,7 +4,6 @@ import org.codehaus.groovy.grails.validation.Validateable;
 
 @Validateable
 class PatientCommand extends UserCommand {
-	// TODO ver de inyectar janpixPixManager para obtener datos de usuario
 		
 	String firstname
 	String lastname

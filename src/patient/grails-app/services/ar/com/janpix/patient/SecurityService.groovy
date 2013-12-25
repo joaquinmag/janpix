@@ -14,16 +14,11 @@ class SecurityService {
 	
 	def janpixService
 	 
-	// TODO por ahora HardCode
+	/**
+	 * Retorna el usuario actual
+	 * @return
+	 */
     def getCurrentUser() {
-		/*PatientCommand user = new PatientCommand()
-		user.cuis = "3410ea1d-9f5b-4485-8001-e3c4de3687ee"
-		user.user = "mbarnech"
-		user.firstname = "Martin"
-		user.lastname = "Barnech"
-		user.mail = "mgbarnech@gmail.com"
-		
-		return user*/
 		return this.session[KEY_CURRENT_USER]
     }
 	
@@ -38,7 +33,7 @@ class SecurityService {
 		log.info("logueando usuario "+user)
 		PatientCommand patient = janpixService.validateUser(user)
 		if(!patient)
-			throw new LoginException("Error en el usuario y/o contraseña ingresados")
+			throw new LoginException("Usuario y/o contraseña ingresados invalidos")
 
 		// Se guarda en la session
 		this.session[KEY_CURRENT_USER] = patient
