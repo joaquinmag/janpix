@@ -10,7 +10,7 @@
 				<a class="dropmenu" href="#"><i class="icon-user"></i><span class="hidden-sm"> Pacientes</span></a>
 				<ul>
 					<li><g:link mapping="patients"><i class="icon-table"></i><span class="hidden-sm"> Ver pacientes</span></g:link></li>
-					<li><g:link class="btn-settings" action="create"><i class="icon-plus "></i><span class="hidden-sm"> Crear nuevo paciente</span></g:link></li>
+					<li><g:link class="btn-settings" controller="patient" action="create"><i class="icon-plus "></i><span class="hidden-sm"> Crear nuevo paciente</span></g:link></li>
 				</ul>
 			</li>
 		</ul>
