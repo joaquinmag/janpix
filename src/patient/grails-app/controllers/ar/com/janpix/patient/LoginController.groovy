@@ -26,7 +26,7 @@ class LoginController {
 	 * @return
 	 */
 	def authSuccess(){
-		redirect controller:"patient", action:"listPatientStudies"
+		redirect controller:"dashboard", action:"index"
 	}
 	
 	/**
@@ -55,5 +55,10 @@ class LoginController {
 			
 			redirect action:"auth"
 		}
+	}
+	
+	def logout(){
+		securityService.logout()
+		redirect action:"auth"
 	}
 }

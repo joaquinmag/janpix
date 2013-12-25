@@ -41,13 +41,17 @@ class SecurityService {
 		return "Token"
 	}
 	
+	def logout(){
+		this.session.invalidate()
+	}
+	
 	/**
 	 * Retorna true si hay algun usuario logueado
 	 * @return
 	 */
 	def isLoggedIn(){
 		PatientCommand patientLogged = this.session[KEY_CURRENT_USER]
-		return (patientLogged != null)
+		return (patientLogged!= null)
 	}
 	
 	private def getSession(){

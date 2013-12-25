@@ -23,13 +23,12 @@
 						<div class="box-header">
 							<h2>
 								<i class="icon-asterisk"></i>
-								Estudios del paciente
+								Mis estudios
 							</h2>
 						</div>
 						<div class="box-content">
 							<div class="row">
 								<div class="col-sm-12">
-									<g:if test="${!studiesInstanceList.empty}">
 										<table class="table table-striped table-bordered bootstrap-datatable datatable">
 											<thead>
 		 										<tr>
@@ -42,6 +41,7 @@
 		 										</tr>
 		 									</thead> 
 		 									<tbody>
+		 									<g:if test="${!studiesInstanceList.empty}">
 		 										<g:each in="${studiesInstanceList}" var="study">
 			 										<tr id="study${study.uniqueId}">
 			 											<td class="center"><g:formatDate format="dd/MM/yyyy" date="${study.date}"/></td>
@@ -78,9 +78,19 @@
 			 											</td>
 			 										</tr>
 		 										</g:each>
+		 										</g:if>
+		 										<g:else>
+		 											<tr>
+		 												<td colspan="6">
+		 													<div class="alert alert-info">
+		 														<strong>Atención!</strong>
+		 														No posee ningún estudio cargado
+		 													</div>
+		 												</td>
+		 											</tr>
+		 										</g:else>
 		 									</tbody>
 		 								</table>
-			 						</g:if>
 			 					</div>
 		 					</div>
 						</div><!-- /.box-content -->

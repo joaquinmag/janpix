@@ -16,6 +16,9 @@
 		<link rel="stylesheet" href="${resource(dir: 'css', file: 'mobile.css')}" type="text/css">-->
 		
 		<r:require modules="bootstrap"/>
+		<r:require modules="menu"/>
+		
+		
 		
 		<g:layoutHead/>
 		<r:layoutResources />
@@ -35,20 +38,26 @@
           <a class="navbar-brand" href="#">Janpix - Paciente</a>
         </div>
         <div class="navbar-collapse collapse">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Inicio</a></li>
-            <li><a href="#about">Estudios Cargados</a></li>
-            <li><a href="#contact">Entidades de Confianza</a></li>
+          <ul class="nav navbar-nav  main-menu">
+            <li><g:link controller="dashboard" action="index">
+            	<span class="glyphicon glyphicon-home">&nbsp;Inicio</span>
+            	</g:link></li>
+            <li><g:link controller="patient" action="listPatientStudies">
+            	<span class="glyphicon glyphicon-file">&nbsp;Estudios Cargados</span>
+            	</g:link></li>
+            <li><a href="#">
+            <span class="glyphicon glyphicon-check">&nbsp;Entidades de Confianza</span>
+            </a></li>
+         </ul>
+         <ul class="nav navbar-nav navbar-right">
             <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              	<span class="glyphicon glyphicon-user">&nbsp;<jx:currentUser/></span>
+              	<b class="caret"></b>
+              </a>
               <ul class="dropdown-menu">
-                <li><a href="#">Action</a></li>
-                <li><a href="#">Another action</a></li>
-                <li><a href="#">Something else here</a></li>
-                <li class="divider"></li>
-                <li class="dropdown-header">Nav header</li>
-                <li><a href="#">Separated link</a></li>
-                <li><a href="#">One more separated link</a></li>
+                <li><a href="#">Configuración</a></li>
+                <li><g:link controller="login" action="logout">Salir</g:link></li>
               </ul>
             </li>
           </ul>
