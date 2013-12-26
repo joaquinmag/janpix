@@ -7,7 +7,7 @@ $(document).ready(function() {
 	   btn_choose:'Suelte el archivo aquí o haga click aquí para elegir uno',
 	   btn_change:null,
 	   no_icon:'icon-cloud-upload',
-	   droppable:true,
+	   droppable:false,
 	   thumbnail:'large'
 	});
 	$('.date-picker').datepicker();
