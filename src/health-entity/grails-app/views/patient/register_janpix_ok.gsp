@@ -11,7 +11,7 @@
 				<div class="row">
 						<div class="col-sm-3">
 							<span class="view-label">
-								<g:message code="patient.id.label" default="Id" />
+								CUIS
 							</span>
 						</div>
 						<div class="col-sm-9">
@@ -26,7 +26,7 @@
 					<div class="row">
 						<div class="col-sm-3">
 							<span class="view-label">
-								<g:message code="patient.healthentity.label" default="Health Entity" />
+								Entidad Sanitaria
 							</span>
 						</div>
 						<div class="col-sm-9">
@@ -49,7 +49,7 @@
 								<g:fieldValue bean="${patientInstance}" field="firstName"/>
 							
 							</span>
-							</g:if>		
+							</g:if>
 						</div>
 					</div>
 							
