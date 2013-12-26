@@ -258,6 +258,11 @@ log4j = {
 service.janpix.repodoc.url = ""
 service.janpix.regdoc.url = ""
 service.janpix.pixmanager.serverURL = ""
+healthEntity {
+	name = ""
+	oid = "2.16.840.1.113883.2.10.130.1"
+}
+
 
 // set per-environment service url
 environments {

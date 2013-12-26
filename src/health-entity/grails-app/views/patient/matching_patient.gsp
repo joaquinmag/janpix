@@ -11,7 +11,7 @@
 					<div class="row">
 						<div class="col-sm-4">
 							<span class="view-label">
-								<g:message code="patient.firstName.label" default="First Name" />
+								Nombre
 							</span>
 						</div>
 						<div class="col-sm-8">
@@ -28,7 +28,7 @@
 					<div class="row">
 						<div class="col-sm-4">
 							<span class="view-label">
-								<g:message code="patient.lastName.label" default="Last Name" />
+								Apellido
 							</span>
 						</div>
 						<div class="col-sm-8">

@@ -12,7 +12,7 @@
 				<th>Título</th>
 				<th>Tipo de estudio</th>
 				<th>Comentarios</th>
-				<th>Descargado</th>
+				<th>Sincronizado</th>
 				<th>Acciones</th>
 			</tr>
 		</thead>
@@ -23,7 +23,7 @@
 					<td>${study.title}</td>
 					<td>${study.type}</td>
 					<td>${study.observation}</td>
-					<td class="cener"><i class="icon-<%= study.isSynchro ? "ok-sign green" : "remove-sign red" %>"></i></td>
+					<td class="center"><i class="icon-<%= study.isSynchro ? "ok-sign green" : "remove-sign red" %>"></i></td>
 					<td>
 						<g:if test="${!study.isSynchro}">
 							<g:form mapping="downloadRemoteDocument" method="POST">
