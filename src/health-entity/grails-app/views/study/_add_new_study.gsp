@@ -76,7 +76,7 @@ $(document).ready(function() {
 		</div>
 		<div class="row">
 			<div class="form-group col-md-12">
-				<label class="control-label" for="observations">Comentarios</label>
+				<label class="control-label" for="observations">Diagnóstico</label>
 				<textarea id="observations" name="observations" rows="6" style="width: 100%; overflow: hidden; word-wrap: break-word; resize: horizontal; height: 126px;"></textarea>
 			</div>
 		</div>

@@ -5,10 +5,10 @@
 </head>
 <body>
 <g:if test="${upload_correct}">
-	<p>Archivo subido correctamente.</p>
+	<p>Estudio sincronizado correctamente.</p>
 </g:if>
 <g:else>
-	<p>Archivo no subido correctamente.</p>
+	<p>El estudio no se pudo sincronizar correctamente correctamente.</p>
 </g:else>
 <script type="text/javascript">
 	function updateDocumentState() {

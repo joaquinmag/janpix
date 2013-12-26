@@ -8,6 +8,10 @@
 					<span class="details">${study.title}</span>
 					<span class="type">Tipo de estudio</span>
 					<span class="details">${study.type}</span>
+					<g:if test="${(study.observation && (study.observation != ""))}">
+						<span class="type">Diagnóstico</span>
+						<span class="details">${study.observation}</span>
+					</g:if>
 					<span class="details" style="text-align: right; margin-right: 5px; margin-left:5px;"><g:link controller="study" action="download" id="${study.id}" class="btn" ><i class="icon-cloud-download"></i> ${study.document.filename}</g:link></span>
 				</span>
 				<div class="arrow"></div>

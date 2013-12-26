@@ -5,12 +5,12 @@
 	<head>
 		<meta name="layout" content="main">
 		<g:set var="entity" value="${patientInstance}" />
-		<title><g:message code="patient.matching.list.label" args="[entity]" /></title>
+		<title>Similitud de pacientes</title>
 	</head>
 	<body>
 		<div class="row">		
 			<div class="box col-sm-12">
-				<h1><g:message code="patient.matching.list.label" args="[entity]" /></h1>
+				<h1>Listado de pacientes con similitudes</h1>
 			</div>
 		</div>
 		<div class="row">

@@ -13,14 +13,11 @@
 					<g:link mapping="patients" title="Volver al listado de pacientes"><i class="icon-circle-arrow-left blue top-link"></i></g:link>
 					${patientInstance.fullName}
 					<span class="pull-right">
-						<g:form url="[resource:patientInstance, action:'delete']" method="DELETE">
-							<g:hiddenField name="id" value="${patientInstance.id}" />
-							<p>
-								<button type="submit" onclick="return confirm('¿Estás seguro que deseas eliminar el paciente?');" class="btn btn-danger" >
-									<i class="icon-trash"></i>
-								</button>
-							</p>
-						</g:form>
+						<g:remoteLink class="btn btn-warning" action="registerOnJanpix" 
+							id="${patientInstance.id}" onSuccess="show_modal()" update="[success:'modalBody',failure:'modalBody']">
+							<i class="icon-refresh "></i>
+							Sincronizar en Janpix
+						</g:remoteLink>
 					</span>
 					<span class="pull-right">
 						<g:link action="edit" resource="${patientInstance}" class="btn btn-info"><i class="icon-pencil"></i> Editar</g:link>

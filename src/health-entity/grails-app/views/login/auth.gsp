@@ -1,7 +1,7 @@
 <html>
 <head>
 	<meta name='layout' content='login'/>
-	<title><g:message code="springSecurity.login.title"/></title>
+	<title>Ingreso ${nameHE}</title>
 	<r:script>
 		<!--
 		(function() {
@@ -16,30 +16,31 @@
 					
 			<div class="row">
 				<div class="login-box">
-					<h2><g:message code="springSecurity.login.header"/></h2>
+					<h2 style="text-align: center"><strong><g:message code="springSecurity.login.header"/> ${nameHE}</strong></h2>
 					<g:if test='${flash.message}'>
 						<div class='login_message'>${flash.message}</div>
 					</g:if>
 					<form action='${postUrl}' method='POST' id='loginForm' class="form-horizontal" autocomplete='off'>
 						<fieldset>
-							<input class="input-large col-xs-12" name="j_username" id="username" type="text" placeholder="type username" style="color: black !important"/>
-
-							<input class="input-large col-xs-12" name="j_password" id="password" type="password" placeholder="type password" style="color: black !important"/>
+							<label for="username">Usuario</label>
+							<input class="input-large col-xs-12" name="j_username" id="username" type="text" placeholder="Usuario" style="color: black !important"/>
+							<label for="password">Contraseña</label>
+							<input class="input-large col-xs-12" name="j_password" id="password" type="password" placeholder="Contraseña" style="color: black !important"/>
 
 							<div class="clearfix"></div>
 							
-							<label class="remember" for="remember"><input type="checkbox" id="remember" name='${rememberMeParameter}' <g:if test='${hasCookie}'>checked='checked'</g:if>/><g:message code="springSecurity.login.remember.me.label"/></label>
+							<label class="remember" for="remember"><input type="checkbox" id="remember" name='${rememberMeParameter}' <g:if test='${hasCookie}'>checked='checked'</g:if>/>Recordar usuario</label>
 							
 							<div class="clearfix"></div>
 							
-							<button type="submit" class="btn btn-primary col-xs-12" value='${message(code: "springSecurity.login.button")}'>Login</button>
+							<button type="submit" class="btn btn-primary col-xs-12" value='${message(code: "springSecurity.login.button")}'>Ingresar</button>
 						</fieldset>	
 
 					</form>
 					<hr>
-					<h3>Forgot Password?</h3>
+					<h3>Recordar contraseña</h3>
 					<p>
-						No problem, <a href="login.html#">click here</a> to get a new password.
+						Hacé click <a href="login.html#">acá</a> para recuperar tu contraseña.
 					</p>	
 				</div>
 			</div><!--/row-->

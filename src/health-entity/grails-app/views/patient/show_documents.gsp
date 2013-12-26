@@ -56,7 +56,7 @@
 				 											<th>Título</th>
 				 											<th>Tipo de estudio</th>
 				 											<th>Documento</th>
-				 											<th>Sincronizado</th>
+				 											<th>Sincronizado en Janpix</th>
 				 											<th>Acciones</th>
 				 										</tr>
 				 									</thead> 
@@ -69,13 +69,13 @@
 					 											<td class="center"><g:link controller="study" action="download" id="${study.id}">${study.document.filename}</g:link></td>
 					 											<td class="center labelSynchro">
 					 												<g:if test="${!study.isSynchro}">
-					 													<span class="label label-warning">
-						 													Local
+					 													<span class="label label-danger">
+						 													No sincronizado
 						 												</span>
 																	</g:if>
 																	<g:else>
 																		<span class="label label-success">
-						 													Remoto
+						 													Sincronizado
 						 												</span>
 																	</g:else>
 					 											</td>

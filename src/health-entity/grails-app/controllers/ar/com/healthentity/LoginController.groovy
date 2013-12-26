@@ -15,6 +15,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 class LoginController {
 
+	def grailsApplication
+
 	/**
 	 * Dependency injection for the authenticationTrustResolver.
 	 */
@@ -52,7 +54,8 @@ class LoginController {
 		String view = 'auth'
 		String postUrl = "${request.contextPath}${config.apf.filterProcessesUrl}"
 		render view: view, model: [postUrl: postUrl,
-		                           rememberMeParameter: config.rememberMe.parameter]
+		                           rememberMeParameter: config.rememberMe.parameter,
+		                           nameHE: grailsApplication.config.healthEntity.name]
 	}
 
 	/**
