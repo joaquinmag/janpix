@@ -13,9 +13,9 @@ EOF
 
 echo "$SQL" | mysql -u root -p;
 
-echo "Drop de mongodb de janpix_repodoc";
+echo "Drop de mongodb de janpix_repodoc_prod";
 JS=$( cat <<EOF
-use janpix_repodoc;
+use janpix_repodoc_prod;
 db.dropDatabase();
 EOF
 )

@@ -19,7 +19,7 @@ echo "$SQL" | mysql -u root -p;
 
 echo "Creo bases de datos mongo";
 JS=$( cat <<EOF
-use janpix_repodoc;
+use janpix_repodoc_prod;
 use janpix_repodoc_test;
 EOF
 )
