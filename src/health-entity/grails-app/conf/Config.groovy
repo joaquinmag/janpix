@@ -259,8 +259,8 @@ service.janpix.repodoc.url = ""
 service.janpix.regdoc.url = ""
 service.janpix.pixmanager.serverURL = ""
 healthEntity {
-	name = "Hospital L'Hopital"
-	oid = "2.16.840.1.113883.2.10.130.502"
+	name = "Hospital Zaraza"
+	oid = "2.16.840.1.113883.2.10.130.503"
 }
 
 
