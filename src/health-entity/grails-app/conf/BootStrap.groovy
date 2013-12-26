@@ -12,6 +12,7 @@ import ar.com.healthentity.StudyType
 import ar.com.healthentity.User
 import ar.com.healthentity.UserRole
 
+import grails.util.GrailsUtil
 import grails.util.Environment
 import ar.com.healthentity.City
 import ar.com.healthentity.Province
@@ -24,15 +25,37 @@ class BootStrap {
     def init = { servletContext ->
 		def hwRole = Role.findOrCreateByAuthority('HealthWorker').save(flush: true)
 
-
-		def testUser = User.findByUsername("admin")
-		if (testUser == null) {
-			def person = new Person('Juan Carlos', 'Administrador')
-			testUser = new User('admin', person)
-			testUser.password = 'password'
-			testUser.springSecurityService = springSecurityService
-			testUser.save(flush: true)
-			UserRole.create testUser, hwRole, true
+		def testUser
+		if (GrailsUtil.environment == "democonsultorio") {
+			testUser = User.findByUsername("drcasa")
+			if (testUser == null) {
+				def person = new Person('Gregorio', 'Casa')
+				testUser = new User('drcasa', person)
+				testUser.password = 'password'
+				testUser.springSecurityService = springSecurityService
+				testUser.save(flush: true)
+				UserRole.create testUser, hwRole, true
+			}
+		} else if (GrailsUtil.environment == "demohospital") {
+			testUser = User.findByUsername("susana")
+			if (testUser == null) {
+				def person = new Person('Susana', 'Horia')
+				testUser = new User('susana', person)
+				testUser.password = 'password'
+				testUser.springSecurityService = springSecurityService
+				testUser.save(flush: true)
+				UserRole.create testUser, hwRole, true
+			}
+		} else {
+			testUser = User.findByUsername("admin")
+			if (testUser == null) {
+				def person = new Person('Juan Carlos', 'Administrador')
+				testUser = new User('admin', person)
+				testUser.password = 'password'
+				testUser.springSecurityService = springSecurityService
+				testUser.save(flush: true)
+				UserRole.create testUser, hwRole, true
+			}
 		}
   
 		assert User.count() == 1
