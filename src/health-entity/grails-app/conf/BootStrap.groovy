@@ -117,6 +117,12 @@ class BootStrap {
 		StudyType.findOrCreateWhere(name: "CD4", father: laboratoryAdults, idStudyType: 18l).save(failOnError: true, flush: true)
 
 		this.buildMockCities()
+		
+		// Creo datos para la presentacion
+		if (GrailsUtil.environment == "democonsultorio") {			
+			Patient diego = createPatientDiegoArmando()
+			createStudiesForPatient(diego)
+		}
 
 		if(Environment.current == Environment.TEST || Environment.current == Environment.DEVELOPMENT) {
 			
@@ -150,6 +156,7 @@ class BootStrap {
 			patient.save(flush:true, failOnError: true)
 			patient.addToStudies(study)
 			study.save(flush: true, failOnError: true)
+			
 		}
 
     }
@@ -177,6 +184,71 @@ class BootStrap {
 		City.findOrCreateWhere(province: province, name: "Capital").save(failOnError: true, flush: true)
 		City.findOrCreateWhere(province: province, name: "Godoy Cruz").save(failOnError: true, flush: true)
 		City.findOrCreateWhere(province: province, name: "San Rafael").save(failOnError: true, flush: true)
+	}
+	
+	private Patient createPatientDiegoArmando(){
+		def province = Province.findByName("AR-C")
+		def city = City.findByProvinceAndName(province,"Capital Federal")
+		
+		Patient diego = new Patient()
+		diego.firstName = "Diego Armando"
+		diego.lastName = "Maradona"
+		diego.dni = "10101010"
+		diego.addressName = "México"
+		diego.addressNumber = "1986"
+		diego.city =  city
+		diego.sex = SexType.Masculino
+		diego.studies = []
+	
+		diego.birthdate = Date.parse("yyyy-M-d","1960-10-30")
+	
+		diego.email = "d10s@argentina.com.ar"
+		
+		diego.save(flush:true, failOnError: true)
+		
+		return diego
+	}
+	
+	private void createStudiesForPatient(Patient patient){
+		/*def ctx = SCH.servletContext.getAttribute(GA.APPLICATION_CONTEXT)
+		String uploadsPath = ctx.servletContext.getRealPath("/uploads")
+		File file = new File("Recetaprivada.jpg")
+		long fileSize = file.size()*/
+		
+		ClinicalDocument cd1 = createRecetaPDF("tobillo")
+		def study1 = new Study(
+			date: Date.parse("yyyy-M-d","1990-07-08"),
+			title: "Hinchazon tobillo izquierdo",
+			observation: "Realizarse una tomografía",
+			document: cd1,
+			type: StudyType.findByIdStudyType(13)
+		)
+		patient.addToStudies(study1)
+		study1.save(flush:true,failOnError:true)
+		
+		ClinicalDocument cd2 = createRecetaPDF("cansancio")
+		def study2 = new Study(
+			date: Date.parse("yyyy-M-d","1994-07-13"),
+			title: "Cansancio generalizado",
+			observation: "Cansancio y exitación. Efedrina",
+			document: cd2,
+			type: StudyType.findByIdStudyType(13)
+		)
+		patient.addToStudies(study2)
+		study2.save(flush:true,failOnError:true)
+	}
+	
+	private ClinicalDocument createRecetaPDF(String name){
+		ClinicalDocument cd = new ClinicalDocument(
+			filename: "receta_"+name,
+			mimeType: "image/jpeg",
+			size: 6714,
+			fileLocation: "Recetaprivada.jpg",
+			format: FormatType.PDF,
+		)
+		cd.save(flush: true, failOnError: true)
+		
+		return cd
 	}
 	
 }
