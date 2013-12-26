@@ -259,8 +259,8 @@ service.janpix.repodoc.url = ""
 service.janpix.regdoc.url = ""
 service.janpix.pixmanager.serverURL = ""
 healthEntity {
-	name = ""
-	oid = "2.16.840.1.113883.2.10.130.1"
+	name = "Hospital L'Hopital"
+	oid = "2.16.840.1.113883.2.10.130.502"
 }
 
 
@@ -286,8 +286,8 @@ environments {
 	}
 	production {
 		service.janpix.regdoc.serverURL  = "http://localhost:9090/regdoc-0.1"
-		service.janpix.repodoc.serverURL = "http://www.changeme.com"
-		service.janpix.pixmanager.serverURL = "http://www.changeme.com"
+		service.janpix.repodoc.serverURL = "http://localhost:9090/repodoc-0.1"
+		service.janpix.pixmanager.serverURL = "http://localhost:9090/rup-0.1"
 	}
 	development {
 		service.janpix.regdoc.serverURL  = "http://localhost:9090/regdoc-0.1"

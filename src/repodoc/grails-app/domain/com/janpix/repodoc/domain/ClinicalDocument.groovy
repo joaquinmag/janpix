@@ -21,7 +21,7 @@ class ClinicalDocument {
 		id(unique:true)
 		name(nullable:false)
 		binaryData(nullable:false)
-		uuid(unique:true,nullable:false)
+		uuid(nullable:false)
 		mimeType(nullable:false)
 		dateAssigned(nullable:false)
 		hash(nullable:false)
