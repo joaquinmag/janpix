@@ -261,6 +261,11 @@ service.janpix.pixmanager.serverURL = ""
 healthEntity {
 	name = "Hospital Zaraza"
 	oid = "2.16.840.1.113883.2.10.130.503"
+	admin { 
+		username = "admin"
+		nombre = "Juan Carlos"
+		apellido = "Administrador"
+	}
 }
 
 
@@ -273,6 +278,11 @@ environments {
 		healthEntity {
 			name = "Consultorio"
 			oid = "2.16.840.1.113883.2.10.100.221"
+			admin {
+				username = "drcasa"
+				nombre = "Gregorio"
+				apellido = "Casa"
+			}
 		}
 	}
 	demohospital {
@@ -282,6 +292,11 @@ environments {
 		healthEntity {
 			name = "Clínica San Carlos"
 			oid = "2.16.840.1.113883.2.10.100.220"
+			admin {
+				username = "susana"
+				nombre = "Susana"
+				apellido = "Gimenez"
+			}
 		}
 	}
 	production {

@@ -37,7 +37,7 @@
 		<div class="row">		
 			<div class="box col-sm-12">
 				<div class="box-header" data-original-title>
-					<h2><i class="icon-user"></i><span class="break"></span>Posibles Matcheos</h2>
+					<h2><i class="icon-user"></i><span class="break"></span>Posibles similitudes</h2>
 					<div class="box-icon">
 						<a href="#" class="btn-minimize"><i class="icon-chevron-up"></i></a>
 					</div>

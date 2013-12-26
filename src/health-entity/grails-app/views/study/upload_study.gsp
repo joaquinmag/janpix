@@ -16,11 +16,11 @@
 		var status = $("#study${idStudy} .labelSynchro");
 		<g:if test="${upload_correct}">
 		actions.hide();
-		status.html("<span class=\"label label-success\">Remoto</span>")
+		status.html("<span class=\"label label-success\">Sincronizado</span>")
 		</g:if>
 		<g:else>
 		actions.show();
-		status.html("<span class=\"label label-warning\">Local</span>");
+		status.html("<span class=\"label label-warning\">No sincronizado</span>");
 		</g:else>
 	}
 </script>

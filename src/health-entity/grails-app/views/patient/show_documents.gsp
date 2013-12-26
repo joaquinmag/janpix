@@ -42,7 +42,7 @@
 						<div class="box-content">
 							<ul class="nav tab-menu nav-tabs" id="myTab">
 								<li class="active"><a href="#Local">Local</a></li>
-								<li><a href="#Remoto">Remoto</a></li>
+								<li><a href="#Remoto">Red Janpix</a></li>
 							</ul>
 							<div class="tab-content">
 								<div class="tab-pane active" id="Local">
@@ -84,7 +84,7 @@
 																		<g:if test="${!study.isSynchro}">
 																			<g:remoteLink mapping="uploadDocument" id="${study.id}" class="btn btn-primary" update="[success: 'success-msg-txt', failure: 'warning-msg-txt']"  onSuccess="uploadFinished('success-msg')" onFailure="uploadFinished('warning-msg')">
 																				<i class="icon-cloud-upload"></i>
-																				Subir archivo
+																				Sincronizar estudio
 																			</g:remoteLink>
 																		</g:if>
 																	</div>
@@ -102,7 +102,7 @@
 										<div id="refresh-docs" class="col-sm-12" style="padding-top:10px">
 											<g:remoteLink mapping="refreshRemoteDocuments" id="${patientInstance.id}" class="btn btn-primary pull-right" update="[success: 'remoteDocuments', failure: 'remoteDocuments']">
 												<i class="icon-refresh"></i>
-												Recargar listado de archivos
+												Recargar listado de estudios
 											</g:remoteLink>
 										</div>
 									</div>
