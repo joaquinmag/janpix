@@ -266,7 +266,7 @@ healthEntity {
 		nombre = "Juan Carlos"
 		apellido = "Administrador"
 	}
-	esConsultorio = false
+	esConsultorio = true
 }
 
 

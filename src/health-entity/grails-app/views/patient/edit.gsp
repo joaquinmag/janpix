@@ -4,7 +4,7 @@
 	<head>
 		<meta name="layout" content="main">
 		<g:set var="entityName" value="${message(code: 'patient.label', default: 'Patient')}" />
-		<title><g:message code="default.edit.label" args="[entityName]" /></title>
+		<title>Editar paciente</title>
 	</head>
 	<body>
 	<div class="row">
@@ -48,7 +48,7 @@
 		<div class="row">		
 			<div class="box col-sm-12">
 				<div class="box-header" data-original-title>
-					<h2><i class="icon-user"></i><span class="break"></span><g:message code="default.boxheader.label" args="[entityName]" /></h2>
+					<h2><i class="icon-user"></i><span class="break"></span>Editar paciente</h2>
 					<div class="box-icon">
 						<a href="#" class="btn-minimize"><i class="icon-chevron-up"></i></a>
 					</div>

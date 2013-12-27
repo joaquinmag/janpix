@@ -3,7 +3,9 @@ package ar.com.healthentity
 enum FormatType {
 	PDF,
 	ScannedLab,
-	ODT
+	ODT,
+	Picture,
+	XML
 }
 
 class ClinicalDocument {

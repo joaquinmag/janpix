@@ -112,7 +112,7 @@ class PatientController {
     }
 
     def show(Patient patientInstance) {
-        respond patientInstance, model:[studyTypeRoots: studyTypeService.listStudyTypeRoots(), createStudyModel: new CreateStudyCommand(), formatTypes: ["PDF","ScannedLab","ODT"]]
+        respond patientInstance, model:[studyTypeRoots: studyTypeService.listStudyTypeRoots(), createStudyModel: new CreateStudyCommand(), formatTypes: ["PDF","ScannedLab","ODT","Picture","XML"]]
     }
 	
 	def showDocuments(Patient patientInstance) {
