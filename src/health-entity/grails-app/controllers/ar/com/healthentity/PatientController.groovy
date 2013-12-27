@@ -166,7 +166,7 @@ class PatientController {
 
         request.withFormat {
             form {
-                flash.message = message(code: 'default.updated.message', args: [message(code: 'Patient.label', default: 'Patient'), patientInstance.id])
+                flash.message = message(code: 'default.updated.message', args: ['El paciente', "${patientInstance.firstName} ${patientInstance.lastName} ha sido"])
                 redirect patientInstance
             }
             '*'{ respond patientInstance, [status: OK] }
