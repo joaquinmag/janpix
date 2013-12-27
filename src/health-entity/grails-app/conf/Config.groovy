@@ -266,6 +266,7 @@ healthEntity {
 		nombre = "Juan Carlos"
 		apellido = "Administrador"
 	}
+	esConsultorio = false
 }
 
 
@@ -283,6 +284,7 @@ environments {
 				nombre = "Gregorio"
 				apellido = "Casa"
 			}
+			esConsultorio = true
 		}
 	}
 	demohospital {
@@ -297,6 +299,7 @@ environments {
 				nombre = "Susana"
 				apellido = "Gimenez"
 			}
+			esConsultorio = false
 		}
 	}
 	production {

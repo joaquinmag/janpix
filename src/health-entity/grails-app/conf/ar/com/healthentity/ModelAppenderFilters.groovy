@@ -16,6 +16,7 @@ class ModelAppenderFilters {
 					if (!model.ctx) model.ctx = [:]
 					final User user = springSecurityService.currentUser
 					model.ctx.user = user
+					model.ctx.esConsultorio = grailsApplication.config.healthEntity.esConsultorio
 					model.ctx.healthentityname = grailsApplication.config.healthEntity.name
 				}
 			}

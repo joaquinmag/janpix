@@ -185,6 +185,13 @@
 		</r:script>
 	</head>
 	<body>
+	<g:if test="${!ctx?.esConsultorio}">
+		<div class="row">
+			<div class="col-lg-12" style="text-align: center; margin-bottom: 50px;">
+				<img src="images/centro.png" style="height: 200px" />
+			</div>
+		</div>
+	</g:if>	
 		<div class="row">
 			<div class="col-lg-6">
 				<div class="box calendar">
