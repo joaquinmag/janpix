@@ -198,9 +198,11 @@
 					<div class="calendar-details">
 						<div class="day">Viernes</div>
 						<div class="date">27 Diciembre</div>
-						<ul class="events">
-							<li>5 pacientes</li>
-						</ul>
+						<g:if test="${ctx?.esConsultorio}">
+							<ul class="events">
+								<li>5 pacientes</li>
+							</ul>
+						</g:if>
 						<div class="add-event">
 							<i class="icon-plus"></i>
 							<input type="text" class="new event" value="">
@@ -210,6 +212,15 @@
 					<div class="clearfix"></div>
 				</div>
 			</div><!--/col-->
+			<g:if test="${!ctx?.esConsultorio}">
+				<div class="col-lg-6">
+					<div class="smallstat box">
+						<i class="icon-user-md green"></i>
+						<span class="title">Cantidad de turnos faltantes</span>
+						<span class="value">15</span>
+					</div>
+				</div>
+			</g:if>
 		</div>
 	</body>
 </html>
